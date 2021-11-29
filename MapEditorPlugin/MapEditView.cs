@@ -10,7 +10,7 @@ using WeifenLuo.WinFormsUI.Docking;
 using SphereStudio.Base;
 using SphereStudio.Plugins.Components;
 using SphereStudio.Plugins.UndoRedo;
-using SphereStudio.Vanilla;
+using SphereStudio.Formats;
 
 namespace SphereStudio.Plugins
 {

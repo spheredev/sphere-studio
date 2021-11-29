@@ -4,7 +4,7 @@ using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
 using SphereStudio.Base;
-using SphereStudio.Vanilla;
+using SphereStudio.Formats;
 
 namespace SphereStudio.Plugins.Components
 {

@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 using SphereStudio.UI;
 using SphereStudio.Utility;
-using SphereStudio.Vanilla;
+using SphereStudio.Formats;
 
 namespace SphereStudio.Plugins.Components
 {

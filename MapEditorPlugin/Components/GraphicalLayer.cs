@@ -3,8 +3,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 
-using SphereStudio;
-using SphereStudio.Vanilla;
+using SphereStudio.Formats;
 
 namespace SphereStudio.Plugins.Components
 {

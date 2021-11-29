@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 using SphereStudio.Plugins.Components;
-using SphereStudio.Vanilla;
+using SphereStudio.Formats;
 using SphereStudio.Utility;
 
 namespace SphereStudio.Plugins.UndoRedo

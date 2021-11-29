@@ -76,9 +76,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SphereStudio.Base\SphereStudio.Base.csproj">
+    <ProjectReference Include="..\SphereStudioBase\SphereStudioBase.csproj">
       <Project>{F58A8DB0-1879-41D2-A349-4FB8991AF3D2}</Project>
-      <Name>SphereStudio.Base</Name>
+      <Name>SphereStudioBase</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

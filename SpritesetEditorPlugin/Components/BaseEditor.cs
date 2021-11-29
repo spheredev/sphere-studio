@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-using SphereStudio.Vanilla;
+using SphereStudio.Formats;
 
 namespace SphereStudio.Plugins.Components
 {

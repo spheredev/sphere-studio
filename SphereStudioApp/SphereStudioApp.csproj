@@ -1,0 +1,344 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9CAC2194-E0C8-4164-9D47-627520E79B95}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SphereStudio.Ide</RootNamespace>
+    <AssemblyName>SphereStudioApp</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ApplicationIcon>Sphere Studio.ico</ApplicationIcon>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <PublishUrl>C:\deploy\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Background</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>true</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>false</MapFileExtensions>
+    <UpdateUrl>http://www.spheredev.org/~radnen/SphereEditor/</UpdateUrl>
+    <SupportUrl>http://www.spheredev.org</SupportUrl>
+    <ProductName>.Net Sphere Editor</ProductName>
+    <PublisherName>Sphereical</PublisherName>
+    <WebPage>publish.htm</WebPage>
+    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.1.7.0</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>7CCA2132F78BD752DFFC6FDBB696ECAB940B124F</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>Sphere Editor_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>SphereStudio.Ide.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>none</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+    <WarningLevel>1</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.16.0.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
+      <HintPath>..\packages\DockPanelSuite.2.16.1\lib\net40\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\PluginShim.cs" />
+    <Compile Include="Forms\SettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SettingsForm.Designer.cs">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DockPanes\BuildLogPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DockPanes\BuildLogPane.Designer.cs">
+      <DependentUpon>BuildLogPane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AboutDialogForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AboutDialogForm.Designer.cs">
+      <DependentUpon>AboutDialogForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\PluginManagerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PluginManagerForm.Designer.cs">
+      <DependentUpon>PluginManagerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SavePresetForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SavePresetForm.Designer.cs">
+      <DependentUpon>SavePresetForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Core.cs" />
+    <Compile Include="Core\BuildEngine.cs" />
+    <Compile Include="Core\DockManager.cs" />
+    <Compile Include="Core\DocumentTab.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Core\IniSettings.cs" />
+    <Compile Include="DockPanes\FileListPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DockPanes\FileListPane.Designer.cs">
+      <DependentUpon>FileListPane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPages\MainSettingsPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPages\MainSettingsPage.Designer.cs">
+      <DependentUpon>MainSettingsPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BuiltIns\DefaultStyleProvider.cs" />
+    <Compile Include="Utility\IniFile.cs" />
+    <Compile Include="Views\StartPageView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\StartPageView.Designer.cs">
+      <DependentUpon>StartPageView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MainWindowForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MainWindowForm.Designer.cs">
+      <DependentUpon>MainWindowForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ProjectPropsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProjectPropsForm.designer.cs">
+      <DependentUpon>ProjectPropsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Forms\NewProjectForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\NewProjectForm.Designer.cs">
+      <DependentUpon>NewProjectForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Core\Project.cs" />
+    <EmbeddedResource Include="Forms\SettingsForm.resx">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DockPanes\BuildLogPane.resx">
+      <DependentUpon>BuildLogPane.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AboutDialogForm.resx">
+      <DependentUpon>AboutDialogForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PluginManagerForm.resx">
+      <DependentUpon>PluginManagerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SavePresetForm.resx">
+      <DependentUpon>SavePresetForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DockPanes\FileListPane.resx">
+      <DependentUpon>FileListPane.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPages\MainSettingsPage.resx">
+      <DependentUpon>MainSettingsPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\StartPageView.resx">
+      <DependentUpon>StartPageView.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MainWindowForm.resx">
+      <DependentUpon>MainWindowForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProjectPropsForm.resx">
+      <DependentUpon>ProjectPropsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NewProjectForm.resx">
+      <DependentUpon>NewProjectForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\app.manifest">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Settings.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FontImporterPlugin\FontImporterPlugin.csproj">
+      <Project>{dd4965de-8289-4e3f-839e-b008a06b3a97}</Project>
+      <Name>FontImporterPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DefaultImageEditorPlugin\DefaultImageEditorPlugin.csproj">
+      <Project>{83d6d166-7f7d-46ca-81bf-9baf8e35f6bc}</Project>
+      <Name>DefaultImageEditorPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sphere1xSupportPlugin\Sphere1xSupportPlugin.csproj">
+      <Project>{da72d708-3f08-4804-b5bb-5a1a78b16605}</Project>
+      <Name>Sphere1xSupportPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MapEditorPlugin\MapEditorPlugin.csproj">
+      <Project>{e17c35be-a26f-411d-b814-979017f290df}</Project>
+      <Name>MapEditorPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\neoSphereSupportPlugin\neoSphereSupportPlugin.csproj">
+      <Project>{d242f8ef-7d85-4b6b-9446-6758b68a7f54}</Project>
+      <Name>neoSphereSupportPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DefaultTextEditorPlugin\DefaultTextEditorPlugin.csproj">
+      <Project>{2da2a233-7da5-44c6-82ce-045b310a19f8}</Project>
+      <Name>DefaultTextEditorPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AudioPlayerPlugin\AudioPlayerPlugin.csproj">
+      <Project>{f1b89568-607d-4cec-9c11-6c516d98e2ec}</Project>
+      <Name>AudioPlayerPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SphereStudioBase\SphereStudioBase.csproj">
+      <Project>{f58a8db0-1879-41d2-a349-4fb8991af3d2}</Project>
+      <Name>SphereStudioBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SpritesetEditorPlugin\SpritesetEditorPlugin.csproj">
+      <Project>{9fea4a11-754f-4f4b-8a85-b0e780f15159}</Project>
+      <Name>SpritesetEditorPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TaskListPlugin\TaskListPlugin.csproj">
+      <Project>{f7434dec-a94a-409c-a320-7585b4083a6a}</Project>
+      <Name>TaskListPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WindowstyleEditorPlugin\WindowstyleEditorPlugin.csproj">
+      <Project>{65bcdeef-c718-492a-8c82-7886a3af8b7b}</Project>
+      <Name>WindowstyleEditorPlugin</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Sphere Studio.ico" />
+    <None Include="Spherical.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>if not exist ".\Plugins" mkdir ".\Plugins"
+move "*Plugin.dll" ".\Plugins"
+</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

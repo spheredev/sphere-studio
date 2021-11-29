@@ -131,9 +131,9 @@
     <None Include="Resources\eye_shut.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SphereStudio.Base\SphereStudio.Base.csproj">
+    <ProjectReference Include="..\SphereStudioBase\SphereStudioBase.csproj">
       <Project>{f58a8db0-1879-41d2-a349-4fb8991af3d2}</Project>
-      <Name>SphereStudio.Base</Name>
+      <Name>SphereStudioBase</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

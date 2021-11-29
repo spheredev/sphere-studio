@@ -97,13 +97,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SphereStudio.Base\SphereStudio.Base.csproj">
+    <ProjectReference Include="..\SphereStudioBase\SphereStudioBase.csproj">
       <Project>{f58a8db0-1879-41d2-a349-4fb8991af3d2}</Project>
-      <Name>SphereStudio.Base</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SphereStudio.Vanilla\SphereStudio.Vanilla.csproj">
-      <Project>{e7883a7f-8cdc-4dbf-bc4f-97ed9332123e}</Project>
-      <Name>SphereStudio.Vanilla</Name>
+      <Name>SphereStudioBase</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

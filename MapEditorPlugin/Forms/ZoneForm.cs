@@ -2,8 +2,8 @@
 using System.Globalization;
 using System.Windows.Forms;
 
+using SphereStudio.Formats;
 using SphereStudio.UI;
-using SphereStudio.Vanilla;
 
 namespace SphereStudio.Plugins.Forms
 {

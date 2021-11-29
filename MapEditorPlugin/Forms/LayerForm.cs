@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-using SphereStudio.Vanilla;
+using SphereStudio.Formats;
 
 namespace SphereStudio.Plugins.Forms
 {

@@ -68,9 +68,9 @@
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SphereStudio.Base\SphereStudio.Base.csproj">
+    <ProjectReference Include="..\SphereStudioBase\SphereStudioBase.csproj">
       <Project>{F58A8DB0-1879-41D2-A349-4FB8991AF3D2}</Project>
-      <Name>SphereStudio.Base</Name>
+      <Name>SphereStudioBase</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

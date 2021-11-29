@@ -1,10 +1,11 @@
 ﻿# Cellscript API dictionary for Sphere Studio
-# (c) 2017 Spherical Community
+# (c) 2021 Sphere Engine Group
 
 # this file is used by the Sphere Studio default script editor to highlight
 # the names of Cellscript API functions and constructors.  any blank lines and lines
 # beginning with a `#` character are ignored.
 
+describe
 error
 files
 install
