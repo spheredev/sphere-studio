@@ -51,7 +51,7 @@
             this.labelProductName.Location = new System.Drawing.Point(54, 34);
             this.labelProductName.Margin = new System.Windows.Forms.Padding(7, 0, 3, 0);
             this.labelProductName.Name = "labelProductName";
-            this.labelProductName.Size = new System.Drawing.Size(178, 20);
+            this.labelProductName.Size = new System.Drawing.Size(253, 20);
             this.labelProductName.TabIndex = 19;
             this.labelProductName.Text = "Program name";
             this.labelProductName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -61,7 +61,7 @@
             this.labelCopyright.Location = new System.Drawing.Point(54, 74);
             this.labelCopyright.Margin = new System.Windows.Forms.Padding(7, 0, 3, 0);
             this.labelCopyright.Name = "labelCopyright";
-            this.labelCopyright.Size = new System.Drawing.Size(178, 20);
+            this.labelCopyright.Size = new System.Drawing.Size(253, 20);
             this.labelCopyright.TabIndex = 21;
             this.labelCopyright.Text = "Copyright notice";
             this.labelCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -77,7 +77,7 @@
             this.creditsTextBox.Name = "creditsTextBox";
             this.creditsTextBox.ReadOnly = true;
             this.creditsTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.creditsTextBox.Size = new System.Drawing.Size(415, 130);
+            this.creditsTextBox.Size = new System.Drawing.Size(470, 130);
             this.creditsTextBox.TabIndex = 23;
             this.creditsTextBox.TabStop = false;
             this.creditsTextBox.Text = "Description";
@@ -87,7 +87,7 @@
             this.closeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.closeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.closeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.closeButton.Location = new System.Drawing.Point(347, 13);
+            this.closeButton.Location = new System.Drawing.Point(402, 13);
             this.closeButton.Name = "closeButton";
             this.closeButton.Size = new System.Drawing.Size(80, 25);
             this.closeButton.TabIndex = 24;
@@ -114,7 +114,7 @@
             this.labelCompanyName.Location = new System.Drawing.Point(54, 54);
             this.labelCompanyName.Margin = new System.Windows.Forms.Padding(7, 0, 3, 0);
             this.labelCompanyName.Name = "labelCompanyName";
-            this.labelCompanyName.Size = new System.Drawing.Size(178, 20);
+            this.labelCompanyName.Size = new System.Drawing.Size(253, 20);
             this.labelCompanyName.TabIndex = 22;
             this.labelCompanyName.Text = "Company name";
             this.labelCompanyName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -122,9 +122,9 @@
             // labelPlatform
             // 
             this.labelPlatform.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelPlatform.Location = new System.Drawing.Point(273, 37);
+            this.labelPlatform.Location = new System.Drawing.Point(313, 37);
             this.labelPlatform.Name = "labelPlatform";
-            this.labelPlatform.Size = new System.Drawing.Size(128, 57);
+            this.labelPlatform.Size = new System.Drawing.Size(143, 57);
             this.labelPlatform.TabIndex = 29;
             this.labelPlatform.Text = "OS version";
             this.labelPlatform.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -137,7 +137,7 @@
             this.footerPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.footerPanel.Location = new System.Drawing.Point(0, 294);
             this.footerPanel.Name = "footerPanel";
-            this.footerPanel.Size = new System.Drawing.Size(439, 50);
+            this.footerPanel.Size = new System.Drawing.Size(494, 50);
             this.footerPanel.TabIndex = 30;
             // 
             // pictureBox2
@@ -163,7 +163,7 @@
             this.versionPanel.Controls.Add(this.labelCompanyName);
             this.versionPanel.Location = new System.Drawing.Point(12, 35);
             this.versionPanel.Name = "versionPanel";
-            this.versionPanel.Size = new System.Drawing.Size(415, 110);
+            this.versionPanel.Size = new System.Drawing.Size(470, 110);
             this.versionPanel.TabIndex = 31;
             // 
             // versionHeader
@@ -171,7 +171,7 @@
             this.versionHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.versionHeader.Location = new System.Drawing.Point(0, 0);
             this.versionHeader.Name = "versionHeader";
-            this.versionHeader.Size = new System.Drawing.Size(413, 23);
+            this.versionHeader.Size = new System.Drawing.Size(468, 23);
             this.versionHeader.TabIndex = 0;
             this.versionHeader.Text = "Version Information";
             this.versionHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -192,7 +192,7 @@
             this.header.Dock = System.Windows.Forms.DockStyle.Top;
             this.header.Location = new System.Drawing.Point(0, 0);
             this.header.Name = "header";
-            this.header.Size = new System.Drawing.Size(439, 23);
+            this.header.Size = new System.Drawing.Size(494, 23);
             this.header.TabIndex = 32;
             this.header.Text = "information about this version of Sphere Studio";
             this.header.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -203,7 +203,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.closeButton;
-            this.ClientSize = new System.Drawing.Size(439, 344);
+            this.ClientSize = new System.Drawing.Size(494, 344);
             this.Controls.Add(this.header);
             this.Controls.Add(this.versionPanel);
             this.Controls.Add(this.footerPanel);
