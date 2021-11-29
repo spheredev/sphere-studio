@@ -1,15 +1,14 @@
 ﻿using System.Drawing;
 
 using SphereStudio.Base;
-using SphereStudio.UI;
 
-namespace SphereStudio.Ide.BuiltIns
+namespace SphereStudio.BuiltIns
 {
     class DefaultStyleProvider : IStyleProvider
     {
         public DefaultStyleProvider()
         {
-            var darkTheme = new UIStyle("Midnight") {
+            var darkTheme = new UIStyle("Dark Mode") {
                 AccentColor = Color.FromArgb(32, 32, 48),
                 BackColor = Color.FromArgb(24, 24, 32),
                 FixedFont = new Font("Consolas", 10.0f),
@@ -20,7 +19,7 @@ namespace SphereStudio.Ide.BuiltIns
                 ToolColor = Color.FromArgb(48, 48, 48),
             };
 
-            var lightTheme = new UIStyle("Light Blue") {
+            var lightTheme = new UIStyle("Blue") {
                 AccentColor = Color.FromArgb(208, 208, 224),
                 BackColor = Color.White,
                 FixedFont = new Font("Consolas", 10.0f),
@@ -31,7 +30,7 @@ namespace SphereStudio.Ide.BuiltIns
                 ToolColor = Color.FromArgb(192, 192, 208),
             };
 
-            this.Styles = new[] { darkTheme, lightTheme };
+            Styles = new[] { darkTheme, lightTheme };
         }
 
         public UIStyle[] Styles { get; private set; }

@@ -52,7 +52,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Components\SphereCompiler.cs" />
     <Compile Include="Components\SettingsPage.cs">
       <SubType>UserControl</SubType>
     </Compile>

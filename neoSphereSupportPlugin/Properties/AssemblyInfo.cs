@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("neoSphere support for Sphere Studio")]
+[assembly: AssemblyTitle("neoSphere Support for Sphere Studio")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Spherical")]
 [assembly: AssemblyProduct("Sphere Studio")]
-[assembly: AssemblyCopyright("Copyright © 2021 Sphere Engine Group")]
+[assembly: AssemblyCopyright("© 2012-2021 Sphere Engine Group")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

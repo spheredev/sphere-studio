@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 using SphereStudio.Ide;
 using SphereStudio.Base;
-using SphereStudio.UI;
 
-namespace SphereStudio.Ide.BuiltIns
+namespace SphereStudio.BuiltIns
 {
     [ToolboxItem(false)]
     partial class MainSettingsPage : UserControl, ISettingsPage, IStyleAware

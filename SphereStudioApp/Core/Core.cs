@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Linq;
 
-using SphereStudio;
 using SphereStudio.Ide.Utility;
 using SphereStudio.Base;
-using SphereStudio.UI;
 
 namespace SphereStudio.Ide
 {

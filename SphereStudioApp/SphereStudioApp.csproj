@@ -107,6 +107,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuiltIns\SphereCompiler.cs" />
     <Compile Include="Core\PluginShim.cs" />
     <Compile Include="Forms\SettingsForm.cs">
       <SubType>Form</SubType>

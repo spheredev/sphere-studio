@@ -3,8 +3,7 @@ using System.IO;
 using System.Windows.Forms;
 
 using SphereStudio.Base;
-using SphereStudio.Ide.BuiltIns;
-using SphereStudio.Ide.Forms;
+using SphereStudio.BuiltIns;
 
 namespace SphereStudio.Ide
 {
@@ -13,7 +12,7 @@ namespace SphereStudio.Ide
     /// </summary>
     static class Program
     {
-        public const string DefaultStyle = "Sphere Studio: Midnight";
+        public const string DefaultStyle = "Default: Blue";
         
         /// <summary>
         /// The main entry point for the application.
@@ -24,7 +23,8 @@ namespace SphereStudio.Ide
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            PluginManager.Register(null, new DefaultStyleProvider(), "Sphere Studio");
+            PluginManager.Register(null, new DefaultStyleProvider(), "Default");
+            PluginManager.Register(null, new SphereCompiler(), "Sphere Classic");
             PluginManager.Register(null, new MainSettingsPage(), "Sphere Studio");
 
             Form = new MainWindowForm();
