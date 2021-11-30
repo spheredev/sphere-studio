@@ -33,8 +33,7 @@ namespace SphereStudio.Plugins
             Icon = Icon.FromHandle(Properties.Resources.GridToolIcon.GetHicon());
         }
 
-        public override string[] FileExtensions { get; } = new[] { "rws" };
-
+        public override string[] FileExtensions => new[] { "rws" };
 
         public override bool NewDocument()
         {

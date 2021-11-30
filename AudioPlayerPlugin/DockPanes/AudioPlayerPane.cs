@@ -13,7 +13,7 @@ namespace SphereStudio.Plugins.UI
 {
     partial class AudioPlayerPane : UserControl, IDockPane, IFileOpener, IStyleAware
     {
-        private readonly string[] _fileTypes = new[] 
+        private readonly string[] _fileTypes = new[]
         {
             "*.mp3:Music",
             "*.ogg:Music",
@@ -41,13 +41,6 @@ namespace SphereStudio.Plugins.UI
             InitializeComponent();
             StyleManager.AutoStyle(this);
 
-            FileExtensions = new[]
-            {
-                "mp3", "ogg", "flac",      // compressed audio formats
-                "mod", "it", "s3d", "s3m", // tracker formats
-                "wav"                      // uncompressed/PCM formats
-            };
-
             playIcons.ColorDepth = ColorDepth.Depth32Bit;
             playIcons.Images.Add("play", Properties.Resources.play_tool);
             playIcons.Images.Add("pause", Properties.Resources.pause_tool);
@@ -72,7 +65,12 @@ namespace SphereStudio.Plugins.UI
 
         public string FileTypeName => "Audio File";
         public Bitmap FileIcon => Properties.Resources.Icon;
-        public string[] FileExtensions { get; private set; }
+        public string[] FileExtensions => new[]
+        {
+            "mp3", "ogg", "flac",      // compressed audio formats
+            "mod", "it", "s3d", "s3m", // tracker formats
+            "wav"                      // uncompressed/PCM formats
+        };
 
         public void ApplyStyle(UIStyle style)
         {

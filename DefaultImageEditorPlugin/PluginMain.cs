@@ -9,14 +9,14 @@ namespace SphereStudio.Plugins
 {
     public class PluginMain : IPluginMain, INewFileOpener, IEditor<ImageView>
     {
-        public string Name { get; } = "Default Image Editor";
-        public string Description { get; } = "Sphere Studio default image editor";
-        public string Version { get; } = Versioning.Version;
-        public string Author { get; } = Versioning.Author;
+        public string Name => "Default Image Editor";
+        public string Description => "Sphere Studio default image editor";
+        public string Version => Versioning.Version;
+        public string Author => Versioning.Author;
 
-        public string FileTypeName { get; } = "Bitmap Image";
-        public string[] FileExtensions { get; } = new[] { "bmp", "gif", "jpg", "png", "tif", "tiff" };
-        public Bitmap FileIcon { get; } = Properties.Resources.palette;
+        public string FileTypeName => "Bitmap Image";
+        public string[] FileExtensions => new[] { "bmp", "gif", "jpg", "png", "tif", "tiff" };
+        public Bitmap FileIcon => Properties.Resources.palette;
 
         internal static void ShowMenus(bool show) => _imageMenu.Visible = show;
 

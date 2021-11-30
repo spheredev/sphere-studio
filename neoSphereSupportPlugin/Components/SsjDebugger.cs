@@ -88,11 +88,11 @@ namespace SphereStudio.Plugins.Components
                 try
                 {
                     Inferior = new Inferior();
-                    Inferior.Attached += duktape_Attached;
-                    Inferior.Detached += duktape_Detached;
-                    Inferior.Throw += duktape_ErrorThrown;
-                    Inferior.Print += duktape_Print;
-                    Inferior.Status += duktape_Status;
+                    Inferior.Attached += ssj_Attached;
+                    Inferior.Detached += ssj_Detached;
+                    Inferior.Throw += ssj_ErrorThrown;
+                    Inferior.Print += ssj_Print;
+                    Inferior.Status += ssj_Status;
                     await Inferior.Connect(hostname, port);
                     return;
                 }
@@ -106,7 +106,7 @@ namespace SphereStudio.Plugins.Components
             throw new TimeoutException();
         }
 
-        private void duktape_Attached(object sender, EventArgs e)
+        private void ssj_Attached(object sender, EventArgs e)
         {
             PluginManager.Core.Invoke(new Action(() =>
             {
@@ -126,7 +126,7 @@ namespace SphereStudio.Plugins.Components
             }), null);
         }
 
-        private void duktape_Detached(object sender, EventArgs e)
+        private void ssj_Detached(object sender, EventArgs e)
         {
             PluginManager.Core.Invoke(new Action(async () =>
             {
@@ -157,7 +157,7 @@ namespace SphereStudio.Plugins.Components
             }), null);
         }
 
-        private void duktape_ErrorThrown(object sender, ThrowEventArgs e)
+        private void ssj_ErrorThrown(object sender, ThrowEventArgs e)
         {
             PluginManager.Core.Invoke(new Action(() =>
             {
@@ -170,7 +170,7 @@ namespace SphereStudio.Plugins.Components
             }), null);
         }
 
-        private void duktape_Print(object sender, TraceEventArgs e)
+        private void ssj_Print(object sender, TraceEventArgs e)
         {
             PluginManager.Core.Invoke(new Action(() =>
             {
@@ -180,7 +180,7 @@ namespace SphereStudio.Plugins.Components
             }), null);
         }
 
-        private void duktape_Status(object sender, EventArgs e)
+        private void ssj_Status(object sender, EventArgs e)
         {
             PluginManager.Core.Invoke(new Action(async () =>
             {

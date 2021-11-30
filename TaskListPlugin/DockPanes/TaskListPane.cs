@@ -112,7 +112,7 @@ namespace SphereStudio.Plugins.UI
         ///   int32: ID;
         ///   int32: type;
         /// </summary>
-        public void SaveList()
+        public void SaveTaskList()
         {
             // clean the file
             if (Clean())
@@ -132,7 +132,7 @@ namespace SphereStudio.Plugins.UI
             }
         }
 
-        public void LoadList(string projectRoot)
+        public void LoadTaskList(string projectRoot)
         {
             tasksFilePath = Path.Combine(projectRoot, "sphereStudio.tasks");
             listView.ClearObjects();

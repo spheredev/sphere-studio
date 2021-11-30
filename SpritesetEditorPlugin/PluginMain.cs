@@ -9,32 +9,34 @@ namespace SphereStudio.Plugins
 {
     public class PluginMain : IPluginMain, INewFileOpener
     {
-        public string Name { get; } = "Sphere Spriteset Editor";
-        public string Description { get; } = "Sphere v1 RSS format spriteset editor";
-        public string Version { get; } = Versioning.Version;
-        public string Author { get; } = Versioning.Author;
+        public string Name => "Sphere Spriteset Editor";
+        public string Description => "Sphere v1 RSS format spriteset editor";
+        public string Version => Versioning.Version;
+        public string Author => Versioning.Author;
 
-        public string FileTypeName { get; private set; }
-        public string[] FileExtensions { get; private set; }
-        public Bitmap FileIcon { get; private set; }
+        public string FileTypeName => "RSS Spriteset";
+        public string[] FileExtensions => new[] { "rss" };
+        public Bitmap FileIcon => Properties.Resources.PersonIcon;
 
         internal ISettings Settings { get; private set; }
 
-        internal static void ShowMenus(bool show) => _spritesetMenu.Visible = show;
-        
-        public void Initialize(ISettings conf)
+        internal static void ShowMenus(bool isVisible)
         {
-            FileTypeName = "RSS Spriteset";
-            FileExtensions = new[] { "rss" };
-            FileIcon = Properties.Resources.PersonIcon;
+            _spritesetMenu.Visible = isVisible;
+        }
 
-            Settings = conf;
+        public void Initialize(ISettings settings)
+        {
+            Settings = settings;
 
             PluginManager.Register(this, this, Name);
             PluginManager.Core.AddMenuItem(_spritesetMenu, "View");
         }
 
-        public void ShutDown() => PluginManager.UnregisterAll(this);
+        public void ShutDown()
+        {
+            PluginManager.UnregisterAll(this);
+        }
 
         public DocumentView New()
         {

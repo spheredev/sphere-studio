@@ -7,18 +7,24 @@ namespace SphereStudio.Plugins
 {
     public class PluginMain : IPluginMain, INewFileOpener
     {
-        public string Name { get; } = "Sphere Font Importer";
-        public string Description { get; } = "TrueType to Sphere v1 RFN font converter";
-        public string Version { get; } = Versioning.Version;
-        public string Author { get; } = Versioning.Author;
+        public string Name => "Sphere Font Importer";
+        public string Description => "TrueType to Sphere v1 RFN font converter";
+        public string Version => Versioning.Version;
+        public string Author => Versioning.Author;
 
-        public string FileTypeName { get; } = "RFN Font";
-        public string[] FileExtensions { get; } = new[] { "rfn" };
-        public Bitmap FileIcon { get; } = Properties.Resources.style;
+        public string FileTypeName => "RFN Font";
+        public string[] FileExtensions => new[] { "rfn" };
+        public Bitmap FileIcon => Properties.Resources.style;
 
-        public void Initialize(ISettings conf) => PluginManager.Register(this, this, Name);
+        public void Initialize(ISettings conf)
+        {
+            PluginManager.Register(this, this, Name);
+        }
 
-        public void ShutDown() => PluginManager.UnregisterAll(this);
+        public void ShutDown()
+        {
+            PluginManager.UnregisterAll(this);
+        }
 
         public DocumentView New()
         {

@@ -9,25 +9,25 @@ namespace SphereStudio.Plugins.Components
 {
     class SphereStarter : IStarter
     {
-        private ISettings _conf;
+        private ISettings settings;
 
-        public SphereStarter(ISettings conf)
+        public SphereStarter(ISettings settings)
         {
-            _conf = conf;
+            this.settings = settings;
         }
 
         public bool CanConfigure
         {
             get
             {
-                var enginePath = _conf.GetString("enginePath", "");
+                var enginePath = settings.GetString("enginePath", "");
                 return File.Exists(Path.Combine(enginePath, "config.exe"));
             }
         }
 
         public void Start(string gamePath, bool isPackage)
         {
-            var enginePath = Path.Combine(_conf.GetString("enginePath", ""), "engine.exe");
+            var enginePath = Path.Combine(settings.GetString("enginePath", ""), "engine.exe");
             var options = $@"-game ""{gamePath}""";
             if (File.Exists(enginePath))
                 Process.Start(enginePath, options);
@@ -44,7 +44,7 @@ namespace SphereStudio.Plugins.Components
             if (!CanConfigure)
                 throw new NotSupportedException("Engine doesn't support configuration.");
 
-            var enginePath = _conf.GetString("enginePath", "");
+            var enginePath = settings.GetString("enginePath", "");
             ProcessStartInfo psi = new ProcessStartInfo()
             {
                 FileName = Path.Combine(enginePath, "config.exe"),

@@ -5,10 +5,10 @@ namespace SphereStudio.Plugins
 {
     public class PluginMain : IPluginMain
     {
-        public string Name { get; } = "Sphere 1.x Support";
-        public string Description { get; } = "Provides support for the legacy Sphere 1.x engine.";
-        public string Version { get; } = Versioning.Version;
-        public string Author { get; } = Versioning.Author;
+        public string Name => "Sphere 1.x Support";
+        public string Description => "Provides support for the legacy Sphere 1.x engine.";
+        public string Version => Versioning.Version;
+        public string Author => Versioning.Author;
 
         public void Initialize(ISettings conf)
         {

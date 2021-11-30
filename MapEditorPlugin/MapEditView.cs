@@ -16,14 +16,15 @@ namespace SphereStudio.Plugins
 {
     partial class MapEditView : DocumentView
     {
-        private DockContent _mapContent;
-        private DockContent _drawContent;
-        private DockContent _tileContent;
-        private DockContent _layerContent;
-        private DockContent _tilesetContent;
-        private DockContent _entityContent;
-        private DockPanel _mainPanel;
-        public Map Map { get { return MapControl.BaseMap; } }
+        DockContent _mapContent;
+        DockContent _drawContent;
+        DockContent _tileContent;
+        DockContent _layerContent;
+        DockContent _tilesetContent;
+        DockContent _entityContent;
+        DockPanel _mainPanel;
+
+        public Map Map => MapControl.BaseMap;
 
         public MapEditView()
         {
@@ -36,7 +37,7 @@ namespace SphereStudio.Plugins
             TilesetControl.MultiSelect = true;
         }
 
-        public override string[] FileExtensions { get; } = new[] { "rmp" };
+        public override string[] FileExtensions => new[] { "rmp" };
 
         public override string ViewState
         {

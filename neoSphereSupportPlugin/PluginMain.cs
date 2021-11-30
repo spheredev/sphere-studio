@@ -14,10 +14,10 @@ namespace SphereStudio.Plugins
 {
     public class PluginMain : IPluginMain
     {
-        public string Name { get; } = "neoSphere Support";
-        public string Description { get; } = "Provides support for the neoSphere platform.";
-        public string Version { get; } = Versioning.Version;
-        public string Author { get; } = Versioning.Author;
+        public string Name => "neoSphere Support";
+        public string Description => "Provides support for the neoSphere platform.";
+        public string Version => Versioning.Version;
+        public string Author => Versioning.Author;
 
         internal PluginConf Conf { get; private set; }
 
@@ -84,12 +84,12 @@ namespace SphereStudio.Plugins
 
     class PluginConf
     {
-        public PluginConf(ISettings conf)
-        {
-            Conf = conf;
-        }
+        private ISettings settings;
 
-        public ISettings Conf { get; private set; }
+        public PluginConf(ISettings settings)
+        {
+            this.settings = settings;
+        }
 
         public string EnginePath
         {
@@ -100,50 +100,50 @@ namespace SphereStudio.Plugins
                 if (key != null)
                 {
                     // Sphere is installed, get path from registry
-                    string defaultPath = (string)key.GetValue(@"InstallLocation") ?? "";
-                    string path = Conf.GetString("enginePath", defaultPath);
+                    string defaultPath = (string)key.GetValue("InstallLocation") ?? "";
+                    string path = settings.GetString("enginePath", defaultPath);
                     return !string.IsNullOrWhiteSpace(path) ? path : defaultPath;
                 }
                 else
                 {
                     // no installation key, just read from conf
-                    return Conf.GetString("enginePath", "");
+                    return settings.GetString("enginePath", "");
                 }
             }
             set
             {
-                Conf.SetValue("enginePath", value);
+                settings.SetValue("enginePath", value);
             }
         }
 
         public bool AlwaysUseConsole
         {
-            get { return Conf.GetBoolean("alwaysUseConsole", false); }
-            set { Conf.SetValue("alwaysUseConsole", value); }
+            get => settings.GetBoolean("alwaysUseConsole", false);
+            set => settings.SetValue("alwaysUseConsole", value);
         }
 
         public bool MakeDebugPackages
         {
-            get { return Conf.GetBoolean("makeDebugPackages", false); }
-            set { Conf.SetValue("makeDebugPackages", value); }
+            get => settings.GetBoolean("makeDebugPackages", false);
+            set => settings.SetValue("makeDebugPackages", value);
         }
 
         public bool ShowTraceInfo
         {
-            get { return Conf.GetBoolean("showTraceOutput", false); }
-            set { Conf.SetValue("showTraceOutput", value); }
+            get => settings.GetBoolean("showTraceOutput", false);
+            set => settings.SetValue("showTraceOutput", value);
         }
 
         public bool TestInWindow
         {
-            get { return Conf.GetBoolean("testInWindow", false); }
-            set { Conf.SetValue("testInWindow", value); }
+            get => settings.GetBoolean("testInWindow", false);
+            set => settings.SetValue("testInWindow", value);
         }
 
         public int Verbosity
         {
-            get { return Math.Min(Math.Max(Conf.GetInteger("verbosity", 0), 0), 4); }
-            set { Conf.SetValue("verbosity", Math.Min(Math.Max(value, 0), 4)); }
+            get => Math.Min(Math.Max(settings.GetInteger("verbosity", 0), 0), 4);
+            set => settings.SetValue("verbosity", Math.Min(Math.Max(value, 0), 4));
         }
     }
 

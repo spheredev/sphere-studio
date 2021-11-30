@@ -7,10 +7,10 @@ namespace SphereStudio.Plugins
 {
     public class PluginMain : IPluginMain
     {
-        public string Name { get; } = "Audio Player";
-        public string Description { get; } = "Listen to sounds from your game while you work!";
-        public string Version { get; } = Versioning.Version;
-        public string Author { get; } = Versioning.Author;
+        public string Name => "Audio Player";
+        public string Description => "Listen to sounds from your game while you work!";
+        public string Version => Versioning.Version;
+        public string Author => Versioning.Author;
 
         private AudioPlayerPane dockPane;
 
@@ -22,9 +22,9 @@ namespace SphereStudio.Plugins
 
             PluginManager.Register(this, dockPane, "Audio Player");
 
-            PluginManager.Core.LoadProject += IDE_LoadProject;
-            PluginManager.Core.UnloadProject += IDE_UnloadProject;
-            PluginManager.Core.TestGame += IDE_TestGame;
+            PluginManager.Core.LoadProject += on_LoadProject;
+            PluginManager.Core.UnloadProject += on_UnloadProject;
+            PluginManager.Core.TestGame += on_TestGame;
         }
 
         public void ShutDown()
@@ -32,18 +32,24 @@ namespace SphereStudio.Plugins
             PluginManager.UnregisterAll(this);
             dockPane.WatchProject(null);
             dockPane.stopPlayback();
-            PluginManager.Core.TestGame -= IDE_TestGame;
-            PluginManager.Core.LoadProject -= IDE_LoadProject;
-            PluginManager.Core.UnloadProject -= IDE_UnloadProject;
+            PluginManager.Core.LoadProject -= on_LoadProject;
+            PluginManager.Core.UnloadProject -= on_UnloadProject;
+            PluginManager.Core.TestGame -= on_TestGame;
         }
 
-        private void IDE_LoadProject(object sender, EventArgs e) =>
+        private void on_LoadProject(object sender, EventArgs e)
+        {
             dockPane.WatchProject(PluginManager.Core.Project);
+        }
 
-        private void IDE_UnloadProject(object sender, EventArgs e) =>
+        private void on_UnloadProject(object sender, EventArgs e)
+        {
             dockPane.WatchProject(null);
+        }
 
-        private void IDE_TestGame(object sender, EventArgs e) =>
+        private void on_TestGame(object sender, EventArgs e)
+        {
             dockPane.ForcePause();
+        }
     }
 }

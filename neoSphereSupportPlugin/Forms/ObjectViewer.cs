@@ -11,44 +11,44 @@ namespace SphereStudio.Plugins.Forms
 {
     partial class ObjectViewer : Form, IStyleAware
     {
-        private Inferior _inferior;
-        private KiAtom _value;
+        private Inferior debuggee;
+        private KiAtom jsValue;
 
         public ObjectViewer(Inferior inferior, string objectName, KiAtom value)
         {
             InitializeComponent();
             StyleManager.AutoStyle(this);
 
-            m_nameTextBox.Text = string.Format("eval('{0}') = {1};",
-                objectName.Replace(@"\", @"\\").Replace("'", @"\'").Replace("\n", @"\n").Replace("\r", @"\r"),
-                value.ToString());
-            TreeIconImageList.Images.Add("object", Resources.StackIcon);
-            TreeIconImageList.Images.Add("prop", Resources.VisibleIcon);
-            TreeIconImageList.Images.Add("hiddenProp", Resources.InvisibleIcon);
+            treeIconImageList.Images.Add("object", Resources.StackIcon);
+            treeIconImageList.Images.Add("prop", Resources.VisibleIcon);
+            treeIconImageList.Images.Add("hiddenProp", Resources.InvisibleIcon);
 
-            _inferior = inferior;
-            _value = value;
+            debuggee = inferior;
+            jsValue = value;
+            nameTextBox.Text = string.Format("eval('{0}') = {1};",
+                objectName.Replace(@"\", @"\\").Replace("'", @"\'").Replace("\n", @"\n").Replace("\r", @"\r"),
+                jsValue.ToString());
         }
 
         public void ApplyStyle(UIStyle style)
         {
             style.AsUIElement(this);
-            style.AsTextView(m_nameTextBox);
-            style.AsTextView(m_propListTreeView);
-            style.AsAccent(m_okButton);
+            style.AsTextView(nameTextBox);
+            style.AsTextView(propListTreeView);
+            style.AsAccent(closeButton);
 
         }
 
         private async void this_Load(object sender, EventArgs e)
         {
-            m_propListTreeView.BeginUpdate();
-            m_propListTreeView.Nodes.Clear();
-            var trunk = m_propListTreeView.Nodes.Add(_value.ToString());
+            propListTreeView.BeginUpdate();
+            propListTreeView.Nodes.Clear();
+            var trunk = propListTreeView.Nodes.Add(jsValue.ToString());
             trunk.ImageKey = "object";
-            if (_value.Tag == KiTag.Ref)
-                await PopulateTreeNode(trunk, (KiRef)_value);
+            if (jsValue.Tag == KiTag.Ref)
+                await PopulateTreeNode(trunk, (KiRef)jsValue);
             trunk.Expand();
-            m_propListTreeView.EndUpdate();
+            propListTreeView.EndUpdate();
         }
 
         private async void PropTree_BeforeExpand(object sender, TreeViewCancelEventArgs e)
@@ -63,15 +63,15 @@ namespace SphereStudio.Plugins.Forms
 
         private void PropTree_MouseMove(object sender, MouseEventArgs e)
         {
-            var ht = m_propListTreeView.HitTest(e.Location);
-            m_propListTreeView.Cursor = ht.Node != null && ht.Node.Bounds.Contains(e.Location)
+            var ht = propListTreeView.HitTest(e.Location);
+            propListTreeView.Cursor = ht.Node != null && ht.Node.Bounds.Contains(e.Location)
                 ? Cursors.Hand : Cursors.Default;
         }
 
         private async Task PopulateTreeNode(TreeNode node, KiRef handle)
         {
-            m_propListTreeView.BeginUpdate();
-            var props = await _inferior.InspectObject(handle, 0, int.MaxValue);
+            propListTreeView.BeginUpdate();
+            var props = await debuggee.InspectObject(handle, 0, int.MaxValue);
             foreach (var key in props.Keys) {
                 if (props[key].Flags.HasFlag(PropFlags.Accessor)) {
                     KiAtom getter = props[key].Getter;
@@ -97,7 +97,7 @@ namespace SphereStudio.Plugins.Forms
             }
             if (node.Nodes.Count > 0 && node.Nodes[0].Text == "")
                 node.Nodes.RemoveAt(0);
-            m_propListTreeView.EndUpdate();
+            propListTreeView.EndUpdate();
         }
     }
 }

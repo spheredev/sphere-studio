@@ -7,34 +7,28 @@ using System.Windows.Forms;
 
 using SphereStudio.Base;
 using SphereStudio.Plugins.Properties;
-using SphereStudio.UI;
 
 namespace SphereStudio.Plugins
 {
     public class PluginMain : IPluginMain, INewFileOpener, IEditor<ScriptView>
     {
-        public string Name { get; } = "Default Text Editor";
-        public string Description { get; } = "Sphere Studio default JS and text editor";
-        public string Version { get; } = Versioning.Version;
-        public string Author { get; } = Versioning.Author;
+        public string Name => "Default Text Editor";
+        public string Description => "Sphere Studio default JS and text editor";
+        public string Version => Versioning.Version;
+        public string Author => Versioning.Author;
 
-        public string FileTypeName { get; private set; }
-        public string[] FileExtensions { get; private set; }
-        public Bitmap FileIcon { get; private set; }
-        public bool IsGeneric { get; } = true;
+        public string FileTypeName => "JavaScript Source";
+        public string[] FileExtensions => new[] { "js", "mjs", "ts", "json" };
+        public Bitmap FileIcon => Resources.ScriptIcon;
 
         internal List<string> Functions { get; private set; }
         internal ISettings Settings { get; private set; }
 
-        public void Initialize(ISettings conf)
+        public void Initialize(ISettings settings)
         {
-            FileTypeName = "JavaScript Source";
-            FileExtensions = new[] { "js", "mjs", "ts", "json" };
-            FileIcon = Resources.ScriptIcon;
-
             InitializeAutoComplete();
             InitializeMenuItems();
-            Settings = conf;
+            Settings = settings;
 
             PluginManager.Register(this, this, Name);
             PluginManager.Core.AddMenuItem(_rootMenu, "Tools");
@@ -58,7 +52,10 @@ namespace SphereStudio.Plugins
             Functions.Clear();
         }
 
-        public ScriptView CreateEditView() => new ScriptEditView(this, true);
+        public ScriptView CreateEditView()
+        {
+            return new ScriptEditView(this, true);
+        }
 
         public DocumentView New()
         {
@@ -73,7 +70,10 @@ namespace SphereStudio.Plugins
             return view;
         }
 
-        internal void ShowMenus(bool show) => _rootMenu.Visible = show;
+        internal void ShowMenus(bool visible)
+        {
+            _rootMenu.Visible = visible;
+        }
 
         private void InitializeAutoComplete()
         {

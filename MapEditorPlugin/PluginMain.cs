@@ -9,26 +9,22 @@ namespace SphereStudio.Plugins
 {
     public class PluginMain : IPluginMain, INewFileOpener
     {
-        public string Name { get; } = "Sphere Map Editor";
-        public string Description { get; } = "Sphere v1 RMP format tilemap editor";
-        public string Version { get; } = Versioning.Version;
-        public string Author { get; } = Versioning.Author;
+        public string Name => "Sphere Map Editor";
+        public string Description => "Sphere v1 RMP format tilemap editor";
+        public string Version => Versioning.Version;
+        public string Author => Versioning.Author;
 
-        public string FileTypeName { get; private set; }
-        public string[] FileExtensions { get; private set; }
-        public Bitmap FileIcon { get; private set; }
+        public string FileTypeName => "RMP Tilemap";
+        public string[] FileExtensions => new[] { "rmp" };
+        public Bitmap FileIcon => Properties.Resources.MapIcon;
 
-        internal static void ShowMenus(bool show)
+        internal static void ShowMenus(bool visible)
         {
-            _mapMenu.Visible = show;
+            _mapMenu.Visible = visible;
         }
         
         public void Initialize(ISettings conf)
         {
-            FileTypeName = "RMP Tilemap";
-            FileExtensions = new[] { "rmp" };
-            FileIcon = Properties.Resources.MapIcon;
-
             PluginManager.Register(this, this, Name);
             PluginManager.Core.AddMenuItem(_mapMenu, "Tools");
         }

@@ -187,7 +187,7 @@ namespace SphereStudio.Plugins
             IsDirty = true;
         }
 
-        public override string[] FileExtensions { get; } = new[] { "rss" };
+        public override string[] FileExtensions => new[] { "rss" };
 
         public override bool NewDocument()
         {
