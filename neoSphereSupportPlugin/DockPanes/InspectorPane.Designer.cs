@@ -1,4 +1,4 @@
-﻿namespace SphereStudio.Plugins.DockPanes
+﻿namespace SphereStudio.DockPanes
 {
     partial class InspectorPane
     {
@@ -131,7 +131,7 @@
             this.m_evalButton.Dock = System.Windows.Forms.DockStyle.Right;
             this.m_evalButton.Enabled = false;
             this.m_evalButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.m_evalButton.Image = global::SphereStudio.Plugins.Properties.Resources.EvalIcon;
+            this.m_evalButton.Image = global::SphereStudio.Properties.Resources.EvalIcon;
             this.m_evalButton.Location = new System.Drawing.Point(323, 0);
             this.m_evalButton.Name = "m_evalButton";
             this.m_evalButton.Size = new System.Drawing.Size(64, 23);

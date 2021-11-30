@@ -3,17 +3,17 @@ using System.Windows.Forms;
 
 using SphereStudio.Base;
 
-namespace SphereStudio.Plugins.SettingsPages
+namespace SphereStudio.SettingsPages
 {
-    partial class SettingsPage : UserControl, ISettingsPage, IStyleAware
+    partial class neoSphereSettingsPage : UserControl, ISettingsPage, IStyleAware
     {
-        private PluginMain m_main;
+        private PluginMain main;
 
-        public SettingsPage(PluginMain main)
+        public neoSphereSettingsPage(PluginMain main)
         {
             InitializeComponent();
             StyleManager.AutoStyle(this);
-            m_main = main;
+            this.main = main;
         }
 
         public Control Control { get { return this; } }
@@ -42,23 +42,23 @@ namespace SphereStudio.Plugins.SettingsPages
 
         public bool Apply()
         {
-            m_main.Conf.EnginePath = enginePathTextBox.Text;
-            m_main.Conf.MakeDebugPackages = useSourceMapsButton.Checked;
-            m_main.Conf.AlwaysUseConsole = testWithConsoleButton.Checked;
-            m_main.Conf.ShowTraceInfo = showTracesButton.Checked;
-            m_main.Conf.TestInWindow = testInWindowButton.Checked;
-            m_main.Conf.Verbosity = logLevelDropDown.SelectedIndex;
+            main.Conf.EnginePath = enginePathTextBox.Text;
+            main.Conf.MakeDebugPackages = useSourceMapsButton.Checked;
+            main.Conf.AlwaysUseConsole = testWithConsoleButton.Checked;
+            main.Conf.ShowTraceInfo = showTracesButton.Checked;
+            main.Conf.TestInWindow = testInWindowButton.Checked;
+            main.Conf.Verbosity = logLevelDropDown.SelectedIndex;
             return true;
         }
 
         protected override void OnLoad(EventArgs e)
         {
-            enginePathTextBox.Text = m_main.Conf.EnginePath;
-            useSourceMapsButton.Checked = m_main.Conf.MakeDebugPackages;
-            showTracesButton.Checked = m_main.Conf.ShowTraceInfo;
-            testWithConsoleButton.Checked = m_main.Conf.AlwaysUseConsole;
-            testInWindowButton.Checked = m_main.Conf.TestInWindow;
-            logLevelDropDown.SelectedIndex = m_main.Conf.Verbosity;
+            enginePathTextBox.Text = main.Conf.EnginePath;
+            useSourceMapsButton.Checked = main.Conf.MakeDebugPackages;
+            showTracesButton.Checked = main.Conf.ShowTraceInfo;
+            testWithConsoleButton.Checked = main.Conf.AlwaysUseConsole;
+            testInWindowButton.Checked = main.Conf.TestInWindow;
+            logLevelDropDown.SelectedIndex = main.Conf.Verbosity;
             base.OnLoad(e);
         }
 

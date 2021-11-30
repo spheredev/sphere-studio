@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net.Sockets;
 
-namespace SphereStudio.Plugins.Debugger
+namespace SphereStudio.SsjKi
 {
     enum KiError
     {

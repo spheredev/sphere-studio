@@ -65,7 +65,7 @@ namespace SphereStudio.Forms
             Session.Settings.Engine = getPluginName(engineDropDown);
             Session.Settings.Compiler = getPluginName(typeDropDown);
             Session.Settings.FileOpener = getPluginName(otherDropDown);
-            Session.Settings.ScriptEditor = getPluginName(scriptDropDown);
+            Session.Settings.TextEditor = getPluginName(scriptDropDown);
             Session.Settings.ImageEditor = getPluginName(imageDropDown);
             Session.Settings.Apply();
             updatePresets();
@@ -94,8 +94,8 @@ namespace SphereStudio.Forms
 
             populateHandlers<ICompiler>(typeDropDown, Session.Settings.Compiler);
             populateHandlers<IStarter>(engineDropDown, Session.Settings.Engine);
-            populateHandlers<IEditor<ScriptView>>(otherDropDown, Session.Settings.FileOpener);
-            populateHandlers<IEditor<ScriptView>>(scriptDropDown, Session.Settings.ScriptEditor);
+            populateHandlers<IEditor<TextView>>(otherDropDown, Session.Settings.FileOpener);
+            populateHandlers<IEditor<TextView>>(scriptDropDown, Session.Settings.TextEditor);
             populateHandlers<IEditor<ImageView>>(imageDropDown, Session.Settings.ImageEditor);
 
             updatingHandlers = false;
@@ -165,7 +165,7 @@ namespace SphereStudio.Forms
             bool haveAllPlugins = PluginManager.Get<IStarter>(Session.Settings.Engine) != null
                 && PluginManager.Get<ICompiler>(Session.Settings.Compiler) != null
                 && PluginManager.Get<IFileOpener>(Session.Settings.FileOpener) != null
-                && PluginManager.Get<IEditor<ScriptView>>(Session.Settings.ScriptEditor) != null
+                && PluginManager.Get<IEditor<TextView>>(Session.Settings.TextEditor) != null
                 && PluginManager.Get<IEditor<ImageView>>(Session.Settings.ImageEditor) != null;
             if (!haveAllPlugins)
             {
@@ -210,7 +210,7 @@ namespace SphereStudio.Forms
                     preset.Write("Preset", "compiler", getPluginName(typeDropDown));
                     preset.Write("Preset", "engine", getPluginName(engineDropDown));
                     preset.Write("Preset", "defaultFileOpener", getPluginName(otherDropDown));
-                    preset.Write("Preset", "scriptEditor", getPluginName(scriptDropDown));
+                    preset.Write("Preset", "textEditor", getPluginName(scriptDropDown));
                     preset.Write("Preset", "imageEditor", getPluginName(imageDropDown));
                     preset.Write("Preset", "disabledPlugins", string.Join("|", Session.Settings.DisabledPlugins));
                 }

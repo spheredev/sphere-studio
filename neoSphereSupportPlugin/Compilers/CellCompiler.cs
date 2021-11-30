@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 
 using SphereStudio.Base;
 
-namespace SphereStudio.Plugins.Components
+namespace SphereStudio.Compilers
 {
     class CellCompiler : IPackager
     {
-        private PluginMain m_main;
+        private PluginMain main;
 
         public CellCompiler(PluginMain main)
         {
-            m_main = main;
+            this.main = main;
         }
 
         public string SaveFileFilters
@@ -24,7 +24,7 @@ namespace SphereStudio.Plugins.Components
         public bool Prep(IProject project, IConsole con)
         {
             con.Print("Installing project template... ");
-            CopyDirectory(Path.Combine(m_main.Conf.EnginePath, "system", "template"), project.RootPath);
+            CopyDirectory(Path.Combine(main.Conf.EnginePath, "system", "template"), project.RootPath);
             con.Print("OK.\n");
 
             var cellTemplatePath = Path.Combine(project.RootPath, "Cellscript.js.tmpl");
@@ -77,7 +77,7 @@ namespace SphereStudio.Plugins.Components
             string cellOptions = string.Format(@"pack --in-dir ""{0}"" --out-dir ""{1}"" {2} ""{3}""",
                 project.RootPath.Replace(Path.DirectorySeparatorChar, '/'),
                 stagingPath,
-                m_main.Conf.MakeDebugPackages ? "--debug" : "--release",
+                main.Conf.MakeDebugPackages ? "--debug" : "--release",
                 fileName.Replace(Path.DirectorySeparatorChar, '/'));
             return await RunCell(cellOptions, con);
         }
@@ -114,7 +114,7 @@ namespace SphereStudio.Plugins.Components
 
         private async Task<bool> RunCell(string options, IConsole con)
         {
-            string cellPath = Path.Combine(m_main.Conf.EnginePath, "cell.exe");
+            string cellPath = Path.Combine(main.Conf.EnginePath, "cell.exe");
             if (!File.Exists(cellPath))
             {
                 con.Print("ERROR: no 'cell' executable was found, did Gohan kill Cell already?\n");

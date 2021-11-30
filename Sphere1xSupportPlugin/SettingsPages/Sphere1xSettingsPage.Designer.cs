@@ -1,6 +1,6 @@
-﻿namespace SphereStudio.Plugins.Components
+﻿namespace SphereStudio.SettingsPages
 {
-    partial class SettingsPage
+    partial class Sphere1xSettingsPage
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsPage));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Sphere1xSettingsPage));
             this.configEngineButton = new System.Windows.Forms.Button();
             this.browseDirButton = new System.Windows.Forms.Button();
             this.enginePathTextBox = new System.Windows.Forms.TextBox();
@@ -43,7 +43,7 @@
             this.configEngineButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.configEngineButton.Enabled = false;
             this.configEngineButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.configEngineButton.Image = global::SphereStudio.Plugins.Properties.Resources.ConfigIcon;
+            this.configEngineButton.Image = global::SphereStudio.Properties.Resources.ConfigIcon;
             this.configEngineButton.Location = new System.Drawing.Point(403, 58);
             this.configEngineButton.Name = "configEngineButton";
             this.configEngineButton.Size = new System.Drawing.Size(25, 25);

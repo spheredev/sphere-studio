@@ -155,10 +155,10 @@ namespace SphereStudio.Core
             set { Preset = null; SetValue("imageEditor", value); }
         }
 
-        public string ScriptEditor
+        public string TextEditor
         {
-            get { return GetString("scriptEditor", ""); }
-            set { Preset = null; SetValue("scriptEditor", value); }
+            get { return GetString("textEditor", ""); }
+            set { Preset = null; SetValue("textEditor", value); }
         }
 
         public string LastProject
@@ -192,7 +192,7 @@ namespace SphereStudio.Core
                         Engine = preset.Read("Preset", "engine", "");
                         FileOpener = preset.Read("Preset", "defaultFileOpener", "");
                         ImageEditor = preset.Read("Preset", "imageEditor", "");
-                        ScriptEditor = preset.Read("Preset", "scriptEditor", "");
+                        TextEditor = preset.Read("Preset", "textEditor", "");
                         DisabledPlugins = preset.Read("Preset", "disabledPlugins", "").Split('|');
                     }
                     SetValue("preset", value);

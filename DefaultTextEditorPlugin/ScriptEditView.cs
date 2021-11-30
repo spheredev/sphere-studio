@@ -20,7 +20,7 @@ namespace SphereStudio.Plugins
         Cellscript,
     }
 
-    public partial class ScriptEditView : ScriptView, IStyleAware
+    public partial class ScriptEditView : TextView, IStyleAware
     {
         private Scintilla _codeBox = new Scintilla();
 

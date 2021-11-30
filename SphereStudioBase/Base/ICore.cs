@@ -91,11 +91,6 @@ namespace SphereStudio.Base
     public interface ICoreSettings
     {
         /// <summary>
-        /// Gets the list of directory paths Sphere Studio is monitoring for projects.
-        /// </summary>
-        string[] ProjectPaths { get; }        
-        
-        /// <summary>
         /// Gets the registered name of the current engine starter plugin.
         /// </summary>
         string Engine { get; }
@@ -111,14 +106,19 @@ namespace SphereStudio.Base
         string FileOpener { get; }
 
         /// <summary>
-        /// Gets the registered name of the current script editor plugin.
-        /// </summary>
-        string ScriptEditor { get; }
-
-        /// <summary>
         /// Gets the registered name of the current image editor plugin.
         /// </summary>
         string ImageEditor { get; }
+
+        /// <summary>
+        /// Gets the list of directory paths Sphere Studio is monitoring for projects.
+        /// </summary>
+        string[] ProjectPaths { get; }
+
+        /// <summary>
+        /// Gets the registered name of the current text editor plugin.
+        /// </summary>
+        string TextEditor { get; }
     }
 
     /// <summary>

@@ -5,11 +5,10 @@ using System.Media;
 using System.Windows.Forms;
 
 using SphereStudio.Base;
+using SphereStudio.Debuggers;
+using SphereStudio.Properties;
 
-using SphereStudio.Plugins.Components;
-using SphereStudio.Plugins.Properties;
-
-namespace SphereStudio.Plugins.DockPanes
+namespace SphereStudio.DockPanes
 {
     partial class ConsolePane : UserControl, IDockPane, IStyleAware
     {
@@ -91,7 +90,7 @@ namespace SphereStudio.Plugins.DockPanes
                 ListViewItem item = m_errorListView.SelectedItems[0];
                 string filename = Ssj.ResolvePath(item.SubItems[1].Text);
                 int lineNumber = int.Parse(item.SubItems[2].Text);
-                ScriptView view = PluginManager.Core.OpenFile(filename) as ScriptView;
+                TextView view = PluginManager.Core.OpenFile(filename) as TextView;
                 if (view == null)
                     SystemSounds.Asterisk.Play();
                 else

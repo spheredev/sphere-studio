@@ -54,9 +54,9 @@ namespace SphereStudio.Core
 
             UpdateTabText();
 
-            if (View is ScriptView)
+            if (View is TextView)
             {
-                ScriptView scriptView = View as ScriptView;
+                TextView scriptView = View as TextView;
                 scriptView.Breakpoints = Session.Project.GetBreakpoints(FileName);
                 scriptView.BreakpointChanged += on_BreakpointSet;
             }
@@ -298,8 +298,8 @@ namespace SphereStudio.Core
                 return;  // save view only if clean
 
             // record breakpoints if script tab
-            if (View is ScriptView)
-                Session.Project.SetBreakpoints(FileName, ((ScriptView)View).Breakpoints);
+            if (View is TextView)
+                Session.Project.SetBreakpoints(FileName, ((TextView)View).Breakpoints);
 
             // save view (cursor position, etc.)
             Session.Project.User.SetValue(
@@ -318,7 +318,7 @@ namespace SphereStudio.Core
         private async void on_BreakpointSet(object sender, BreakpointChangedEventArgs e)
         {
             if (FileName == null) return;
-            ScriptView view = View as ScriptView;
+            TextView view = View as TextView;
             Session.Project.SetBreakpoints(FileName, view.Breakpoints);
             var debugger = Program.Form.Debugger;
             if (Program.Form.Debugger != null)

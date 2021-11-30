@@ -5,12 +5,13 @@ using Microsoft.Win32;
 
 using SphereStudio.Base;
 
-using SphereStudio.Plugins.Components;
-using SphereStudio.Plugins.DockPanes;
-using SphereStudio.Plugins.Properties;
-using SphereStudio.Plugins.SettingsPages;
+using SphereStudio.Compilers;
+using SphereStudio.DockPanes;
+using SphereStudio.Properties;
+using SphereStudio.SettingsPages;
+using SphereStudio.Starters;
 
-namespace SphereStudio.Plugins
+namespace SphereStudio
 {
     public class PluginMain : IPluginMain
     {
@@ -31,7 +32,7 @@ namespace SphereStudio.Plugins
 
             PluginManager.Register(this, new neoSphereStarter(this), "neoSphere");
             PluginManager.Register(this, new CellCompiler(this), "Cell");
-            PluginManager.Register(this, new SettingsPage(this), "neoSphere");
+            PluginManager.Register(this, new neoSphereSettingsPage(this), "neoSphere");
 
             Panes.Initialize(this);
 

@@ -10,7 +10,7 @@ using SphereStudio.Plugins.Properties;
 
 namespace SphereStudio.Plugins
 {
-    public class PluginMain : IPluginMain, INewFileOpener, IEditor<ScriptView>
+    public class PluginMain : IPluginMain, INewFileOpener, IEditor<TextView>
     {
         public string Name => "Default Text Editor";
         public string Description => "Sphere Studio default JS and text editor";
@@ -52,7 +52,7 @@ namespace SphereStudio.Plugins
             Functions.Clear();
         }
 
-        public ScriptView CreateEditView()
+        public TextView CreateEditView()
         {
             return new ScriptEditView(this, true);
         }

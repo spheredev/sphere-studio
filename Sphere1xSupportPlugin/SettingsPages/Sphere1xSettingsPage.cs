@@ -5,13 +5,13 @@ using System.Windows.Forms;
 
 using SphereStudio.Base;
 
-namespace SphereStudio.Plugins.Components
+namespace SphereStudio.SettingsPages
 {
-    partial class SettingsPage : UserControl, ISettingsPage, IStyleAware
+    partial class Sphere1xSettingsPage : UserControl, ISettingsPage, IStyleAware
     {
         private ISettings _conf;
 
-        public SettingsPage(ISettings conf)
+        public Sphere1xSettingsPage(ISettings conf)
         {
             InitializeComponent();
             Control = this;

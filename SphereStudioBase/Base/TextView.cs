@@ -7,7 +7,7 @@ namespace SphereStudio.Base
     /// Provides a base class for a script editing component.
     /// </summary>
     [ToolboxItem(false)]
-    public class ScriptView : DocumentView
+    public class TextView : DocumentView
     {
         /// <summary>
         /// Fires when a breakpoint is added or removed.

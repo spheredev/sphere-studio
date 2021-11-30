@@ -278,10 +278,13 @@ namespace SphereStudio.Core
 
         public int[] GetBreakpoints(string scriptPath)
         {
-            if (scriptPath == null) return new int[0];
+            if (scriptPath == null)
+                return new int[0];
             int hash = scriptPath.GetHashCode();
             if (_breakpoints.ContainsKey(scriptPath))
+            {
                 return _breakpoints[scriptPath].ToArray();
+            }
             else
             {
                 int[] lines = new int[0];
@@ -290,7 +293,11 @@ namespace SphereStudio.Core
                     lines = Array.ConvertAll(
                         User.GetString($"breakpointsSet:{hash:X8}", "").Split(','),
                         int.Parse);
-                } catch (Exception) { }  // *munch*
+                }
+                catch (Exception)
+                {
+                    // *munch*
+                }
                 _breakpoints.Add(scriptPath, new HashSet<int>(lines));
                 return lines;
             }

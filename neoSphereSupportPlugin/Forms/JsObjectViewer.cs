@@ -4,17 +4,17 @@ using System.Windows.Forms;
 
 using SphereStudio.Base;
 
-using SphereStudio.Plugins.Debugger;
-using SphereStudio.Plugins.Properties;
+using SphereStudio.Properties;
+using SphereStudio.SsjKi;
 
-namespace SphereStudio.Plugins.Forms
+namespace SphereStudio.Forms
 {
-    partial class ObjectViewer : Form, IStyleAware
+    partial class JsObjectViewer : Form, IStyleAware
     {
         private Inferior debuggee;
         private KiAtom jsValue;
 
-        public ObjectViewer(Inferior inferior, string objectName, KiAtom value)
+        public JsObjectViewer(Inferior inferior, string objectName, KiAtom value)
         {
             InitializeComponent();
             StyleManager.AutoStyle(this);

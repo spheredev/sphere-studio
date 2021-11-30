@@ -11,10 +11,9 @@ using System.Threading.Tasks;
 
 using SphereStudio.Base;
 using SphereStudio.Debugging;
+using SphereStudio.SsjKi;
 
-using SphereStudio.Plugins.Debugger;
-
-namespace SphereStudio.Plugins.Components
+namespace SphereStudio.Debuggers
 {
     class SsjDebugger : IDebugger, IDisposable
     {
@@ -25,7 +24,6 @@ namespace SphereStudio.Plugins.Components
         private Timer m_focusTimer;
         private bool m_haveError = false;
         private PluginMain m_plugin;
-        private ConcurrentQueue<dynamic[]> m_replies = new ConcurrentQueue<dynamic[]>();
         private string m_scriptPath;
         private SourceMapper m_sourceMap = new SourceMapper();
         private string m_sourcePath;

@@ -18,16 +18,6 @@ namespace SphereStudio.Core
             _section = section;
         }
 
-        public void SetValue(string key, object value)
-        {
-            value = value ?? "";
-            
-            string valuestr = value is IEnumerable<string>
-                ? string.Join("|", value as IEnumerable<string>)
-                : value.ToString();
-            _ini.Write(_section, key, valuestr);
-        }
-
         public bool GetBoolean(string key, bool defValue)
         {
             return Convert.ToBoolean(GetString(key, defValue.ToString()));
@@ -66,6 +56,16 @@ namespace SphereStudio.Core
         {
             Directory.CreateDirectory(Path.GetDirectoryName(filepath));
             return _ini.SaveAs(filepath);
+        }
+
+        public void SetValue(string key, object value)
+        {
+            value = value ?? "";
+
+            string valuestr = value is IEnumerable<string>
+                ? string.Join("|", value as IEnumerable<string>)
+                : value.ToString();
+            _ini.Write(_section, key, valuestr);
         }
     }
 }

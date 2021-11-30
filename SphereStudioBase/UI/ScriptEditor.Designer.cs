@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.UI
 {
-    partial class ScriptEditor
+    partial class TextEditor
     {
         /// <summary> 
         /// Required designer variable.

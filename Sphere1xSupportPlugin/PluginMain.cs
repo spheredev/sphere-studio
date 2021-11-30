@@ -1,7 +1,8 @@
 ﻿using SphereStudio.Base;
-using SphereStudio.Plugins.Components;
+using SphereStudio.SettingsPages;
+using SphereStudio.Starters;
 
-namespace SphereStudio.Plugins
+namespace SphereStudio
 {
     public class PluginMain : IPluginMain
     {
@@ -12,8 +13,8 @@ namespace SphereStudio.Plugins
 
         public void Initialize(ISettings conf)
         {
-            PluginManager.Register(this, new SphereStarter(conf), "Sphere 1.x");
-            PluginManager.Register(this, new SettingsPage(conf), "Sphere 1.x");
+            PluginManager.Register(this, new Sphere1xStarter(conf), "Sphere 1.x");
+            PluginManager.Register(this, new Sphere1xSettingsPage(conf), "Sphere 1.x");
         }
 
         public void ShutDown()

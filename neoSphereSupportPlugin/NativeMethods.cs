@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace SphereStudio.Plugins
+namespace SphereStudio
 {
     static class NativeMethods
     {

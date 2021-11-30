@@ -34,16 +34,16 @@ namespace SphereStudio.Debugging
     /// </summary>
     public class SourceMapper
     {
-        private SourceMapParser m_parser;
-        private Dictionary<string, SourceMap> m_maps;
+        private Dictionary<string, SourceMap> maps;
+        private SourceMapParser parser;
 
         /// <summary>
         /// Constructs a new SourceMapper.
         /// </summary>
         public SourceMapper()
         {
-            this.m_parser = new SourceMapParser();
-            this.m_maps = new Dictionary<string, SourceMap>();
+            parser = new SourceMapParser();
+            maps = new Dictionary<string, SourceMap>();
         }
         
         /// <summary>
@@ -55,8 +55,8 @@ namespace SphereStudio.Debugging
         {
             using (var mapReader = new StreamReader(mapJson.ToStream()))
             {
-                var map = m_parser.ParseSourceMap(mapReader);
-                this.m_maps[fileName] = map;
+                var map = parser.ParseSourceMap(mapReader);
+                maps[fileName] = map;
             }
         }
 
@@ -66,7 +66,7 @@ namespace SphereStudio.Debugging
         /// <param name="fileName">The filename of the transpiled target file.</param>
         public bool Contains(string fileName)
         {
-            return this.m_maps.ContainsKey(fileName);
+            return maps.ContainsKey(fileName);
         }
 
         /// <summary>
@@ -77,10 +77,10 @@ namespace SphereStudio.Debugging
         /// <returns>The corresponding line number in the original source code.</returns>
         public int LineInSource(string fileName, int lineNumber)
         {
-            if (!(this.m_maps.ContainsKey(fileName)))
+            if (!(maps.ContainsKey(fileName)))
                 return lineNumber;
 
-            var q = from item in m_maps[fileName].ParsedMappings
+            var q = from item in maps[fileName].ParsedMappings
                     where item.GeneratedSourcePosition.ZeroBasedLineNumber == lineNumber - 1
                     select item;
             var mapping = q.FirstOrDefault();
@@ -97,10 +97,10 @@ namespace SphereStudio.Debugging
         /// <returns>The corresponding line number in the transpiled code.</returns>
         public int LineInTarget(string fileName, int lineNumber)
         {
-            if (!(this.m_maps.ContainsKey(fileName)))
+            if (!(maps.ContainsKey(fileName)))
                 return lineNumber;
 
-            var q = from item in m_maps[fileName].ParsedMappings
+            var q = from item in maps[fileName].ParsedMappings
                     where item.OriginalSourcePosition.ZeroBasedLineNumber == lineNumber - 1
                     select item;
             var mapping = q.FirstOrDefault();

@@ -10,7 +10,7 @@ namespace SphereStudio.Plugins.Forms
     partial class MapPropertiesForm : Form
     {
         public Map Map { get; private set; }
-        private ScriptEditor ScriptBox = new ScriptEditor();
+        private TextEditor ScriptBox = new TextEditor();
         private int last = 3;
         private List<string> scripts = new List<string>();
 

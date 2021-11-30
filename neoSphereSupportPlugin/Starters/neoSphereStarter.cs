@@ -3,8 +3,9 @@ using System.Diagnostics;
 using System.IO;
 
 using SphereStudio.Base;
+using SphereStudio.Debuggers;
 
-namespace SphereStudio.Plugins.Components
+namespace SphereStudio.Starters
 {
     class neoSphereStarter : IDebugStarter
     {

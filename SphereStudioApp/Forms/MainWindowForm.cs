@@ -24,7 +24,7 @@ namespace SphereStudio.Forms
     {
         private DocumentTab _activeTab;
         private string _defaultActiveName;
-        private DockManager _dock = null;
+        private DockManager dockManager = null;
         private bool _isFirstDebugStop;
         private bool _loadingPresets = false;
         private FileListPane fileListPane;
@@ -61,12 +61,12 @@ namespace SphereStudio.Forms
         public event EventHandler TestGame;
         public event EventHandler UnloadProject;
 
-        public DocumentView ActiveDocument { get { return _activeTab.View; } }
+        public DocumentView ActiveDocument => _activeTab.View;
         public IDebugger Debugger { get; private set; }
-        public IDock Docking { get { return _dock; } }
-        public IProject Project { get { return Session.Project; } }
-        public ICoreSettings Settings { get { return Session.Settings; } }
-        public UIStyle Style { get { return StyleManager.Style; } }
+        public IDock Docking => dockManager;
+        public IProject Project => Session.Project;
+        public ICoreSettings Settings => Session.Settings;
+        public UIStyle Style => StyleManager.Style;
 
         protected bool StartVisible
         {
@@ -278,7 +278,7 @@ namespace SphereStudio.Forms
 
             foreach (DocumentTab tab in _tabs)
                 tab.Restyle();
-            _dock.Refresh();
+            dockManager.Refresh();
             UpdateEngineList();
             UpdateControls();
         }
@@ -297,7 +297,9 @@ namespace SphereStudio.Forms
         {
             Location = new Point(Properties.Settings.Default.WindowX, Properties.Settings.Default.WindowY);
             Size = new Size(Properties.Settings.Default.WindowWidth, Properties.Settings.Default.WindowHeight);
-            WindowState = Properties.Settings.Default.WindowMaxed ? FormWindowState.Maximized : FormWindowState.Normal;
+            WindowState = Properties.Settings.Default.WindowMaxed
+                ? FormWindowState.Maximized
+                : FormWindowState.Normal;
 
             // this works around glitchy WeifenLuo behavior when messing with panel
             // visibility before the form loads.
@@ -343,7 +345,8 @@ namespace SphereStudio.Forms
 
         private void IDEForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (e.Cancel) return;
+            if (e.Cancel)
+                return;
 
             Rectangle savedBounds = WindowState != FormWindowState.Normal ? RestoreBounds : Bounds;
             Properties.Settings.Default.WindowX = savedBounds.X;
@@ -360,7 +363,7 @@ namespace SphereStudio.Forms
                 e.Cancel = true;
             else
             {
-                _dock.Persist();
+                dockManager.Persist();
             }
         }
 
@@ -601,8 +604,8 @@ namespace SphereStudio.Forms
                     var plugin = PluginManager.Get<IDockPane>(title);
                     ToolStripMenuItem item = new ToolStripMenuItem(title) { Name = "zz_v" };
                     item.Image = plugin.DockIcon;
-                    item.Checked = _dock.IsVisible(plugin);
-                    item.Click += (o, ev) => _dock.Toggle(plugin);
+                    item.Checked = dockManager.IsVisible(plugin);
+                    item.Click += (o, ev) => dockManager.Toggle(plugin);
                     menuView.DropDownItems.Add(item);
                 }
             }
@@ -745,7 +748,7 @@ namespace SphereStudio.Forms
         private void InitializeDocking()
         {
             fileListPane = new FileListPane(this);
-            _dock = new DockManager(MainDock);
+            dockManager = new DockManager(MainDock);
         }
 
         /// <summary>
@@ -1058,7 +1061,7 @@ namespace SphereStudio.Forms
             CutToolButton.Enabled = _activeTab != null;
             CopyToolButton.Enabled = _activeTab != null;
 
-            if (_dock != null) _dock.Refresh();
+            if (dockManager != null) dockManager.Refresh();
         }
 
         private void UpdateMenuItems()
@@ -1094,9 +1097,9 @@ namespace SphereStudio.Forms
         private void debugger_Detached(object sender, EventArgs e)
         {
             var scriptViews = from tab in _tabs
-                              where tab.View is ScriptView
+                              where tab.View is TextView
                               select tab.View;
-            foreach (ScriptView view in scriptViews)
+            foreach (TextView view in scriptViews)
             {
                 view.ActiveLine = 0;
                 view.ErrorLine = 0;
@@ -1116,8 +1119,8 @@ namespace SphereStudio.Forms
                 return;
             }
 
-            ScriptView view = null;
-            view = OpenFile(Debugger.FileName) as ScriptView;
+            TextView view = null;
+            view = OpenFile(Debugger.FileName) as TextView;
             if (view != null)
             {
                 view.ActiveLine = Debugger.LineNumber;
@@ -1132,9 +1135,9 @@ namespace SphereStudio.Forms
         private void debugger_Resumed(object sender, EventArgs e)
         {
             var scriptViews = from tab in _tabs
-                              where tab.View is ScriptView
+                              where tab.View is TextView
                               select tab.View;
-            foreach (ScriptView view in scriptViews)
+            foreach (TextView view in scriptViews)
             {
                 view.ActiveLine = 0;
                 view.ErrorLine = 0;

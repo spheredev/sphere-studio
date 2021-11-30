@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using SphereStudio.Base;
+using SphereStudio.Debuggers;
+using SphereStudio.Forms;
+using SphereStudio.Properties;
+using SphereStudio.SsjKi;
 
-using SphereStudio.Plugins.Components;
-using SphereStudio.Plugins.Forms;
-using SphereStudio.Plugins.Properties;
-using SphereStudio.Plugins.Debugger;
-
-namespace SphereStudio.Plugins.DockPanes
+namespace SphereStudio.DockPanes
 {
     partial class InspectorPane : UserControl, IDockPane, IStyleAware
     {
@@ -73,7 +72,7 @@ namespace SphereStudio.Plugins.DockPanes
         private async Task DoEvaluate(string expr)
         {
             var result = await SSj.Inferior.Eval(expr, _frame);
-            new ObjectViewer(SSj.Inferior, expr, result).ShowDialog(this);
+            new JsObjectViewer(SSj.Inferior, expr, result).ShowDialog(this);
         }
 
         private async Task LoadStackFrame(int callIndex)
@@ -131,7 +130,7 @@ namespace SphereStudio.Plugins.DockPanes
                 ListViewItem item = m_callsListView.SelectedItems[0];
                 var filename = SSj.ResolvePath(item.SubItems[1].Text);
                 int.TryParse(item.SubItems[2].Text, out int lineNumber);
-                ScriptView view = PluginManager.Core.OpenFile(filename) as ScriptView;
+                TextView view = PluginManager.Core.OpenFile(filename) as TextView;
                 if (view == null)
                     SystemSounds.Hand.Play();
                 else

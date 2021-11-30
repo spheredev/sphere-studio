@@ -12,7 +12,7 @@ namespace SphereStudio.Plugins.Forms
     {
         public Entity Person { get; private set; }
         public List<Entity> EntityList { get; private set; }
-        readonly ScriptEditor _scriptBox = new ScriptEditor();
+        readonly TextEditor _scriptBox = new TextEditor();
         private int _last;
 
         public PersonForm(List<Entity> entities)

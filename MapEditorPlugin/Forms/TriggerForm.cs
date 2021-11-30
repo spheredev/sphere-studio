@@ -10,7 +10,7 @@ namespace SphereStudio.Plugins.Forms
     partial class TriggerForm : Form
     {
         public Entity Trigger { get; private set; }
-        readonly ScriptEditor _scriptBox = new ScriptEditor();
+        readonly TextEditor _scriptBox = new TextEditor();
 
         public TriggerForm()
         {

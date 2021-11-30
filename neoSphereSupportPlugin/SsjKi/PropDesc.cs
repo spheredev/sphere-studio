@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SphereStudio.Plugins.Debugger
+namespace SphereStudio.SsjKi
 {
     struct PropDesc
     {

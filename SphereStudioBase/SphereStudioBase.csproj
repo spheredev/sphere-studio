@@ -106,7 +106,7 @@
     <Compile Include="UI\ScriptEditor.Designer.cs">
       <DependentUpon>ScriptEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Base\ScriptView.cs">
+    <Compile Include="Base\TextView.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Utility\DeferredFileSystemWatcher.cs">

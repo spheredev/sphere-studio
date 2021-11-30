@@ -4,7 +4,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SphereStudio.Plugins.Debugger
+namespace SphereStudio.SsjKi
 {
     class StackFrameInfo
     {

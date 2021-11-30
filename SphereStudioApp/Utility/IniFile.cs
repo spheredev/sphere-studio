@@ -13,28 +13,28 @@ namespace SphereStudio.Utility
     /// </summary>
     public class IniFile : IDisposable
     {
-        private string m_fileName;
-        private Dictionary<string, Dictionary<string, string>> m_sections;
+        private string fileName;
+        private Dictionary<string, Dictionary<string, string>> sections;
 
         /// <summary>
-        /// Constructs an IniFile object referencing the specified .ini file.
+        /// Constructs an IniFile object referencing the specified INI format file.
         /// </summary>
-        /// <param name="fileName">The fully qualified .ini file path.</param>
+        /// <param name="fileName">The fully qualified INI file path.</param>
         /// <param name="autoSave">
         /// Whether to save the file automatically after a value is written. If this is false,
         /// Save() must be called to persist the changes.
         /// </param>
         public IniFile(string fileName, bool autoSave = true)
         {
-            m_fileName = fileName;
+            this.fileName = fileName;
             AutoSave = autoSave;
 
-            m_sections = new Dictionary<string, Dictionary<string, string>>();
-            m_sections.Add("", new Dictionary<string, string>());
-            Dictionary<string, string> section = m_sections[""];
-            if (File.Exists(m_fileName))
+            sections = new Dictionary<string, Dictionary<string, string>>();
+            sections.Add("", new Dictionary<string, string>());
+            Dictionary<string, string> section = sections[""];
+            if (File.Exists(this.fileName))
             {
-                using (StreamReader file = File.OpenText(m_fileName))
+                using (StreamReader file = File.OpenText(this.fileName))
                 {
                     Regex sectionRegex = new Regex(@"^\[(.*)\]$");
                     Regex itemRegex = new Regex(@"^(.*)=(.*)$");
@@ -46,9 +46,9 @@ namespace SphereStudio.Utility
                         if (isSection.Success)
                         {
                             string name = isSection.Groups[1].Value;
-                            if (!(m_sections.ContainsKey(name)))
-                                m_sections.Add(name, new Dictionary<string, string>());
-                            section = m_sections[name];
+                            if (!(sections.ContainsKey(name)))
+                                sections.Add(name, new Dictionary<string, string>());
+                            section = sections[name];
                         }
                         else if (isItem.Success)
                         {
@@ -84,8 +84,8 @@ namespace SphereStudio.Utility
         /// <returns>The value read from the INI file, or `defValue` if the key doesn't exist.</returns>
         public string Read(string section, string key, string defValue)
         {
-            if (m_sections.ContainsKey(section) && m_sections[section].ContainsKey(key))
-                return m_sections[section][key];
+            if (sections.ContainsKey(section) && sections[section].ContainsKey(key))
+                return sections[section][key];
             else
                 return defValue;
         }
@@ -96,35 +96,35 @@ namespace SphereStudio.Utility
         /// <returns>true if the save succeeded, otherwise false.</returns>
         public bool Save()
         {
-            return SaveAs(m_fileName);
+            return SaveAs(fileName);
         }
 
         /// <summary>
         /// Saves the current values to a specified INI file.
         /// </summary>
-        /// <param name="filepath">The fully qualified path of the file to save.</param>
+        /// <param name="fileName">The fully qualified path of the file to save.</param>
         /// <returns>true if the save succeeded, otherwise false.</returns>
-        public bool SaveAs(string filepath)
+        public bool SaveAs(string fileName)
         {
             try
             {
-                Directory.CreateDirectory(Path.GetDirectoryName(filepath));
-                using (StreamWriter file = new StreamWriter(filepath))
+                Directory.CreateDirectory(Path.GetDirectoryName(fileName));
+                using (StreamWriter file = new StreamWriter(fileName))
                 {
-                    var sections = from section in m_sections
+                    var sections = from section in this.sections
                                    where section.Value.Count > 0
                                    select section.Key;
                     foreach (string name in sections)
                     {
                         file.WriteLine(string.Format("[{0}]", name));
-                        var itemNames = from itemName in m_sections[name].Keys
+                        var itemNames = from itemName in this.sections[name].Keys
                                         orderby itemName ascending
                                         select itemName;
                         foreach (string itemName in itemNames)
                         {
                             file.WriteLine(string.Format("{0}={1}",
                                 itemName,
-                                m_sections[name][itemName]));
+                                this.sections[name][itemName]));
                         }
                         file.WriteLine();
                     }
@@ -146,11 +146,11 @@ namespace SphereStudio.Utility
         public void Write(string section, string key, string value)
         {
             value = value ?? "";
-            if (!m_sections.ContainsKey(section))
+            if (!sections.ContainsKey(section))
             {
-                m_sections.Add(section, new Dictionary<string, string>());
+                sections.Add(section, new Dictionary<string, string>());
             }
-            m_sections[section][key] = value;
+            sections[section][key] = value;
             if (AutoSave)
             {
                 Save();

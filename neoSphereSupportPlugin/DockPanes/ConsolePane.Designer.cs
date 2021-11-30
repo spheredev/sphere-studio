@@ -1,4 +1,4 @@
-﻿namespace SphereStudio.Plugins.DockPanes
+﻿namespace SphereStudio.DockPanes
 {
     partial class ConsolePane
     {

@@ -5,21 +5,21 @@ using SphereStudio.Base;
 namespace SphereStudio.UI
 {
     /// <summary>
-    /// Defers code editing functionality to the active Script plugin.
+    /// Defers text editing functionality to the active Text Editor plugin.
     /// </summary>
-    public partial class ScriptEditor : UserControl
+    public partial class TextEditor : UserControl
     {
-        private ScriptView _view;
+        private TextView _view;
 
         /// <summary>
         /// Constructs a Script Editor control.
         /// </summary>
-        public ScriptEditor()
+        public TextEditor()
         {
             InitializeComponent();
 
             // try to use a plugin for script editing
-            var plugin = PluginManager.Get<IEditor<ScriptView>>(PluginManager.Core.Settings.ScriptEditor);
+            var plugin = PluginManager.Get<IEditor<TextView>>(PluginManager.Core.Settings.TextEditor);
             _view = plugin != null ? plugin.CreateEditView() : null;
             if (_view != null)
             {

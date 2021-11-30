@@ -1,6 +1,6 @@
-﻿namespace SphereStudio.Plugins.Forms
+﻿namespace SphereStudio.Forms
 {
-    partial class ObjectViewer
+    partial class JsObjectViewer
     {
         /// <summary>
         /// Required designer variable.

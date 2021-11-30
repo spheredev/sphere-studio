@@ -10,7 +10,7 @@ namespace SphereStudio.Plugins.Forms
     partial class ZoneForm : Form
     {
         public Zone Zone { get; private set; }
-        readonly ScriptEditor _scriptBox = new ScriptEditor();
+        readonly TextEditor _scriptBox = new TextEditor();
 
         public ZoneForm()
         {

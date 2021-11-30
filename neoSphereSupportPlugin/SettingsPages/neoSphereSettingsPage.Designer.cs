@@ -1,6 +1,6 @@
-﻿namespace SphereStudio.Plugins.SettingsPages
+﻿namespace SphereStudio.SettingsPages
 {
-    partial class SettingsPage
+    partial class neoSphereSettingsPage
     {
         /// <summary> 
         /// Required designer variable.
@@ -116,7 +116,7 @@
             // 
             this.browseDirButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.browseDirButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.browseDirButton.Image = global::SphereStudio.Plugins.Properties.Resources.FolderIcon;
+            this.browseDirButton.Image = global::SphereStudio.Properties.Resources.FolderIcon;
             this.browseDirButton.Location = new System.Drawing.Point(434, 58);
             this.browseDirButton.Name = "browseDirButton";
             this.browseDirButton.Size = new System.Drawing.Size(80, 25);

@@ -5,13 +5,13 @@ using System.Windows.Forms;
 
 using SphereStudio.Base;
 
-namespace SphereStudio.Plugins.Components
+namespace SphereStudio.Starters
 {
-    class SphereStarter : IStarter
+    class Sphere1xStarter : IStarter
     {
         private ISettings settings;
 
-        public SphereStarter(ISettings settings)
+        public Sphere1xStarter(ISettings settings)
         {
             this.settings = settings;
         }
