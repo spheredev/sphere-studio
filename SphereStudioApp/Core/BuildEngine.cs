@@ -1,31 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Media;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using SphereStudio.Ide.BuiltIns;
 using SphereStudio.Base;
+using SphereStudio.DockPanes;
 
-namespace SphereStudio.Ide
+namespace SphereStudio.Core
 {
     /// <summary>
     /// Exposes the build engine, which manages compilation and debugging.
     /// </summary>
     static class BuildEngine
     {
-        private static BuildLogPane _buildView;
+        private static BuildLogPane buildView;
 
         /// <summary>
         /// Initializes the build system.
         /// </summary>
         public static void Initialize()
         {
-            _buildView = new BuildLogPane();
-            PluginManager.Register(null, _buildView, "Build Log");
+            buildView = new BuildLogPane();
+            PluginManager.Register(null, buildView, "Build Log");
         }
 
         /// <summary>
@@ -71,19 +68,19 @@ namespace SphereStudio.Ide
 
         public static bool Prep(Project project)
         {
-            _buildView.Clear();
-            PluginManager.Core.Docking.Show(_buildView);
-            PluginManager.Core.Docking.Activate(_buildView);
-            _buildView.Print($"-------------------- Prep started: {project.Name} -------------------\n");
+            buildView.Clear();
+            PluginManager.Core.Docking.Show(buildView);
+            PluginManager.Core.Docking.Activate(buildView);
+            buildView.Print($"-------------------- Prep started: {project.Name} -------------------\n");
             ICompiler compiler = PluginManager.Get<ICompiler>(project.Compiler);
-            if (compiler.Prep(project, _buildView))
+            if (compiler.Prep(project, buildView))
             {
-                _buildView.Print($"================ Successfully prepped: {project.Name} ===============");
+                buildView.Print($"================ Successfully prepped: {project.Name} ===============");
                 return true;
             }
             else
             {
-                _buildView.Print($"=================== Failed to prep: {project.Name} ==================");
+                buildView.Print($"=================== Failed to prep: {project.Name} ==================");
                 return false;
             }
         }
@@ -105,20 +102,20 @@ namespace SphereStudio.Ide
                 return null;
             }
 
-            _buildView.Clear();
-            PluginManager.Core.Docking.Show(_buildView);
-            PluginManager.Core.Docking.Activate(_buildView);
+            buildView.Clear();
+            PluginManager.Core.Docking.Show(buildView);
+            PluginManager.Core.Docking.Activate(buildView);
 
-            _buildView.Print($"------------------- Build started: {project.Name} -------------------\n");
+            buildView.Print($"------------------- Build started: {project.Name} -------------------\n");
             string outPath = Path.Combine(project.RootPath, project.BuildPath);
-            if (await compiler.Build(project, outPath, debuggable, _buildView))
+            if (await compiler.Build(project, outPath, debuggable, buildView))
             {
-                _buildView.Print($"================= Successfully built: {project.Name} ================");
+                buildView.Print($"================= Successfully built: {project.Name} ================");
                 return outPath;
             }
             else
             {
-                _buildView.Print($"================== Failed to build: {project.Name} ==================");
+                buildView.Print($"================== Failed to build: {project.Name} ==================");
                 SystemSounds.Exclamation.Play();
                 return null;
             }
@@ -136,16 +133,16 @@ namespace SphereStudio.Ide
             if (!CanPackage(project))
                 throw new NotSupportedException("The current compiler doesn't support packaging.");
 
-            _buildView.Clear();
-            PluginManager.Core.Docking.Show(_buildView);
-            _buildView.Print($"----------------- Packaging started: {project.Name} -----------------\n");
+            buildView.Clear();
+            PluginManager.Core.Docking.Show(buildView);
+            buildView.Print($"----------------- Packaging started: {project.Name} -----------------\n");
             var packager = PluginManager.Get<IPackager>(project.Compiler);
-            bool isOK = await packager.Package(project, fileName, debuggable, _buildView);
+            bool isOK = await packager.Package(project, fileName, debuggable, buildView);
             if (isOK)
-                _buildView.Print($"=============== Successfully packaged: {project.Name} ===============");
+                buildView.Print($"=============== Successfully packaged: {project.Name} ===============");
             else
             {
-                _buildView.Print($"================= Failed to package: {project.Name} =================");
+                buildView.Print($"================= Failed to package: {project.Name} =================");
                 SystemSounds.Exclamation.Play();
             }
             return isOK;

@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
-using SphereStudio;
-using SphereStudio.Ide.BuiltIns;
-using SphereStudio.Ide.Utility;
 using SphereStudio.Base;
+using SphereStudio.Utility;
 
-namespace SphereStudio.Ide
+namespace SphereStudio.Core
 {
     /// <summary>
     /// Represents a Sphere Studio project.
@@ -107,7 +102,7 @@ namespace SphereStudio.Ide
                 }
             }
 
-            project.Compiler = "Sphere Classic";
+            project.Compiler = Defaults.Compiler;
             return project;
         }
 
@@ -162,8 +157,8 @@ namespace SphereStudio.Ide
         /// </summary>
         public string Compiler
         {
-            get { return !IsGameOnly ? _ssproj.GetString("compiler", "Sphere Classic") : "Sphere Classic"; }
-            set { _ssproj.SetValue("compiler", value); }
+            get => !IsGameOnly ? _ssproj.GetString("compiler", Defaults.Compiler) : Defaults.Compiler;
+            set => _ssproj.SetValue("compiler", value);
         }
 
         /// <summary>
@@ -266,7 +261,7 @@ namespace SphereStudio.Ide
             FileName = Path.Combine(basePath, MakeFileName(Name));
             IsGameOnly = false;
             BuildPath = "./";
-            Compiler = "Sphere Classic";
+            Compiler = Defaults.Compiler;
             Save();
         }
 
@@ -354,11 +349,11 @@ namespace SphereStudio.Ide
             {
                 string[] engines = PluginManager.GetNames<IStarter>();
                 string defaultEngine =
-                    engines.Contains(Core.Settings.Engine) ? Core.Settings.Engine
+                    engines.Contains(Session.Settings.Engine) ? Session.Settings.Engine
                     : engines.Length > 0 ? engines[0]
                     : "";
                 string value = GetString("engine", defaultEngine);
-                return engines.Contains(value) ? value : Core.Settings.Engine;
+                return engines.Contains(value) ? value : Session.Settings.Engine;
             }
             set { SetValue("engine", value); }
         }

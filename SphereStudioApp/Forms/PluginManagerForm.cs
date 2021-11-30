@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
 using SphereStudio.Base;
-using SphereStudio.Ide.Utility;
+using SphereStudio.Core;
+using SphereStudio.Utility;
 
-namespace SphereStudio.Ide.Forms
+namespace SphereStudio.Forms
 {
     partial class PluginManagerForm : Form, IStyleAware
     {
@@ -62,12 +62,12 @@ namespace SphereStudio.Ide.Forms
             if (updatingHandlers)
                 return;
 
-            Core.Settings.Engine = getPluginName(engineDropDown);
-            Core.Settings.Compiler = getPluginName(typeDropDown);
-            Core.Settings.FileOpener = getPluginName(otherDropDown);
-            Core.Settings.ScriptEditor = getPluginName(scriptDropDown);
-            Core.Settings.ImageEditor = getPluginName(imageDropDown);
-            Core.Settings.Apply();
+            Session.Settings.Engine = getPluginName(engineDropDown);
+            Session.Settings.Compiler = getPluginName(typeDropDown);
+            Session.Settings.FileOpener = getPluginName(otherDropDown);
+            Session.Settings.ScriptEditor = getPluginName(scriptDropDown);
+            Session.Settings.ImageEditor = getPluginName(imageDropDown);
+            Session.Settings.Apply();
             updatePresets();
             updateHandlers();
         }
@@ -92,11 +92,11 @@ namespace SphereStudio.Ide.Forms
             
             updatingHandlers = true;
 
-            populateHandlers<ICompiler>(typeDropDown, Core.Settings.Compiler);
-            populateHandlers<IStarter>(engineDropDown, Core.Settings.Engine);
-            populateHandlers<IEditor<ScriptView>>(otherDropDown, Core.Settings.FileOpener);
-            populateHandlers<IEditor<ScriptView>>(scriptDropDown, Core.Settings.ScriptEditor);
-            populateHandlers<IEditor<ImageView>>(imageDropDown, Core.Settings.ImageEditor);
+            populateHandlers<ICompiler>(typeDropDown, Session.Settings.Compiler);
+            populateHandlers<IStarter>(engineDropDown, Session.Settings.Engine);
+            populateHandlers<IEditor<ScriptView>>(otherDropDown, Session.Settings.FileOpener);
+            populateHandlers<IEditor<ScriptView>>(scriptDropDown, Session.Settings.ScriptEditor);
+            populateHandlers<IEditor<ImageView>>(imageDropDown, Session.Settings.ImageEditor);
 
             updatingHandlers = false;
         }
@@ -110,7 +110,7 @@ namespace SphereStudio.Ide.Forms
 
             pluginsListView.CreateGraphics();  // workaround for early ItemCheck event
             pluginsListView.Items.Clear();
-            foreach (var pair in Core.Plugins)
+            foreach (var pair in Session.Plugins)
             {
                 ListViewItem item = new ListViewItem();
                 item.Text = pair.Value.Main.Name;
@@ -118,7 +118,7 @@ namespace SphereStudio.Ide.Forms
                 item.SubItems.Add(pair.Value.Main.Version);
                 item.SubItems.Add(pair.Value.Main.Description);
                 item.Tag = pair.Key;
-                item.Checked = !Core.Settings.DisabledPlugins.Contains(pair.Value.Handle);
+                item.Checked = !Session.Settings.DisabledPlugins.Contains(pair.Value.Handle);
                 pluginsListView.Items.Add(item);
             }
             
@@ -145,9 +145,9 @@ namespace SphereStudio.Ide.Forms
                     presetDropDown.Items.Add(name);
             }
 
-            if (presetDropDown.Items.Contains(Core.Settings.Preset ?? ""))
+            if (presetDropDown.Items.Contains(Session.Settings.Preset ?? ""))
             {
-                presetDropDown.Text = Core.Settings.Preset;
+                presetDropDown.Text = Session.Settings.Preset;
                 deletePresetButton.Enabled = true;
             }
             else
@@ -162,11 +162,11 @@ namespace SphereStudio.Ide.Forms
 
         private void okButton_Click(object sender, EventArgs e)
         {
-            bool haveAllPlugins = PluginManager.Get<IStarter>(Core.Settings.Engine) != null
-                && PluginManager.Get<ICompiler>(Core.Settings.Compiler) != null
-                && PluginManager.Get<IFileOpener>(Core.Settings.FileOpener) != null
-                && PluginManager.Get<IEditor<ScriptView>>(Core.Settings.ScriptEditor) != null
-                && PluginManager.Get<IEditor<ImageView>>(Core.Settings.ImageEditor) != null;
+            bool haveAllPlugins = PluginManager.Get<IStarter>(Session.Settings.Engine) != null
+                && PluginManager.Get<ICompiler>(Session.Settings.Compiler) != null
+                && PluginManager.Get<IFileOpener>(Session.Settings.FileOpener) != null
+                && PluginManager.Get<IEditor<ScriptView>>(Session.Settings.ScriptEditor) != null
+                && PluginManager.Get<IEditor<ImageView>>(Session.Settings.ImageEditor) != null;
             if (!haveAllPlugins)
             {
                 DialogResult result = MessageBox.Show(
@@ -179,7 +179,7 @@ namespace SphereStudio.Ide.Forms
                     return;
                 }
             }
-            Core.Settings.Preset = presetDropDown.Text;
+            Session.Settings.Preset = presetDropDown.Text;
         }
 
         private void presetDropDown_SelectedIndexChanged(object sender, EventArgs e)
@@ -187,8 +187,8 @@ namespace SphereStudio.Ide.Forms
             if (updatingPresets)
                 return;
             
-            Core.Settings.Preset = presetDropDown.Text;
-            Core.Settings.Apply();
+            Session.Settings.Preset = presetDropDown.Text;
+            Session.Settings.Apply();
             updatePlugins();
             updateHandlers();
             updatePresets();
@@ -212,10 +212,10 @@ namespace SphereStudio.Ide.Forms
                     preset.Write("Preset", "defaultFileOpener", getPluginName(otherDropDown));
                     preset.Write("Preset", "scriptEditor", getPluginName(scriptDropDown));
                     preset.Write("Preset", "imageEditor", getPluginName(imageDropDown));
-                    preset.Write("Preset", "disabledPlugins", string.Join("|", Core.Settings.DisabledPlugins));
+                    preset.Write("Preset", "disabledPlugins", string.Join("|", Session.Settings.DisabledPlugins));
                 }
-                Core.Settings.Preset = Path.GetFileNameWithoutExtension(fileName);
-                Core.Settings.Apply();
+                Session.Settings.Preset = Path.GetFileNameWithoutExtension(fileName);
+                Session.Settings.Apply();
                 updatePresets();
             }
         }
@@ -241,10 +241,10 @@ namespace SphereStudio.Ide.Forms
             if (updatingPlugins)
                 return;
 
-            Core.Settings.DisabledPlugins = (from ListViewItem item in pluginsListView.Items
+            Session.Settings.DisabledPlugins = (from ListViewItem item in pluginsListView.Items
                                         where !item.Checked
                                         select item.Tag as string).ToArray();
-            Core.Settings.Apply();
+            Session.Settings.Apply();
             updateHandlers();
             updatePresets();
             handleSelectionChanged();

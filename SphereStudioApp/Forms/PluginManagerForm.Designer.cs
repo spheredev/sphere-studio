@@ -1,4 +1,4 @@
-﻿namespace SphereStudio.Ide.Forms
+﻿namespace SphereStudio.Forms
 {
     partial class PluginManagerForm
     {
@@ -237,7 +237,7 @@
             // deletePresetButton
             // 
             this.deletePresetButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.deletePresetButton.Image = global::SphereStudio.Ide.Properties.Resources.cross;
+            this.deletePresetButton.Image = global::SphereStudio.Properties.Resources.cross;
             this.deletePresetButton.Location = new System.Drawing.Point(272, 35);
             this.deletePresetButton.Name = "deletePresetButton";
             this.deletePresetButton.Size = new System.Drawing.Size(36, 26);
@@ -248,7 +248,7 @@
             // savePresetButton
             // 
             this.savePresetButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.savePresetButton.Image = global::SphereStudio.Ide.Properties.Resources.disk;
+            this.savePresetButton.Image = global::SphereStudio.Properties.Resources.disk;
             this.savePresetButton.Location = new System.Drawing.Point(314, 35);
             this.savePresetButton.Name = "savePresetButton";
             this.savePresetButton.Size = new System.Drawing.Size(36, 26);

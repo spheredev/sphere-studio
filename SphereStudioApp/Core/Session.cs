@@ -4,14 +4,14 @@ using System.IO;
 using System.Windows.Forms;
 using System.Linq;
 
-using SphereStudio.Ide.Utility;
 using SphereStudio.Base;
+using SphereStudio.Utility;
 
-namespace SphereStudio.Ide
+namespace SphereStudio.Core
 {
-    static class Core
+    static class Session
     {
-        static Core()
+        static Session()
         {
             var appDataPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -19,7 +19,7 @@ namespace SphereStudio.Ide
             var iniPath = Path.Combine(appDataPath, "userSettings.ini");
 
             MainIniFile = new IniFile(iniPath);
-            Settings = new CoreSettings(Core.MainIniFile);
+            Settings = new CoreSettings(Session.MainIniFile);
 
             // load plugin modules (user-installed plugins first)
             Plugins = new Dictionary<string, PluginShim>();
@@ -227,8 +227,8 @@ namespace SphereStudio.Ide
 
         public string StyleName
         {
-            get { return GetString("uiStyle", Program.DefaultStyle); }
-            set { SetValue("uiStyle", value); }
+            get => GetString("uiStyle", Defaults.Style);
+            set => SetValue("uiStyle", value);
         }
 
         public UIStyle UIStyle
@@ -239,19 +239,27 @@ namespace SphereStudio.Ide
                              let plugin = PluginManager.Get<IStyleProvider>(name)
                              from style in plugin.Styles
                              select new {
-                                 Name = name + ": " + style.Name,
+                                 Name = $"{name}: {style.Name}",
                                  Style = style
                              };
-                var uiStyle = styles.Where(it => it.Name == StyleName).Select(it => it.Style).FirstOrDefault();
+                var uiStyle = styles
+                    .Where(it => it.Name == StyleName)
+                    .Select(it => it.Style)
+                    .FirstOrDefault();
                 if (uiStyle == null)
-                    uiStyle = styles.Where(it => it.Name == Program.DefaultStyle).Select(it => it.Style).FirstOrDefault();
+                {
+                    uiStyle = styles
+                        .Where(it => it.Name == Defaults.Style)
+                        .Select(it => it.Style)
+                        .FirstOrDefault();
+                }
                 return uiStyle;
             }
         }
 
         public void Apply()
         {
-            foreach (var plugin in Core.Plugins)
+            foreach (var plugin in Session.Plugins)
                 plugin.Value.Enabled = !DisabledPlugins.Contains(plugin.Key);
             PluginManager.Core.Docking.Refresh();
             if (UIStyle != null && StyleManager.Style != UIStyle)

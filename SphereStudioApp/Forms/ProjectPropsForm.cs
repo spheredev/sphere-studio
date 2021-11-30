@@ -3,11 +3,10 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-using SphereStudio.Ide;
 using SphereStudio.Base;
-using SphereStudio.UI;
+using SphereStudio.Core;
 
-namespace SphereStudio.Ide.Forms
+namespace SphereStudio.Forms
 {
     partial class ProjectPropsForm : Form, IStyleAware
     {
@@ -124,7 +123,7 @@ namespace SphereStudio.Ide.Forms
         private void typeDropDown_SelectedIndexChanged(object sender, EventArgs e)
         {
             ResoLabel.Visible = resoDropDown.Visible = widthTextBox.Visible = heightTextBox.Visible =
-                typeDropDown.Text == "Sphere Classic";
+                typeDropDown.Text == Defaults.Compiler;
         }
 
         private void resoDropDown_SelectedIndexChanged(object sender, EventArgs e)

@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 using SphereStudio.Base;
 
-namespace SphereStudio.Ide.Forms
+namespace SphereStudio.Forms
 {
     public partial class SavePresetForm : Form, IStyleAware
     {

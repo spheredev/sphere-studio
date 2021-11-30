@@ -8,9 +8,11 @@ using System.Linq;
 using System.Windows.Forms;
 
 using SphereStudio.Base;
-using SphereStudio.Ide.Properties;
+using SphereStudio.Core;
+using SphereStudio.Forms;
+using SphereStudio.Properties;
 
-namespace SphereStudio.Ide.BuiltIns
+namespace SphereStudio.DocumentViews
 {
     [ToolboxItem(false)]
     partial class StartPageView : DocumentView, IStyleAware
@@ -56,7 +58,7 @@ namespace SphereStudio.Ide.BuiltIns
 
         private void InitializeView()
         {
-            View v = Core.Settings.StartPageView;
+            View v = Session.Settings.StartPageView;
             projectListView.View = v;
             TilesItem.Checked = false;
             switch (v)
@@ -89,7 +91,7 @@ namespace SphereStudio.Ide.BuiltIns
                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 "Sphere Projects");
             Directory.CreateDirectory(projectsDir);
-            var paths = new List<string>(Core.Settings.ProjectPaths);
+            var paths = new List<string>(Session.Settings.ProjectPaths);
             paths.Insert(0, projectsDir);
             foreach (string path in paths)
             {
@@ -179,7 +181,7 @@ namespace SphereStudio.Ide.BuiltIns
 
         private bool RenameProject(string oldname, string newname)
         {
-            if (oldname == Core.Project.RootPath)
+            if (oldname == Session.Project.RootPath)
             {
                 MessageBox.Show(@"Can't change name of active project.", @"Name Change", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
@@ -223,31 +225,31 @@ namespace SphereStudio.Ide.BuiltIns
         private void TilesItem_Click(object sender, EventArgs e)
         {
             DetailsItem.Checked = ListItem.Checked = SmallIconItem.Checked = LargeIconItem.Checked = false;
-            Core.Settings.StartPageView = projectListView.View = View.Tile;
+            Session.Settings.StartPageView = projectListView.View = View.Tile;
         }
 
         private void ListItem_Click(object sender, EventArgs e)
         {
             DetailsItem.Checked = TilesItem.Checked = SmallIconItem.Checked = LargeIconItem.Checked = false;
-            Core.Settings.StartPageView = projectListView.View = View.List;
+            Session.Settings.StartPageView = projectListView.View = View.List;
         }
 
         private void SmallIconItem_Click(object sender, EventArgs e)
         {
             DetailsItem.Checked = TilesItem.Checked = ListItem.Checked = LargeIconItem.Checked = false;
-            Core.Settings.StartPageView = projectListView.View = View.SmallIcon;
+            Session.Settings.StartPageView = projectListView.View = View.SmallIcon;
         }
 
         private void LargeIconItem_Click(object sender, EventArgs e)
         {
             DetailsItem.Checked = TilesItem.Checked = ListItem.Checked = SmallIconItem.Checked = false;
-            Core.Settings.StartPageView = projectListView.View = View.LargeIcon;
+            Session.Settings.StartPageView = projectListView.View = View.LargeIcon;
         }
 
         private void DetailsItem_Click(object sender, EventArgs e)
         {
             ListItem.Checked = TilesItem.Checked = SmallIconItem.Checked = LargeIconItem.Checked = false;
-            Core.Settings.StartPageView = projectListView.View = View.Details;
+            Session.Settings.StartPageView = projectListView.View = View.Details;
         }
 
         private void ItemContextStrip_Opening(object sender, CancelEventArgs e)

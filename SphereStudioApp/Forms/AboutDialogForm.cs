@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 using SphereStudio.Base;
 
-namespace SphereStudio.Ide.Forms
+namespace SphereStudio.Forms
 {
     partial class AboutDialogForm : Form, IStyleAware
     {

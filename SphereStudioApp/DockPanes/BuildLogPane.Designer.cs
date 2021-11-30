@@ -1,4 +1,4 @@
-﻿namespace SphereStudio.Ide.BuiltIns
+﻿namespace SphereStudio.DockPanes
 {
     partial class BuildLogPane
     {

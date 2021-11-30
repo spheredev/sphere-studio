@@ -3,17 +3,24 @@ using System.IO;
 using System.Windows.Forms;
 
 using SphereStudio.Base;
-using SphereStudio.BuiltIns;
+using SphereStudio.Compilers;
+using SphereStudio.Forms;
+using SphereStudio.SettingsPages;
+using SphereStudio.StyleProviders;
 
-namespace SphereStudio.Ide
+namespace SphereStudio
 {
+    static class Defaults
+    {
+        public static string Compiler => "Sphere Classic";
+        public static string Style => "Default: Blue";
+    }
+
     /// <summary>
     /// Represents the global state of the Sphere Studio instance.
     /// </summary>
     static class Program
     {
-        public const string DefaultStyle = "Default: Blue";
-        
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -24,7 +31,7 @@ namespace SphereStudio.Ide
             Application.SetCompatibleTextRenderingDefault(false);
 
             PluginManager.Register(null, new DefaultStyleProvider(), "Default");
-            PluginManager.Register(null, new SphereCompiler(), "Sphere Classic");
+            PluginManager.Register(null, new SphereCompiler(), Defaults.Compiler);
             PluginManager.Register(null, new MainSettingsPage(), "Sphere Studio");
 
             Form = new MainWindowForm();

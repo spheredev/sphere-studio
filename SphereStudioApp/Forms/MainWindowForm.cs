@@ -10,11 +10,12 @@ using System.Windows.Forms;
 
 using WeifenLuo.WinFormsUI.Docking;
 
-using SphereStudio.Ide.BuiltIns;
-using SphereStudio.Ide.Forms;
 using SphereStudio.Base;
+using SphereStudio.Core;
+using SphereStudio.DockPanes;
+using SphereStudio.DocumentViews;
 
-namespace SphereStudio.Ide
+namespace SphereStudio.Forms
 {
     /// <summary>
     /// Represents an instance of the Sphere Studio IDE.
@@ -44,13 +45,13 @@ namespace SphereStudio.Ide
             toolNew.DropDown = menuNew.DropDown;
 
             BuildEngine.Initialize();
-            Core.Settings.Apply();
+            Session.Settings.Apply();
 
             Docking.Show(fileListPane);
             Docking.Activate(fileListPane);
             Refresh();
 
-            if (Core.Settings.AutoOpenLastProject)
+            if (Session.Settings.AutoOpenLastProject)
                 menuOpenLastProject_Click(null, EventArgs.Empty);
 
             StyleManager.AutoStyle(this);
@@ -63,8 +64,8 @@ namespace SphereStudio.Ide
         public DocumentView ActiveDocument { get { return _activeTab.View; } }
         public IDebugger Debugger { get; private set; }
         public IDock Docking { get { return _dock; } }
-        public IProject Project { get { return Core.Project; } }
-        public ICoreSettings Settings { get { return Core.Settings; } }
+        public IProject Project { get { return Session.Project; } }
+        public ICoreSettings Settings { get { return Session.Settings; } }
         public UIStyle Style { get { return StyleManager.Style; } }
 
         protected bool StartVisible
@@ -194,7 +195,7 @@ namespace SphereStudio.Ide
                               let plugin = PluginManager.Get<IFileOpener>(name)
                               where plugin.FileExtensions.Any(it => it.ToUpperInvariant() == fileExtension.ToUpperInvariant())
                               select plugin;
-                IFileOpener defaultOpener = PluginManager.Get<IFileOpener>(Core.Settings.FileOpener);
+                IFileOpener defaultOpener = PluginManager.Get<IFileOpener>(Session.Settings.FileOpener);
                 IFileOpener opener = plugins.FirstOrDefault() ?? defaultOpener;
                 if (opener != null)
                     view = opener.Open(filePath);
@@ -224,7 +225,7 @@ namespace SphereStudio.Ide
             if (string.IsNullOrEmpty(fileName))
                 return;
 
-            Project pj = SphereStudio.Ide.Project.Open(fileName);
+            Project pj = Core.Project.Open(fileName);
             IStarter starter = PluginManager.Get<IStarter>(pj.User.Engine);
             ICompiler compiler = PluginManager.Get<ICompiler>(pj.Compiler);
             if (usePluginWarning && (starter == null || compiler == null))
@@ -237,7 +238,7 @@ namespace SphereStudio.Ide
             }
 
             if (!CloseCurrentProject()) return;
-            Core.Project = pj;
+            Session.Project = pj;
 
             RefreshProject();
 
@@ -247,7 +248,7 @@ namespace SphereStudio.Ide
 
             StartVisible = true;
 
-            string[] docs = Core.Project.User.Documents;
+            string[] docs = Session.Project.User.Documents;
             foreach (string s in docs)
             {
                 if (string.IsNullOrWhiteSpace(s)) continue;
@@ -259,10 +260,10 @@ namespace SphereStudio.Ide
             // it will be done in Form_Load.
             if (Visible)
             {
-                if (Core.Project.User.StartPageHidden)
+                if (Session.Project.User.StartPageHidden)
                     StartVisible = false;
 
-                DocumentTab tab = GetDocument(Core.Project.User.ActiveDocument);
+                DocumentTab tab = GetDocument(Session.Project.User.ActiveDocument);
                 if (tab != null)
                     tab.Activate();
             }
@@ -294,28 +295,28 @@ namespace SphereStudio.Ide
         #region Main IDE form event handlers
         private void IDEForm_Load(object sender, EventArgs e)
         {
-            Location = new Point(Ide.Properties.Settings.Default.WindowX, Ide.Properties.Settings.Default.WindowY);
-            Size = new Size(Ide.Properties.Settings.Default.WindowWidth, Ide.Properties.Settings.Default.WindowHeight);
-            WindowState = Ide.Properties.Settings.Default.WindowMaxed ? FormWindowState.Maximized : FormWindowState.Normal;
+            Location = new Point(Properties.Settings.Default.WindowX, Properties.Settings.Default.WindowY);
+            Size = new Size(Properties.Settings.Default.WindowWidth, Properties.Settings.Default.WindowHeight);
+            WindowState = Properties.Settings.Default.WindowMaxed ? FormWindowState.Maximized : FormWindowState.Normal;
 
             // this works around glitchy WeifenLuo behavior when messing with panel
             // visibility before the form loads.
-            if (Core.Settings.AutoOpenLastProject && Core.Project != null)
+            if (Session.Settings.AutoOpenLastProject && Session.Project != null)
             {
-                StartVisible = !Core.Project.User.StartPageHidden;
-                DocumentTab tab = GetDocument(Core.Project.User.ActiveDocument);
+                StartVisible = !Session.Project.User.StartPageHidden;
+                DocumentTab tab = GetDocument(Session.Project.User.ActiveDocument);
                 if (tab != null)
                     tab.Activate();
             }
             else
             {
-                StartVisible = Core.Settings.UseStartPage;
+                StartVisible = Session.Settings.UseStartPage;
             }
         }
 
         private void IDEForm_Shown(object sender, EventArgs e)
         {
-            bool isFirstRun = !Core.Settings.GetBoolean("setupComplete", false);
+            bool isFirstRun = !Session.Settings.GetBoolean("setupComplete", false);
             if (isFirstRun)
             {
                 var selection = MessageBox.Show(
@@ -325,7 +326,7 @@ namespace SphereStudio.Ide
                 if (selection == DialogResult.Yes)
                 {
                     menuConfigManager_Click(null, EventArgs.Empty);
-                    Core.Settings.SetValue("setupComplete", true);
+                    Session.Settings.SetValue("setupComplete", true);
                 }
                 else
                 {
@@ -345,15 +346,15 @@ namespace SphereStudio.Ide
             if (e.Cancel) return;
 
             Rectangle savedBounds = WindowState != FormWindowState.Normal ? RestoreBounds : Bounds;
-            Ide.Properties.Settings.Default.WindowX = savedBounds.X;
-            Ide.Properties.Settings.Default.WindowY = savedBounds.Y;
-            Ide.Properties.Settings.Default.WindowWidth = savedBounds.Width;
-            Ide.Properties.Settings.Default.WindowHeight = savedBounds.Height;
-            Ide.Properties.Settings.Default.WindowMaxed = WindowState == FormWindowState.Maximized;
-            Ide.Properties.Settings.Default.Save();
+            Properties.Settings.Default.WindowX = savedBounds.X;
+            Properties.Settings.Default.WindowY = savedBounds.Y;
+            Properties.Settings.Default.WindowWidth = savedBounds.Width;
+            Properties.Settings.Default.WindowHeight = savedBounds.Height;
+            Properties.Settings.Default.WindowMaxed = WindowState == FormWindowState.Maximized;
+            Properties.Settings.Default.Save();
 
-            Size = new Size(Ide.Properties.Settings.Default.WindowWidth, Ide.Properties.Settings.Default.WindowHeight);
-            WindowState = Ide.Properties.Settings.Default.WindowMaxed ? FormWindowState.Maximized : FormWindowState.Normal;
+            Size = new Size(Properties.Settings.Default.WindowWidth, Properties.Settings.Default.WindowHeight);
+            WindowState = Properties.Settings.Default.WindowMaxed ? FormWindowState.Maximized : FormWindowState.Normal;
 
             if (!CloseCurrentProject(true))
                 e.Cancel = true;
@@ -401,7 +402,7 @@ namespace SphereStudio.Ide
             menuSaveAs.Enabled = menuSave.Enabled = (_activeTab != null);
             menuCloseProject.Enabled = IsProjectOpen;
             menuOpenLastProject.Enabled = (!IsProjectOpen ||
-                Core.Settings.LastProject != Core.Project.RootPath);
+                Session.Settings.LastProject != Session.Project.RootPath);
             menu_DropDownOpening(sender, e);
         }
 
@@ -457,8 +458,8 @@ namespace SphereStudio.Ide
                 "Sphere Projects");
             NewProjectForm npf = new NewProjectForm(rootPath);
 
-            var starter = PluginManager.Get<IStarter>(Core.Settings.Engine);
-            var compiler = PluginManager.Get<ICompiler>(Core.Settings.Compiler);
+            var starter = PluginManager.Get<IStarter>(Session.Settings.Engine);
+            var compiler = PluginManager.Get<ICompiler>(Session.Settings.Compiler);
             if (starter == null || compiler == null)
             {
                 MessageBox.Show(
@@ -507,22 +508,22 @@ namespace SphereStudio.Ide
 
         private void menuOpenLastProject_Click(object sender, EventArgs e)
         {
-            if (File.Exists(Core.Settings.LastProject))
-                OpenProject(Core.Settings.LastProject, false);
+            if (File.Exists(Session.Settings.LastProject))
+                OpenProject(Session.Settings.LastProject, false);
             else
                 UpdateControls();
         }
 
         private void menuSave_Click(object sender, EventArgs e)
         {
-            string savePath = IsProjectOpen ? Core.Project.RootPath : null;
+            string savePath = IsProjectOpen ? Session.Project.RootPath : null;
             if (_activeTab != null)
                 _activeTab.Save(savePath);
         }
 
         private void menuSaveAs_Click(object sender, EventArgs e)
         {
-            string savePath = IsProjectOpen ? Core.Project.RootPath : null;
+            string savePath = IsProjectOpen ? Session.Project.RootPath : null;
             if (_activeTab != null)
                 _activeTab.SaveAs(savePath);
         }
@@ -676,7 +677,7 @@ namespace SphereStudio.Ide
 
         private void menuOpenGameDir_Click(object sender, EventArgs e)
         {
-            var proc = Process.Start("explorer.exe", $@"/select,""{Core.Project.FileName}""");
+            var proc = Process.Start("explorer.exe", $@"/select,""{Session.Project.FileName}""");
             proc.Dispose();
         }
 
@@ -694,7 +695,7 @@ namespace SphereStudio.Ide
         #region Tools menu Click handlers
         private void menuConfigEngine_Click(object sender, EventArgs e)
         {
-            PluginManager.Get<IStarter>(Core.Project.User.Engine)
+            PluginManager.Get<IStarter>(Session.Project.User.Engine)
                 .Configure();
         }
 
@@ -734,7 +735,7 @@ namespace SphereStudio.Ide
                 return;
             }
 
-            Core.Project.User.Engine = toolEngineCombo.Text;
+            Session.Project.User.Engine = toolEngineCombo.Text;
             UpdateControls();
             UpdateEngineList();
         }
@@ -784,7 +785,7 @@ namespace SphereStudio.Ide
                 filterString += @"All Files|*.*";
                 dialog.Filter = filterString;
                 dialog.FilterIndex = plugins.Count() + 1;
-                dialog.InitialDirectory = Core.Project.RootPath;
+                dialog.InitialDirectory = Session.Project.RootPath;
                 dialog.Multiselect = multiselect;
                 return dialog.ShowDialog() == DialogResult.OK ? dialog.FileNames : null;
             }
@@ -802,7 +803,7 @@ namespace SphereStudio.Ide
 
         private bool IsProjectOpen
         {
-            get { return Core.Project != null; }
+            get { return Session.Project != null; }
         }
 
         internal DocumentTab AddDocument(DocumentView view, string filepath = null, bool restoreView = false)
@@ -857,7 +858,7 @@ namespace SphereStudio.Ide
         /// <returns>'true' if the project was closed; 'false' on cancel.</returns>
         private bool CloseCurrentProject(bool forceClose = false)
         {
-            if (Core.Project == null)
+            if (Session.Project == null)
                 return true;
 
             // if the debugger is active, prevent closing the project.
@@ -870,12 +871,12 @@ namespace SphereStudio.Ide
             }
 
             // user values will be lost if we don't record them now.
-            Core.Project.User.StartPageHidden = !StartVisible;
-            Core.Project.User.Documents = _tabs
+            Session.Project.User.StartPageHidden = !StartVisible;
+            Session.Project.User.Documents = _tabs
                 .Where(it => it.FileName != null)
                 .Select(it => it.FileName)
                 .ToArray();
-            Core.Project.User.ActiveDocument = _activeTab != null
+            Session.Project.User.ActiveDocument = _activeTab != null
                 ? _activeTab.FileName : "";
 
             // close all open document tabs
@@ -883,15 +884,15 @@ namespace SphereStudio.Ide
                 return false;
 
             // save and unload the project
-            if (Core.Project != null)
+            if (Session.Project != null)
             {
                 UnloadProject?.Invoke(null, EventArgs.Empty);
-                Core.Project.Save();
+                Session.Project.Save();
             }
 
             // clear the project tree
             fileListPane.Close();
-            menuOpenLastProject.Enabled = (Core.Settings.LastProject.Length > 0);
+            menuOpenLastProject.Enabled = (Session.Settings.LastProject.Length > 0);
 
             // all clear!
             Text = Versioning.Name;
@@ -918,14 +919,14 @@ namespace SphereStudio.Ide
             SettingsForm sc = new SettingsForm();
             if (sc.ShowDialog() == DialogResult.OK)
             {
-                Core.Settings.Apply();
+                Session.Settings.Apply();
                 ApplyRefresh();
             }
         }
 
         private void OpenProjectProps()
         {
-            using (var form = new ProjectPropsForm(Core.Project))
+            using (var form = new ProjectPropsForm(Session.Project))
             {
                 if (form.ShowDialog(this) == DialogResult.OK)
                 {
@@ -939,13 +940,13 @@ namespace SphereStudio.Ide
         private void RefreshProject()
         {
             var ideName = Versioning.IsWiP ? $"{Versioning.Name} WiP" : Versioning.Name;
-            Text = Core.Project.IsGameOnly
+            Text = Session.Project.IsGameOnly
                 ? $"{Project.Name} (Sphere Game) - {ideName}"
                 : $"{Project.Name} - {ideName}";
             fileListPane.Open();
             fileListPane.Refresh();
-            if (Core.Project != null)
-                Core.Settings.LastProject = Core.Project.FileName;
+            if (Session.Project != null)
+                Session.Settings.LastProject = Session.Project.FileName;
             UpdateControls();
         }
 
@@ -984,9 +985,9 @@ namespace SphereStudio.Ide
             if (TestGame != null)
                 TestGame(null, EventArgs.Empty);
 
-            if (wantDebugger && BuildEngine.CanDebug(Core.Project))
+            if (wantDebugger && BuildEngine.CanDebug(Session.Project))
             {
-                Debugger = await BuildEngine.Debug(Core.Project);
+                Debugger = await BuildEngine.Debug(Session.Project);
                 if (Debugger != null)
                 {
                     Debugger.Detached += debugger_Detached;
@@ -999,7 +1000,7 @@ namespace SphereStudio.Ide
                     {
                         menuDebug.Text = "&Resume";
                         toolDebug.Text = "Resume";
-                        var breaks = Core.Project.GetAllBreakpoints();
+                        var breaks = Session.Project.GetAllBreakpoints();
                         foreach (string filename in breaks.Keys)
                             foreach (int lineNumber in breaks[filename])
                                 await Debugger.SetBreakpoint(filename, lineNumber);
@@ -1017,7 +1018,7 @@ namespace SphereStudio.Ide
             }
             else
             {
-                await BuildEngine.Test(Core.Project);
+                await BuildEngine.Test(Session.Project);
             }
 
             UpdateControls();
@@ -1026,22 +1027,22 @@ namespace SphereStudio.Ide
         private void UpdateControls()
         {
             var starter = IsProjectOpen
-                ? PluginManager.Get<IStarter>(Core.Project.User.Engine)
+                ? PluginManager.Get<IStarter>(Session.Project.User.Engine)
                 : null;
             bool haveConfig = starter != null && starter.CanConfigure;
-            bool haveLastProject = !string.IsNullOrEmpty(Core.Settings.LastProject);
+            bool haveLastProject = !string.IsNullOrEmpty(Session.Settings.LastProject);
 
             toolConfigEngine.Enabled = menuConfigEngine.Enabled = haveConfig;
 
-            menuBuildPackage.Enabled = Core.Project != null
-                && BuildEngine.CanPackage(Core.Project);
+            menuBuildPackage.Enabled = Session.Project != null
+                && BuildEngine.CanPackage(Session.Project);
 
-            menuTestGame.Enabled = toolTestGame.Enabled = Core.Project != null
-                && BuildEngine.CanTest(Core.Project) && Debugger == null;
-            menuDebug.Enabled = Core.Project != null
-                && BuildEngine.CanDebug(Core.Project)
+            menuTestGame.Enabled = toolTestGame.Enabled = Session.Project != null
+                && BuildEngine.CanTest(Session.Project) && Debugger == null;
+            menuDebug.Enabled = Session.Project != null
+                && BuildEngine.CanDebug(Session.Project)
                 && (Debugger == null || !Debugger.Running);
-            toolDebug.Enabled = Core.Project != null && (Debugger == null || !Debugger.Running);
+            toolDebug.Enabled = Session.Project != null && (Debugger == null || !Debugger.Running);
             menuBreakNow.Enabled = toolPauseDebug.Enabled = Debugger != null && Debugger.Running;
             menuStopDebug.Enabled = toolStopDebug.Enabled = Debugger != null;
             menuStepInto.Enabled = Debugger != null && !Debugger.Running;
@@ -1078,7 +1079,7 @@ namespace SphereStudio.Ide
                 foreach (string name in engines)
                     toolEngineCombo.Items.Add(name);
                 toolEngineCombo.Items.Add("Plugin Manager...");
-                toolEngineCombo.Text = Core.Project.User.Engine;
+                toolEngineCombo.Text = Session.Project.User.Engine;
                 toolEngineCombo.Enabled = true;
             }
             else
@@ -1179,14 +1180,14 @@ namespace SphereStudio.Ide
             SaveFileDialog sfd = new SaveFileDialog()
             {
                 Title = "Build Game Package",
-                InitialDirectory = Core.Project.RootPath,
-                Filter = BuildEngine.GetSaveFileFilters(Core.Project),
+                InitialDirectory = Session.Project.RootPath,
+                Filter = BuildEngine.GetSaveFileFilters(Session.Project),
                 DefaultExt = "spk",
                 AddExtension = true,
             };
             if (sfd.ShowDialog() == DialogResult.OK)
             {
-                await BuildEngine.Package(Core.Project, sfd.FileName, false);
+                await BuildEngine.Package(Session.Project, sfd.FileName, false);
             }
         }
     }

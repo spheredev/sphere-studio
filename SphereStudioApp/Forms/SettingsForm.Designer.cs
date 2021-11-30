@@ -1,4 +1,4 @@
-﻿namespace SphereStudio.Ide.Forms
+﻿namespace SphereStudio.Forms
 {
     partial class SettingsForm
     {

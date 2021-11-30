@@ -2,7 +2,7 @@
 
 using SphereStudio.Base;
 
-namespace SphereStudio.BuiltIns
+namespace SphereStudio.StyleProviders
 {
     class DefaultStyleProvider : IStyleProvider
     {

@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using SphereStudio.Base;
 using SphereStudio.UI;
 
-namespace SphereStudio.Ide.Forms
+namespace SphereStudio.Forms
 {
     partial class SettingsForm : Form, IStyleAware
     {

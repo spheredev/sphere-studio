@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 using SphereStudio.Base;
 
-namespace SphereStudio.BuiltIns
+namespace SphereStudio.Compilers
 {
     class SphereCompiler : ICompiler
     {
@@ -17,9 +17,9 @@ namespace SphereStudio.BuiltIns
             "*.png", "*.jpg", "*.bmp", "*.pcx", "*.mng",
         };
 
-        public bool Prep(IProject project, IConsole con)
+        public bool Prep(IProject project, IConsole console)
         {
-            con.Print("Preparing Sphere 1.x project... ");
+            console.Print("Preparing Sphere 1.x project... ");
             var scriptPath = Path.Combine(project.RootPath, "scripts", "main.js");
             Directory.CreateDirectory(Path.GetDirectoryName(scriptPath));
             var code = string.Join(Environment.NewLine,
@@ -32,9 +32,9 @@ namespace SphereStudio.BuiltIns
             "");
             File.WriteAllText(scriptPath, code);
             project.MainScript = "main.js";
-            con.Print("OK.\n");
+            console.Print("OK.\n");
 
-            con.Print("Success!\n");
+            console.Print("Success!\n");
             return true;
         }
 

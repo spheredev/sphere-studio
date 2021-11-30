@@ -3,11 +3,10 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-using SphereStudio.Ide;
 using SphereStudio.Base;
-using SphereStudio.UI;
+using SphereStudio.Core;
 
-namespace SphereStudio.Ide.Forms
+namespace SphereStudio.Forms
 {
     partial class NewProjectForm : Form, IStyleAware
     {
@@ -36,7 +35,7 @@ namespace SphereStudio.Ide.Forms
             }
 
             typeDropDown.Items.AddRange(PluginManager.GetNames<ICompiler>());
-            typeDropDown.Text = Core.Settings.Compiler;
+            typeDropDown.Text = Session.Settings.Compiler;
 
             authorTextBox.Text = Environment.UserName;
             resoDropDown.SelectedIndex = 1;

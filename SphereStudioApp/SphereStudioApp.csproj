@@ -8,7 +8,7 @@
     <ProjectGuid>{9CAC2194-E0C8-4164-9D47-627520E79B95}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SphereStudio.Ide</RootNamespace>
+    <RootNamespace>SphereStudio</RootNamespace>
     <AssemblyName>SphereStudioApp</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -56,7 +56,7 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>SphereStudio.Ide.Program</StartupObject>
+    <StartupObject>SphereStudio.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
@@ -107,7 +107,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BuiltIns\SphereCompiler.cs" />
+    <Compile Include="Compilers\SphereCompiler.cs" />
     <Compile Include="Core\PluginShim.cs" />
     <Compile Include="Forms\SettingsForm.cs">
       <SubType>Form</SubType>
@@ -139,7 +139,7 @@
     <Compile Include="Forms\SavePresetForm.Designer.cs">
       <DependentUpon>SavePresetForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Core\Core.cs" />
+    <Compile Include="Core\Session.cs" />
     <Compile Include="Core\BuildEngine.cs" />
     <Compile Include="Core\DockManager.cs" />
     <Compile Include="Core\DocumentTab.cs" />
@@ -161,12 +161,12 @@
     <Compile Include="SettingsPages\MainSettingsPage.Designer.cs">
       <DependentUpon>MainSettingsPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="BuiltIns\DefaultStyleProvider.cs" />
+    <Compile Include="StyleProviders\DefaultStyleProvider.cs" />
     <Compile Include="Utility\IniFile.cs" />
-    <Compile Include="Views\StartPageView.cs">
+    <Compile Include="DocumentViews\StartPageView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Views\StartPageView.Designer.cs">
+    <Compile Include="DocumentViews\StartPageView.Designer.cs">
       <DependentUpon>StartPageView.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\MainWindowForm.cs">
@@ -212,7 +212,7 @@
     <EmbeddedResource Include="SettingsPages\MainSettingsPage.resx">
       <DependentUpon>MainSettingsPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\StartPageView.resx">
+    <EmbeddedResource Include="DocumentViews\StartPageView.resx">
       <DependentUpon>StartPageView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>

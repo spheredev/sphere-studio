@@ -8,12 +8,13 @@ using System.Linq;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.FileIO;
 
-using SphereStudio.Ide.Forms;
-using SphereStudio.Ide.Properties;
 using SphereStudio.Base;
+using SphereStudio.Core;
+using SphereStudio.Forms;
+using SphereStudio.Properties;
 using SphereStudio.UI;
 
-namespace SphereStudio.Ide.BuiltIns
+namespace SphereStudio.DockPanes
 {
     [ToolboxItem(false)]
     partial class FileListPane : UserControl, IDockPane, IStyleAware
@@ -118,7 +119,7 @@ namespace SphereStudio.Ide.BuiltIns
         {
             TreeNode node = fileTree.SelectedNode;
             string pathtop = node.FullPath.Substring(node.FullPath.IndexOf('\\'));
-            string path = Core.Project.RootPath + pathtop;
+            string path = Session.Project.RootPath + pathtop;
 
             if (!File.Exists(path)) return;
             try
@@ -171,7 +172,7 @@ namespace SphereStudio.Ide.BuiltIns
         {
             base.Refresh();
 
-            if (Core.Project == null || string.IsNullOrEmpty(Core.Project.RootPath))
+            if (Session.Project == null || string.IsNullOrEmpty(Session.Project.RootPath))
                 return;
 
             // update the icons
@@ -213,7 +214,7 @@ namespace SphereStudio.Ide.BuiltIns
             // Repopulate the tree
             fileTree.BeginUpdate();
             fileTree.Nodes.Clear();
-            var projectNode = new TreeNode(Core.Project.Name) { Tag = "projectNode" };
+            var projectNode = new TreeNode(Session.Project.Name) { Tag = "projectNode" };
             fileTree.Nodes.Add(projectNode);
             var baseDir = new DirectoryInfo(SystemWatcher.Path);
             PopulateDirectoryNode(fileTree.Nodes[0], baseDir);
@@ -274,7 +275,7 @@ namespace SphereStudio.Ide.BuiltIns
 
         private static void UpdateImage(TreeNode node)
         {
-            string pluginName = Core.GetFileOpenerName(node.Text);
+            string pluginName = Session.GetFileOpenerName(node.Text);
             if (pluginName != null)
             {
                 node.ImageKey = pluginName;
@@ -297,13 +298,13 @@ namespace SphereStudio.Ide.BuiltIns
                     string path = "";
                     if (fileTree.SelectedNode.Index == 0)
                     {
-                        path = Path.Combine(Core.Project.RootPath, form.Input);
+                        path = Path.Combine(Session.Project.RootPath, form.Input);
                     }
                     else
                     {
                         string toppath = fileTree.SelectedNode.FullPath;
                         toppath = toppath.Substring(toppath.IndexOf('\\'));
-                        string rootpath = Core.Project.RootPath + toppath;
+                        string rootpath = Session.Project.RootPath + toppath;
                         path = Path.Combine(rootpath, form.Input);
                     }
 
@@ -328,7 +329,7 @@ namespace SphereStudio.Ide.BuiltIns
         /// <returns>The full filepath the node corresponds to.</returns>
         private static string ResolvePath(TreeNode node)
         {
-            var root = Core.Project.RootPath;
+            var root = Session.Project.RootPath;
             var path = node.FullPath;
             var idx = path.IndexOf("\\");
             path = path.Substring(idx, path.Length - idx);
@@ -389,7 +390,7 @@ namespace SphereStudio.Ide.BuiltIns
 
         private void GameSettingsItem_Click(object sender, EventArgs e)
         {
-            using (var form = new ProjectPropsForm(Core.Project))
+            using (var form = new ProjectPropsForm(Session.Project))
             {
                 form.ShowDialog(_hostForm);
             }
@@ -399,7 +400,7 @@ namespace SphereStudio.Ide.BuiltIns
         {
             TreeNode node = fileTree.SelectedNode;
             string pathtop = node.FullPath.Substring(node.FullPath.IndexOf('\\'));
-            string path = Core.Project.RootPath + pathtop;
+            string path = Session.Project.RootPath + pathtop;
 
             if (!Directory.Exists(path)) return;
             try
@@ -417,8 +418,8 @@ namespace SphereStudio.Ide.BuiltIns
 
         public void Open()
         {
-            if (!string.IsNullOrEmpty(Core.Project.RootPath))
-                SystemWatcher.Path = Core.Project.RootPath;
+            if (!string.IsNullOrEmpty(Session.Project.RootPath))
+                SystemWatcher.Path = Session.Project.RootPath;
             else return;
 
             SystemWatcher.EnableRaisingEvents = true;
@@ -433,7 +434,7 @@ namespace SphereStudio.Ide.BuiltIns
             if (idx < 0) return; // we're at root.
 
             pathtop = pathtop.Substring(idx);
-            string path = Core.Project.RootPath + pathtop;
+            string path = Session.Project.RootPath + pathtop;
 
             // if the node is anything other than a file, don't do anything
             if ((string) node.Tag != "fileNode") return;
@@ -496,7 +497,7 @@ namespace SphereStudio.Ide.BuiltIns
                 return;
             var node = fileTree.SelectedNode;
             var path = node.Level == 0 && node.Index == 0
-                ? Core.Project.RootPath
+                ? Session.Project.RootPath
                 : ResolvePath(node);
             Process.Start("explorer.exe", $@"/select,""{path}""");
         }

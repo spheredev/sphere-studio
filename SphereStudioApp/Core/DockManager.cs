@@ -10,7 +10,7 @@ using WeifenLuo.WinFormsUI.Docking;
 
 using SphereStudio.Base;
 
-namespace SphereStudio.Ide
+namespace SphereStudio.Core
 {
     struct DockPaneShim
     {
@@ -55,7 +55,7 @@ namespace SphereStudio.Ide
                 shim.Content.DockAreas = DockAreas.Float
                     | DockAreas.DockLeft | DockAreas.DockRight
                     | DockAreas.DockTop | DockAreas.DockBottom;
-                bool autoHide = Core.Settings.AutoHidePanes.Contains(name);
+                bool autoHide = Session.Settings.AutoHidePanes.Contains(name);
                 DockState state = plugin.DockHint == DockHint.Float ? DockState.Float
                     : plugin.DockHint == DockHint.Left ? (autoHide ? DockState.DockLeftAutoHide : DockState.DockLeft)
                     : plugin.DockHint == DockHint.Right ? (autoHide ? DockState.DockRightAutoHide : DockState.DockRight)
@@ -64,7 +64,7 @@ namespace SphereStudio.Ide
                     : DockState.Float;  // stacked and nested ternary = awesome
                 plugin.Control.Dock = DockStyle.Fill;
                 shim.Content.Show(_mainPanel, state);
-                if (!plugin.ShowInViewMenu || Core.Settings.HiddenPanes.Contains(name))
+                if (!plugin.ShowInViewMenu || Session.Settings.HiddenPanes.Contains(name))
                     shim.Content.Hide();
                 _activePanes.Add(shim);
             }
@@ -72,10 +72,10 @@ namespace SphereStudio.Ide
 
         public void Persist()
         {
-            Core.Settings.AutoHidePanes = _activePanes
+            Session.Settings.AutoHidePanes = _activePanes
                 .Where(form => IsAutoHidden(form))
                 .Select(form => form.Name).ToArray();
-            Core.Settings.HiddenPanes = _activePanes
+            Session.Settings.HiddenPanes = _activePanes
                 .Where(x => x.Pane.ShowInViewMenu)
                 .Where(x => !IsVisible(x.Pane))
                 .Select(x => x.Name).ToArray();

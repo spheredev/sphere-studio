@@ -1,4 +1,4 @@
-﻿namespace SphereStudio.Ide
+﻿namespace SphereStudio.Forms
 {
     partial class MainWindowForm
     {
@@ -145,7 +145,7 @@
             // 
             // CloseTabItem
             // 
-            this.CloseTabItem.Image = global::SphereStudio.Ide.Properties.Resources.cross;
+            this.CloseTabItem.Image = global::SphereStudio.Properties.Resources.cross;
             this.CloseTabItem.Name = "CloseTabItem";
             this.CloseTabItem.Size = new System.Drawing.Size(165, 22);
             this.CloseTabItem.Text = "Close Tab";
@@ -158,7 +158,7 @@
             // 
             // SaveTabItem
             // 
-            this.SaveTabItem.Image = global::SphereStudio.Ide.Properties.Resources.disk;
+            this.SaveTabItem.Image = global::SphereStudio.Properties.Resources.disk;
             this.SaveTabItem.Name = "SaveTabItem";
             this.SaveTabItem.Size = new System.Drawing.Size(165, 22);
             this.SaveTabItem.Text = "Save Tab";
@@ -212,7 +212,7 @@
             // 
             // toolNew
             // 
-            this.toolNew.Image = global::SphereStudio.Ide.Properties.Resources.script_edit;
+            this.toolNew.Image = global::SphereStudio.Properties.Resources.script_edit;
             this.toolNew.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolNew.Name = "toolNew";
             this.toolNew.Size = new System.Drawing.Size(60, 25);
@@ -226,7 +226,7 @@
             this.toolOpen.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuOpenProject2,
             this.fileOrDocumentToolStripMenuItem});
-            this.toolOpen.Image = global::SphereStudio.Ide.Properties.Resources.open;
+            this.toolOpen.Image = global::SphereStudio.Properties.Resources.open;
             this.toolOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolOpen.Name = "toolOpen";
             this.toolOpen.Size = new System.Drawing.Size(29, 25);
@@ -234,7 +234,7 @@
             // 
             // menuOpenProject2
             // 
-            this.menuOpenProject2.Image = global::SphereStudio.Ide.Properties.Resources.SphereEditor;
+            this.menuOpenProject2.Image = global::SphereStudio.Properties.Resources.SphereEditor;
             this.menuOpenProject2.Name = "menuOpenProject2";
             this.menuOpenProject2.Size = new System.Drawing.Size(196, 22);
             this.menuOpenProject2.Text = "Sphere Studio &Project...";
@@ -242,7 +242,7 @@
             // 
             // fileOrDocumentToolStripMenuItem
             // 
-            this.fileOrDocumentToolStripMenuItem.Image = global::SphereStudio.Ide.Properties.Resources.page_white_edit;
+            this.fileOrDocumentToolStripMenuItem.Image = global::SphereStudio.Properties.Resources.page_white_edit;
             this.fileOrDocumentToolStripMenuItem.Name = "fileOrDocumentToolStripMenuItem";
             this.fileOrDocumentToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.fileOrDocumentToolStripMenuItem.Text = "&File/Document...";
@@ -252,7 +252,7 @@
             // 
             this.SaveToolButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.SaveToolButton.Enabled = false;
-            this.SaveToolButton.Image = global::SphereStudio.Ide.Properties.Resources.disk;
+            this.SaveToolButton.Image = global::SphereStudio.Properties.Resources.disk;
             this.SaveToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SaveToolButton.Name = "SaveToolButton";
             this.SaveToolButton.Size = new System.Drawing.Size(23, 25);
@@ -269,7 +269,7 @@
             // 
             this.GameToolButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.GameToolButton.Enabled = false;
-            this.GameToolButton.Image = global::SphereStudio.Ide.Properties.Resources.SphereEditor;
+            this.GameToolButton.Image = global::SphereStudio.Properties.Resources.SphereEditor;
             this.GameToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.GameToolButton.Name = "GameToolButton";
             this.GameToolButton.Size = new System.Drawing.Size(23, 25);
@@ -279,7 +279,7 @@
             // toolEditorSettings
             // 
             this.toolEditorSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolEditorSettings.Image = global::SphereStudio.Ide.Properties.Resources.application_view_list;
+            this.toolEditorSettings.Image = global::SphereStudio.Properties.Resources.application_view_list;
             this.toolEditorSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolEditorSettings.Name = "toolEditorSettings";
             this.toolEditorSettings.Size = new System.Drawing.Size(23, 25);
@@ -295,7 +295,7 @@
             // 
             this.CutToolButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.CutToolButton.Enabled = false;
-            this.CutToolButton.Image = global::SphereStudio.Ide.Properties.Resources.cut;
+            this.CutToolButton.Image = global::SphereStudio.Properties.Resources.cut;
             this.CutToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.CutToolButton.Name = "CutToolButton";
             this.CutToolButton.Size = new System.Drawing.Size(23, 25);
@@ -306,7 +306,7 @@
             // 
             this.CopyToolButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.CopyToolButton.Enabled = false;
-            this.CopyToolButton.Image = global::SphereStudio.Ide.Properties.Resources.page_copy;
+            this.CopyToolButton.Image = global::SphereStudio.Properties.Resources.page_copy;
             this.CopyToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.CopyToolButton.Name = "CopyToolButton";
             this.CopyToolButton.Size = new System.Drawing.Size(23, 25);
@@ -316,7 +316,7 @@
             // PasteToolButton
             // 
             this.PasteToolButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.PasteToolButton.Image = global::SphereStudio.Ide.Properties.Resources.paste_plain;
+            this.PasteToolButton.Image = global::SphereStudio.Properties.Resources.paste_plain;
             this.PasteToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.PasteToolButton.Name = "PasteToolButton";
             this.PasteToolButton.Size = new System.Drawing.Size(23, 25);
@@ -333,7 +333,7 @@
             // 
             this.toolTestGame.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolTestGame.Enabled = false;
-            this.toolTestGame.Image = global::SphereStudio.Ide.Properties.Resources.lightning;
+            this.toolTestGame.Image = global::SphereStudio.Properties.Resources.lightning;
             this.toolTestGame.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolTestGame.Name = "toolTestGame";
             this.toolTestGame.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
@@ -346,7 +346,7 @@
             // 
             this.toolConfigEngine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolConfigEngine.Enabled = false;
-            this.toolConfigEngine.Image = global::SphereStudio.Ide.Properties.Resources.cog;
+            this.toolConfigEngine.Image = global::SphereStudio.Properties.Resources.cog;
             this.toolConfigEngine.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolConfigEngine.Name = "toolConfigEngine";
             this.toolConfigEngine.Size = new System.Drawing.Size(23, 25);
@@ -360,7 +360,7 @@
             // 
             // toolDebug
             // 
-            this.toolDebug.Image = global::SphereStudio.Ide.Properties.Resources.play;
+            this.toolDebug.Image = global::SphereStudio.Properties.Resources.play;
             this.toolDebug.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolDebug.Name = "toolDebug";
             this.toolDebug.Size = new System.Drawing.Size(82, 25);
@@ -371,7 +371,7 @@
             // toolPauseDebug
             // 
             this.toolPauseDebug.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolPauseDebug.Image = global::SphereStudio.Ide.Properties.Resources.pause;
+            this.toolPauseDebug.Image = global::SphereStudio.Properties.Resources.pause;
             this.toolPauseDebug.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolPauseDebug.Name = "toolPauseDebug";
             this.toolPauseDebug.Size = new System.Drawing.Size(23, 25);
@@ -382,7 +382,7 @@
             // toolStopDebug
             // 
             this.toolStopDebug.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStopDebug.Image = global::SphereStudio.Ide.Properties.Resources.stop;
+            this.toolStopDebug.Image = global::SphereStudio.Properties.Resources.stop;
             this.toolStopDebug.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStopDebug.Name = "toolStopDebug";
             this.toolStopDebug.Size = new System.Drawing.Size(23, 25);
@@ -507,7 +507,7 @@
             // 
             // menuNewProject
             // 
-            this.menuNewProject.Image = global::SphereStudio.Ide.Properties.Resources.new_item;
+            this.menuNewProject.Image = global::SphereStudio.Properties.Resources.new_item;
             this.menuNewProject.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.menuNewProject.Name = "menuNewProject";
             this.menuNewProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
@@ -517,7 +517,7 @@
             // 
             // menuOpenProject
             // 
-            this.menuOpenProject.Image = global::SphereStudio.Ide.Properties.Resources.folder;
+            this.menuOpenProject.Image = global::SphereStudio.Properties.Resources.folder;
             this.menuOpenProject.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.menuOpenProject.Name = "menuOpenProject";
             this.menuOpenProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
@@ -528,7 +528,7 @@
             // menuCloseProject
             // 
             this.menuCloseProject.Enabled = false;
-            this.menuCloseProject.Image = global::SphereStudio.Ide.Properties.Resources.cross;
+            this.menuCloseProject.Image = global::SphereStudio.Properties.Resources.cross;
             this.menuCloseProject.Name = "menuCloseProject";
             this.menuCloseProject.Size = new System.Drawing.Size(195, 22);
             this.menuCloseProject.Text = "&Close Project";
@@ -550,7 +550,7 @@
             // 
             this.menuNew.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuNewProject2});
-            this.menuNew.Image = global::SphereStudio.Ide.Properties.Resources.page_white_edit;
+            this.menuNew.Image = global::SphereStudio.Properties.Resources.page_white_edit;
             this.menuNew.Name = "menuNew";
             this.menuNew.Size = new System.Drawing.Size(195, 22);
             this.menuNew.Text = "&New";
@@ -559,7 +559,7 @@
             // 
             // menuNewProject2
             // 
-            this.menuNewProject2.Image = global::SphereStudio.Ide.Properties.Resources.SphereEditor;
+            this.menuNewProject2.Image = global::SphereStudio.Properties.Resources.SphereEditor;
             this.menuNewProject2.Name = "menuNewProject2";
             this.menuNewProject2.Size = new System.Drawing.Size(196, 22);
             this.menuNewProject2.Text = "Sphere Studio &Project...";
@@ -567,7 +567,7 @@
             // 
             // menuOpen
             // 
-            this.menuOpen.Image = global::SphereStudio.Ide.Properties.Resources.open;
+            this.menuOpen.Image = global::SphereStudio.Properties.Resources.open;
             this.menuOpen.Name = "menuOpen";
             this.menuOpen.Size = new System.Drawing.Size(195, 22);
             this.menuOpen.Text = "&Open...";
@@ -580,7 +580,7 @@
             // 
             // menuSave
             // 
-            this.menuSave.Image = global::SphereStudio.Ide.Properties.Resources.disk;
+            this.menuSave.Image = global::SphereStudio.Properties.Resources.disk;
             this.menuSave.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.menuSave.Name = "menuSave";
             this.menuSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
@@ -590,7 +590,7 @@
             // 
             // menuSaveAs
             // 
-            this.menuSaveAs.Image = global::SphereStudio.Ide.Properties.Resources.disk_multiple;
+            this.menuSaveAs.Image = global::SphereStudio.Properties.Resources.disk_multiple;
             this.menuSaveAs.Name = "menuSaveAs";
             this.menuSaveAs.Size = new System.Drawing.Size(195, 22);
             this.menuSaveAs.Text = "Save &As...";
@@ -598,7 +598,7 @@
             // 
             // menuSaveAll
             // 
-            this.menuSaveAll.Image = global::SphereStudio.Ide.Properties.Resources.disk_multiple;
+            this.menuSaveAll.Image = global::SphereStudio.Properties.Resources.disk_multiple;
             this.menuSaveAll.Name = "menuSaveAll";
             this.menuSaveAll.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.S)));
@@ -613,7 +613,7 @@
             // 
             // menuExit
             // 
-            this.menuExit.Image = global::SphereStudio.Ide.Properties.Resources.door_in;
+            this.menuExit.Image = global::SphereStudio.Properties.Resources.door_in;
             this.menuExit.Name = "menuExit";
             this.menuExit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
             this.menuExit.Size = new System.Drawing.Size(195, 22);
@@ -642,7 +642,7 @@
             // 
             // menuUndo
             // 
-            this.menuUndo.Image = global::SphereStudio.Ide.Properties.Resources.arrow_undo;
+            this.menuUndo.Image = global::SphereStudio.Properties.Resources.arrow_undo;
             this.menuUndo.Name = "menuUndo";
             this.menuUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
             this.menuUndo.Size = new System.Drawing.Size(196, 22);
@@ -651,7 +651,7 @@
             // 
             // menuRedo
             // 
-            this.menuRedo.Image = global::SphereStudio.Ide.Properties.Resources.arrow_redo;
+            this.menuRedo.Image = global::SphereStudio.Properties.Resources.arrow_redo;
             this.menuRedo.Name = "menuRedo";
             this.menuRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
             this.menuRedo.Size = new System.Drawing.Size(196, 22);
@@ -665,7 +665,7 @@
             // 
             // menuCut
             // 
-            this.menuCut.Image = global::SphereStudio.Ide.Properties.Resources.cut;
+            this.menuCut.Image = global::SphereStudio.Properties.Resources.cut;
             this.menuCut.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.menuCut.Name = "menuCut";
             this.menuCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
@@ -675,7 +675,7 @@
             // 
             // menuCopy
             // 
-            this.menuCopy.Image = global::SphereStudio.Ide.Properties.Resources.page_copy;
+            this.menuCopy.Image = global::SphereStudio.Properties.Resources.page_copy;
             this.menuCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.menuCopy.Name = "menuCopy";
             this.menuCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
@@ -685,7 +685,7 @@
             // 
             // menuPaste
             // 
-            this.menuPaste.Image = global::SphereStudio.Ide.Properties.Resources.paste_plain;
+            this.menuPaste.Image = global::SphereStudio.Properties.Resources.paste_plain;
             this.menuPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.menuPaste.Name = "menuPaste";
             this.menuPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
@@ -713,7 +713,7 @@
             // 
             // menuZoomIn
             // 
-            this.menuZoomIn.Image = global::SphereStudio.Ide.Properties.Resources.magnifier_zoom_in;
+            this.menuZoomIn.Image = global::SphereStudio.Properties.Resources.magnifier_zoom_in;
             this.menuZoomIn.Name = "menuZoomIn";
             this.menuZoomIn.ShortcutKeyDisplayString = "Ctrl+Plus";
             this.menuZoomIn.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Oemplus)));
@@ -723,7 +723,7 @@
             // 
             // menuZoomOut
             // 
-            this.menuZoomOut.Image = global::SphereStudio.Ide.Properties.Resources.magnifier_zoom_out;
+            this.menuZoomOut.Image = global::SphereStudio.Properties.Resources.magnifier_zoom_out;
             this.menuZoomOut.Name = "menuZoomOut";
             this.menuZoomOut.ShortcutKeyDisplayString = "Ctrl+Minus";
             this.menuZoomOut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.OemMinus)));
@@ -747,7 +747,7 @@
             // menuOpenGameDir
             // 
             this.menuOpenGameDir.Enabled = false;
-            this.menuOpenGameDir.Image = global::SphereStudio.Ide.Properties.Resources.folder_closed;
+            this.menuOpenGameDir.Image = global::SphereStudio.Properties.Resources.folder_closed;
             this.menuOpenGameDir.Name = "menuOpenGameDir";
             this.menuOpenGameDir.Size = new System.Drawing.Size(214, 22);
             this.menuOpenGameDir.Text = "Show in Windows &Explorer";
@@ -756,7 +756,7 @@
             // menuRefreshProject
             // 
             this.menuRefreshProject.Enabled = false;
-            this.menuRefreshProject.Image = global::SphereStudio.Ide.Properties.Resources.arrow_refresh;
+            this.menuRefreshProject.Image = global::SphereStudio.Properties.Resources.arrow_refresh;
             this.menuRefreshProject.Name = "menuRefreshProject";
             this.menuRefreshProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F5)));
             this.menuRefreshProject.Size = new System.Drawing.Size(214, 22);
@@ -771,7 +771,7 @@
             // menuProjectProps
             // 
             this.menuProjectProps.Enabled = false;
-            this.menuProjectProps.Image = global::SphereStudio.Ide.Properties.Resources.SphereEditor;
+            this.menuProjectProps.Image = global::SphereStudio.Properties.Resources.SphereEditor;
             this.menuProjectProps.Name = "menuProjectProps";
             this.menuProjectProps.Size = new System.Drawing.Size(214, 22);
             this.menuProjectProps.Text = "Project P&roperties...";
@@ -804,7 +804,7 @@
             // 
             // menuStartPage
             // 
-            this.menuStartPage.Image = global::SphereStudio.Ide.Properties.Resources.SphereEditor;
+            this.menuStartPage.Image = global::SphereStudio.Properties.Resources.SphereEditor;
             this.menuStartPage.Name = "menuStartPage";
             this.menuStartPage.Size = new System.Drawing.Size(213, 22);
             this.menuStartPage.Text = "&Start Page";
@@ -831,7 +831,7 @@
             // 
             // menuAbout
             // 
-            this.menuAbout.Image = global::SphereStudio.Ide.Properties.Resources.information;
+            this.menuAbout.Image = global::SphereStudio.Properties.Resources.information;
             this.menuAbout.Name = "menuAbout";
             this.menuAbout.Size = new System.Drawing.Size(192, 22);
             this.menuAbout.Text = "&About Sphere Studio...";
@@ -896,7 +896,7 @@
             // 
             // menuDebug
             // 
-            this.menuDebug.Image = global::SphereStudio.Ide.Properties.Resources.play;
+            this.menuDebug.Image = global::SphereStudio.Properties.Resources.play;
             this.menuDebug.Name = "menuDebug";
             this.menuDebug.ShortcutKeys = System.Windows.Forms.Keys.F5;
             this.menuDebug.Size = new System.Drawing.Size(273, 22);
@@ -905,7 +905,7 @@
             // 
             // menuBreakNow
             // 
-            this.menuBreakNow.Image = global::SphereStudio.Ide.Properties.Resources.pause;
+            this.menuBreakNow.Image = global::SphereStudio.Properties.Resources.pause;
             this.menuBreakNow.Name = "menuBreakNow";
             this.menuBreakNow.Size = new System.Drawing.Size(273, 22);
             this.menuBreakNow.Text = "&Break into Debugger";
@@ -914,7 +914,7 @@
             // menuStopDebug
             // 
             this.menuStopDebug.Enabled = false;
-            this.menuStopDebug.Image = global::SphereStudio.Ide.Properties.Resources.stop;
+            this.menuStopDebug.Image = global::SphereStudio.Properties.Resources.stop;
             this.menuStopDebug.Name = "menuStopDebug";
             this.menuStopDebug.Size = new System.Drawing.Size(273, 22);
             this.menuStopDebug.Text = "S&top Debugging";
@@ -959,7 +959,7 @@
             // menuTestGame
             // 
             this.menuTestGame.Enabled = false;
-            this.menuTestGame.Image = global::SphereStudio.Ide.Properties.Resources.lightning;
+            this.menuTestGame.Image = global::SphereStudio.Properties.Resources.lightning;
             this.menuTestGame.Name = "menuTestGame";
             this.menuTestGame.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F5)));
             this.menuTestGame.Size = new System.Drawing.Size(273, 22);
@@ -982,7 +982,7 @@
             // menuConfigEngine
             // 
             this.menuConfigEngine.Enabled = false;
-            this.menuConfigEngine.Image = global::SphereStudio.Ide.Properties.Resources.cog;
+            this.menuConfigEngine.Image = global::SphereStudio.Properties.Resources.cog;
             this.menuConfigEngine.Name = "menuConfigEngine";
             this.menuConfigEngine.Size = new System.Drawing.Size(186, 22);
             this.menuConfigEngine.Text = "Configure the &Engine";
@@ -995,7 +995,7 @@
             // 
             // menuConfigManager
             // 
-            this.menuConfigManager.Image = global::SphereStudio.Ide.Properties.Resources.SphericalLogo;
+            this.menuConfigManager.Image = global::SphereStudio.Properties.Resources.SphericalLogo;
             this.menuConfigManager.Name = "menuConfigManager";
             this.menuConfigManager.Size = new System.Drawing.Size(186, 22);
             this.menuConfigManager.Text = "&Plugins...";
@@ -1003,7 +1003,7 @@
             // 
             // menuEditorSettings
             // 
-            this.menuEditorSettings.Image = global::SphereStudio.Ide.Properties.Resources.application_view_list;
+            this.menuEditorSettings.Image = global::SphereStudio.Properties.Resources.application_view_list;
             this.menuEditorSettings.Name = "menuEditorSettings";
             this.menuEditorSettings.Size = new System.Drawing.Size(186, 22);
             this.menuEditorSettings.Text = "P&references...";

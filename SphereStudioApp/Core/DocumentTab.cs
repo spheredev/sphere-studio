@@ -10,12 +10,10 @@ using System.Windows.Forms;
 
 using WeifenLuo.WinFormsUI.Docking;
 
-using SphereStudio.Ide.Forms;
-using SphereStudio.Ide;
 using SphereStudio.Base;
-using SphereStudio.UI;
+using SphereStudio.Forms;
 
-namespace SphereStudio.Ide
+namespace SphereStudio.Core
 {
     /// <summary>
     /// Represents an open document in the IDE.
@@ -59,14 +57,14 @@ namespace SphereStudio.Ide
             if (View is ScriptView)
             {
                 ScriptView scriptView = View as ScriptView;
-                scriptView.Breakpoints = Core.Project.GetBreakpoints(FileName);
+                scriptView.Breakpoints = Session.Project.GetBreakpoints(FileName);
                 scriptView.BreakpointChanged += on_BreakpointSet;
             }
 
             if (restoreView && FileName != null)
             {
                 string setting = $"viewState:{FileName.GetHashCode():X8}";
-                try { View.ViewState = Core.Project.User.GetString(setting, ""); }
+                try { View.ViewState = Session.Project.User.GetString(setting, ""); }
                 catch (Exception) { } // *munch*
             }
         }
@@ -296,15 +294,15 @@ namespace SphereStudio.Ide
 
         private void SaveViewState()
         {
-            if (FileName == null || Core.Project == null || View.IsDirty)
+            if (FileName == null || Session.Project == null || View.IsDirty)
                 return;  // save view only if clean
 
             // record breakpoints if script tab
             if (View is ScriptView)
-                Core.Project.SetBreakpoints(FileName, ((ScriptView)View).Breakpoints);
+                Session.Project.SetBreakpoints(FileName, ((ScriptView)View).Breakpoints);
 
             // save view (cursor position, etc.)
-            Core.Project.User.SetValue(
+            Session.Project.User.SetValue(
                 $"viewState:{FileName.GetHashCode():X8}",
                 View.ViewState);
         }
@@ -321,7 +319,7 @@ namespace SphereStudio.Ide
         {
             if (FileName == null) return;
             ScriptView view = View as ScriptView;
-            Core.Project.SetBreakpoints(FileName, view.Breakpoints);
+            Session.Project.SetBreakpoints(FileName, view.Breakpoints);
             var debugger = Program.Form.Debugger;
             if (Program.Form.Debugger != null)
             {

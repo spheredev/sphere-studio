@@ -3,10 +3,10 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 
-using SphereStudio.Ide;
 using SphereStudio.Base;
+using SphereStudio.Core;
 
-namespace SphereStudio.BuiltIns
+namespace SphereStudio.SettingsPages
 {
     [ToolboxItem(false)]
     partial class MainSettingsPage : UserControl, ISettingsPage, IStyleAware
@@ -24,11 +24,11 @@ namespace SphereStudio.BuiltIns
             string[] paths = new string[dirsListBox.Items.Count];
             dirsListBox.Items.CopyTo(paths, 0);
 
-            Core.Settings.StyleName = styleDropDown.Text;
-            Core.Settings.UseStartPage = useStartPageButton.Checked;
-            Core.Settings.AutoOpenLastProject = rememberProjectButton.Checked;
-            Core.Settings.ProjectPaths = paths;
-            Core.Settings.Apply();
+            Session.Settings.StyleName = styleDropDown.Text;
+            Session.Settings.UseStartPage = useStartPageButton.Checked;
+            Session.Settings.AutoOpenLastProject = rememberProjectButton.Checked;
+            Session.Settings.ProjectPaths = paths;
+            Session.Settings.Apply();
             return true;
         }
 
@@ -67,10 +67,10 @@ namespace SphereStudio.BuiltIns
             styleDropDown.SelectedIndex = 0;
 
             // fill in current settings
-            styleDropDown.Text = Core.Settings.StyleName;
-            useStartPageButton.Checked = Core.Settings.UseStartPage;
-            rememberProjectButton.Checked = Core.Settings.AutoOpenLastProject;
-            dirsListBox.Items.AddRange(Core.Settings.ProjectPaths);
+            styleDropDown.Text = Session.Settings.StyleName;
+            useStartPageButton.Checked = Session.Settings.UseStartPage;
+            rememberProjectButton.Checked = Session.Settings.AutoOpenLastProject;
+            dirsListBox.Items.AddRange(Session.Settings.ProjectPaths);
 
             removeDirButton.Enabled = dirsListBox.Items.Count > 0 && dirsListBox.SelectedIndex >= 0;
             moveDirUpButton.Enabled = moveDirDownButton.Enabled = removeDirButton.Enabled;

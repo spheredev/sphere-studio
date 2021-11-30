@@ -1,4 +1,4 @@
-﻿namespace SphereStudio.BuiltIns
+﻿namespace SphereStudio.SettingsPages
 {
     partial class MainSettingsPage
     {
@@ -113,7 +113,7 @@
             this.moveDirDownButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.moveDirDownButton.Enabled = false;
             this.moveDirDownButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.moveDirDownButton.Image = global::SphereStudio.Ide.Properties.Resources.resultset_down;
+            this.moveDirDownButton.Image = global::SphereStudio.Properties.Resources.resultset_down;
             this.moveDirDownButton.Location = new System.Drawing.Point(327, 134);
             this.moveDirDownButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.moveDirDownButton.Name = "moveDirDownButton";
@@ -128,7 +128,7 @@
             this.moveDirUpButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.moveDirUpButton.Enabled = false;
             this.moveDirUpButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.moveDirUpButton.Image = global::SphereStudio.Ide.Properties.Resources.resultset_up;
+            this.moveDirUpButton.Image = global::SphereStudio.Properties.Resources.resultset_up;
             this.moveDirUpButton.Location = new System.Drawing.Point(296, 134);
             this.moveDirUpButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.moveDirUpButton.Name = "moveDirUpButton";

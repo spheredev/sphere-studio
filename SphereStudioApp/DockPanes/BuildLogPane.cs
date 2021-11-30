@@ -4,10 +4,9 @@ using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-using SphereStudio.UI;
 using SphereStudio.Base;
 
-namespace SphereStudio.Ide.BuiltIns
+namespace SphereStudio.DockPanes
 {
     [ToolboxItem(false)]
     partial class BuildLogPane : UserControl, IConsole, IDockPane, IStyleAware

@@ -1,4 +1,4 @@
-﻿namespace SphereStudio.Ide.BuiltIns
+﻿namespace SphereStudio.DockPanes
 {
     partial class FileListPane
     {
@@ -89,14 +89,14 @@
             // 
             // NewFileItem
             // 
-            this.NewFileItem.Image = global::SphereStudio.Ide.Properties.Resources.page_white_edit;
+            this.NewFileItem.Image = global::SphereStudio.Properties.Resources.page_white_edit;
             this.NewFileItem.Name = "NewFileItem";
             this.NewFileItem.Size = new System.Drawing.Size(227, 22);
             this.NewFileItem.Text = "&New";
             // 
             // ImportFileItem
             // 
-            this.ImportFileItem.Image = global::SphereStudio.Ide.Properties.Resources.paste_plain;
+            this.ImportFileItem.Image = global::SphereStudio.Properties.Resources.paste_plain;
             this.ImportFileItem.Name = "ImportFileItem";
             this.ImportFileItem.Size = new System.Drawing.Size(227, 22);
             this.ImportFileItem.Text = "&Import File(s)...";
@@ -104,7 +104,7 @@
             // 
             // AddSubfolderItem
             // 
-            this.AddSubfolderItem.Image = global::SphereStudio.Ide.Properties.Resources.folder_closed;
+            this.AddSubfolderItem.Image = global::SphereStudio.Properties.Resources.folder_closed;
             this.AddSubfolderItem.Name = "AddSubfolderItem";
             this.AddSubfolderItem.Size = new System.Drawing.Size(227, 22);
             this.AddSubfolderItem.Text = "&Add Subfolder...";
@@ -112,7 +112,7 @@
             // 
             // OpenFileItem
             // 
-            this.OpenFileItem.Image = global::SphereStudio.Ide.Properties.Resources.folder;
+            this.OpenFileItem.Image = global::SphereStudio.Properties.Resources.folder;
             this.OpenFileItem.Name = "OpenFileItem";
             this.OpenFileItem.Size = new System.Drawing.Size(227, 22);
             this.OpenFileItem.Text = "&Open File";
@@ -120,7 +120,7 @@
             // 
             // DeleteFileItem
             // 
-            this.DeleteFileItem.Image = global::SphereStudio.Ide.Properties.Resources.cross;
+            this.DeleteFileItem.Image = global::SphereStudio.Properties.Resources.cross;
             this.DeleteFileItem.Name = "DeleteFileItem";
             this.DeleteFileItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
             this.DeleteFileItem.Size = new System.Drawing.Size(227, 22);
@@ -129,7 +129,7 @@
             // 
             // DeleteFolderItem
             // 
-            this.DeleteFolderItem.Image = global::SphereStudio.Ide.Properties.Resources.cross;
+            this.DeleteFolderItem.Image = global::SphereStudio.Properties.Resources.cross;
             this.DeleteFolderItem.Name = "DeleteFolderItem";
             this.DeleteFolderItem.Size = new System.Drawing.Size(227, 22);
             this.DeleteFolderItem.Text = "De&lete Folder";
@@ -137,7 +137,7 @@
             // 
             // RenameFileItem
             // 
-            this.RenameFileItem.Image = global::SphereStudio.Ide.Properties.Resources.pencil;
+            this.RenameFileItem.Image = global::SphereStudio.Properties.Resources.pencil;
             this.RenameFileItem.Name = "RenameFileItem";
             this.RenameFileItem.Size = new System.Drawing.Size(227, 22);
             this.RenameFileItem.Text = "&Rename File";
@@ -145,7 +145,7 @@
             // 
             // CopyPathItem
             // 
-            this.CopyPathItem.Image = global::SphereStudio.Ide.Properties.Resources.page_copy;
+            this.CopyPathItem.Image = global::SphereStudio.Properties.Resources.page_copy;
             this.CopyPathItem.Name = "CopyPathItem";
             this.CopyPathItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
             this.CopyPathItem.Size = new System.Drawing.Size(227, 22);
@@ -154,7 +154,7 @@
             // 
             // OpenFolderItem
             // 
-            this.OpenFolderItem.Image = global::SphereStudio.Ide.Properties.Resources.open;
+            this.OpenFolderItem.Image = global::SphereStudio.Properties.Resources.open;
             this.OpenFolderItem.Name = "OpenFolderItem";
             this.OpenFolderItem.Size = new System.Drawing.Size(227, 22);
             this.OpenFolderItem.Text = "Show in Windows &Explorer";
@@ -162,7 +162,7 @@
             // 
             // GameSettingsItem
             // 
-            this.GameSettingsItem.Image = global::SphereStudio.Ide.Properties.Resources.SphereEditor;
+            this.GameSettingsItem.Image = global::SphereStudio.Properties.Resources.SphereEditor;
             this.GameSettingsItem.Name = "GameSettingsItem";
             this.GameSettingsItem.Size = new System.Drawing.Size(227, 22);
             this.GameSettingsItem.Text = "Project P&roperties...";

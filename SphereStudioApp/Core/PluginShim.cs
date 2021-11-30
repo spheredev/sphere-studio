@@ -1,12 +1,9 @@
 ﻿using System;
-using System.IO;
 using System.Reflection;
 
-using SphereStudio;
-using SphereStudio.Ide;
 using SphereStudio.Base;
 
-namespace SphereStudio.Ide
+namespace SphereStudio.Core
 {
     class PluginShim
     {
@@ -45,7 +42,7 @@ namespace SphereStudio.Ide
         {
             if (!m_isEnabled)
             {
-                ISettings conf = new IniSettings(Core.MainIniFile, Handle);
+                ISettings conf = new IniSettings(Session.MainIniFile, Handle);
                 try {
                     Main.Initialize(conf);
                     m_isEnabled = true;

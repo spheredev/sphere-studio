@@ -1,4 +1,4 @@
-﻿namespace SphereStudio.Ide.BuiltIns
+﻿namespace SphereStudio.DocumentViews
 {
     partial class StartPageView
     {
@@ -69,7 +69,7 @@
             // 
             // PlayGameItem
             // 
-            this.PlayGameItem.Image = global::SphereStudio.Ide.Properties.Resources.lightning;
+            this.PlayGameItem.Image = global::SphereStudio.Properties.Resources.lightning;
             this.PlayGameItem.Name = "PlayGameItem";
             this.PlayGameItem.Size = new System.Drawing.Size(214, 22);
             this.PlayGameItem.Text = "&Play Game";
@@ -77,7 +77,7 @@
             // 
             // LoadMenuItem
             // 
-            this.LoadMenuItem.Image = global::SphereStudio.Ide.Properties.Resources.script_edit;
+            this.LoadMenuItem.Image = global::SphereStudio.Properties.Resources.script_edit;
             this.LoadMenuItem.Name = "LoadMenuItem";
             this.LoadMenuItem.Size = new System.Drawing.Size(214, 22);
             this.LoadMenuItem.Text = "&Open Project";
@@ -85,7 +85,7 @@
             // 
             // RenameProjectItem
             // 
-            this.RenameProjectItem.Image = global::SphereStudio.Ide.Properties.Resources.application_view_list;
+            this.RenameProjectItem.Image = global::SphereStudio.Properties.Resources.application_view_list;
             this.RenameProjectItem.Name = "RenameProjectItem";
             this.RenameProjectItem.Size = new System.Drawing.Size(214, 22);
             this.RenameProjectItem.Text = "&Rename Project";
@@ -93,7 +93,7 @@
             // 
             // OpenFolderItem
             // 
-            this.OpenFolderItem.Image = global::SphereStudio.Ide.Properties.Resources.folder;
+            this.OpenFolderItem.Image = global::SphereStudio.Properties.Resources.folder;
             this.OpenFolderItem.Name = "OpenFolderItem";
             this.OpenFolderItem.Size = new System.Drawing.Size(214, 22);
             this.OpenFolderItem.Text = "Show in Windows Explorer";
@@ -101,7 +101,7 @@
             // 
             // SetIconItem
             // 
-            this.SetIconItem.Image = global::SphereStudio.Ide.Properties.Resources.palette;
+            this.SetIconItem.Image = global::SphereStudio.Properties.Resources.palette;
             this.SetIconItem.Name = "SetIconItem";
             this.SetIconItem.Size = new System.Drawing.Size(214, 22);
             this.SetIconItem.Text = "&Set Icon...";
@@ -114,7 +114,7 @@
             // 
             // RefreshItem
             // 
-            this.RefreshItem.Image = global::SphereStudio.Ide.Properties.Resources.arrow_refresh;
+            this.RefreshItem.Image = global::SphereStudio.Properties.Resources.arrow_refresh;
             this.RefreshItem.Name = "RefreshItem";
             this.RefreshItem.Size = new System.Drawing.Size(214, 22);
             this.RefreshItem.Text = "Re&fresh";

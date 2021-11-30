@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
-using SphereStudio;
 using SphereStudio.Base;
-using SphereStudio.Ide.Utility;
+using SphereStudio.Utility;
 
-namespace SphereStudio.Ide
+namespace SphereStudio.Core
 {
     class IniSettings : ISettings
     {

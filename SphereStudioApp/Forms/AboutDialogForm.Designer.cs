@@ -1,4 +1,4 @@
-﻿namespace SphereStudio.Ide.Forms
+﻿namespace SphereStudio.Forms
 {
     partial class AboutDialogForm
     {
@@ -142,7 +142,7 @@
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Image = global::SphereStudio.Ide.Properties.Resources.SphericalLogo;
+            this.pictureBox2.Image = global::SphereStudio.Properties.Resources.SphericalLogo;
             this.pictureBox2.Location = new System.Drawing.Point(3, 3);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(47, 44);
@@ -178,7 +178,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::SphereStudio.Ide.Properties.Resources.SphereEditor;
+            this.pictureBox1.Image = global::SphereStudio.Properties.Resources.SphereEditor;
             this.pictureBox1.Location = new System.Drawing.Point(12, 38);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBox1.Name = "pictureBox1";
