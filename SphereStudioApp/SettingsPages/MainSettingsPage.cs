@@ -9,7 +9,7 @@ using SphereStudio.Core;
 namespace SphereStudio.SettingsPages
 {
     [ToolboxItem(false)]
-    partial class MainSettingsPage : UserControl, ISettingsPage, IStyleAware
+    partial class MainSettingsPage : UserControl, IStyleAware, ISettingsPage
     {
         public MainSettingsPage()
         {

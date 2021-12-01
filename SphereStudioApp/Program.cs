@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using SphereStudio.Base;
 using SphereStudio.Compilers;
 using SphereStudio.Forms;
+using SphereStudio.ProjectPages;
 using SphereStudio.SettingsPages;
 using SphereStudio.StyleProviders;
 
@@ -16,14 +17,8 @@ namespace SphereStudio
         public static string Style => "Default: Blue";
     }
 
-    /// <summary>
-    /// Represents the global state of the Sphere Studio instance.
-    /// </summary>
     static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
         [STAThread]
         public static void Main(string[] args)
         {
@@ -31,31 +26,29 @@ namespace SphereStudio
             Application.SetCompatibleTextRenderingDefault(false);
 
             PluginManager.Register(null, new DefaultStyleProvider(), "Default");
-            PluginManager.Register(null, new SphereCompiler(), Defaults.Compiler);
+            PluginManager.Register(null, new ClassicCompiler(), Defaults.Compiler);
             PluginManager.Register(null, new MainSettingsPage(), "Sphere Studio");
+            PluginManager.Register(null, new SphereProjectPage(), "Sphere");
 
-            Form = new MainWindowForm();
+            Window = new SphereStudioWindow();
 
             // check for and open files dragged onto the app.
             foreach (var fileName in args)
             {
                 if (File.Exists(fileName))
                 {
-                    Form.OpenFile(fileName);
+                    Window.OpenFile(fileName);
                 }
             }
 
             if (args.Length > 0 && File.Exists(args[args.Length - 1]))
             {
-                Form.SetDefaultActive(args[args.Length - 1]);
+                Window.SetDefaultActive(args[args.Length - 1]);
             }
 
-            Application.Run(Form);
+            Application.Run(Window);
         }
 
-        /// <summary>
-        /// Gets the form representing the IDE main window.
-        /// </summary>
-        public static MainWindowForm Form { get; private set; }
+        public static SphereStudioWindow Window { get; private set; }
     }
 }

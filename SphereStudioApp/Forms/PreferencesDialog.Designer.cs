@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.Forms
 {
-    partial class SettingsForm
+    partial class PreferencesDialog
     {
         /// <summary>
         /// Required designer variable.

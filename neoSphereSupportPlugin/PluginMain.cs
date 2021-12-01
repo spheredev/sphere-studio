@@ -4,7 +4,6 @@ using System.Windows.Forms;
 using Microsoft.Win32;
 
 using SphereStudio.Base;
-
 using SphereStudio.Compilers;
 using SphereStudio.DockPanes;
 using SphereStudio.Properties;

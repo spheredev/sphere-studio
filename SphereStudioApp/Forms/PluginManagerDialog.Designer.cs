@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.Forms
 {
-    partial class PluginManagerForm
+    partial class PluginManagerDialog
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PluginManagerForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PluginManagerDialog));
             this.presetDropDown = new System.Windows.Forms.ComboBox();
             this.pluginsListView = new System.Windows.Forms.ListView();
             this.NameColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));

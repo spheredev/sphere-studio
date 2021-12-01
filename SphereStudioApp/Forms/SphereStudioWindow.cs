@@ -20,7 +20,7 @@ namespace SphereStudio.Forms
     /// <summary>
     /// Represents an instance of the Sphere Studio IDE.
     /// </summary>
-    partial class MainWindowForm : Form, ICore, IStyleAware
+    partial class SphereStudioWindow : Form, ICore, IStyleAware
     {
         private DocumentTab _activeTab;
         private string _defaultActiveName;
@@ -32,7 +32,7 @@ namespace SphereStudio.Forms
         private DocumentTab _startTab = null;
         private List<DocumentTab> _tabs = new List<DocumentTab>();
 
-        public MainWindowForm()
+        public SphereStudioWindow()
         {
             InitializeComponent();
 
@@ -459,7 +459,7 @@ namespace SphereStudio.Forms
             string rootPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 "Sphere Projects");
-            NewProjectForm npf = new NewProjectForm(rootPath);
+            NewProjectDialog npf = new NewProjectDialog(rootPath);
 
             var starter = PluginManager.Get<IStarter>(Session.Settings.Engine);
             var compiler = PluginManager.Get<ICompiler>(Session.Settings.Compiler);
@@ -704,7 +704,7 @@ namespace SphereStudio.Forms
 
         private void menuConfigManager_Click(object sender, EventArgs e)
         {
-            new PluginManagerForm().ShowDialog(this);
+            new PluginManagerDialog().ShowDialog(this);
             UpdateEngineList();
             UpdateControls();
         }
@@ -718,7 +718,7 @@ namespace SphereStudio.Forms
         #region Help menu Click handlers
         private void menuAbout_Click(object sender, EventArgs e)
         {
-            using (AboutDialogForm about = new AboutDialogForm())
+            using (AboutDialog about = new AboutDialog())
             {
                 about.ShowDialog();
             }
@@ -919,8 +919,8 @@ namespace SphereStudio.Forms
 
         public void OpenEditorSettings()
         {
-            SettingsForm sc = new SettingsForm();
-            if (sc.ShowDialog() == DialogResult.OK)
+            var form = new PreferencesDialog();
+            if (form.ShowDialog() == DialogResult.OK)
             {
                 Session.Settings.Apply();
                 ApplyRefresh();
@@ -929,14 +929,12 @@ namespace SphereStudio.Forms
 
         private void OpenProjectProps()
         {
-            using (var form = new ProjectPropsForm(Session.Project))
+            var form = new ProjectPropertiesDialog(Session.Project);
+            if (form.ShowDialog() == DialogResult.OK)
             {
-                if (form.ShowDialog(this) == DialogResult.OK)
-                {
-                    UpdateEngineList();
-                    UpdateControls();
-                    RefreshProject();
-                }
+                UpdateEngineList();
+                UpdateControls();
+                RefreshProject();
             }
         }
 

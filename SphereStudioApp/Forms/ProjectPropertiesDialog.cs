@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -8,21 +9,22 @@ using SphereStudio.Core;
 
 namespace SphereStudio.Forms
 {
-    partial class ProjectPropsForm : Form, IStyleAware
+    partial class ProjectPropertiesDialog : Form, IStyleAware
     {
         private Project project;
 
-        public ProjectPropsForm(Project projectToEdit)
+        public ProjectPropertiesDialog(Project project)
         {
             InitializeComponent();
             StyleManager.AutoStyle(this);
 
-            project = projectToEdit;
+            this.project = project;
         }
 
         public void ApplyStyle(UIStyle style)
         {
             style.AsUIElement(this);
+            style.AsUIElement(tabPage1);
             style.AsHeading(header);
             style.AsHeading(footer);
             style.AsAccent(okButton);
@@ -40,9 +42,6 @@ namespace SphereStudio.Forms
             style.AsTextView(titleTextBox);
             style.AsTextView(authorTextBox);
             style.AsTextView(summaryTextBox);
-            style.AsTextView(resoDropDown);
-            style.AsTextView(widthTextBox);
-            style.AsTextView(heightTextBox);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -51,22 +50,22 @@ namespace SphereStudio.Forms
             if (!typeDropDown.Items.Contains(project.Compiler))
                 typeDropDown.Items.Insert(0, project.Compiler);
 
-            var resoString = $"{project.ScreenWidth}x{project.ScreenHeight}";
             pathTextBox.Text = Path.GetDirectoryName(project.FileName);
             titleTextBox.Text = project.Name;
             authorTextBox.Text = project.Author;
             summaryTextBox.Text = project.Summary;
             buildDirTextBox.Text = project.BuildPath;
             typeDropDown.Text = project.Compiler;
-            if (resoDropDown.FindStringExact(resoString) >= 0)
+
+            string[] pageNames = PluginManager.GetNames<IProjectPage>();
+            foreach (string name in pageNames)
             {
-                resoDropDown.Text = resoString;
-            }
-            else
-            {
-                resoDropDown.SelectedIndex = 0;
-                widthTextBox.Text = project.ScreenWidth.ToString();
-                heightTextBox.Text = project.ScreenHeight.ToString();
+                var plugin = PluginManager.Get<IProjectPage>(name);
+                plugin.Populate(project.Settings);
+                var page = new TabPage(name) { Tag = plugin };
+                page.Controls.Add(plugin.Control);
+                plugin.Control.Dock = DockStyle.Fill;
+                tabControl.TabPages.Add(page);
             }
 
             buildDirTextBox.Enabled = !project.IsGameOnly;
@@ -93,13 +92,26 @@ namespace SphereStudio.Forms
                 }
             }
 
+            var plugins = from name in PluginManager.GetNames<IProjectPage>()
+                          select PluginManager.Get<IProjectPage>(name);
+            
+            bool isValid = true;
+            foreach (var plugin in plugins)
+                isValid &= plugin.Verify();
+            if (!isValid)
+            {
+                DialogResult = DialogResult.None;
+                return;
+            }
+            
+            foreach (var plugin in plugins)
+                plugin.Save(project.Settings);
+
             project.Name = titleTextBox.Text;
             project.Author = authorTextBox.Text;
             project.Summary = summaryTextBox.Text;
             project.Compiler = typeDropDown.Text;
             project.BuildPath = buildDirTextBox.Text;
-            project.ScreenWidth = int.Parse(widthTextBox.Text);
-            project.ScreenHeight = int.Parse(heightTextBox.Text);
             project.Save();
         }
 
@@ -122,32 +134,7 @@ namespace SphereStudio.Forms
 
         private void typeDropDown_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ResoLabel.Visible = resoDropDown.Visible = widthTextBox.Visible = heightTextBox.Visible =
-                typeDropDown.Text == Defaults.Compiler;
-        }
-
-        private void resoDropDown_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (resoDropDown.SelectedIndex > 0)
-            {
-                var match = new Regex(@"(\d+)x(\d+)").Match(resoDropDown.Text);
-                widthTextBox.Text = match.Groups[1].Value;
-                heightTextBox.Text = match.Groups[2].Value;
-                widthTextBox.Enabled = false;
-                heightTextBox.Enabled = false;
-            }
-            else
-            {
-                widthTextBox.Enabled = true;
-                heightTextBox.Enabled = true;
-                widthTextBox.Focus();
-                widthTextBox.SelectAll();
-            }
-        }
-
-        private void resoTextBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != '\t' && e.KeyChar != '\b';
+            /* TODO: repopulate tab pages according to selected compiler */
         }
     }
 }

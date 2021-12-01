@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.Forms
 {
-    partial class ProjectPropsForm
+    partial class ProjectPropertiesDialog
     {
         /// <summary>
         /// Required designer variable.
@@ -36,10 +36,6 @@
             this.authorTextBox = new System.Windows.Forms.TextBox();
             this.okButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
-            this.resoDropDown = new System.Windows.Forms.ComboBox();
-            this.heightTextBox = new System.Windows.Forms.TextBox();
-            this.widthTextBox = new System.Windows.Forms.TextBox();
-            this.ResoLabel = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.summaryTextBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -53,9 +49,13 @@
             this.gamePanel = new System.Windows.Forms.Panel();
             this.gameHeader = new System.Windows.Forms.Label();
             this.header = new System.Windows.Forms.Label();
+            this.tabControl = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.footer.SuspendLayout();
             this.projectPanel.SuspendLayout();
             this.gamePanel.SuspendLayout();
+            this.tabControl.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // PathLabel
@@ -92,7 +92,7 @@
             this.pathTextBox.Location = new System.Drawing.Point(76, 32);
             this.pathTextBox.Name = "pathTextBox";
             this.pathTextBox.ReadOnly = true;
-            this.pathTextBox.Size = new System.Drawing.Size(303, 23);
+            this.pathTextBox.Size = new System.Drawing.Size(445, 23);
             this.pathTextBox.TabIndex = 2;
             // 
             // titleTextBox
@@ -101,7 +101,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.titleTextBox.Location = new System.Drawing.Point(76, 32);
             this.titleTextBox.Name = "titleTextBox";
-            this.titleTextBox.Size = new System.Drawing.Size(303, 23);
+            this.titleTextBox.Size = new System.Drawing.Size(445, 23);
             this.titleTextBox.TabIndex = 2;
             // 
             // authorTextBox
@@ -110,7 +110,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.authorTextBox.Location = new System.Drawing.Point(76, 61);
             this.authorTextBox.Name = "authorTextBox";
-            this.authorTextBox.Size = new System.Drawing.Size(303, 23);
+            this.authorTextBox.Size = new System.Drawing.Size(445, 23);
             this.authorTextBox.TabIndex = 4;
             // 
             // okButton
@@ -118,7 +118,7 @@
             this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.okButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.okButton.Location = new System.Drawing.Point(235, 13);
+            this.okButton.Location = new System.Drawing.Point(404, 13);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(80, 25);
             this.okButton.TabIndex = 0;
@@ -131,62 +131,12 @@
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cancelButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cancelButton.Location = new System.Drawing.Point(321, 13);
+            this.cancelButton.Location = new System.Drawing.Point(490, 13);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(80, 25);
             this.cancelButton.TabIndex = 1;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
-            // 
-            // resoDropDown
-            // 
-            this.resoDropDown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.resoDropDown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.resoDropDown.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.resoDropDown.FormattingEnabled = true;
-            this.resoDropDown.Items.AddRange(new object[] {
-            "Custom Resolution",
-            "320x240",
-            "640x480",
-            "800x600",
-            "1024x768",
-            "1280x720",
-            "1920x1080"});
-            this.resoDropDown.Location = new System.Drawing.Point(79, 184);
-            this.resoDropDown.Name = "resoDropDown";
-            this.resoDropDown.Size = new System.Drawing.Size(212, 23);
-            this.resoDropDown.TabIndex = 8;
-            this.resoDropDown.SelectedIndexChanged += new System.EventHandler(this.resoDropDown_SelectedIndexChanged);
-            // 
-            // heightTextBox
-            // 
-            this.heightTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.heightTextBox.Location = new System.Drawing.Point(341, 184);
-            this.heightTextBox.Name = "heightTextBox";
-            this.heightTextBox.Size = new System.Drawing.Size(38, 23);
-            this.heightTextBox.TabIndex = 10;
-            this.heightTextBox.Text = "240";
-            this.heightTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.resoTextBox_KeyPress);
-            // 
-            // widthTextBox
-            // 
-            this.widthTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.widthTextBox.Location = new System.Drawing.Point(297, 184);
-            this.widthTextBox.Name = "widthTextBox";
-            this.widthTextBox.Size = new System.Drawing.Size(38, 23);
-            this.widthTextBox.TabIndex = 9;
-            this.widthTextBox.Text = "320";
-            this.widthTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.resoTextBox_KeyPress);
-            // 
-            // ResoLabel
-            // 
-            this.ResoLabel.AutoSize = true;
-            this.ResoLabel.Location = new System.Drawing.Point(7, 187);
-            this.ResoLabel.Name = "ResoLabel";
-            this.ResoLabel.Size = new System.Drawing.Size(63, 15);
-            this.ResoLabel.TabIndex = 7;
-            this.ResoLabel.Text = "Resolution";
             // 
             // label3
             // 
@@ -204,7 +154,7 @@
             this.summaryTextBox.Location = new System.Drawing.Point(76, 90);
             this.summaryTextBox.Multiline = true;
             this.summaryTextBox.Name = "summaryTextBox";
-            this.summaryTextBox.Size = new System.Drawing.Size(303, 88);
+            this.summaryTextBox.Size = new System.Drawing.Size(445, 88);
             this.summaryTextBox.TabIndex = 6;
             // 
             // label4
@@ -223,7 +173,7 @@
             this.buildDirTextBox.Location = new System.Drawing.Point(76, 89);
             this.buildDirTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.buildDirTextBox.Name = "buildDirTextBox";
-            this.buildDirTextBox.Size = new System.Drawing.Size(303, 23);
+            this.buildDirTextBox.Size = new System.Drawing.Size(445, 23);
             this.buildDirTextBox.TabIndex = 6;
             // 
             // typeDropDown
@@ -235,7 +185,7 @@
             this.typeDropDown.FormattingEnabled = true;
             this.typeDropDown.Location = new System.Drawing.Point(76, 61);
             this.typeDropDown.Name = "typeDropDown";
-            this.typeDropDown.Size = new System.Drawing.Size(303, 23);
+            this.typeDropDown.Size = new System.Drawing.Size(445, 23);
             this.typeDropDown.TabIndex = 4;
             this.typeDropDown.SelectedIndexChanged += new System.EventHandler(this.typeDropDown_SelectedIndexChanged);
             // 
@@ -266,9 +216,9 @@
             this.footer.Controls.Add(this.okButton);
             this.footer.Controls.Add(this.upgradeButton);
             this.footer.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.footer.Location = new System.Drawing.Point(0, 397);
+            this.footer.Location = new System.Drawing.Point(0, 416);
             this.footer.Name = "footer";
-            this.footer.Size = new System.Drawing.Size(413, 50);
+            this.footer.Size = new System.Drawing.Size(582, 50);
             this.footer.TabIndex = 3;
             // 
             // projectPanel
@@ -283,9 +233,9 @@
             this.projectPanel.Controls.Add(this.label4);
             this.projectPanel.Controls.Add(this.label1);
             this.projectPanel.Controls.Add(this.typeDropDown);
-            this.projectPanel.Location = new System.Drawing.Point(12, 38);
+            this.projectPanel.Location = new System.Drawing.Point(9, 12);
             this.projectPanel.Name = "projectPanel";
-            this.projectPanel.Size = new System.Drawing.Size(389, 123);
+            this.projectPanel.Size = new System.Drawing.Size(531, 123);
             this.projectPanel.TabIndex = 1;
             // 
             // projectHeading
@@ -293,28 +243,26 @@
             this.projectHeading.Dock = System.Windows.Forms.DockStyle.Top;
             this.projectHeading.Location = new System.Drawing.Point(0, 0);
             this.projectHeading.Name = "projectHeading";
-            this.projectHeading.Size = new System.Drawing.Size(387, 23);
+            this.projectHeading.Size = new System.Drawing.Size(529, 23);
             this.projectHeading.TabIndex = 0;
             this.projectHeading.Text = "Project Configuration";
             this.projectHeading.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // gamePanel
             // 
+            this.gamePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.gamePanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.gamePanel.Controls.Add(this.gameHeader);
             this.gamePanel.Controls.Add(this.titleTextBox);
-            this.gamePanel.Controls.Add(this.ResoLabel);
             this.gamePanel.Controls.Add(this.label3);
-            this.gamePanel.Controls.Add(this.widthTextBox);
             this.gamePanel.Controls.Add(this.AuthorLabel);
             this.gamePanel.Controls.Add(this.summaryTextBox);
-            this.gamePanel.Controls.Add(this.heightTextBox);
             this.gamePanel.Controls.Add(this.GameTitleLabel);
-            this.gamePanel.Controls.Add(this.resoDropDown);
             this.gamePanel.Controls.Add(this.authorTextBox);
-            this.gamePanel.Location = new System.Drawing.Point(12, 167);
+            this.gamePanel.Location = new System.Drawing.Point(9, 141);
             this.gamePanel.Name = "gamePanel";
-            this.gamePanel.Size = new System.Drawing.Size(389, 218);
+            this.gamePanel.Size = new System.Drawing.Size(531, 189);
             this.gamePanel.TabIndex = 2;
             // 
             // gameHeader
@@ -322,7 +270,7 @@
             this.gameHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.gameHeader.Location = new System.Drawing.Point(0, 0);
             this.gameHeader.Name = "gameHeader";
-            this.gameHeader.Size = new System.Drawing.Size(387, 23);
+            this.gameHeader.Size = new System.Drawing.Size(529, 23);
             this.gameHeader.TabIndex = 0;
             this.gameHeader.Text = "Game Information";
             this.gameHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -332,27 +280,50 @@
             this.header.Dock = System.Windows.Forms.DockStyle.Top;
             this.header.Location = new System.Drawing.Point(0, 0);
             this.header.Name = "header";
-            this.header.Size = new System.Drawing.Size(413, 23);
+            this.header.Size = new System.Drawing.Size(582, 23);
             this.header.TabIndex = 0;
-            this.header.Text = "configure your Sphere game project";
+            this.header.Text = "configure your Sphere Studio project";
             this.header.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // ProjectPropsForm
+            // tabControl
+            // 
+            this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl.Controls.Add(this.tabPage1);
+            this.tabControl.Location = new System.Drawing.Point(12, 35);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(558, 369);
+            this.tabControl.TabIndex = 4;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.projectPanel);
+            this.tabPage1.Controls.Add(this.gamePanel);
+            this.tabPage1.Location = new System.Drawing.Point(4, 24);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(550, 341);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "General";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // ProjectPropertiesDialog
             // 
             this.AcceptButton = this.okButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(413, 447);
+            this.ClientSize = new System.Drawing.Size(582, 466);
+            this.Controls.Add(this.tabControl);
             this.Controls.Add(this.header);
-            this.Controls.Add(this.gamePanel);
-            this.Controls.Add(this.projectPanel);
             this.Controls.Add(this.footer);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "ProjectPropsForm";
+            this.Name = "ProjectPropertiesDialog";
+            this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Project Properties";
@@ -361,6 +332,8 @@
             this.projectPanel.PerformLayout();
             this.gamePanel.ResumeLayout(false);
             this.gamePanel.PerformLayout();
+            this.tabControl.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -381,10 +354,6 @@
         private System.Windows.Forms.ComboBox typeDropDown;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox resoDropDown;
-        private System.Windows.Forms.TextBox heightTextBox;
-        private System.Windows.Forms.TextBox widthTextBox;
-        private System.Windows.Forms.Label ResoLabel;
         private System.Windows.Forms.Button upgradeButton;
         private System.Windows.Forms.Panel footer;
         private System.Windows.Forms.Panel projectPanel;
@@ -392,5 +361,7 @@
         private System.Windows.Forms.Label gameHeader;
         private System.Windows.Forms.Label header;
         private System.Windows.Forms.Label projectHeading;
+        private System.Windows.Forms.TabControl tabControl;
+        private System.Windows.Forms.TabPage tabPage1;
     }
 }

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
-
+using System.Text.RegularExpressions;
 using SphereStudio.Base;
 using SphereStudio.Utility;
 
@@ -33,6 +34,16 @@ namespace SphereStudio.Core
             return Convert.ToInt32(GetString(key, defValue.ToString()));
         }
 
+        public Size GetSize(string key, Size defValue)
+        {
+            var defString = $"{defValue.Width}x{defValue.Height}";
+            var strValue = _ini.Read(_section, key, defString);
+            var match = new Regex(@"(\d+)x(\d+)").Match(strValue);
+            return match.Groups.Count == 3
+                ? new Size(int.Parse(match.Groups[1].Value), int.Parse(match.Groups[2].Value))
+                : defValue;
+        }
+        
         public string GetString(string key, string defValue)
         {
             return _ini.Read(_section, key, defValue ?? "");
@@ -56,6 +67,11 @@ namespace SphereStudio.Core
         {
             Directory.CreateDirectory(Path.GetDirectoryName(filepath));
             return _ini.SaveAs(filepath);
+        }
+
+        public void SetSize(string key, Size value)
+        {
+            SetValue(key, $"{value.Width}x{value.Height}");
         }
 
         public void SetValue(string key, object value)

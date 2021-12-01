@@ -34,7 +34,7 @@ namespace SphereStudio.Debuggers
             m_plugin = main;
             m_gamePath = gamePath;
             m_sourcePath = project.RootPath;
-            m_scriptPath = Path.GetDirectoryName(Path.Combine(m_sourcePath, project.MainScript));
+            m_scriptPath = project.RootPath;
             m_engineProcess = engine;
             m_enginePath = Path.GetDirectoryName(enginePath);
             m_focusTimer = new Timer(HandleFocusSwitch, this, Timeout.Infinite, Timeout.Infinite);

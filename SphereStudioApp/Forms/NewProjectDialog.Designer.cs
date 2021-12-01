@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.Forms
 {
-    partial class NewProjectForm
+    partial class NewProjectDialog
     {
         /// <summary>
         /// Required designer variable.
@@ -39,8 +39,6 @@
             this.DescLabel = new System.Windows.Forms.Label();
             this.summaryTextBox = new System.Windows.Forms.TextBox();
             this.resoDropDown = new System.Windows.Forms.ComboBox();
-            this.heightTextBox = new System.Windows.Forms.TextBox();
-            this.widthTextBox = new System.Windows.Forms.TextBox();
             this.ResoLabel = new System.Windows.Forms.Label();
             this.footer = new System.Windows.Forms.Panel();
             this.header = new System.Windows.Forms.Label();
@@ -52,9 +50,13 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.gameHeading = new System.Windows.Forms.Label();
+            this.heightEditBox = new System.Windows.Forms.NumericUpDown();
+            this.widthEditBox = new System.Windows.Forms.NumericUpDown();
             this.footer.SuspendLayout();
             this.projectPanel.SuspendLayout();
             this.gamePanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.heightEditBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.widthEditBox)).BeginInit();
             this.SuspendLayout();
             // 
             // directoryTextBox
@@ -176,31 +178,11 @@
             "1024x768",
             "1280x720",
             "1920x1080"});
-            this.resoDropDown.Location = new System.Drawing.Point(80, 172);
+            this.resoDropDown.Location = new System.Drawing.Point(81, 172);
             this.resoDropDown.Name = "resoDropDown";
-            this.resoDropDown.Size = new System.Drawing.Size(210, 21);
+            this.resoDropDown.Size = new System.Drawing.Size(197, 21);
             this.resoDropDown.TabIndex = 7;
             this.resoDropDown.SelectedIndexChanged += new System.EventHandler(this.resoDropDown_SelectedIndexChanged);
-            // 
-            // heightTextBox
-            // 
-            this.heightTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.heightTextBox.Location = new System.Drawing.Point(340, 172);
-            this.heightTextBox.Name = "heightTextBox";
-            this.heightTextBox.Size = new System.Drawing.Size(38, 22);
-            this.heightTextBox.TabIndex = 9;
-            this.heightTextBox.TextChanged += new System.EventHandler(this.resoTextBox_TextChanged);
-            this.heightTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.resoTextBox_KeyPress);
-            // 
-            // widthTextBox
-            // 
-            this.widthTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.widthTextBox.Location = new System.Drawing.Point(296, 172);
-            this.widthTextBox.Name = "widthTextBox";
-            this.widthTextBox.Size = new System.Drawing.Size(38, 22);
-            this.widthTextBox.TabIndex = 8;
-            this.widthTextBox.TextChanged += new System.EventHandler(this.resoTextBox_TextChanged);
-            this.widthTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.resoTextBox_KeyPress);
             // 
             // ResoLabel
             // 
@@ -263,6 +245,8 @@
             this.gamePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gamePanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.gamePanel.Controls.Add(this.heightEditBox);
+            this.gamePanel.Controls.Add(this.widthEditBox);
             this.gamePanel.Controls.Add(this.authorTextBox);
             this.gamePanel.Controls.Add(this.titleTextBox);
             this.gamePanel.Controls.Add(this.label6);
@@ -272,8 +256,6 @@
             this.gamePanel.Controls.Add(this.gameHeading);
             this.gamePanel.Controls.Add(this.resoDropDown);
             this.gamePanel.Controls.Add(this.ResoLabel);
-            this.gamePanel.Controls.Add(this.heightTextBox);
-            this.gamePanel.Controls.Add(this.widthTextBox);
             this.gamePanel.Location = new System.Drawing.Point(9, 163);
             this.gamePanel.Name = "gamePanel";
             this.gamePanel.Size = new System.Drawing.Size(389, 206);
@@ -326,7 +308,63 @@
             this.gameHeading.Text = "Game Information";
             this.gameHeading.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // NewProjectForm
+            // heightEditBox
+            // 
+            this.heightEditBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.heightEditBox.Increment = new decimal(new int[] {
+            16,
+            0,
+            0,
+            0});
+            this.heightEditBox.Location = new System.Drawing.Point(334, 173);
+            this.heightEditBox.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.heightEditBox.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.heightEditBox.Name = "heightEditBox";
+            this.heightEditBox.Size = new System.Drawing.Size(45, 22);
+            this.heightEditBox.TabIndex = 20;
+            this.heightEditBox.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // widthEditBox
+            // 
+            this.widthEditBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.widthEditBox.Increment = new decimal(new int[] {
+            16,
+            0,
+            0,
+            0});
+            this.widthEditBox.Location = new System.Drawing.Point(283, 173);
+            this.widthEditBox.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.widthEditBox.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.widthEditBox.Name = "widthEditBox";
+            this.widthEditBox.Size = new System.Drawing.Size(45, 22);
+            this.widthEditBox.TabIndex = 19;
+            this.widthEditBox.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // NewProjectDialog
             // 
             this.AcceptButton = this.okButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -341,7 +379,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "NewProjectForm";
+            this.Name = "NewProjectDialog";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -351,6 +389,8 @@
             this.projectPanel.PerformLayout();
             this.gamePanel.ResumeLayout(false);
             this.gamePanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.heightEditBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.widthEditBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -363,8 +403,6 @@
         private System.Windows.Forms.TextBox directoryTextBox;
         private System.Windows.Forms.TextBox nameTextBox;
         private System.Windows.Forms.Label ResoLabel;
-        private System.Windows.Forms.TextBox heightTextBox;
-        private System.Windows.Forms.TextBox widthTextBox;
         private System.Windows.Forms.ComboBox resoDropDown;
         private System.Windows.Forms.Label DescLabel;
         private System.Windows.Forms.TextBox summaryTextBox;
@@ -380,5 +418,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label gameHeading;
+        private System.Windows.Forms.NumericUpDown heightEditBox;
+        private System.Windows.Forms.NumericUpDown widthEditBox;
     }
 }

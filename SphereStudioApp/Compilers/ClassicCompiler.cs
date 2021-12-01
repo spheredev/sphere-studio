@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,7 +8,7 @@ using SphereStudio.Base;
 
 namespace SphereStudio.Compilers
 {
-    class SphereCompiler : ICompiler
+    class ClassicCompiler : ICompiler
     {
         private readonly string[] fileFilters =
         {
@@ -19,7 +20,7 @@ namespace SphereStudio.Compilers
 
         public bool Prep(IProject project, IConsole console)
         {
-            console.Print("Preparing Sphere 1.x project... ");
+            console.Print("preparing Sphere Classic project... ");
             var scriptPath = Path.Combine(project.RootPath, "scripts", "main.js");
             Directory.CreateDirectory(Path.GetDirectoryName(scriptPath));
             var code = string.Join(Environment.NewLine,
@@ -28,10 +29,11 @@ namespace SphereStudio.Compilers
                 "function game()",
                 "{",
                 "\t// your game code here",
+                "\t",
                 "}",
             "");
             File.WriteAllText(scriptPath, code);
-            project.MainScript = "main.js";
+            project.Settings.SetValue("mainScript", "scripts/main.js");
             console.Print("OK.\n");
 
             console.Print("Success!\n");
@@ -85,13 +87,32 @@ namespace SphereStudio.Compilers
 
             con.Print("writing game manifest 'game.sgm'... ");
             string sgmPath = Path.Combine(outPath, "game.sgm");
-            using (StreamWriter sw = new StreamWriter(sgmPath)) {
+            var apiVersion = project.Settings.GetInteger("apiVersion", 1);
+            var apiLevel = project.Settings.GetInteger("apiLevel", 1);
+            var mainPath = project.Settings.GetString("mainScript", "scripts/main.js");
+            var resolution = project.Settings.GetSize("resolution", new Size(320, 240));
+            using (StreamWriter sw = new StreamWriter(sgmPath))
+            {
+                sw.WriteLine($"version={apiVersion}");
+                if (apiVersion >= 2)
+                    sw.WriteLine($"api={apiLevel}");
                 sw.WriteLine($"name={project.Name}");
                 sw.WriteLine($"author={project.Author}");
                 sw.WriteLine($"description={project.Summary}");
-                sw.WriteLine($"screen_width={project.ScreenWidth}");
-                sw.WriteLine($"screen_height={project.ScreenHeight}");
-                sw.WriteLine($"script={project.MainScript}");
+                if (apiVersion >= 2)
+                {
+                    sw.WriteLine($"resolution={resolution.Width}x{resolution.Height}");
+                    sw.WriteLine($"main={mainPath}");
+                }
+                else
+                {
+                    var scriptPath = mainPath.StartsWith("scripts/")
+                        ? mainPath.Substring(8)
+                        : $"../{mainPath}";
+                    sw.WriteLine($"screen_width={resolution.Width}");
+                    sw.WriteLine($"screen_height={resolution.Height}");
+                    sw.WriteLine($"script={scriptPath}");
+                }
             }
             con.Print("OK.\n");
 

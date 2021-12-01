@@ -3,7 +3,7 @@
 namespace SphereStudio.Base
 {
     /// <summary>
-    /// Specifies the interface for a Settings Center page.
+    /// Specifies the interface for a Preferences tab page.
     /// </summary>
     public interface ISettingsPage : IPlugin
     {

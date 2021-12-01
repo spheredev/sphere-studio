@@ -8,9 +8,9 @@ using SphereStudio.Base;
 
 namespace SphereStudio.Forms
 {
-    public partial class SavePresetForm : Form, IStyleAware
+    public partial class SavePresetDialog : Form, IStyleAware
     {
-        public SavePresetForm()
+        public SavePresetDialog()
         {
             InitializeComponent();
             StyleManager.AutoStyle(this);

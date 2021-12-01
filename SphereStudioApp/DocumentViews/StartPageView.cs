@@ -20,12 +20,12 @@ namespace SphereStudio.DocumentViews
         private Project project;
         private ListViewItem selectedItem;
 
-        private readonly MainWindowForm _mainEditor;
+        private readonly SphereStudioWindow _mainEditor;
 
         private readonly ImageList _listIcons = new ImageList();
         private readonly ImageList _listIconsSmall = new ImageList();
 
-        public StartPageView(MainWindowForm mainEditor)
+        public StartPageView(SphereStudioWindow mainEditor)
         {
             InitializeComponent();
             StyleManager.AutoStyle(this);

@@ -23,10 +23,10 @@ namespace SphereStudio.DockPanes
             m_config = config;
         }
 
-        public bool ShowInViewMenu => true;
         public Control Control => this;
         public DockHint DockHint => DockHint.Bottom;
         public Bitmap DockIcon => Resources.ConsoleIcon;
+        public bool ShowInViewMenu => true;
 
         public SsjDebugger Ssj { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.Forms
 {
-    partial class MainWindowForm
+    partial class SphereStudioWindow
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindowForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SphereStudioWindow));
             this.EditorTabContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.CloseTabItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CloseAllTabItem = new System.Windows.Forms.ToolStripMenuItem();

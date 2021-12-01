@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\IProjectPage.cs" />
     <Compile Include="Formats\Entity.cs" />
     <Compile Include="Formats\Layer.cs" />
     <Compile Include="Formats\Map.cs" />

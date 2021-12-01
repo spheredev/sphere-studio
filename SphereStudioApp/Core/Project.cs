@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -68,12 +69,11 @@ namespace SphereStudio.Core
                 Name = "Untitled",
                 Author = "Author Unknown",
                 Summary = "",
-                ScreenWidth = 320,
-                ScreenHeight = 240,
-                MainScript = "main.js",
             };
 
-            string[] sgmText = File.ReadAllLines(fileName);
+            var sgmText = File.ReadAllLines(fileName);
+            var screenWidth = 320;
+            var screenHeight = 240;
             foreach (string line in sgmText)
             {
                 try
@@ -88,9 +88,9 @@ namespace SphereStudio.Core
                             case "name": project.Name = value; break;
                             case "author": project.Author = value; break;
                             case "description": project.Summary = value; break;
-                            case "script": project.MainScript = value; break;
-                            case "screen_width": project.ScreenWidth = int.Parse(value); break;
-                            case "screen_height": project.ScreenHeight = int.Parse(value); break;
+                            case "script": project.Settings.SetValue("mainScript", value); break;
+                            case "screen_width": screenWidth = int.Parse(value); break;
+                            case "screen_height": screenHeight = int.Parse(value); break;
                         }
                     }
                 }
@@ -103,6 +103,7 @@ namespace SphereStudio.Core
             }
 
             project.Compiler = Defaults.Compiler;
+            project.Settings.SetSize("resolution", new Size(screenWidth, screenHeight));
             return project;
         }
 
@@ -129,6 +130,11 @@ namespace SphereStudio.Core
         {
             get { return Path.GetDirectoryName(FileName); }
         }
+
+        /// <summary>
+        /// Gets the <c>ISettings</c> object used to store settings for this project.
+        /// </summary>
+        public ISettings Settings => _ssproj;
 
         /// <summary>
         /// Gets or sets the name of the directory where the project
@@ -189,16 +195,6 @@ namespace SphereStudio.Core
         }
 
         /// <summary>
-        /// Gets or sets the filename of the game's startup script, relative
-        /// to the game's scripts/ directory.
-        /// </summary>
-        public string MainScript
-        {
-            get { return _ssproj.GetString("mainScript", ""); }
-            set { _ssproj.SetValue("mainScript", value); }
-        }
-
-        /// <summary>
         /// Gets or sets the game's vertical resolution.
         /// </summary>
         public int ScreenWidth
@@ -238,12 +234,17 @@ namespace SphereStudio.Core
                 string fileName = Path.Combine(Path.GetDirectoryName(FileName), "game.sgm");
                 using (var writer = new StreamWriter(fileName, false, new UTF8Encoding(false)))
                 {
+                    var mainPath = _ssproj.GetString("mainScript", "scripts/main.js");
+                    var scriptPath = mainPath.StartsWith("scripts/")
+                        ? mainPath.Substring(8)
+                        : $"../{mainPath}";
+                    var resolution = _ssproj.GetSize("resolution", new System.Drawing.Size(320, 240));
                     writer.WriteLine(string.Format("name={0}", Name));
                     writer.WriteLine(string.Format("author={0}", Author));
                     writer.WriteLine(string.Format("description={0}", Summary));
-                    writer.WriteLine(string.Format("script={0}", MainScript));
-                    writer.WriteLine(string.Format("screen_width={0}", ScreenWidth));
-                    writer.WriteLine(string.Format("screen_height={0}", ScreenHeight));
+                    writer.WriteLine(string.Format("script={0}", scriptPath));
+                    writer.WriteLine(string.Format("screen_width={0}", resolution.Width));
+                    writer.WriteLine(string.Format("screen_height={0}", resolution.Height));
                 }
             }
             else

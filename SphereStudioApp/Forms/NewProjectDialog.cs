@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -8,12 +9,12 @@ using SphereStudio.Core;
 
 namespace SphereStudio.Forms
 {
-    partial class NewProjectForm : Form, IStyleAware
+    partial class NewProjectDialog : Form, IStyleAware
     {
         private bool autoTitleMode = true;
         private string projectRoot;
 
-        public NewProjectForm(string projectRootPath)
+        public NewProjectDialog(string projectRootPath)
         {
             InitializeComponent();
             StyleManager.AutoStyle(this);
@@ -60,8 +61,8 @@ namespace SphereStudio.Forms
             style.AsTextView(authorTextBox);
             style.AsTextView(summaryTextBox);
             style.AsTextView(resoDropDown);
-            style.AsTextView(widthTextBox);
-            style.AsTextView(heightTextBox);
+            style.AsTextView(widthEditBox);
+            style.AsTextView(heightEditBox);
 
             style.AsHeading(footer);
             style.AsUIElement(okButton);
@@ -74,10 +75,9 @@ namespace SphereStudio.Forms
             NewProject.Name = titleTextBox.Text;
             NewProject.Author = authorTextBox.Text;
             NewProject.Summary = summaryTextBox.Text;
-            NewProject.ScreenWidth = int.Parse(widthTextBox.Text);
-            NewProject.ScreenHeight = int.Parse(heightTextBox.Text);
-            NewProject.MainScript = "main.js";
             NewProject.Compiler = typeDropDown.Text;
+            NewProject.Settings.SetValue("mainScript", "scripts/main.js");
+            NewProject.Settings.SetSize("resolution", new Size((int)widthEditBox.Value, (int)heightEditBox.Value));
         }
 
         private void resoDropDown_SelectedIndexChanged(object sender, EventArgs e)
@@ -85,17 +85,17 @@ namespace SphereStudio.Forms
             if (resoDropDown.SelectedIndex > 0)
             {
                 var match = new Regex(@"(\d+)x(\d+)").Match(resoDropDown.Text);
-                widthTextBox.Text = match.Groups[1].Value;
-                heightTextBox.Text = match.Groups[2].Value;
-                widthTextBox.Enabled = false;
-                heightTextBox.Enabled = false;
+                widthEditBox.Value = int.Parse(match.Groups[1].Value);
+                heightEditBox.Value = int.Parse(match.Groups[2].Value);
+                widthEditBox.Enabled = false;
+                heightEditBox.Enabled = false;
             }
             else
             {
-                widthTextBox.Enabled = true;
-                heightTextBox.Enabled = true;
-                widthTextBox.Focus();
-                widthTextBox.SelectAll();
+                widthEditBox.Enabled = true;
+                heightEditBox.Enabled = true;
+                widthEditBox.Focus();
+                widthEditBox.Select(0, widthEditBox.Text.Length);
             }
         }
 
@@ -148,13 +148,6 @@ namespace SphereStudio.Forms
                     okButton.Enabled = false;
                 }
             }
-
-            int resoWidth = 0;
-            int resoHeight = 0;
-            int.TryParse(widthTextBox.Text, out resoWidth);
-            int.TryParse(heightTextBox.Text, out resoHeight);
-            if (resoWidth == 0 || resoHeight == 0)
-                okButton.Enabled = false;
         }
     }
 }

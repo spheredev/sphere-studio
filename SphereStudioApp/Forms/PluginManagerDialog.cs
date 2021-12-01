@@ -9,13 +9,13 @@ using SphereStudio.Utility;
 
 namespace SphereStudio.Forms
 {
-    partial class PluginManagerForm : Form, IStyleAware
+    partial class PluginManagerDialog : Form, IStyleAware
     {
         private bool updatingHandlers = false;
         private bool updatingPresets = false;
         private bool updatingPlugins = false;
 
-        public PluginManagerForm()
+        public PluginManagerDialog()
         {
             InitializeComponent();
             StyleManager.AutoStyle(this);
@@ -196,7 +196,7 @@ namespace SphereStudio.Forms
 
         private void savePresetButton_Click(object sender, EventArgs e)
         {
-            using (var diag = new SavePresetForm())
+            using (var diag = new SavePresetDialog())
             {
                 if (diag.ShowDialog() != DialogResult.OK)
                     return;

@@ -34,20 +34,9 @@ namespace SphereStudio.Base
         string Summary { get; set; }
         
         /// <summary>
-        /// Gets or sets the game's default horizontal resolution.
+        /// Gets the <c>ISettings</c> used to store settings for this project.
         /// </summary>
-        int ScreenWidth { get; set; }
-
-        /// <summary>
-        /// Gets or sets the game's default vertical resolution.
-        /// </summary>
-        int ScreenHeight { get; set; }
-
-        /// <summary>
-        /// Gets the filename of the game's startup script, relative to
-        /// 'scripts'.
-        /// </summary>
-        string MainScript { get; set; }
+        ISettings Settings { get; }
 
         /// <summary>
         /// Gets a dictionary of all breakpoints set for this project.

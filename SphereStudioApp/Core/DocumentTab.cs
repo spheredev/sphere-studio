@@ -32,7 +32,7 @@ namespace SphereStudio.Core
         /// <param name="view">The IDocumentView the tab is hosting.</param>
         /// <param name="fileName">The fully-qualified filename of the document, or null if untitled.</param>
         /// <param name="restoreView">'true' to restore the last saved view state. Has no effect on untitled tabs.</param>
-        public DocumentTab(MainWindowForm ide, DocumentView view, string fileName = null, bool restoreView = false)
+        public DocumentTab(SphereStudioWindow ide, DocumentView view, string fileName = null, bool restoreView = false)
         {
             FileName = fileName;
             View = view;
@@ -320,8 +320,8 @@ namespace SphereStudio.Core
             if (FileName == null) return;
             TextView view = View as TextView;
             Session.Project.SetBreakpoints(FileName, view.Breakpoints);
-            var debugger = Program.Form.Debugger;
-            if (Program.Form.Debugger != null)
+            var debugger = Program.Window.Debugger;
+            if (Program.Window.Debugger != null)
             {
                 if (e.Active)
                     await debugger.SetBreakpoint(FileName, e.LineNumber);

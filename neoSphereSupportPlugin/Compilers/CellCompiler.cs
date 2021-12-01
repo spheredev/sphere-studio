@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -35,10 +36,11 @@ namespace SphereStudio.Compilers
                 var cellscriptPath = Path.Combine(project.RootPath, "Cellscript.js");
                 var mainScriptPath = Path.Combine(project.RootPath, "scripts\\main.js");
                 var template = File.ReadAllText(cellTemplatePath);
+                var resolution = project.Settings.GetSize("resolution", new Size(320, 240));
                 var script = string.Format(template,
                     JSifyString(project.Name, '"'), JSifyString(project.Author, '"'),
                     JSifyString(project.Summary, '"'),
-                    $"{project.ScreenWidth}x{project.ScreenHeight}");
+                    $"{resolution.Width}x{resolution.Height}");
                 File.WriteAllText(cellscriptPath, script);
                 File.Delete(cellTemplatePath);
                 con.Print("OK.\n");
@@ -47,7 +49,7 @@ namespace SphereStudio.Compilers
                 script = string.Format(template,
                     JSifyString(project.Name, '"'), JSifyString(project.Author, '"'),
                     JSifyString(project.Summary, '"'),
-                    $"{project.ScreenWidth}x{project.ScreenHeight}");
+                    $"{resolution.Width}x{resolution.Height}");
                 File.WriteAllText(mainScriptPath, script);
                 File.Delete(scriptTemplatePath);
                 con.Print("OK.\n");

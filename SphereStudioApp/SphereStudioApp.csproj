@@ -107,13 +107,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Compilers\SphereCompiler.cs" />
+    <Compile Include="Compilers\ClassicCompiler.cs" />
     <Compile Include="Core\PluginShim.cs" />
-    <Compile Include="Forms\SettingsForm.cs">
+    <Compile Include="Forms\PreferencesDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\SettingsForm.Designer.cs">
-      <DependentUpon>SettingsForm.cs</DependentUpon>
+    <Compile Include="Forms\PreferencesDialog.Designer.cs">
+      <DependentUpon>PreferencesDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="DockPanes\BuildLogPane.cs">
       <SubType>UserControl</SubType>
@@ -121,28 +121,34 @@
     <Compile Include="DockPanes\BuildLogPane.Designer.cs">
       <DependentUpon>BuildLogPane.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AboutDialogForm.cs">
+    <Compile Include="Forms\AboutDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\AboutDialogForm.Designer.cs">
-      <DependentUpon>AboutDialogForm.cs</DependentUpon>
+    <Compile Include="Forms\AboutDialog.Designer.cs">
+      <DependentUpon>AboutDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\PluginManagerForm.cs">
+    <Compile Include="Forms\PluginManagerDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\PluginManagerForm.Designer.cs">
-      <DependentUpon>PluginManagerForm.cs</DependentUpon>
+    <Compile Include="Forms\PluginManagerDialog.Designer.cs">
+      <DependentUpon>PluginManagerDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\SavePresetForm.cs">
+    <Compile Include="Forms\SavePresetDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\SavePresetForm.Designer.cs">
-      <DependentUpon>SavePresetForm.cs</DependentUpon>
+    <Compile Include="Forms\SavePresetDialog.Designer.cs">
+      <DependentUpon>SavePresetDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Core\Session.cs" />
     <Compile Include="Core\BuildEngine.cs" />
     <Compile Include="Core\DockManager.cs" />
     <Compile Include="Core\DocumentTab.cs" />
+    <Compile Include="ProjectPages\SphereProjectPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ProjectPages\SphereProjectPage.Designer.cs">
+      <DependentUpon>SphereProjectPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -169,45 +175,48 @@
     <Compile Include="DocumentViews\StartPageView.Designer.cs">
       <DependentUpon>StartPageView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\MainWindowForm.cs">
+    <Compile Include="Forms\SphereStudioWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\MainWindowForm.Designer.cs">
-      <DependentUpon>MainWindowForm.cs</DependentUpon>
+    <Compile Include="Forms\SphereStudioWindow.Designer.cs">
+      <DependentUpon>SphereStudioWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ProjectPropsForm.cs">
+    <Compile Include="Forms\ProjectPropertiesDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ProjectPropsForm.designer.cs">
-      <DependentUpon>ProjectPropsForm.cs</DependentUpon>
+    <Compile Include="Forms\ProjectPropertiesDialog.designer.cs">
+      <DependentUpon>ProjectPropertiesDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
-    <Compile Include="Forms\NewProjectForm.cs">
+    <Compile Include="Forms\NewProjectDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\NewProjectForm.Designer.cs">
-      <DependentUpon>NewProjectForm.cs</DependentUpon>
+    <Compile Include="Forms\NewProjectDialog.Designer.cs">
+      <DependentUpon>NewProjectDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\Project.cs" />
-    <EmbeddedResource Include="Forms\SettingsForm.resx">
-      <DependentUpon>SettingsForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\PreferencesDialog.resx">
+      <DependentUpon>PreferencesDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DockPanes\BuildLogPane.resx">
       <DependentUpon>BuildLogPane.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AboutDialogForm.resx">
-      <DependentUpon>AboutDialogForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\AboutDialog.resx">
+      <DependentUpon>AboutDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\PluginManagerForm.resx">
-      <DependentUpon>PluginManagerForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\PluginManagerDialog.resx">
+      <DependentUpon>PluginManagerDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SavePresetForm.resx">
-      <DependentUpon>SavePresetForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\SavePresetDialog.resx">
+      <DependentUpon>SavePresetDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DockPanes\FileListPane.resx">
       <DependentUpon>FileListPane.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectPages\SphereProjectPage.resx">
+      <DependentUpon>SphereProjectPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SettingsPages\MainSettingsPage.resx">
       <DependentUpon>MainSettingsPage.cs</DependentUpon>
@@ -216,15 +225,15 @@
       <DependentUpon>StartPageView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\MainWindowForm.resx">
-      <DependentUpon>MainWindowForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\SphereStudioWindow.resx">
+      <DependentUpon>SphereStudioWindow.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ProjectPropsForm.resx">
-      <DependentUpon>ProjectPropsForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\ProjectPropertiesDialog.resx">
+      <DependentUpon>ProjectPropertiesDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\NewProjectForm.resx">
-      <DependentUpon>NewProjectForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\NewProjectDialog.resx">
+      <DependentUpon>NewProjectDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
