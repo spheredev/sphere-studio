@@ -72,7 +72,7 @@ namespace SphereStudio.Core
             PluginManager.Core.Docking.Show(buildView);
             PluginManager.Core.Docking.Activate(buildView);
             buildView.Print($"-------------------- Prep started: {project.Name} -------------------\n");
-            ICompiler compiler = PluginManager.Get<ICompiler>(project.Compiler);
+            var compiler = PluginManager.Get<ICompiler>(project.Compiler);
             if (compiler.Prep(project, buildView))
             {
                 buildView.Print($"================ Successfully prepped: {project.Name} ===============");
@@ -93,7 +93,7 @@ namespace SphereStudio.Core
         /// <returns>The full path of the compiled distribution.</returns>
         public static async Task<string> Build(Project project, bool debuggable)
         {
-            ICompiler compiler = PluginManager.Get<ICompiler>(project.Compiler);
+            var compiler = PluginManager.Get<ICompiler>(project.Compiler);
             if (compiler == null)
             {
                 MessageBox.Show(
@@ -107,8 +107,8 @@ namespace SphereStudio.Core
             PluginManager.Core.Docking.Activate(buildView);
 
             buildView.Print($"------------------- Build started: {project.Name} -------------------\n");
-            string outPath = Path.Combine(project.RootPath, project.BuildPath);
-            if (await compiler.Build(project, outPath, debuggable, buildView))
+            var outPath = await compiler.Build(project, debuggable, buildView);
+            if (outPath != null)
             {
                 buildView.Print($"================= Successfully built: {project.Name} ================");
                 return outPath;

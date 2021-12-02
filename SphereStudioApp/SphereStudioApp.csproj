@@ -107,7 +107,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Compilers\ClassicCompiler.cs" />
+    <Compile Include="Compilers\SphereCompiler.cs" />
     <Compile Include="Core\PluginShim.cs" />
     <Compile Include="Forms\PreferencesDialog.cs">
       <SubType>Form</SubType>

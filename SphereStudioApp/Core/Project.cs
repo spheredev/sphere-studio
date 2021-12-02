@@ -174,27 +174,6 @@ namespace SphereStudio.Core
         public ISettings Settings => _ssproj;
 
         /// <summary>
-        /// Gets or sets the name of the directory where the project
-        /// is built. Relative to project root.
-        /// </summary>
-        public string BuildPath
-        {
-            get
-            {
-                return !IsGameOnly
-                    ? _ssproj.GetString("buildDir", "./")
-                    : "./";
-            }
-            set
-            {
-                value = string.IsNullOrWhiteSpace(value) ? "./" : value;
-                value = value.Replace(Path.DirectorySeparatorChar, '/');
-                if (!value.EndsWith("/")) value += "/";
-                _ssproj.SetValue("buildDir", value);
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the registered name of the compiler to use when building
         /// this project.
         /// </summary>
@@ -313,7 +292,6 @@ namespace SphereStudio.Core
             var basePath = Path.GetDirectoryName(FileName);
             FileName = Path.Combine(basePath, MakeFileName(Name));
             IsGameOnly = false;
-            BuildPath = "./";
             Compiler = Defaults.Compiler;
             Save();
         }

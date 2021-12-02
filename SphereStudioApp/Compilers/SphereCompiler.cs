@@ -8,7 +8,7 @@ using SphereStudio.Base;
 
 namespace SphereStudio.Compilers
 {
-    class ClassicCompiler : ICompiler
+    class SphereCompiler : ICompiler
     {
         private readonly string[] fileFilters =
         {
@@ -39,53 +39,14 @@ namespace SphereStudio.Compilers
             return true;
         }
 
-        public async Task<bool> Build(IProject project, string outPath, bool debuggable, IConsole console)
+        public async Task<string> Build(IProject project, bool debuggable, IConsole console)
         {
-            console.Print($"building Sphere Classic project '{project.Name}'...\n");
-
-            Directory.CreateDirectory(outPath);
-
-            // if source and destination directories are the same, we can skip the copy step and
-            // just generate game.sgm in-place.
-            if (Path.GetFullPath(project.RootPath) != Path.GetFullPath(outPath))
-            {
-                console.Print("copying Sphere-compatible game files... ");
-                int installCount = 0;
-                await Task.Run(() =>
-                {
-                    DirectoryInfo inDir = new DirectoryInfo(project.RootPath);
-                    DirectoryInfo outDir = new DirectoryInfo(outPath);
-                    foreach (string filter in fileFilters)
-                    {
-                        var fileInfos = from info in inDir.GetFiles(filter, SearchOption.AllDirectories)
-                                        where !info.FullName.StartsWith(outDir.FullName)  // ignore build directory
-                                        select info;
-                        foreach (FileInfo info in fileInfos)
-                        {
-                            string relFilePath = info.FullName.Substring(inDir.FullName.Length + 1);
-                            string destFilePath = Path.Combine(outDir.FullName, relFilePath);
-
-                            // copy file only if destination doesn't exist or is older than source
-                            Directory.CreateDirectory(Path.GetDirectoryName(destFilePath));
-                            if (!File.Exists(destFilePath) || File.GetLastWriteTimeUtc(destFilePath) < info.LastWriteTimeUtc)
-                            {
-                                if (installCount == 0)
-                                    console.Print("\n");
-                                console.Print($"      {relFilePath}\n");
-                                File.Copy(info.FullName, destFilePath, true);
-                                ++installCount;
-                            }
-                        }
-                    }
-                });
-                if (installCount > 0)
-                    console.Print(string.Format("      {0} file(s) copied.\n", installCount));
-                else
-                    console.Print("up to date.\n");
-            }
-
-            console.Print("writing game manifest 'game.sgm'... ");
-            string sgmPath = Path.Combine(outPath, "game.sgm");
+            console.Print($"Sphere Studio {Versioning.Version} Sphere manifest compiler\n");
+            console.Print($"built-in IDE tooling for Sphere v1 and v2 games\n");
+            console.Print($"(c) {Versioning.Copyright}\n");
+            console.Print("\n");
+            console.Print("writing Sphere game manifest 'game.sgm'... ");
+            string sgmPath = Path.Combine(project.RootPath, "game.sgm");
             var apiVersion = project.Settings.GetInteger("apiVersion", 1);
             var apiLevel = project.Settings.GetInteger("apiLevel", 1);
             var mainPath = project.Settings.GetString("mainScript", "scripts/main.js");
@@ -119,7 +80,7 @@ namespace SphereStudio.Compilers
             console.Print("OK.\n");
 
             console.Print("Sphere Classic build succeeded.\n");
-            return true;
+            return project.RootPath;
         }
     }
 }

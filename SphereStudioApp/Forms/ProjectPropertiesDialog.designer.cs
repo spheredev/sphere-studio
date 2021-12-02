@@ -38,8 +38,6 @@
             this.cancelButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.summaryTextBox = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.buildDirTextBox = new System.Windows.Forms.TextBox();
             this.typeDropDown = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.upgradeButton = new System.Windows.Forms.Button();
@@ -157,25 +155,6 @@
             this.summaryTextBox.Size = new System.Drawing.Size(445, 88);
             this.summaryTextBox.TabIndex = 6;
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(25, 92);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(47, 15);
-            this.label4.TabIndex = 5;
-            this.label4.Text = "Build In";
-            // 
-            // buildDirTextBox
-            // 
-            this.buildDirTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.buildDirTextBox.Location = new System.Drawing.Point(76, 89);
-            this.buildDirTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.buildDirTextBox.Name = "buildDirTextBox";
-            this.buildDirTextBox.Size = new System.Drawing.Size(445, 23);
-            this.buildDirTextBox.TabIndex = 6;
-            // 
             // typeDropDown
             // 
             this.typeDropDown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -216,7 +195,7 @@
             this.footer.Controls.Add(this.okButton);
             this.footer.Controls.Add(this.upgradeButton);
             this.footer.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.footer.Location = new System.Drawing.Point(0, 416);
+            this.footer.Location = new System.Drawing.Point(0, 466);
             this.footer.Name = "footer";
             this.footer.Size = new System.Drawing.Size(582, 50);
             this.footer.TabIndex = 3;
@@ -228,14 +207,12 @@
             this.projectPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.projectPanel.Controls.Add(this.projectHeading);
             this.projectPanel.Controls.Add(this.pathTextBox);
-            this.projectPanel.Controls.Add(this.buildDirTextBox);
             this.projectPanel.Controls.Add(this.PathLabel);
-            this.projectPanel.Controls.Add(this.label4);
             this.projectPanel.Controls.Add(this.label1);
             this.projectPanel.Controls.Add(this.typeDropDown);
             this.projectPanel.Location = new System.Drawing.Point(9, 12);
             this.projectPanel.Name = "projectPanel";
-            this.projectPanel.Size = new System.Drawing.Size(531, 123);
+            this.projectPanel.Size = new System.Drawing.Size(531, 96);
             this.projectPanel.TabIndex = 1;
             // 
             // projectHeading
@@ -260,7 +237,7 @@
             this.gamePanel.Controls.Add(this.summaryTextBox);
             this.gamePanel.Controls.Add(this.GameTitleLabel);
             this.gamePanel.Controls.Add(this.authorTextBox);
-            this.gamePanel.Location = new System.Drawing.Point(9, 141);
+            this.gamePanel.Location = new System.Drawing.Point(9, 114);
             this.gamePanel.Name = "gamePanel";
             this.gamePanel.Size = new System.Drawing.Size(531, 189);
             this.gamePanel.TabIndex = 2;
@@ -294,7 +271,7 @@
             this.tabControl.Location = new System.Drawing.Point(12, 35);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(558, 369);
+            this.tabControl.Size = new System.Drawing.Size(558, 419);
             this.tabControl.TabIndex = 4;
             // 
             // tabPage1
@@ -304,7 +281,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 24);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(550, 341);
+            this.tabPage1.Size = new System.Drawing.Size(550, 391);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "General";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -315,7 +292,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(582, 466);
+            this.ClientSize = new System.Drawing.Size(582, 516);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.header);
             this.Controls.Add(this.footer);
@@ -350,10 +327,8 @@
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox summaryTextBox;
-        private System.Windows.Forms.TextBox buildDirTextBox;
         private System.Windows.Forms.ComboBox typeDropDown;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button upgradeButton;
         private System.Windows.Forms.Panel footer;
         private System.Windows.Forms.Panel projectPanel;

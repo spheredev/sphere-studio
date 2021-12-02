@@ -13,12 +13,6 @@ namespace SphereStudio.Base
         string RootPath { get; }
 
         /// <summary>
-        /// Gets or sets the path of the build directory. May be a
-        /// relative path.
-        /// </summary>
-        string BuildPath { get; set; }
-
-        /// <summary>
         /// Gets or sets the name of the project (usually the game title).
         /// </summary>
         string Name { get; set; }

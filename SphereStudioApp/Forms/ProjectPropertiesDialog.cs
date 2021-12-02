@@ -47,7 +47,6 @@ namespace SphereStudio.Forms
             style.AsAccent(projectPanel);
             style.AsTextView(pathTextBox);
             style.AsTextView(typeDropDown);
-            style.AsTextView(buildDirTextBox);
 
             style.AsHeading(gameHeader);
             style.AsAccent(gamePanel);
@@ -66,12 +65,10 @@ namespace SphereStudio.Forms
             titleTextBox.Text = project.Name;
             authorTextBox.Text = project.Author;
             summaryTextBox.Text = project.Summary;
-            buildDirTextBox.Text = project.BuildPath;
             typeDropDown.Text = project.Compiler;
 
             repopulateTabs();
 
-            buildDirTextBox.Enabled = !project.IsGameOnly;
             typeDropDown.Enabled = !project.IsGameOnly;
             upgradeButton.Visible = project.IsGameOnly;
 
@@ -117,7 +114,6 @@ namespace SphereStudio.Forms
             project.Author = authorTextBox.Text;
             project.Summary = summaryTextBox.Text;
             project.Compiler = typeDropDown.Text;
-            project.BuildPath = buildDirTextBox.Text;
             project.Save();
         }
 
@@ -130,9 +126,7 @@ namespace SphereStudio.Forms
             {
                 project.Upgrade();
                 pathTextBox.Text = project.FileName;
-                buildDirTextBox.Enabled = true;
                 typeDropDown.Enabled = true;
-                buildDirTextBox.Text = project.BuildPath;
                 typeDropDown.Text = project.Compiler;
                 upgradeButton.Visible = false;
             }

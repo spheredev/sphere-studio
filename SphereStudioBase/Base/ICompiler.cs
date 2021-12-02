@@ -19,11 +19,10 @@ namespace SphereStudio.Base
         /// Builds a game distribution from a Sphere Studio project.
         /// </summary>
         /// <param name="project">The project to build.</param>
-        /// <param name="outPath">The pathname of the directory where the distribution will be created.</param>
         /// <param name="debuggable">'true' the project should be built with debugging information.</param>
         /// <param name="con">An IConsole where compiler output will be sent.</param>
-        /// <returns>'true' if compilation succeeded, false if not.</returns>
-        Task<bool> Build(IProject project, string outPath, bool debuggable, IConsole con);
+        /// <returns>The full path of the directory where the game was built.</returns>
+        Task<string> Build(IProject project, bool debuggable, IConsole con);
     }
 
     /// <summary>

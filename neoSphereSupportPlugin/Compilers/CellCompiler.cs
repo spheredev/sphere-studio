@@ -64,24 +64,26 @@ namespace SphereStudio.Compilers
             return true;
         }
 
-        public async Task<bool> Build(IProject project, string outPath, bool debuggable, IConsole con)
+        public async Task<string> Build(IProject project, bool debuggable, IConsole console)
         {
-            string cellOptions = string.Format(@"--in-dir ""{0}"" --out-dir ""{1}"" {2}",
-                project.RootPath.Replace(Path.DirectorySeparatorChar, '/'),
-                outPath.Replace(Path.DirectorySeparatorChar, '/'),
-                debuggable ? "--debug" : "--release");
-            return await RunCell(cellOptions, con);
+            var inPath = project.RootPath.Replace(Path.DirectorySeparatorChar, '/');
+            var outPath = $"{inPath}/dist";
+            var options = debuggable ? "--debug" : "--release";
+            var succeeded = await RunCell(
+                $@"--in-dir ""{inPath}"" --out-dir ""{outPath}"" {options}",
+                console);
+            return succeeded ? outPath : null;
         }
 
-        public async Task<bool> Package(IProject project, string fileName, bool debuggable, IConsole con)
+        public async Task<bool> Package(IProject project, string fileName, bool debuggable, IConsole console)
         {
-            var stagingPath = Path.Combine(project.RootPath, project.BuildPath);
-            string cellOptions = string.Format(@"pack --in-dir ""{0}"" --out-dir ""{1}"" {2} ""{3}""",
-                project.RootPath.Replace(Path.DirectorySeparatorChar, '/'),
-                stagingPath,
-                main.Conf.MakeDebugPackages ? "--debug" : "--release",
-                fileName.Replace(Path.DirectorySeparatorChar, '/'));
-            return await RunCell(cellOptions, con);
+            var inPath = project.RootPath.Replace(Path.DirectorySeparatorChar, '/');
+            var outPath = Path.Combine(inPath, "dist");
+            var packagePath = fileName.Replace(Path.DirectorySeparatorChar, '/');
+            var options = main.Conf.MakeDebugPackages ? "--debug" : "--release";
+            return await RunCell(
+                $@"pack --in-dir ""{inPath}"" --out-dir ""{outPath}"" {options} ""{packagePath}""",
+                console);
         }
 
         private void CopyDirectory(string sourcePath, string destPath)
@@ -114,13 +116,13 @@ namespace SphereStudio.Compilers
                 return str;
         }
 
-        private async Task<bool> RunCell(string options, IConsole con)
+        private async Task<bool> RunCell(string options, IConsole console)
         {
             string cellPath = Path.Combine(main.Conf.EnginePath, "cell.exe");
             if (!File.Exists(cellPath))
             {
-                con.Print("ERROR: no 'cell' executable was found, did Gohan kill Cell already?\n");
-                con.Print("       (Please check your GDK path in Settings Center.)\n");
+                console.Print("ERROR: no 'cell' executable was found, did Gohan kill Cell already?\n");
+                console.Print("       (Please check your GDK path in Settings Center.)\n");
                 return false;
             }
 
@@ -134,7 +136,7 @@ namespace SphereStudio.Compilers
             proc.OutputDataReceived += (sender, e) =>
             {
                 var head = lineCount > 0 ? "\r\n" : "";
-                con.Print(head + (e.Data ?? ""));
+                console.Print(head + (e.Data ?? ""));
                 ++lineCount;
             };
             proc.BeginOutputReadLine();

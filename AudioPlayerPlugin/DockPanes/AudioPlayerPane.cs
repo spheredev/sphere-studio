@@ -198,14 +198,6 @@ namespace SphereStudio.Plugins.UI
             if (string.IsNullOrEmpty(gamePath))
                 return;
 
-            // if the project is set to build out-of-source, avoid enumerating the build directory.
-            string buildPath = Path.Combine(gamePath, PluginManager.Core.Project.BuildPath)
-                .Replace('/', Path.DirectorySeparatorChar)
-                .Replace('\\', Path.DirectorySeparatorChar);
-            if (buildPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
-                buildPath = buildPath.Substring(0, buildPath.Length - 1);
-            bool haveBuildDir = Path.GetFullPath(buildPath) != Path.GetFullPath(gamePath);
-
             listView.BeginUpdate();
             foreach (string filterInfo in _fileTypes)
             {
@@ -216,12 +208,11 @@ namespace SphereStudio.Plugins.UI
                 listView.Groups.Add(groupName, groupName);
 
                 try {
-                    DirectoryInfo dirInfo = new DirectoryInfo(gamePath);
-                    FileInfo[] fileInfos = dirInfo.GetFiles(searchFilter, SearchOption.AllDirectories);
-                    foreach (FileInfo fi in from x in fileInfos
-                                            where !x.FullName.StartsWith(buildPath) || !haveBuildDir
-                                            orderby x.Name
-                                            select x) {
+                    var dirInfo = new DirectoryInfo(gamePath);
+                    var fileInfos = dirInfo.GetFiles(searchFilter, SearchOption.AllDirectories)
+                        .OrderBy(x => x.Name);
+                    foreach (FileInfo fi in fileInfos)
+                    {
                         var relativePath = fi.FullName
                             .Replace($"{gamePath}{Path.DirectorySeparatorChar}", string.Empty)
                             .Replace(Path.DirectorySeparatorChar, '/');
