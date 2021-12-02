@@ -941,7 +941,7 @@ namespace SphereStudio.Forms
         private void RefreshProject()
         {
             var ideName = Versioning.IsWiP ? $"{Versioning.Name} WiP" : Versioning.Name;
-            Text = Session.Project.IsGameOnly
+            Text = Session.Project.GameOnly
                 ? $"{Project.Name} (Sphere Game) - {ideName}"
                 : $"{Project.Name} - {ideName}";
             fileListPane.Open();

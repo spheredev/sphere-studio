@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 using SphereStudio.Base;
-using SphereStudio.Utility;
+using SphereStudio.IO;
 
 namespace SphereStudio.Core
 {
@@ -16,8 +16,8 @@ namespace SphereStudio.Core
     /// </summary>
     class Project : IProject
     {
-        private Dictionary<string, HashSet<int>> _breakpoints = new Dictionary<string, HashSet<int>>();
-        private IniSettings _ssproj;
+        private Dictionary<string, HashSet<int>> breakpoints = new Dictionary<string, HashSet<int>>();
+        private IniSettings settings;
 
         /// <summary>
         /// Creates a new, empty Sphere Studio project.
@@ -65,7 +65,7 @@ namespace SphereStudio.Core
 
             Project project = new Project(fileName)
             {
-                IsGameOnly = true,
+                GameOnly = true,
                 Name = "Untitled",
                 Author = "Author Unknown",
                 Summary = "",
@@ -147,10 +147,10 @@ namespace SphereStudio.Core
         private Project(string fileName)
         {
             fileName = Path.GetFullPath(fileName);
-            var basePath = Path.GetDirectoryName(fileName);
+            var userFilePath = Path.Combine(Path.GetDirectoryName(fileName), "sphereStudio.usr");
+            settings = new IniSettings(new IniFile(fileName, false), ".ssproj");
             FileName = fileName;
-            _ssproj = new IniSettings(new IniFile(FileName, false), ".ssproj");
-            User = new UserSettings(Path.Combine(basePath, "sphereStudio.usr"));
+            User = new UserSettings(userFilePath);
         }
 
         public UserSettings User { get; private set; }
@@ -171,7 +171,7 @@ namespace SphereStudio.Core
         /// <summary>
         /// Gets the <c>ISettings</c> object used to store settings for this project.
         /// </summary>
-        public ISettings Settings => _ssproj;
+        public ISettings Settings => settings;
 
         /// <summary>
         /// Gets or sets the registered name of the compiler to use when building
@@ -179,8 +179,8 @@ namespace SphereStudio.Core
         /// </summary>
         public string Compiler
         {
-            get => !IsGameOnly ? _ssproj.GetString("compiler", Defaults.Compiler) : Defaults.Compiler;
-            set => _ssproj.SetValue("compiler", value);
+            get => !GameOnly ? settings.GetString("compiler", Defaults.Compiler) : Defaults.Compiler;
+            set => settings.SetValue("compiler", value);
         }
 
         /// <summary>
@@ -188,8 +188,8 @@ namespace SphereStudio.Core
         /// </summary>
         public string Name
         {
-            get { return _ssproj.GetString("name", "Untitled"); }
-            set { _ssproj.SetValue("name", value); }
+            get { return settings.GetString("name", "Untitled"); }
+            set { settings.SetValue("name", value); }
         }
 
         /// <summary>
@@ -197,8 +197,8 @@ namespace SphereStudio.Core
         /// </summary>
         public string Author
         {
-            get { return _ssproj.GetString("author", ""); }
-            set { _ssproj.SetValue("author", value); }
+            get { return settings.GetString("author", ""); }
+            set { settings.SetValue("author", value); }
         }
 
         /// <summary>
@@ -206,8 +206,8 @@ namespace SphereStudio.Core
         /// </summary>
         public string Summary
         {
-            get { return _ssproj.GetString("description", ""); }
-            set { _ssproj.SetValue("description", value); }
+            get { return settings.GetString("description", ""); }
+            set { settings.SetValue("description", value); }
         }
 
         /// <summary>
@@ -215,8 +215,8 @@ namespace SphereStudio.Core
         /// </summary>
         public int ScreenWidth
         {
-            get { return _ssproj.GetInteger("screenWidth", 320); }
-            set { _ssproj.SetValue("screenWidth", value); }
+            get { return settings.GetInteger("screenWidth", 320); }
+            set { settings.SetValue("screenWidth", value); }
         }
 
         /// <summary>
@@ -224,17 +224,17 @@ namespace SphereStudio.Core
         /// </summary>
         public int ScreenHeight
         {
-            get { return _ssproj.GetInteger("screenHeight", 240); }
-            set { _ssproj.SetValue("screenHeight", value); }
+            get { return settings.GetInteger("screenHeight", 240); }
+            set { settings.SetValue("screenHeight", value); }
         }
 
         /// <summary>
         /// Gets whether the project is game-only (e.g. synthesized from an SGM file).
         /// </summary>
-        public bool IsGameOnly
+        public bool GameOnly
         {
-            get { return _ssproj.GetBoolean("backCompatible", false); }
-            set { _ssproj.SetValue("backCompatible", value); }
+            get { return settings.GetBoolean("backCompatible", false); }
+            set { settings.SetValue("backCompatible", value); }
         }
 
         /// <summary>
@@ -244,17 +244,17 @@ namespace SphereStudio.Core
         {
             var userFileName = Path.Combine(RootPath, "sphereStudio.usr");
             User.SaveAs(userFileName);
-            if (IsGameOnly)
+            if (GameOnly)
             {
                 // Sphere 1.x-compatible project mode (treat .sgm as project file)
                 string fileName = Path.Combine(Path.GetDirectoryName(FileName), "game.sgm");
                 using (var writer = new StreamWriter(fileName, false, new UTF8Encoding(false)))
                 {
-                    var apiVersion = _ssproj.GetInteger("apiVersion", 1);
-                    var apiLevel = _ssproj.GetInteger("apiLevel", 1);
-                    var resolution = _ssproj.GetSize("resolution", new Size(320, 240));
-                    var mainPath = _ssproj.GetString("mainScript", "scripts/main.js");
-                    var saveId = _ssproj.GetString("saveID", string.Empty);
+                    var apiVersion = settings.GetInteger("apiVersion", 1);
+                    var apiLevel = settings.GetInteger("apiLevel", 1);
+                    var resolution = settings.GetSize("resolution", new Size(320, 240));
+                    var mainPath = settings.GetString("mainScript", "scripts/main.js");
+                    var saveId = settings.GetString("saveID", string.Empty);
                     writer.WriteLine($"version={apiVersion}");
                     if (apiVersion >= 2)
                         writer.WriteLine($"api={apiLevel}");
@@ -280,7 +280,7 @@ namespace SphereStudio.Core
             }
             else
             {
-                _ssproj.SaveAs(FileName);
+                settings.SaveAs(FileName);
             }
         }
 
@@ -291,7 +291,7 @@ namespace SphereStudio.Core
         {
             var basePath = Path.GetDirectoryName(FileName);
             FileName = Path.Combine(basePath, MakeFileName(Name));
-            IsGameOnly = false;
+            GameOnly = false;
             Compiler = Defaults.Compiler;
             Save();
         }
@@ -299,9 +299,9 @@ namespace SphereStudio.Core
         public IReadOnlyDictionary<string, int[]> GetAllBreakpoints()
         {
             Dictionary<string, int[]> retval = new Dictionary<string, int[]>();
-            foreach (string k in _breakpoints.Keys)
+            foreach (string k in breakpoints.Keys)
             {
-                retval.Add(k, _breakpoints[k].ToArray());
+                retval.Add(k, breakpoints[k].ToArray());
             }
             return retval;
         }
@@ -312,9 +312,9 @@ namespace SphereStudio.Core
             if (scriptPath == null)
                 return new int[0];
             int hash = scriptPath.GetHashCode();
-            if (_breakpoints.ContainsKey(scriptPath))
+            if (breakpoints.ContainsKey(scriptPath))
             {
-                return _breakpoints[scriptPath].ToArray();
+                return breakpoints[scriptPath].ToArray();
             }
             else
             {
@@ -329,18 +329,18 @@ namespace SphereStudio.Core
                 {
                     // *munch*
                 }
-                _breakpoints.Add(scriptPath, new HashSet<int>(lines));
+                breakpoints.Add(scriptPath, new HashSet<int>(lines));
                 return lines;
             }
         }
 
         public void SetBreakpoints(string scriptPath, int[] lineNumbers)
         {
-            _breakpoints[scriptPath] = new HashSet<int>(lineNumbers);
-            foreach (var k in _breakpoints.Keys)
+            breakpoints[scriptPath] = new HashSet<int>(lineNumbers);
+            foreach (var k in breakpoints.Keys)
             {
                 User.SetValue($"breakpointsSet:{k.GetHashCode():X8}",
-                    string.Join(",", _breakpoints[k]));
+                    string.Join(",", breakpoints[k]));
             }
         }
         

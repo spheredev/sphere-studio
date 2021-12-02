@@ -35,6 +35,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.apiHeading = new System.Windows.Forms.Label();
             this.runtimePanel = new System.Windows.Forms.Panel();
+            this.saveIdTextBox = new System.Windows.Forms.TextBox();
+            this.saveIdLabel = new System.Windows.Forms.Label();
             this.heightUpDown = new System.Windows.Forms.NumericUpDown();
             this.widthUpDown = new System.Windows.Forms.NumericUpDown();
             this.scriptPathComboBox = new System.Windows.Forms.ComboBox();
@@ -42,8 +44,6 @@
             this.ResoLabel = new System.Windows.Forms.Label();
             this.resolutionDropDown = new System.Windows.Forms.ComboBox();
             this.runtimeHeading = new System.Windows.Forms.Label();
-            this.saveIdLabel = new System.Windows.Forms.Label();
-            this.saveIdTextBox = new System.Windows.Forms.TextBox();
             this.apiPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.levelEditBox)).BeginInit();
             this.runtimePanel.SuspendLayout();
@@ -107,20 +107,20 @@
             this.apiDropDown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.apiDropDown.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.apiDropDown.FormattingEnabled = true;
-            this.apiDropDown.Location = new System.Drawing.Point(77, 32);
+            this.apiDropDown.Location = new System.Drawing.Point(76, 32);
             this.apiDropDown.Name = "apiDropDown";
-            this.apiDropDown.Size = new System.Drawing.Size(363, 21);
+            this.apiDropDown.Size = new System.Drawing.Size(364, 21);
             this.apiDropDown.TabIndex = 2;
             this.apiDropDown.SelectedIndexChanged += new System.EventHandler(this.apiDropDown_SelectedIndexChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 35);
+            this.label1.Location = new System.Drawing.Point(24, 35);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(61, 13);
+            this.label1.Size = new System.Drawing.Size(45, 13);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Sphere API";
+            this.label1.Text = "Platform";
             // 
             // apiHeading
             // 
@@ -129,10 +129,10 @@
             this.apiHeading.Name = "apiHeading";
             this.apiHeading.Size = new System.Drawing.Size(452, 23);
             this.apiHeading.TabIndex = 0;
-            this.apiHeading.Text = "Targeting";
+            this.apiHeading.Text = "Sphere API";
             this.apiHeading.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // startupPanel
+            // runtimePanel
             // 
             this.runtimePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -147,9 +147,27 @@
             this.runtimePanel.Controls.Add(this.resolutionDropDown);
             this.runtimePanel.Controls.Add(this.runtimeHeading);
             this.runtimePanel.Location = new System.Drawing.Point(9, 111);
-            this.runtimePanel.Name = "startupPanel";
+            this.runtimePanel.Name = "runtimePanel";
             this.runtimePanel.Size = new System.Drawing.Size(454, 120);
             this.runtimePanel.TabIndex = 1;
+            // 
+            // saveIdTextBox
+            // 
+            this.saveIdTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.saveIdTextBox.Location = new System.Drawing.Point(76, 86);
+            this.saveIdTextBox.Name = "saveIdTextBox";
+            this.saveIdTextBox.Size = new System.Drawing.Size(364, 20);
+            this.saveIdTextBox.TabIndex = 7;
+            // 
+            // saveIdLabel
+            // 
+            this.saveIdLabel.AutoSize = true;
+            this.saveIdLabel.Location = new System.Drawing.Point(24, 89);
+            this.saveIdLabel.Name = "saveIdLabel";
+            this.saveIdLabel.Size = new System.Drawing.Size(46, 13);
+            this.saveIdLabel.TabIndex = 6;
+            this.saveIdLabel.Text = "Save ID";
             // 
             // heightUpDown
             // 
@@ -259,33 +277,15 @@
             this.resolutionDropDown.TabIndex = 3;
             this.resolutionDropDown.SelectedIndexChanged += new System.EventHandler(this.resoDropDown_SelectedIndexChanged);
             // 
-            // startupHeading
+            // runtimeHeading
             // 
             this.runtimeHeading.Dock = System.Windows.Forms.DockStyle.Top;
             this.runtimeHeading.Location = new System.Drawing.Point(0, 0);
-            this.runtimeHeading.Name = "startupHeading";
+            this.runtimeHeading.Name = "runtimeHeading";
             this.runtimeHeading.Size = new System.Drawing.Size(452, 23);
             this.runtimeHeading.TabIndex = 0;
             this.runtimeHeading.Text = "Runtime";
             this.runtimeHeading.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // saveIdLabel
-            // 
-            this.saveIdLabel.AutoSize = true;
-            this.saveIdLabel.Location = new System.Drawing.Point(24, 89);
-            this.saveIdLabel.Name = "saveIdLabel";
-            this.saveIdLabel.Size = new System.Drawing.Size(46, 13);
-            this.saveIdLabel.TabIndex = 6;
-            this.saveIdLabel.Text = "Save ID";
-            // 
-            // saveIdTextBox
-            // 
-            this.saveIdTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.saveIdTextBox.Location = new System.Drawing.Point(76, 86);
-            this.saveIdTextBox.Name = "saveIdTextBox";
-            this.saveIdTextBox.Size = new System.Drawing.Size(364, 20);
-            this.saveIdTextBox.TabIndex = 7;
             // 
             // SphereProjectPage
             // 

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
+
 using SphereStudio.Base;
-using SphereStudio.Utility;
+using SphereStudio.IO;
 
 namespace SphereStudio.Core
 {

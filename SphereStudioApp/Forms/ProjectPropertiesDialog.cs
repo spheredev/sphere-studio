@@ -69,8 +69,8 @@ namespace SphereStudio.Forms
 
             repopulateTabs();
 
-            typeDropDown.Enabled = !project.IsGameOnly;
-            upgradeButton.Visible = project.IsGameOnly;
+            typeDropDown.Enabled = !project.GameOnly;
+            upgradeButton.Visible = project.GameOnly;
 
             ActiveControl = titleTextBox;
 

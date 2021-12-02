@@ -19,8 +19,8 @@ namespace SphereStudio.ProjectPages
 
             apiDropDown.Items.AddRange(new[]
             {
-                "Sphere v1 (original Sphere 1.x API)",
-                "Sphere v2 (neoSphere/Oozaru)",
+                "Sphere v1 - Sphere 1.x",
+                "Sphere v2 - neoSphere, Oozaru",
             });
         }
 

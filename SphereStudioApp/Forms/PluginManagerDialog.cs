@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 using SphereStudio.Base;
 using SphereStudio.Core;
-using SphereStudio.Utility;
+using SphereStudio.IO;
 
 namespace SphereStudio.Forms
 {

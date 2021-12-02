@@ -90,7 +90,7 @@
             this.pathTextBox.Location = new System.Drawing.Point(76, 32);
             this.pathTextBox.Name = "pathTextBox";
             this.pathTextBox.ReadOnly = true;
-            this.pathTextBox.Size = new System.Drawing.Size(445, 23);
+            this.pathTextBox.Size = new System.Drawing.Size(406, 23);
             this.pathTextBox.TabIndex = 2;
             // 
             // titleTextBox
@@ -99,7 +99,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.titleTextBox.Location = new System.Drawing.Point(76, 32);
             this.titleTextBox.Name = "titleTextBox";
-            this.titleTextBox.Size = new System.Drawing.Size(445, 23);
+            this.titleTextBox.Size = new System.Drawing.Size(406, 23);
             this.titleTextBox.TabIndex = 2;
             // 
             // authorTextBox
@@ -108,7 +108,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.authorTextBox.Location = new System.Drawing.Point(76, 61);
             this.authorTextBox.Name = "authorTextBox";
-            this.authorTextBox.Size = new System.Drawing.Size(445, 23);
+            this.authorTextBox.Size = new System.Drawing.Size(406, 23);
             this.authorTextBox.TabIndex = 4;
             // 
             // okButton
@@ -116,7 +116,7 @@
             this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.okButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.okButton.Location = new System.Drawing.Point(404, 13);
+            this.okButton.Location = new System.Drawing.Point(365, 13);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(80, 25);
             this.okButton.TabIndex = 0;
@@ -129,7 +129,7 @@
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cancelButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cancelButton.Location = new System.Drawing.Point(490, 13);
+            this.cancelButton.Location = new System.Drawing.Point(451, 13);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(80, 25);
             this.cancelButton.TabIndex = 1;
@@ -152,7 +152,7 @@
             this.summaryTextBox.Location = new System.Drawing.Point(76, 90);
             this.summaryTextBox.Multiline = true;
             this.summaryTextBox.Name = "summaryTextBox";
-            this.summaryTextBox.Size = new System.Drawing.Size(445, 88);
+            this.summaryTextBox.Size = new System.Drawing.Size(406, 88);
             this.summaryTextBox.TabIndex = 6;
             // 
             // typeDropDown
@@ -164,7 +164,7 @@
             this.typeDropDown.FormattingEnabled = true;
             this.typeDropDown.Location = new System.Drawing.Point(76, 61);
             this.typeDropDown.Name = "typeDropDown";
-            this.typeDropDown.Size = new System.Drawing.Size(445, 23);
+            this.typeDropDown.Size = new System.Drawing.Size(406, 23);
             this.typeDropDown.TabIndex = 4;
             this.typeDropDown.SelectedIndexChanged += new System.EventHandler(this.typeDropDown_SelectedIndexChanged);
             // 
@@ -195,9 +195,9 @@
             this.footer.Controls.Add(this.okButton);
             this.footer.Controls.Add(this.upgradeButton);
             this.footer.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.footer.Location = new System.Drawing.Point(0, 466);
+            this.footer.Location = new System.Drawing.Point(0, 502);
             this.footer.Name = "footer";
-            this.footer.Size = new System.Drawing.Size(582, 50);
+            this.footer.Size = new System.Drawing.Size(543, 50);
             this.footer.TabIndex = 3;
             // 
             // projectPanel
@@ -212,7 +212,7 @@
             this.projectPanel.Controls.Add(this.typeDropDown);
             this.projectPanel.Location = new System.Drawing.Point(9, 12);
             this.projectPanel.Name = "projectPanel";
-            this.projectPanel.Size = new System.Drawing.Size(531, 96);
+            this.projectPanel.Size = new System.Drawing.Size(492, 96);
             this.projectPanel.TabIndex = 1;
             // 
             // projectHeading
@@ -220,7 +220,7 @@
             this.projectHeading.Dock = System.Windows.Forms.DockStyle.Top;
             this.projectHeading.Location = new System.Drawing.Point(0, 0);
             this.projectHeading.Name = "projectHeading";
-            this.projectHeading.Size = new System.Drawing.Size(529, 23);
+            this.projectHeading.Size = new System.Drawing.Size(490, 23);
             this.projectHeading.TabIndex = 0;
             this.projectHeading.Text = "Project Configuration";
             this.projectHeading.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -239,7 +239,7 @@
             this.gamePanel.Controls.Add(this.authorTextBox);
             this.gamePanel.Location = new System.Drawing.Point(9, 114);
             this.gamePanel.Name = "gamePanel";
-            this.gamePanel.Size = new System.Drawing.Size(531, 189);
+            this.gamePanel.Size = new System.Drawing.Size(492, 189);
             this.gamePanel.TabIndex = 2;
             // 
             // gameHeader
@@ -247,7 +247,7 @@
             this.gameHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.gameHeader.Location = new System.Drawing.Point(0, 0);
             this.gameHeader.Name = "gameHeader";
-            this.gameHeader.Size = new System.Drawing.Size(529, 23);
+            this.gameHeader.Size = new System.Drawing.Size(490, 23);
             this.gameHeader.TabIndex = 0;
             this.gameHeader.Text = "Game Information";
             this.gameHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -257,7 +257,7 @@
             this.header.Dock = System.Windows.Forms.DockStyle.Top;
             this.header.Location = new System.Drawing.Point(0, 0);
             this.header.Name = "header";
-            this.header.Size = new System.Drawing.Size(582, 23);
+            this.header.Size = new System.Drawing.Size(543, 23);
             this.header.TabIndex = 0;
             this.header.Text = "configure your Sphere Studio project";
             this.header.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -271,7 +271,7 @@
             this.tabControl.Location = new System.Drawing.Point(12, 35);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(558, 419);
+            this.tabControl.Size = new System.Drawing.Size(519, 455);
             this.tabControl.TabIndex = 4;
             // 
             // tabPage1
@@ -281,7 +281,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 24);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(550, 391);
+            this.tabPage1.Size = new System.Drawing.Size(511, 427);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "General";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -292,7 +292,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(582, 516);
+            this.ClientSize = new System.Drawing.Size(543, 552);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.header);
             this.Controls.Add(this.footer);
