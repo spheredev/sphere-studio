@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 using SphereStudio.Base;
@@ -11,12 +11,24 @@ namespace SphereStudio.Forms
 {
     partial class ProjectPropertiesDialog : Form, IStyleAware
     {
+        private Dictionary<IProjectPage, TabPage> pageMap = new Dictionary<IProjectPage, TabPage>();
         private Project project;
 
         public ProjectPropertiesDialog(Project project)
         {
             InitializeComponent();
             StyleManager.AutoStyle(this);
+
+            var pageNames = PluginManager.GetNames<IProjectPage>();
+            foreach (string name in pageNames)
+            {
+                var plugin = PluginManager.Get<IProjectPage>(name);
+                plugin.Populate(project.Settings);
+                var page = new TabPage(name) { Tag = plugin };
+                page.Controls.Add(plugin.Control);
+                plugin.Control.Dock = DockStyle.Fill;
+                pageMap.Add(plugin, page);
+            }
 
             this.project = project;
         }
@@ -57,16 +69,7 @@ namespace SphereStudio.Forms
             buildDirTextBox.Text = project.BuildPath;
             typeDropDown.Text = project.Compiler;
 
-            string[] pageNames = PluginManager.GetNames<IProjectPage>();
-            foreach (string name in pageNames)
-            {
-                var plugin = PluginManager.Get<IProjectPage>(name);
-                plugin.Populate(project.Settings);
-                var page = new TabPage(name) { Tag = plugin };
-                page.Controls.Add(plugin.Control);
-                plugin.Control.Dock = DockStyle.Fill;
-                tabControl.TabPages.Add(page);
-            }
+            repopulateTabs();
 
             buildDirTextBox.Enabled = !project.IsGameOnly;
             typeDropDown.Enabled = !project.IsGameOnly;
@@ -92,8 +95,11 @@ namespace SphereStudio.Forms
                 }
             }
 
+            var compiler = typeDropDown.Text;
             var plugins = from name in PluginManager.GetNames<IProjectPage>()
-                          select PluginManager.Get<IProjectPage>(name);
+                          let plugin = PluginManager.Get<IProjectPage>(name)
+                          where compiler == plugin.Compiler || plugin.Compiler == null
+                          select plugin;
             
             bool isValid = true;
             foreach (var plugin in plugins)
@@ -134,7 +140,22 @@ namespace SphereStudio.Forms
 
         private void typeDropDown_SelectedIndexChanged(object sender, EventArgs e)
         {
-            /* TODO: repopulate tab pages according to selected compiler */
+            repopulateTabs();
+        }
+
+        private void repopulateTabs()
+        {
+            var firstPage = tabControl.TabPages[0];
+            var compiler = typeDropDown.Text;
+            tabControl.TabPages.Clear();
+            tabControl.TabPages.Add(firstPage);
+            foreach (var entry in pageMap)
+            {
+                var plugin = entry.Key;
+                var tabPage = entry.Value;
+                if (compiler == plugin.Compiler || plugin.Compiler == null)
+                    tabControl.TabPages.Add(tabPage);
+            }
         }
     }
 }

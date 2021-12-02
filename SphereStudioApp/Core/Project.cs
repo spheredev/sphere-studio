@@ -72,8 +72,13 @@ namespace SphereStudio.Core
             };
 
             var sgmText = File.ReadAllLines(fileName);
+            var apiVersion = 0;
+            var apiLevel = 1;
+            var resolution = new Size(320, 240);
             var screenWidth = 320;
             var screenHeight = 240;
+            var scriptPath = string.Empty;
+            var saveId = string.Empty;
             foreach (string line in sgmText)
             {
                 try
@@ -85,12 +90,35 @@ namespace SphereStudio.Core
                         string value = match.Groups[2].Value;
                         switch (key)
                         {
+                            case "version":
+                                apiVersion = int.Parse(value);
+                                break;
+                            case "api":
+                                if (apiVersion == 0)
+                                    apiVersion = 2;
+                                apiLevel = int.Parse(value);
+                                break;
                             case "name": project.Name = value; break;
                             case "author": project.Author = value; break;
                             case "description": project.Summary = value; break;
-                            case "script": project.Settings.SetValue("mainScript", value); break;
-                            case "screen_width": screenWidth = int.Parse(value); break;
-                            case "screen_height": screenHeight = int.Parse(value); break;
+                            case "script": scriptPath = value; break;
+                            case "saveID": saveId = value; break;
+                            case "main":
+                                if (apiVersion == 0)
+                                    apiVersion = 2;
+                                scriptPath = value;
+                                break;
+                            case "resolution":
+                                Match resoMatch = new Regex(@"(\d+)x(\d+)").Match(value);
+                                if (resoMatch.Success)
+                                    resolution = new Size(int.Parse(resoMatch.Groups[1].Value), int.Parse(resoMatch.Groups[2].Value));
+                                break;
+                            case "screen_width":
+                                screenWidth = int.Parse(value);
+                                break;
+                            case "screen_height":
+                                screenHeight = int.Parse(value);
+                                break;
                         }
                     }
                 }
@@ -102,8 +130,17 @@ namespace SphereStudio.Core
                 }
             }
 
+            apiVersion = Math.Max(apiVersion, 1);
+            if (apiVersion < 2 && scriptPath != string.Empty)
+                scriptPath = $"scripts/{scriptPath}";
             project.Compiler = Defaults.Compiler;
-            project.Settings.SetSize("resolution", new Size(screenWidth, screenHeight));
+            project.Settings.SetInteger("apiVersion", apiVersion);
+            project.Settings.SetInteger("apiLevel", apiLevel);
+            project.Settings.SetSize("resolution", apiVersion >= 2
+                ? resolution
+                : new Size(screenWidth, screenHeight));
+            project.Settings.SetString("mainScript", scriptPath);
+            project.Settings.SetString("saveID", saveId);
             return project;
         }
 
@@ -234,17 +271,32 @@ namespace SphereStudio.Core
                 string fileName = Path.Combine(Path.GetDirectoryName(FileName), "game.sgm");
                 using (var writer = new StreamWriter(fileName, false, new UTF8Encoding(false)))
                 {
+                    var apiVersion = _ssproj.GetInteger("apiVersion", 1);
+                    var apiLevel = _ssproj.GetInteger("apiLevel", 1);
+                    var resolution = _ssproj.GetSize("resolution", new Size(320, 240));
                     var mainPath = _ssproj.GetString("mainScript", "scripts/main.js");
-                    var scriptPath = mainPath.StartsWith("scripts/")
-                        ? mainPath.Substring(8)
-                        : $"../{mainPath}";
-                    var resolution = _ssproj.GetSize("resolution", new System.Drawing.Size(320, 240));
-                    writer.WriteLine(string.Format("name={0}", Name));
-                    writer.WriteLine(string.Format("author={0}", Author));
-                    writer.WriteLine(string.Format("description={0}", Summary));
-                    writer.WriteLine(string.Format("script={0}", scriptPath));
-                    writer.WriteLine(string.Format("screen_width={0}", resolution.Width));
-                    writer.WriteLine(string.Format("screen_height={0}", resolution.Height));
+                    var saveId = _ssproj.GetString("saveID", string.Empty);
+                    writer.WriteLine($"version={apiVersion}");
+                    if (apiVersion >= 2)
+                        writer.WriteLine($"api={apiLevel}");
+                    writer.WriteLine($"name={Name}");
+                    writer.WriteLine($"author={Author}");
+                    writer.WriteLine($"description={Summary}");
+                    writer.WriteLine($"saveID={saveId}");
+                    if (apiVersion >= 2)
+                    {
+                        writer.WriteLine($"resolution={resolution.Width}x{resolution.Height}");
+                        writer.WriteLine($"main={mainPath}");
+                    }
+                    else
+                    {
+                        var scriptPath = mainPath.StartsWith("scripts/")
+                            ? mainPath.Substring(8)
+                            : $"../{mainPath}";
+                        writer.WriteLine(string.Format("screen_width={0}", resolution.Width));
+                        writer.WriteLine(string.Format("screen_height={0}", resolution.Height));
+                        writer.WriteLine(string.Format("script={0}", scriptPath));
+                    }
                 }
             }
             else

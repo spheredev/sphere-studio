@@ -55,11 +55,25 @@ namespace SphereStudio.Base
         string[] GetStringArray(string key, string[] defValues);
 
         /// <summary>
-        /// Writes a <c>Size</c> value to the settings.
+        /// Stores an integer value to the settings.
+        /// </summary>
+        /// <param name="key">The name of the setting.</param>
+        /// <param name="value">The value to write.</param>
+        void SetInteger(string key, int value);
+        
+        /// <summary>
+        /// Stores a <c>Size</c> value to the settings.
         /// </summary>
         /// <param name="key">The name of the setting.</param>
         /// <param name="value">The size to write.</param>
         void SetSize(string key, Size value);
+
+        /// <summary>
+        /// Stores a string value to the settings.
+        /// </summary>
+        /// <param name="key">The name of the setting.</param>
+        /// <param name="value">The string to write.</param>
+        void SetString(string key, string value);
         
         /// <summary>
         /// Writes a value to the settings.

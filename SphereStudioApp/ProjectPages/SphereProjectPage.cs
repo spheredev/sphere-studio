@@ -17,23 +17,28 @@ namespace SphereStudio.ProjectPages
             InitializeComponent();
             StyleManager.AutoStyle(this);
 
-            apiDropDown.Items.AddRange(new[] { "Sphere 1.x Compatible", "Sphere v2 API" });
+            apiDropDown.Items.AddRange(new[]
+            {
+                "Sphere v1 (original Sphere 1.x API)",
+                "Sphere v2 (neoSphere/Oozaru)",
+            });
         }
 
         public void ApplyStyle(UIStyle style)
         {
             style.AsUIElement(this);
             style.AsHeading(apiHeading);
-            style.AsHeading(startupHeading);
+            style.AsHeading(runtimeHeading);
             style.AsAccent(apiPanel);
-            style.AsAccent(startupPanel);
+            style.AsAccent(runtimePanel);
 
             style.AsTextView(apiDropDown);
             style.AsTextView(levelEditBox);
-            style.AsTextView(scriptPathEditBox);
-            style.AsTextView(resoDropDown);
-            style.AsTextView(widthEditBox);
-            style.AsTextView(heightEditBox);
+            style.AsTextView(scriptPathComboBox);
+            style.AsTextView(resolutionDropDown);
+            style.AsTextView(widthUpDown);
+            style.AsTextView(heightUpDown);
+            style.AsTextView(saveIdTextBox);
         }
 
         public void Populate(ISettings settings)
@@ -42,32 +47,32 @@ namespace SphereStudio.ProjectPages
             var apiLevel = settings.GetInteger("apiLevel", 1);
             var mainPath = settings.GetString("mainScript", "");
             var resolution = settings.GetSize("resolution", new Size(320, 240));
+            var saveId = settings.GetString("saveID", "");
 
             apiVersion = Math.Min(Math.Max(apiVersion, 1), 2);
             apiLevel = Math.Min(Math.Max(apiLevel, 1), 999);
             apiDropDown.SelectedIndex = apiVersion - 1;
             levelEditBox.Value = apiLevel;
-            scriptPathEditBox.Text = mainPath;
+            scriptPathComboBox.Text = mainPath;
+            saveIdTextBox.Text = saveId;
 
             var resoString = $"{resolution.Width}x{resolution.Height}";
-            if (resoDropDown.FindStringExact(resoString) >= 0)
-            {
-                resoDropDown.Text = resoString;
-            }
+            widthUpDown.Value = resolution.Width;
+            heightUpDown.Value = resolution.Height;
+            if (resolutionDropDown.FindStringExact(resoString) >= 0)
+                resolutionDropDown.Text = resoString;
             else
-            {
-                resoDropDown.SelectedIndex = 0;
-                widthEditBox.Value = resolution.Width;
-                heightEditBox.Value = resolution.Height;
-            }
+                resolutionDropDown.SelectedIndex = 0;
         }
 
         public void Save(ISettings settings)
         {
-            settings.SetValue("apiVersion", apiDropDown.SelectedIndex + 1);
-            settings.SetValue("apiLevel", (int)levelEditBox.Value);
-            settings.SetValue("resolution", $"{widthEditBox.Value}x{heightEditBox.Value}");
-            settings.SetValue("mainScript", scriptPathEditBox.Text);
+            settings.SetInteger("apiVersion", apiDropDown.SelectedIndex + 1);
+            settings.SetInteger("apiLevel", (int)levelEditBox.Value);
+            settings.SetSize("resolution",
+                new Size((int)widthUpDown.Value, (int)heightUpDown.Value)) ;
+            settings.SetString("mainScript", scriptPathComboBox.Text);
+            settings.SetString("saveID", saveIdTextBox.Text);
         }
 
         public bool Verify()
@@ -77,26 +82,27 @@ namespace SphereStudio.ProjectPages
 
         private void apiDropDown_SelectedIndexChanged(object sender, EventArgs e)
         {
-            levelEditBox.Visible = apiDropDown.SelectedIndex > 0;
+            var apiVersion = apiDropDown.SelectedIndex + 1;
+            levelEditBox.Visible = apiVersion >= 2;
             levelLabel.Visible = levelEditBox.Visible;
         }
 
         private void resoDropDown_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (resoDropDown.SelectedIndex > 0)
+            if (resolutionDropDown.SelectedIndex > 0)
             {
-                var match = new Regex(@"(\d+)x(\d+)").Match(resoDropDown.Text);
-                widthEditBox.Value = int.Parse(match.Groups[1].Value);
-                heightEditBox.Value = int.Parse(match.Groups[2].Value);
-                widthEditBox.Enabled = false;
-                heightEditBox.Enabled = false;
+                var match = new Regex(@"(\d+)x(\d+)").Match(resolutionDropDown.Text);
+                widthUpDown.Value = int.Parse(match.Groups[1].Value);
+                heightUpDown.Value = int.Parse(match.Groups[2].Value);
+                widthUpDown.Enabled = false;
+                heightUpDown.Enabled = false;
             }
             else
             {
-                widthEditBox.Enabled = true;
-                heightEditBox.Enabled = true;
-                widthEditBox.Focus();
-                widthEditBox.Select(0, widthEditBox.Text.Length);
+                widthUpDown.Enabled = true;
+                heightUpDown.Enabled = true;
+                widthUpDown.Focus();
+                widthUpDown.Select(0, widthUpDown.Text.Length);
             }
         }
     }

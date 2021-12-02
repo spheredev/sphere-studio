@@ -114,8 +114,14 @@ namespace SphereStudio.Utility
                     var sections = from section in this.sections
                                    where section.Value.Count > 0
                                    select section.Key;
+                    bool sectionClosing = false;
                     foreach (string name in sections)
                     {
+                        if (sectionClosing)
+                        {
+                            file.WriteLine();
+                            sectionClosing = false;
+                        }
                         file.WriteLine(string.Format("[{0}]", name));
                         var itemNames = from itemName in this.sections[name].Keys
                                         orderby itemName ascending
@@ -126,7 +132,7 @@ namespace SphereStudio.Utility
                                 itemName,
                                 this.sections[name][itemName]));
                         }
-                        file.WriteLine();
+                        sectionClosing = true;
                     }
                 }
                 return true;

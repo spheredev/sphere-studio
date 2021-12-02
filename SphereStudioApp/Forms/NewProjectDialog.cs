@@ -77,7 +77,8 @@ namespace SphereStudio.Forms
             NewProject.Summary = summaryTextBox.Text;
             NewProject.Compiler = typeDropDown.Text;
             NewProject.Settings.SetValue("mainScript", "scripts/main.js");
-            NewProject.Settings.SetSize("resolution", new Size((int)widthEditBox.Value, (int)heightEditBox.Value));
+            NewProject.Settings.SetSize("resolution",
+                new Size((int)widthEditBox.Value, (int)heightEditBox.Value));
         }
 
         private void resoDropDown_SelectedIndexChanged(object sender, EventArgs e)

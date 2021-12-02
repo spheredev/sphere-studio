@@ -10,13 +10,13 @@ namespace SphereStudio.Core
 {
     class IniSettings : ISettings
     {
-        private IniFile _ini;
-        private string _section;
+        private IniFile iniFile;
+        private string section;
 
-        public IniSettings(IniFile ini, string section)
+        public IniSettings(IniFile iniFile, string section)
         {
-            _ini = ini;
-            _section = section;
+            this.iniFile = iniFile;
+            this.section = section;
         }
 
         public bool GetBoolean(string key, bool defValue)
@@ -37,21 +37,21 @@ namespace SphereStudio.Core
         public Size GetSize(string key, Size defValue)
         {
             var defString = $"{defValue.Width}x{defValue.Height}";
-            var strValue = _ini.Read(_section, key, defString);
+            var strValue = iniFile.Read(section, key, defString);
             var match = new Regex(@"(\d+)x(\d+)").Match(strValue);
-            return match.Groups.Count == 3
+            return match.Success
                 ? new Size(int.Parse(match.Groups[1].Value), int.Parse(match.Groups[2].Value))
                 : defValue;
         }
         
         public string GetString(string key, string defValue)
         {
-            return _ini.Read(_section, key, defValue ?? "");
+            return iniFile.Read(section, key, defValue ?? "");
         }
         
         public string[] GetStringArray(string key, string[] defValues)
         {
-            string values = _ini.Read(_section, key, null);
+            string values = iniFile.Read(section, key, null);
             if (values == null && defValues != null)
                 return defValues;
             return !string.IsNullOrEmpty(values)
@@ -60,18 +60,28 @@ namespace SphereStudio.Core
 
         public bool Save()
         {
-            return _ini.Save();
+            return iniFile.Save();
         }
 
         public virtual bool SaveAs(string filepath)
         {
             Directory.CreateDirectory(Path.GetDirectoryName(filepath));
-            return _ini.SaveAs(filepath);
+            return iniFile.SaveAs(filepath);
         }
 
+        public void SetInteger(string key, int value)
+        {
+            SetString(key, value.ToString());
+        }
+        
         public void SetSize(string key, Size value)
         {
             SetValue(key, $"{value.Width}x{value.Height}");
+        }
+
+        public void SetString(string key, string value)
+        {
+            iniFile.Write(section, key, value);
         }
 
         public void SetValue(string key, object value)
@@ -81,7 +91,7 @@ namespace SphereStudio.Core
             string valuestr = value is IEnumerable<string>
                 ? string.Join("|", value as IEnumerable<string>)
                 : value.ToString();
-            _ini.Write(_section, key, valuestr);
+            iniFile.Write(section, key, valuestr);
         }
     }
 }

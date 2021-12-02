@@ -33,16 +33,15 @@ namespace SphereStudio.Compilers
                 "}",
             "");
             File.WriteAllText(scriptPath, code);
-            project.Settings.SetValue("mainScript", "scripts/main.js");
             console.Print("OK.\n");
 
             console.Print("Success!\n");
             return true;
         }
 
-        public async Task<bool> Build(IProject project, string outPath, bool debuggable, IConsole con)
+        public async Task<bool> Build(IProject project, string outPath, bool debuggable, IConsole console)
         {
-            con.Print($"building Sphere Classic project '{project.Name}'...\n");
+            console.Print($"building Sphere Classic project '{project.Name}'...\n");
 
             Directory.CreateDirectory(outPath);
 
@@ -50,7 +49,7 @@ namespace SphereStudio.Compilers
             // just generate game.sgm in-place.
             if (Path.GetFullPath(project.RootPath) != Path.GetFullPath(outPath))
             {
-                con.Print("copying Sphere-compatible game files... ");
+                console.Print("copying Sphere-compatible game files... ");
                 int installCount = 0;
                 await Task.Run(() =>
                 {
@@ -71,8 +70,8 @@ namespace SphereStudio.Compilers
                             if (!File.Exists(destFilePath) || File.GetLastWriteTimeUtc(destFilePath) < info.LastWriteTimeUtc)
                             {
                                 if (installCount == 0)
-                                    con.Print("\n");
-                                con.Print($"      {relFilePath}\n");
+                                    console.Print("\n");
+                                console.Print($"      {relFilePath}\n");
                                 File.Copy(info.FullName, destFilePath, true);
                                 ++installCount;
                             }
@@ -80,17 +79,18 @@ namespace SphereStudio.Compilers
                     }
                 });
                 if (installCount > 0)
-                    con.Print(string.Format("      {0} file(s) copied.\n", installCount));
+                    console.Print(string.Format("      {0} file(s) copied.\n", installCount));
                 else
-                    con.Print("up to date.\n");
+                    console.Print("up to date.\n");
             }
 
-            con.Print("writing game manifest 'game.sgm'... ");
+            console.Print("writing game manifest 'game.sgm'... ");
             string sgmPath = Path.Combine(outPath, "game.sgm");
             var apiVersion = project.Settings.GetInteger("apiVersion", 1);
             var apiLevel = project.Settings.GetInteger("apiLevel", 1);
             var mainPath = project.Settings.GetString("mainScript", "scripts/main.js");
             var resolution = project.Settings.GetSize("resolution", new Size(320, 240));
+            var saveId = project.Settings.GetString("saveID", string.Empty);
             using (StreamWriter sw = new StreamWriter(sgmPath))
             {
                 sw.WriteLine($"version={apiVersion}");
@@ -103,6 +103,8 @@ namespace SphereStudio.Compilers
                 {
                     sw.WriteLine($"resolution={resolution.Width}x{resolution.Height}");
                     sw.WriteLine($"main={mainPath}");
+                    if (saveId != string.Empty)
+                        sw.WriteLine($"saveID={saveId}");
                 }
                 else
                 {
@@ -114,9 +116,9 @@ namespace SphereStudio.Compilers
                     sw.WriteLine($"script={scriptPath}");
                 }
             }
-            con.Print("OK.\n");
+            console.Print("OK.\n");
 
-            con.Print("Sphere Classic build succeeded.\n");
+            console.Print("Sphere Classic build succeeded.\n");
             return true;
         }
     }
