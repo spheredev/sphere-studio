@@ -23,7 +23,7 @@ namespace SphereStudio.Forms
             foreach (string name in pageNames)
             {
                 var plugin = PluginManager.Get<IProjectPage>(name);
-                plugin.Populate(project.Settings);
+                plugin.Populate(project);
                 var page = new TabPage(name) { Tag = plugin };
                 page.Controls.Add(plugin.Control);
                 plugin.Control.Dock = DockStyle.Fill;

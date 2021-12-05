@@ -188,12 +188,12 @@ namespace SphereStudio.Core
                 string path = Path.Combine(sphereDir, "Presets", $"{value}.preset");
                 if (!string.IsNullOrWhiteSpace(value) && File.Exists(path)) {
                     using (IniFile preset = new IniFile(path, false)) {
-                        Compiler = preset.Read("Preset", "compiler", "");
-                        Engine = preset.Read("Preset", "engine", "");
-                        FileOpener = preset.Read("Preset", "defaultFileOpener", "");
-                        ImageEditor = preset.Read("Preset", "imageEditor", "");
-                        TextEditor = preset.Read("Preset", "textEditor", "");
-                        DisabledPlugins = preset.Read("Preset", "disabledPlugins", "").Split('|');
+                        Compiler = preset.GetValue("Preset", "compiler", "");
+                        Engine = preset.GetValue("Preset", "engine", "");
+                        FileOpener = preset.GetValue("Preset", "defaultFileOpener", "");
+                        ImageEditor = preset.GetValue("Preset", "imageEditor", "");
+                        TextEditor = preset.GetValue("Preset", "textEditor", "");
+                        DisabledPlugins = preset.GetValue("Preset", "disabledPlugins", "").Split('|');
                     }
                     SetValue("preset", value);
                 }

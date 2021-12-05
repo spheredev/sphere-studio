@@ -31,7 +31,7 @@ namespace SphereStudio.Core
             if (dirInfo.Exists && dirInfo.GetFileSystemInfos().Length > 0)
                 throw new ArgumentException("Root directory for a new project must be empty.");
             dirInfo.Create();
-            var project = new Project(Path.Combine(dirInfo.FullName, MakeFileName(name)))
+            var project = new Project(Path.Combine(dirInfo.FullName, makeFileName(name)))
             {
                 Name = name
             };
@@ -237,6 +237,43 @@ namespace SphereStudio.Core
             set { settings.SetValue("backCompatible", value); }
         }
 
+        public IReadOnlyDictionary<string, int[]> GetAllBreakpoints()
+        {
+            Dictionary<string, int[]> retval = new Dictionary<string, int[]>();
+            foreach (string k in breakpoints.Keys)
+            {
+                retval.Add(k, breakpoints[k].ToArray());
+            }
+            return retval;
+        }
+
+        public int[] GetBreakpoints(string scriptPath)
+        {
+            if (scriptPath == null)
+                return new int[0];
+            int hash = scriptPath.GetHashCode();
+            if (breakpoints.ContainsKey(scriptPath))
+            {
+                return breakpoints[scriptPath].ToArray();
+            }
+            else
+            {
+                int[] lines = new int[0];
+                try
+                {
+                    lines = Array.ConvertAll(
+                        User.GetString($"breakpointsSet:{hash:X8}", "").Split(','),
+                        int.Parse);
+                }
+                catch (Exception)
+                {
+                    // *munch*
+                }
+                breakpoints.Add(scriptPath, new HashSet<int>(lines));
+                return lines;
+            }
+        }
+
         /// <summary>
         /// Saves any changes made to the project.
         /// </summary>
@@ -284,56 +321,6 @@ namespace SphereStudio.Core
             }
         }
 
-        /// <summary>
-        /// Upgrades a Sphere game to a full Sphere Studio project.
-        /// </summary>
-        public void Upgrade()
-        {
-            var basePath = Path.GetDirectoryName(FileName);
-            FileName = Path.Combine(basePath, MakeFileName(Name));
-            GameOnly = false;
-            Compiler = Defaults.Compiler;
-            Save();
-        }
-
-        public IReadOnlyDictionary<string, int[]> GetAllBreakpoints()
-        {
-            Dictionary<string, int[]> retval = new Dictionary<string, int[]>();
-            foreach (string k in breakpoints.Keys)
-            {
-                retval.Add(k, breakpoints[k].ToArray());
-            }
-            return retval;
-        }
-
-
-        public int[] GetBreakpoints(string scriptPath)
-        {
-            if (scriptPath == null)
-                return new int[0];
-            int hash = scriptPath.GetHashCode();
-            if (breakpoints.ContainsKey(scriptPath))
-            {
-                return breakpoints[scriptPath].ToArray();
-            }
-            else
-            {
-                int[] lines = new int[0];
-                try
-                {
-                    lines = Array.ConvertAll(
-                        User.GetString($"breakpointsSet:{hash:X8}", "").Split(','),
-                        int.Parse);
-                }
-                catch (Exception)
-                {
-                    // *munch*
-                }
-                breakpoints.Add(scriptPath, new HashSet<int>(lines));
-                return lines;
-            }
-        }
-
         public void SetBreakpoints(string scriptPath, int[] lineNumbers)
         {
             breakpoints[scriptPath] = new HashSet<int>(lineNumbers);
@@ -343,8 +330,20 @@ namespace SphereStudio.Core
                     string.Join(",", breakpoints[k]));
             }
         }
-        
-        private static string MakeFileName(string name)
+
+        /// <summary>
+        /// Upgrades a Sphere game to a full Sphere Studio project.
+        /// </summary>
+        public void Upgrade()
+        {
+            var basePath = Path.GetDirectoryName(FileName);
+            FileName = Path.Combine(basePath, makeFileName(Name));
+            GameOnly = false;
+            Compiler = Defaults.Compiler;
+            Save();
+        }
+
+        private static string makeFileName(string name)
         {
             string invalidChars = Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars()));
             string pattern = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);

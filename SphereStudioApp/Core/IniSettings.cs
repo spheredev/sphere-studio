@@ -38,7 +38,7 @@ namespace SphereStudio.Core
         public Size GetSize(string key, Size defValue)
         {
             var defString = $"{defValue.Width}x{defValue.Height}";
-            var strValue = iniFile.Read(section, key, defString);
+            var strValue = iniFile.GetValue(section, key, defString);
             var match = new Regex(@"(\d+)x(\d+)").Match(strValue);
             return match.Success
                 ? new Size(int.Parse(match.Groups[1].Value), int.Parse(match.Groups[2].Value))
@@ -47,12 +47,12 @@ namespace SphereStudio.Core
         
         public string GetString(string key, string defValue)
         {
-            return iniFile.Read(section, key, defValue ?? "");
+            return iniFile.GetValue(section, key, defValue ?? "");
         }
         
         public string[] GetStringArray(string key, string[] defValues)
         {
-            string values = iniFile.Read(section, key, null);
+            string values = iniFile.GetValue(section, key, null);
             if (values == null && defValues != null)
                 return defValues;
             return !string.IsNullOrEmpty(values)
@@ -82,7 +82,7 @@ namespace SphereStudio.Core
 
         public void SetString(string key, string value)
         {
-            iniFile.Write(section, key, value);
+            iniFile.SetValue(section, key, value);
         }
 
         public void SetValue(string key, object value)
@@ -92,7 +92,7 @@ namespace SphereStudio.Core
             string valuestr = value is IEnumerable<string>
                 ? string.Join("|", value as IEnumerable<string>)
                 : value.ToString();
-            iniFile.Write(section, key, valuestr);
+            iniFile.SetValue(section, key, valuestr);
         }
     }
 }

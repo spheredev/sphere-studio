@@ -21,8 +21,8 @@ namespace SphereStudio.Base
         /// <summary>
         /// Populates the project page with the current settings.
         /// </summary>
-        /// <param name="settings">The <c>ISettings</c> object to use to populate the page.</param>
-        void Populate(ISettings settings);
+        /// <param name="project">The project to use to populate the page.</param>
+        void Populate(IProject project);
 
         /// <summary>
         /// Saves the settings the user entered on this project page. Validation is assumed to

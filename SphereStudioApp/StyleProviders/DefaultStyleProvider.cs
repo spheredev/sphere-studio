@@ -30,7 +30,7 @@ namespace SphereStudio.StyleProviders
                 ToolColor = Color.FromArgb(192, 192, 208),
             };
 
-            Styles = new[] { darkTheme, lightTheme };
+            Styles = new[] { lightTheme, darkTheme };
         }
 
         public UIStyle[] Styles { get; private set; }

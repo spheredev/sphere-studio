@@ -28,8 +28,8 @@ namespace SphereStudio.IO
             AutoSave = autoSave;
 
             sections = new Dictionary<string, Dictionary<string, string>>();
-            sections.Add("", new Dictionary<string, string>());
-            Dictionary<string, string> section = sections[""];
+            sections.Add(string.Empty, new Dictionary<string, string>());
+            Dictionary<string, string> section = sections[string.Empty];
             if (File.Exists(this.fileName))
             {
                 using (StreamReader file = File.OpenText(this.fileName))
@@ -74,20 +74,46 @@ namespace SphereStudio.IO
         public bool AutoSave { get; set; }
 
         /// <summary>
-        /// Reads a string from the INI file.
+        /// Gets a string from a top-level section of the INI file.
         /// </summary>
-        /// <param name="section">The [section] to read from.</param>
         /// <param name="key">The name of the setting to read.</param>
         /// <param name="defValue">A default string to return if the key isn't found.</param>
         /// <returns>The value read from the INI file, or `defValue` if the key doesn't exist.</returns>
-        public string Read(string section, string key, string defValue)
+        public string GetValue(string key, string defValue)
         {
+            return GetValue(null, key, defValue);
+        }
+
+        /// <summary>
+        /// Reads a string from a specified section of the INI file.
+        /// </summary>
+        /// <param name="section">The <c>[section]</c> to read from, or <c>null</c> for the top level.</param>
+        /// <param name="key">The name of the setting to read.</param>
+        /// <param name="defValue">A default string to return if the key isn't found.</param>
+        /// <returns>The value read from the INI file, or `defValue` if the key doesn't exist.</returns>
+        public string GetValue(string section, string key, string defValue)
+        {
+            section = section ?? string.Empty;
             if (sections.ContainsKey(section) && sections[section].ContainsKey(key))
                 return sections[section][key];
             else
                 return defValue;
         }
-        
+
+        public void RemoveValue(string key)
+        {
+            RemoveValue(null, key);
+        }
+
+        public void RemoveValue(string section, string key)
+        {
+            section = section ?? string.Empty;
+            if (sections.ContainsKey(section))
+                sections[section].Remove(key);
+            if (AutoSave)
+                Save();
+        }
+
         /// <summary>
         /// Saves the current values to the INI file.
         /// </summary>
@@ -112,25 +138,25 @@ namespace SphereStudio.IO
                     var sections = from section in this.sections
                                    where section.Value.Count > 0
                                    select section.Key;
-                    bool sectionClosing = false;
+                    bool closingSection = false;
                     foreach (string name in sections)
                     {
-                        if (sectionClosing)
+                        if (closingSection)
                         {
                             file.WriteLine();
-                            sectionClosing = false;
+                            closingSection = false;
                         }
-                        file.WriteLine(string.Format("[{0}]", name));
-                        var itemNames = from itemName in this.sections[name].Keys
-                                        orderby itemName ascending
-                                        select itemName;
-                        foreach (string itemName in itemNames)
+                        if (name != String.Empty)
+                            file.WriteLine($"[{name}]");
+                        var keys = from key in this.sections[name].Keys
+                                   orderby key ascending
+                                   select key;
+                        foreach (string key in keys)
                         {
-                            file.WriteLine(string.Format("{0}={1}",
-                                itemName,
-                                this.sections[name][itemName]));
+                            var value = this.sections[name][key];
+                            file.WriteLine($"{key}={value}");
                         }
-                        sectionClosing = true;
+                        closingSection = true;
                     }
                 }
                 return true;
@@ -142,23 +168,30 @@ namespace SphereStudio.IO
         }
 
         /// <summary>
-        /// Writes a string to the INI file.
+        /// Writes a string to the top-level section of the INI file.
         /// </summary>
-        /// <param name="section">The [section] to write.</param>
         /// <param name="key">The name of the setting to write.</param>
         /// <param name="value">The value of the setting.</param>
-        public void Write(string section, string key, string value)
+        public void SetValue(string key, string value)
         {
-            value = value ?? "";
+            SetValue(string.Empty, key, value);
+        }
+
+        /// <summary>
+        /// Writes a string to the specified section of the INI file.
+        /// </summary>
+        /// <param name="section">The <c>[section]</c> to write, or <c>null</c> for the top level.</param>
+        /// <param name="key">The name of the setting to write.</param>
+        /// <param name="value">The value of the setting.</param>
+        public void SetValue(string section, string key, string value)
+        {
+            section = section ?? string.Empty;
+            value = value ?? string.Empty;
             if (!sections.ContainsKey(section))
-            {
                 sections.Add(section, new Dictionary<string, string>());
-            }
             sections[section][key] = value;
             if (AutoSave)
-            {
                 Save();
-            }
         }
     }
 }

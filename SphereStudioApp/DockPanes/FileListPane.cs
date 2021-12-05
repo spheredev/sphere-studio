@@ -57,29 +57,30 @@ namespace SphereStudio.DockPanes
 
         private void ImportFileItem_Click(object sender, EventArgs e)
         {
-            string path = ResolvePath(fileTree.SelectedNode);
-            string[] filesToAdd = _hostForm.GetFilesToOpen(true);
+            var path = ResolvePath(fileTree.SelectedNode);
+            var filesToAdd = _hostForm.GetFilesToOpen(true);
             
-            if (filesToAdd == null || filesToAdd.Length == 0) return;
+            if (filesToAdd == null || filesToAdd.Length == 0)
+                return;
 
             foreach (string filePath in filesToAdd)
             {
-                string newpath = path + "\\" + Path.GetFileName(filePath);
-                var copy = true;
-
-                if (File.Exists(newpath))
+                var newPath = Path.Combine(path, Path.GetFileName(filePath));
+                var allowCopy = true;
+                if (File.Exists(newPath))
                 {
-                    var text = string.Format(@"File: {0} seems to exist. Overwrite destination?", newpath);
-                    copy = MessageBox.Show(text, @"Overwrite", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes;
+                    var text = $@"File '{newPath}' already exists.  Do you want to overwrite it with the file you're importing?";
+                    allowCopy = MessageBox.Show(text, "Overwrite", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes;
                 }
-
-                if (copy) File.Copy(filePath, newpath, true);
+                if (allowCopy)
+                    File.Copy(filePath, newPath, true);
             }
         }
 
         private void ProjectTreeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            if (e.Button != MouseButtons.Right) return;
+            if (e.Button != MouseButtons.Right)
+                return;
             fileTree.SelectedNode = e.Node;
 
             OpenFileItem.Visible = DeleteFileItem.Visible = false;
@@ -254,7 +255,7 @@ namespace SphereStudio.DockPanes
                            where !dirInfo.Attributes.HasFlag(FileAttributes.Hidden)
                            orderby dirInfo.Name
                            select dirInfo;
-            foreach (DirectoryInfo dirInfo in dirInfos)
+            foreach (var dirInfo in dirInfos)
             {
                 var subNode = new TreeNode(dirInfo.Name, 1, 1) { Tag = "directoryNode" };
                 baseNode.Nodes.Add(subNode);
@@ -265,7 +266,7 @@ namespace SphereStudio.DockPanes
                             where !fileInfo.Attributes.HasFlag(FileAttributes.Hidden)
                             orderby fileInfo.Name
                             select fileInfo;
-            foreach (FileInfo fileInfo in fileInfos)
+            foreach (var fileInfo in fileInfos)
             {
                 var subNode = new TreeNode(fileInfo.Name) { Tag = "fileNode" };
                 UpdateImage(subNode);
@@ -275,7 +276,7 @@ namespace SphereStudio.DockPanes
 
         private static void UpdateImage(TreeNode node)
         {
-            string pluginName = Session.GetFileOpenerName(node.Text);
+            var pluginName = Session.GetFileOpenerName(node.Text);
             if (pluginName != null)
             {
                 node.ImageKey = pluginName;

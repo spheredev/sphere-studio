@@ -205,14 +205,15 @@ namespace SphereStudio.Forms
                     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                     "Sphere Studio", "pluginPresets", fileName);
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
-                using (IniFile preset = new IniFile(path))
+                using (var preset = new IniFile(path, false))
                 {
-                    preset.Write("Preset", "compiler", getPluginName(typeDropDown));
-                    preset.Write("Preset", "engine", getPluginName(engineDropDown));
-                    preset.Write("Preset", "defaultFileOpener", getPluginName(otherDropDown));
-                    preset.Write("Preset", "textEditor", getPluginName(scriptDropDown));
-                    preset.Write("Preset", "imageEditor", getPluginName(imageDropDown));
-                    preset.Write("Preset", "disabledPlugins", string.Join("|", Session.Settings.DisabledPlugins));
+                    preset.SetValue("Preset", "compiler", getPluginName(typeDropDown));
+                    preset.SetValue("Preset", "engine", getPluginName(engineDropDown));
+                    preset.SetValue("Preset", "defaultFileOpener", getPluginName(otherDropDown));
+                    preset.SetValue("Preset", "textEditor", getPluginName(scriptDropDown));
+                    preset.SetValue("Preset", "imageEditor", getPluginName(imageDropDown));
+                    preset.SetValue("Preset", "disabledPlugins", string.Join("|", Session.Settings.DisabledPlugins));
+                    preset.Save();
                 }
                 Session.Settings.Preset = Path.GetFileNameWithoutExtension(fileName);
                 Session.Settings.Apply();

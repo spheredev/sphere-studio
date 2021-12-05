@@ -27,13 +27,14 @@ namespace SphereStudio.ProjectPages
         public void ApplyStyle(UIStyle style)
         {
             style.AsUIElement(this);
-            style.AsHeading(apiHeading);
-            style.AsHeading(runtimeHeading);
-            style.AsAccent(apiPanel);
-            style.AsAccent(runtimePanel);
 
+            style.AsHeading(apiHeading);
+            style.AsAccent(apiPanel);
             style.AsTextView(apiDropDown);
             style.AsTextView(levelEditBox);
+
+            style.AsHeading(runtimeHeading);
+            style.AsAccent(runtimePanel);
             style.AsTextView(scriptPathComboBox);
             style.AsTextView(resolutionDropDown);
             style.AsTextView(widthUpDown);
@@ -41,13 +42,13 @@ namespace SphereStudio.ProjectPages
             style.AsTextView(saveIdTextBox);
         }
 
-        public void Populate(ISettings settings)
+        public void Populate(IProject project)
         {
-            var apiVersion = settings.GetInteger("apiVersion", 1);
-            var apiLevel = settings.GetInteger("apiLevel", 1);
-            var mainPath = settings.GetString("mainScript", "");
-            var resolution = settings.GetSize("resolution", new Size(320, 240));
-            var saveId = settings.GetString("saveID", "");
+            var apiVersion = project.Settings.GetInteger("apiVersion", 1);
+            var apiLevel = project.Settings.GetInteger("apiLevel", 1);
+            var mainPath = project.Settings.GetString("mainScript", "");
+            var resolution = project.Settings.GetSize("resolution", new Size(320, 240));
+            var saveId = project.Settings.GetString("saveID", "");
 
             apiVersion = Math.Min(Math.Max(apiVersion, 1), 2);
             apiLevel = Math.Min(Math.Max(apiLevel, 1), 999);
