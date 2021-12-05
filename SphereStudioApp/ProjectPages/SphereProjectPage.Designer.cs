@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.apiPanel = new System.Windows.Forms.Panel();
+            this.autoJsonCheckBox = new System.Windows.Forms.CheckBox();
             this.levelLabel = new System.Windows.Forms.Label();
             this.levelEditBox = new System.Windows.Forms.NumericUpDown();
             this.apiDropDown = new System.Windows.Forms.ComboBox();
@@ -56,6 +57,7 @@
             this.apiPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.apiPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.apiPanel.Controls.Add(this.autoJsonCheckBox);
             this.apiPanel.Controls.Add(this.levelLabel);
             this.apiPanel.Controls.Add(this.levelEditBox);
             this.apiPanel.Controls.Add(this.apiDropDown);
@@ -65,6 +67,16 @@
             this.apiPanel.Name = "apiPanel";
             this.apiPanel.Size = new System.Drawing.Size(454, 93);
             this.apiPanel.TabIndex = 0;
+            // 
+            // autoJsonCheckBox
+            // 
+            this.autoJsonCheckBox.AutoSize = true;
+            this.autoJsonCheckBox.Location = new System.Drawing.Point(76, 60);
+            this.autoJsonCheckBox.Name = "autoJsonCheckBox";
+            this.autoJsonCheckBox.Size = new System.Drawing.Size(184, 17);
+            this.autoJsonCheckBox.TabIndex = 2;
+            this.autoJsonCheckBox.Text = "Automatically manage \'game.json\'";
+            this.autoJsonCheckBox.UseVisualStyleBackColor = true;
             // 
             // levelLabel
             // 
@@ -110,7 +122,7 @@
             this.apiDropDown.Location = new System.Drawing.Point(76, 32);
             this.apiDropDown.Name = "apiDropDown";
             this.apiDropDown.Size = new System.Drawing.Size(364, 21);
-            this.apiDropDown.TabIndex = 2;
+            this.apiDropDown.TabIndex = 1;
             this.apiDropDown.SelectedIndexChanged += new System.EventHandler(this.apiDropDown_SelectedIndexChanged);
             // 
             // label1
@@ -119,7 +131,7 @@
             this.label1.Location = new System.Drawing.Point(24, 35);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(45, 13);
-            this.label1.TabIndex = 1;
+            this.label1.TabIndex = 0;
             this.label1.Text = "Platform";
             // 
             // apiHeading
@@ -323,5 +335,6 @@
         private System.Windows.Forms.NumericUpDown widthUpDown;
         private System.Windows.Forms.TextBox saveIdTextBox;
         private System.Windows.Forms.Label saveIdLabel;
+        private System.Windows.Forms.CheckBox autoJsonCheckBox;
     }
 }

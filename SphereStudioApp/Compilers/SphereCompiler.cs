@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 
 using SphereStudio.Base;
+
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace SphereStudio.Compilers
 {
@@ -45,13 +49,15 @@ namespace SphereStudio.Compilers
             console.Print($"(c) {Versioning.Copyright}\n");
             console.Print("\n");
             console.Print("writing Sphere game manifest 'game.sgm'... ");
-            string sgmPath = Path.Combine(project.RootPath, "game.sgm");
+            var sgmPath = Path.Combine(project.RootPath, "game.sgm");
+            var jsonPath = Path.Combine(project.RootPath, "game.json");
             var apiVersion = project.Settings.GetInteger("apiVersion", 1);
             var apiLevel = project.Settings.GetInteger("apiLevel", 1);
             var mainPath = project.Settings.GetString("mainScript", "scripts/main.js");
             var resolution = project.Settings.GetSize("resolution", new Size(320, 240));
             var saveId = project.Settings.GetString("saveID", string.Empty);
-            using (StreamWriter sw = new StreamWriter(sgmPath))
+            var managingJson = project.Settings.GetBoolean("manageGameJson", true);
+            using (var sw = new StreamWriter(sgmPath))
             {
                 sw.WriteLine($"version={apiVersion}");
                 if (apiVersion >= 2)
@@ -77,6 +83,33 @@ namespace SphereStudio.Compilers
                 }
             }
             console.Print("OK.\n");
+            
+            if (apiVersion >= 2 && managingJson)
+            {
+                console.Print("updating JSON metadata in 'game.json'... ");
+                var jsonData = File.Exists(jsonPath)
+                    ? JsonConvert.DeserializeObject<JObject>(File.ReadAllText(jsonPath, Encoding.UTF8))
+                    : new JObject();
+                jsonData["version"] = apiVersion;
+                if (apiVersion >= 2)
+                    jsonData["apiLevel"] = apiLevel;
+                else
+                    jsonData.Remove("apiLevel");
+                jsonData["name"] = project.Name;
+                jsonData["author"] = project.Author;
+                jsonData["description"] = project.Summary;
+                jsonData["resolution"] = $"{resolution.Width}x{resolution.Height}";
+                jsonData["main"] = mainPath;
+                if (saveId != string.Empty)
+                    jsonData["saveID"] = saveId;
+                else
+                    jsonData.Remove("saveID");
+                using (var sw = new StreamWriter(jsonPath))
+                {
+                    sw.WriteLine(JsonConvert.SerializeObject(jsonData, Formatting.Indented));
+                }
+                console.Print("OK.\n");
+            }
 
             console.Print("Sphere Classic build succeeded.\n");
             return project.RootPath;

@@ -49,6 +49,7 @@ namespace SphereStudio.ProjectPages
             var mainPath = project.Settings.GetString("mainScript", "");
             var resolution = project.Settings.GetSize("resolution", new Size(320, 240));
             var saveId = project.Settings.GetString("saveID", "");
+            var managingJson = project.Settings.GetBoolean("manageGameJson", true);
 
             apiVersion = Math.Min(Math.Max(apiVersion, 1), 2);
             apiLevel = Math.Min(Math.Max(apiLevel, 1), 999);
@@ -64,6 +65,8 @@ namespace SphereStudio.ProjectPages
                 resolutionDropDown.Text = resoString;
             else
                 resolutionDropDown.SelectedIndex = 0;
+
+            autoJsonCheckBox.Checked = managingJson;
         }
 
         public void Save(ISettings settings)
@@ -74,6 +77,7 @@ namespace SphereStudio.ProjectPages
                 new Size((int)widthUpDown.Value, (int)heightUpDown.Value)) ;
             settings.SetString("mainScript", scriptPathComboBox.Text);
             settings.SetString("saveID", saveIdTextBox.Text);
+            settings.SetValue("manageGameJson", autoJsonCheckBox.Checked);
         }
 
         public bool Verify()
@@ -84,6 +88,7 @@ namespace SphereStudio.ProjectPages
         private void apiDropDown_SelectedIndexChanged(object sender, EventArgs e)
         {
             var apiVersion = apiDropDown.SelectedIndex + 1;
+            autoJsonCheckBox.Visible = apiVersion > 1;
             levelEditBox.Visible = apiVersion >= 2;
             levelLabel.Visible = levelEditBox.Visible;
         }
