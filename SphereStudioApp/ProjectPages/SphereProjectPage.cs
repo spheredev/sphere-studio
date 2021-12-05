@@ -66,6 +66,7 @@ namespace SphereStudio.ProjectPages
             else
                 resolutionDropDown.SelectedIndex = 0;
 
+            autoJsonCheckBox.Enabled = !project.GameOnly;
             autoJsonCheckBox.Checked = managingJson;
         }
 

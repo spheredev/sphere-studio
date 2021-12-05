@@ -13,6 +13,12 @@ namespace SphereStudio.Base
         string RootPath { get; }
 
         /// <summary>
+        /// Whether the project is synthesized from an SGM file. If <c>true</c>, there is no <c>.ssproj</c>
+        /// file and project settings won't be persisted.
+        /// </summary>
+        bool GameOnly { get; }
+
+        /// <summary>
         /// Gets or sets the name of the project (usually the game title).
         /// </summary>
         string Name { get; set; }
