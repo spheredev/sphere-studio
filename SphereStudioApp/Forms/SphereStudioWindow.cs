@@ -14,6 +14,7 @@ using SphereStudio.Base;
 using SphereStudio.Core;
 using SphereStudio.DockPanes;
 using SphereStudio.DocumentViews;
+using System.Media;
 
 namespace SphereStudio.Forms
 {
@@ -85,7 +86,7 @@ namespace SphereStudio.Forms
             {
                 if (value && !StartVisible)
                 {
-                    _startPage = new StartPageView(this) { HelpLabel = HelpLabel };
+                    _startPage = new StartPageView(this) { HelpLabel = helpLabel };
                     _startPage.RepopulateProjects();
                     _startTab = AddDocument(_startPage, "Start Page");
                     _startTab.Restyle();
@@ -242,9 +243,9 @@ namespace SphereStudio.Forms
 
             RefreshProject();
 
-            if (LoadProject != null) LoadProject(null, EventArgs.Empty);
+            LoadProject?.Invoke(null, EventArgs.Empty);
 
-            HelpLabel.Text = @"Game project loaded successfully!";
+            helpLabel.Text = "Game project loaded successfully!";
 
             StartVisible = true;
 
@@ -1009,9 +1010,8 @@ namespace SphereStudio.Forms
                     }
                     else
                     {
-                        Activate();
-                        MessageBox.Show("Sphere Studio failed to start a debugging session.", "Unable to Start Debugging",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        SystemSounds.Hand.Play();
+                        helpLabel.Text = "Sphere Studio was unable to launch a debugging session.";
                         Debugger = null;
                         UpdateControls();
                     }

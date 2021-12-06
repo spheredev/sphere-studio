@@ -57,7 +57,7 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolEngineCombo = new System.Windows.Forms.ToolStripComboBox();
             this.EditorStatus = new System.Windows.Forms.StatusStrip();
-            this.HelpLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.helpLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.SsResizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SsRescaleMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SpriteTilesetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -408,7 +408,7 @@
             // EditorStatus
             // 
             this.EditorStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.HelpLabel});
+            this.helpLabel});
             this.EditorStatus.Location = new System.Drawing.Point(0, 531);
             this.EditorStatus.Name = "EditorStatus";
             this.EditorStatus.Size = new System.Drawing.Size(787, 22);
@@ -417,11 +417,11 @@
             // 
             // HelpLabel
             // 
-            this.HelpLabel.BackColor = System.Drawing.Color.Transparent;
-            this.HelpLabel.Margin = new System.Windows.Forms.Padding(2, 3, 0, 2);
-            this.HelpLabel.Name = "HelpLabel";
-            this.HelpLabel.Size = new System.Drawing.Size(192, 17);
-            this.HelpLabel.Text = "Welcome to the new Sphere Editor!";
+            this.helpLabel.BackColor = System.Drawing.Color.Transparent;
+            this.helpLabel.Margin = new System.Windows.Forms.Padding(2, 3, 0, 2);
+            this.helpLabel.Name = "HelpLabel";
+            this.helpLabel.Size = new System.Drawing.Size(192, 17);
+            this.helpLabel.Text = "Welcome to the new Sphere Editor!";
             // 
             // SsResizeMenuItem
             // 
@@ -1064,7 +1064,7 @@
         private System.Windows.Forms.ToolStripMenuItem TilesetMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ExportTilesetItem;
         private System.Windows.Forms.ToolStripMenuItem UpdateFromMenuItem;
-        private System.Windows.Forms.ToolStripStatusLabel HelpLabel;
+        private System.Windows.Forms.ToolStripStatusLabel helpLabel;
         private System.Windows.Forms.ToolStripButton toolEditorSettings;
         private System.Windows.Forms.ToolStripMenuItem SsResizeMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SsRescaleMenuItem;
