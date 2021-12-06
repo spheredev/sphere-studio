@@ -84,14 +84,17 @@ namespace SphereStudio.Compilers
             }
             console.Print("OK.\n");
             
-            if (apiVersion >= 2 && managingJson && !project.GameOnly)
+            if (managingJson)
             {
                 console.Print("updating JSON metadata in 'game.json'... ");
                 var jsonData = File.Exists(jsonPath)
                     ? JsonConvert.DeserializeObject<JObject>(File.ReadAllText(jsonPath, Encoding.UTF8))
                     : new JObject();
                 jsonData["version"] = apiVersion;
-                jsonData["apiLevel"] = apiLevel;
+                if (apiVersion >= 2)
+                    jsonData["apiLevel"] = apiLevel;
+                else
+                    jsonData.Remove("apiLevel");
                 jsonData["name"] = project.Name;
                 jsonData["author"] = project.Author;
                 jsonData["description"] = project.Summary;

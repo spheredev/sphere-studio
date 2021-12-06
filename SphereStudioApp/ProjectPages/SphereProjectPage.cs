@@ -40,6 +40,9 @@ namespace SphereStudio.ProjectPages
             style.AsTextView(widthUpDown);
             style.AsTextView(heightUpDown);
             style.AsTextView(saveIdTextBox);
+
+            style.AsHeading(compatHeading);
+            style.AsAccent(compatPanel);
         }
 
         public void Populate(IProject project)
@@ -89,7 +92,6 @@ namespace SphereStudio.ProjectPages
         private void apiDropDown_SelectedIndexChanged(object sender, EventArgs e)
         {
             var apiVersion = apiDropDown.SelectedIndex + 1;
-            autoJsonCheckBox.Visible = apiVersion > 1;
             levelEditBox.Visible = apiVersion >= 2;
             levelLabel.Visible = levelEditBox.Visible;
         }
