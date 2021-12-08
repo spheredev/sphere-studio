@@ -48,7 +48,7 @@ namespace SphereStudio.Compilers
             console.Print($"built-in IDE tooling for Sphere v1 and v2 games\n");
             console.Print($"(c) {Versioning.Copyright}\n");
             console.Print("\n");
-            console.Print("writing Sphere game manifest 'game.sgm'... ");
+            console.Print("writing new Sphere game manifest... ");
             var sgmPath = Path.Combine(project.RootPath, "game.sgm");
             var jsonPath = Path.Combine(project.RootPath, "game.json");
             var apiVersion = project.Settings.GetInteger("apiVersion", 1);
@@ -56,7 +56,7 @@ namespace SphereStudio.Compilers
             var mainPath = project.Settings.GetString("mainScript", "scripts/main.js");
             var resolution = project.Settings.GetSize("resolution", new Size(320, 240));
             var saveId = project.Settings.GetString("saveID", string.Empty);
-            var managingJson = project.Settings.GetBoolean("manageGameJson", true);
+            var managingJson = project.Settings.GetBoolean("manageGameJson", false);
             using (var sw = new StreamWriter(sgmPath))
             {
                 sw.WriteLine($"version={apiVersion}");
@@ -86,7 +86,7 @@ namespace SphereStudio.Compilers
             
             if (managingJson)
             {
-                console.Print("updating JSON metadata in 'game.json'... ");
+                console.Print("updating values in 'game.json'... ");
                 var jsonData = File.Exists(jsonPath)
                     ? JsonConvert.DeserializeObject<JObject>(File.ReadAllText(jsonPath, Encoding.UTF8))
                     : new JObject();

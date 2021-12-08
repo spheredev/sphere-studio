@@ -141,6 +141,10 @@ namespace SphereStudio.Core
                 : new Size(screenWidth, screenHeight));
             project.Settings.SetString("mainScript", scriptPath);
             project.Settings.SetString("saveID", saveId);
+
+            var jsonPath = Path.Combine(project.RootPath, "game.json");
+            if (File.Exists(jsonPath))
+                project.settings.SetValue("manageGameJson", true);
             return project;
         }
 

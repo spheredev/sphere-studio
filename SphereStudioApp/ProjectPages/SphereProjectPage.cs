@@ -52,7 +52,7 @@ namespace SphereStudio.ProjectPages
             var mainPath = project.Settings.GetString("mainScript", "");
             var resolution = project.Settings.GetSize("resolution", new Size(320, 240));
             var saveId = project.Settings.GetString("saveID", "");
-            var managingJson = project.Settings.GetBoolean("manageGameJson", true);
+            var managingJson = project.Settings.GetBoolean("manageGameJson", false);
 
             apiVersion = Math.Min(Math.Max(apiVersion, 1), 2);
             apiLevel = Math.Min(Math.Max(apiLevel, 1), 999);
