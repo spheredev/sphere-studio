@@ -20,7 +20,7 @@ which allows new features to be added by writing a plugin in C# or VB.NET.
 Download
 ========
 
-The most recent stable release as of this writing is **Sphere Studio 2.0.0**.
+The most recent stable release as of this writing is **Sphere Studio 2.1.0**.
 You can download the latest release from GitHub here:
 
 - <https://github.com/fatcerberus/sphere-studio/releases>
