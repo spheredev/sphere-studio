@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Spherical")]
 [assembly: AssemblyProduct("Sphere Studio")]
-[assembly: AssemblyCopyright("© 2012-2021 Sphere Engine Group")]
+[assembly: AssemblyCopyright("© 2012-2022 Sphere Engine Group")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

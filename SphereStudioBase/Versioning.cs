@@ -34,7 +34,7 @@ namespace SphereStudio
         /// <summary>
         /// A string indicating the copyright holder and year(s) of copyright.
         /// </summary>
-        public const string Copyright = "2012-2021 Sphere Engine Group";
+        public const string Copyright = "2012-2022 Sphere Engine Group";
 
         /// <summary>
         /// A short description of the software along with a list of contributors.
