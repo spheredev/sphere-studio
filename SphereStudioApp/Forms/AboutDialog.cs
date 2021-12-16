@@ -30,7 +30,7 @@ namespace SphereStudio.Forms
             string updateName = os.ServicePack;
             if (os.Version.Major == 10 && os.Version.Minor == 0)
             {
-                // Windows 11 still reports v10.0, have to detect via build number
+                // Windows 11 releases start at build number 22000
                 if (os.Version.Build >= 22000)
                     windowsVersion = "11";
 
@@ -48,6 +48,7 @@ namespace SphereStudio.Forms
                     : os.Version.Build == 19041 ? "May 2020 Update"
                     : os.Version.Build == 19042 ? "Oct. 2020 Update"
                     : os.Version.Build == 19043 ? "May 2021 Update"
+                    : os.Version.Build == 19044 ? "Nov. 2021 Update"
                     : os.Version.Build == 22000 ? "v. 21H2"
                     : $"build {os.Version.Build}";
             }
