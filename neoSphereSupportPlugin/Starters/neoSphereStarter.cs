@@ -23,7 +23,6 @@ namespace SphereStudio.Starters
             string gdkPath = m_main.Conf.EnginePath;
             bool wantConsole = m_main.Conf.AlwaysUseConsole;
             bool wantWindow = m_main.Conf.TestInWindow || wantConsole;
-
             string enginePath = Path.Combine(gdkPath, wantConsole ? "spherun.exe" : "neoSphere.exe");
             string options = string.Format(@"{0} --verbose {1} {2} ""{3}""",
                 wantWindow ? "--windowed" : "",
@@ -46,8 +45,9 @@ namespace SphereStudio.Starters
             Panes.Console.ClearConsole();
             PluginManager.Core.Docking.Show(Panes.Inspector);
             string enginePath = Path.Combine(gdkPath, "spherun.exe");
-            string options = string.Format(@"--verbose {0} --debug ""{1}""",
+            string options = string.Format(@"--verbose {0} --debug {1} ""{2}""",
                 m_main.Conf.Verbosity,
+                m_main.Conf.UseRetroMode ? "--retro" : "",
                 gamePath);
             Process engine = Process.Start(enginePath, options);
             return new SsjDebugger(m_main, gamePath, enginePath, engine, project);

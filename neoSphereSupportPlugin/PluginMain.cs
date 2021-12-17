@@ -140,6 +140,12 @@ namespace SphereStudio
             set => settings.SetValue("testInWindow", value);
         }
 
+        public bool UseRetroMode
+        {
+            get => settings.GetBoolean("debugInRetroMode", false);
+            set => settings.SetValue("debugInRetroMode", value);
+        }
+        
         public int Verbosity
         {
             get => Math.Min(Math.Max(settings.GetInteger("verbosity", 0), 0), 4);

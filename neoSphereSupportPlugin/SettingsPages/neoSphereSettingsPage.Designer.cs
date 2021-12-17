@@ -41,6 +41,7 @@
             this.directoryHeading = new System.Windows.Forms.Label();
             this.debugPanel = new System.Windows.Forms.Panel();
             this.debugHeading = new System.Windows.Forms.Label();
+            this.retroModeCheckBox = new System.Windows.Forms.CheckBox();
             this.directoryPanel.SuspendLayout();
             this.debugPanel.SuspendLayout();
             this.SuspendLayout();
@@ -174,6 +175,7 @@
             this.debugPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.debugPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.debugPanel.Controls.Add(this.retroModeCheckBox);
             this.debugPanel.Controls.Add(this.showTracesButton);
             this.debugPanel.Controls.Add(this.testWithConsoleButton);
             this.debugPanel.Controls.Add(this.testInWindowButton);
@@ -183,7 +185,7 @@
             this.debugPanel.Controls.Add(this.label2);
             this.debugPanel.Location = new System.Drawing.Point(9, 113);
             this.debugPanel.Name = "debugPanel";
-            this.debugPanel.Size = new System.Drawing.Size(526, 131);
+            this.debugPanel.Size = new System.Drawing.Size(526, 154);
             this.debugPanel.TabIndex = 5;
             // 
             // debugHeading
@@ -196,13 +198,23 @@
             this.debugHeading.Text = "Configuration";
             this.debugHeading.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // SettingsPage
+            // retroModeCheckBox
+            // 
+            this.retroModeCheckBox.AutoSize = true;
+            this.retroModeCheckBox.Location = new System.Drawing.Point(13, 126);
+            this.retroModeCheckBox.Name = "retroModeCheckBox";
+            this.retroModeCheckBox.Size = new System.Drawing.Size(338, 17);
+            this.retroModeCheckBox.TabIndex = 5;
+            this.retroModeCheckBox.Text = "Use retrograde mode while debugging (emulate targeted API level)";
+            this.retroModeCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // neoSphereSettingsPage
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.AutoScroll = true;
             this.Controls.Add(this.debugPanel);
             this.Controls.Add(this.directoryPanel);
-            this.Name = "SettingsPage";
+            this.Name = "neoSphereSettingsPage";
             this.Size = new System.Drawing.Size(545, 349);
             this.directoryPanel.ResumeLayout(false);
             this.directoryPanel.PerformLayout();
@@ -226,5 +238,6 @@
         private System.Windows.Forms.Label directoryHeading;
         private System.Windows.Forms.Panel debugPanel;
         private System.Windows.Forms.Label debugHeading;
+        private System.Windows.Forms.CheckBox retroModeCheckBox;
     }
 }
