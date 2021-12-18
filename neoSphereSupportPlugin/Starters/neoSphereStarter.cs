@@ -9,25 +9,28 @@ namespace SphereStudio.Starters
 {
     class neoSphereStarter : IDebugStarter
     {
-        private PluginMain m_main;
+        private PluginMain main;
+        private bool useRetroMode;
 
-        public neoSphereStarter(PluginMain main)
+        public neoSphereStarter(PluginMain main, bool useRetroMode = false)
         {
-            m_main = main;
+            this.main = main;
+            this.useRetroMode = useRetroMode;
         }
 
-        public bool CanConfigure { get { return false; } }
+        public bool CanConfigure => false;
 
         public void Start(string gamePath, bool isPackage)
         {
-            string gdkPath = m_main.Conf.EnginePath;
-            bool wantConsole = m_main.Conf.AlwaysUseConsole;
-            bool wantWindow = m_main.Conf.TestInWindow || wantConsole;
-            string enginePath = Path.Combine(gdkPath, wantConsole ? "spherun.exe" : "neoSphere.exe");
-            string options = string.Format(@"{0} --verbose {1} {2} ""{3}""",
+            var gdkPath = main.Conf.EnginePath;
+            var wantConsole = main.Conf.AlwaysUseConsole;
+            var wantWindow = main.Conf.TestInWindow || wantConsole;
+            var enginePath = Path.Combine(gdkPath, wantConsole ? "spherun.exe" : "neoSphere.exe");
+            var options = string.Format(@"{0} --verbose {1} {2} {3} ""{4}""",
                 wantWindow ? "--windowed" : "",
-                m_main.Conf.Verbosity,
+                main.Conf.Verbosity,
                 wantConsole ? "--profile" : "",
+                useRetroMode || main.Conf.TestInRetroMode ? "--retro" : "",
                 gamePath);
             Process.Start(enginePath, options);
         }
@@ -39,18 +42,18 @@ namespace SphereStudio.Starters
 
         public IDebugger Debug(string gamePath, bool isPackage, IProject project)
         {
-            string gdkPath = m_main.Conf.EnginePath;
+            string gdkPath = main.Conf.EnginePath;
 
             PluginManager.Core.Docking.Activate(Panes.Console);
             Panes.Console.ClearConsole();
             PluginManager.Core.Docking.Show(Panes.Inspector);
-            string enginePath = Path.Combine(gdkPath, "spherun.exe");
-            string options = string.Format(@"--verbose {0} --debug {1} ""{2}""",
-                m_main.Conf.Verbosity,
-                m_main.Conf.UseRetroMode ? "--retro" : "",
+            var enginePath = Path.Combine(gdkPath, "spherun.exe");
+            var options = string.Format(@"--verbose {0} --debug {1} ""{2}""",
+                main.Conf.Verbosity,
+                useRetroMode ? "--retro" : "",
                 gamePath);
-            Process engine = Process.Start(enginePath, options);
-            return new SsjDebugger(m_main, gamePath, enginePath, engine, project);
+            Process engineProcess = Process.Start(enginePath, options);
+            return new SsjDebugger(main, gamePath, enginePath, engineProcess, project);
         }
     }
 }

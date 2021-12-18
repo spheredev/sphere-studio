@@ -19,7 +19,7 @@ namespace SphereStudio.SettingsPages
 
         public Control Control { get => this; }
 
-        public bool Apply()
+        public bool Save()
         {
             string[] paths = new string[dirsListBox.Items.Count];
             dirsListBox.Items.CopyTo(paths, 0);

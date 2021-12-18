@@ -1,17 +1,16 @@
-; Sphere Studio Setup Script for Inno Setup
-; Builds a Windows installer distribution of Sphere Studio.
-; Copyright (c) 2021 Spherical
+; Sphere Studio Setup script for Inno Setup
+; (c) 2012-2021 Sphere Engine Group
 
 #define AppName "Sphere Studio"
-#define AppPublisher "Fat Cerberus"
-#define AppVersion3 "2.1.0"
-#define AppVersion4 "2.1.0.616"
+#define AppPublisher "Spherical"
+#define AppVersion3 "WiP"
+#define AppVersion4 "0.0.0.0"
 
 [Setup]
 OutputBaseFilename=SphereStudioSetup-{#AppVersion3}-msw
 OutputDir=.
 AppId={{F40892B0-C96E-48B7-B1E9-8C2BFB6C167D}
-AppCopyright=© 2021 Fat Cerberus
+AppCopyright=(c) 2012-2021 Sphere Engine Group
 AppName={#AppName}
 AppPublisher={#AppPublisher}
 AppPublisherURL=http://www.spheredev.org/

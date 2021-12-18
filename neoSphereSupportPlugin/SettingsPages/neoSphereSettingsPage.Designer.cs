@@ -40,8 +40,8 @@
             this.directoryPanel = new System.Windows.Forms.Panel();
             this.directoryHeading = new System.Windows.Forms.Label();
             this.debugPanel = new System.Windows.Forms.Panel();
-            this.debugHeading = new System.Windows.Forms.Label();
             this.retroModeCheckBox = new System.Windows.Forms.CheckBox();
+            this.debugHeading = new System.Windows.Forms.Label();
             this.directoryPanel.SuspendLayout();
             this.debugPanel.SuspendLayout();
             this.SuspendLayout();
@@ -61,9 +61,9 @@
             this.testInWindowButton.AutoSize = true;
             this.testInWindowButton.Location = new System.Drawing.Point(13, 80);
             this.testInWindowButton.Name = "testInWindowButton";
-            this.testInWindowButton.Size = new System.Drawing.Size(365, 17);
+            this.testInWindowButton.Size = new System.Drawing.Size(411, 17);
             this.testInWindowButton.TabIndex = 3;
-            this.testInWindowButton.Text = "Force the engine to start in windowed mode when clicking \"Test Game\"";
+            this.testInWindowButton.Text = "Force the engine to start in windowed mode when using the Test Game command";
             this.testInWindowButton.UseVisualStyleBackColor = true;
             // 
             // useSourceMapsButton
@@ -97,20 +97,20 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(289, 35);
+            this.label2.Location = new System.Drawing.Point(306, 35);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(71, 13);
+            this.label2.Size = new System.Drawing.Size(54, 13);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Log Verbosity";
+            this.label2.Text = "Log Level";
             // 
             // testWithConsoleButton
             // 
             this.testWithConsoleButton.AutoSize = true;
             this.testWithConsoleButton.Location = new System.Drawing.Point(13, 34);
             this.testWithConsoleButton.Name = "testWithConsoleButton";
-            this.testWithConsoleButton.Size = new System.Drawing.Size(248, 17);
+            this.testWithConsoleButton.Size = new System.Drawing.Size(262, 17);
             this.testWithConsoleButton.TabIndex = 0;
-            this.testWithConsoleButton.Text = "Use SpheRun to handle \'Test Game\' command";
+            this.testWithConsoleButton.Text = "Use SpheRun to handle the Test Game command";
             this.testWithConsoleButton.UseVisualStyleBackColor = true;
             // 
             // browseDirButton
@@ -188,6 +188,16 @@
             this.debugPanel.Size = new System.Drawing.Size(526, 154);
             this.debugPanel.TabIndex = 5;
             // 
+            // retroModeCheckBox
+            // 
+            this.retroModeCheckBox.AutoSize = true;
+            this.retroModeCheckBox.Location = new System.Drawing.Point(13, 126);
+            this.retroModeCheckBox.Name = "retroModeCheckBox";
+            this.retroModeCheckBox.Size = new System.Drawing.Size(343, 17);
+            this.retroModeCheckBox.TabIndex = 5;
+            this.retroModeCheckBox.Text = "Always use Retrograde mode when using the Test Game command";
+            this.retroModeCheckBox.UseVisualStyleBackColor = true;
+            // 
             // debugHeading
             // 
             this.debugHeading.Dock = System.Windows.Forms.DockStyle.Top;
@@ -197,16 +207,6 @@
             this.debugHeading.TabIndex = 0;
             this.debugHeading.Text = "Configuration";
             this.debugHeading.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // retroModeCheckBox
-            // 
-            this.retroModeCheckBox.AutoSize = true;
-            this.retroModeCheckBox.Location = new System.Drawing.Point(13, 126);
-            this.retroModeCheckBox.Name = "retroModeCheckBox";
-            this.retroModeCheckBox.Size = new System.Drawing.Size(338, 17);
-            this.retroModeCheckBox.TabIndex = 5;
-            this.retroModeCheckBox.Text = "Use retrograde mode while debugging (emulate targeted API level)";
-            this.retroModeCheckBox.UseVisualStyleBackColor = true;
             // 
             // neoSphereSettingsPage
             // 

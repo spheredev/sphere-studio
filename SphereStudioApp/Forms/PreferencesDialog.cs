@@ -52,7 +52,7 @@ namespace SphereStudio.Forms
         {
             bool canClose = true;
             foreach (ISettingsPage page in _applyList)
-                canClose &= page.Apply();
+                canClose &= page.Save();
             if (!canClose)
                 DialogResult = DialogResult.None;
         }
@@ -60,7 +60,7 @@ namespace SphereStudio.Forms
         private void applyButton_Click(object sender, EventArgs e)
         {
             foreach (ISettingsPage page in _applyList)
-                page.Apply();
+                page.Save();
         }
 
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)

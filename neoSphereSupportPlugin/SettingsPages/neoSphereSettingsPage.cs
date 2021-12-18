@@ -33,6 +33,7 @@ namespace SphereStudio.SettingsPages
             style.AsAccent(useSourceMapsButton);
             style.AsAccent(testInWindowButton);
             style.AsAccent(showTracesButton);
+            style.AsAccent(retroModeCheckBox);
             style.AsTextView(logLevelDropDown);
             
             style.AsTextView(enginePathTextBox);
@@ -40,7 +41,7 @@ namespace SphereStudio.SettingsPages
             style.AsAccent(browseDirButton);
         }
 
-        public bool Apply()
+        public bool Save()
         {
             main.Conf.EnginePath = enginePathTextBox.Text;
             main.Conf.MakeDebugPackages = useSourceMapsButton.Checked;
@@ -48,6 +49,7 @@ namespace SphereStudio.SettingsPages
             main.Conf.ShowTraceInfo = showTracesButton.Checked;
             main.Conf.TestInWindow = testInWindowButton.Checked;
             main.Conf.Verbosity = logLevelDropDown.SelectedIndex;
+            main.Conf.TestInRetroMode = retroModeCheckBox.Checked;
             return true;
         }
 
@@ -59,6 +61,7 @@ namespace SphereStudio.SettingsPages
             testWithConsoleButton.Checked = main.Conf.AlwaysUseConsole;
             testInWindowButton.Checked = main.Conf.TestInWindow;
             logLevelDropDown.SelectedIndex = main.Conf.Verbosity;
+            retroModeCheckBox.Checked = main.Conf.TestInRetroMode;
             base.OnLoad(e);
         }
 

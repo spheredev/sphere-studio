@@ -21,29 +21,30 @@ namespace SphereStudio
 
         internal PluginConf Conf { get; private set; }
 
-        private ToolStripMenuItem m_sphereApiRefCommand;
-        private ToolStripMenuItem m_cellApiRefCommand;
-        private ToolStripMenuItem m_runtimeApiRefCommand;
+        private ToolStripMenuItem sphereApiRefCommand;
+        private ToolStripMenuItem cellApiRefCommand;
+        private ToolStripMenuItem runtimeApiRefCommand;
 
         public void Initialize(ISettings conf)
         {
             Conf = new PluginConf(conf);
 
             PluginManager.Register(this, new neoSphereStarter(this), "neoSphere");
+            PluginManager.Register(this, new neoSphereStarter(this, true), "neoSphere Retrograde");
             PluginManager.Register(this, new CellCompiler(this), "Cell");
             PluginManager.Register(this, new neoSphereSettingsPage(this), "neoSphere");
 
             Panes.Initialize(this);
 
-            m_sphereApiRefCommand = new ToolStripMenuItem("Sphere v2 Core API Reference", Resources.EvalIcon);
-            m_sphereApiRefCommand.Click += sphereApiRefCommand_Click;
-            m_runtimeApiRefCommand = new ToolStripMenuItem("Sphere Runtime API Reference", Resources.EvalIcon);
-            m_runtimeApiRefCommand.Click += miniRTApiRefCommand_Click;
-            m_cellApiRefCommand = new ToolStripMenuItem("Cellscript API Reference", Resources.EvalIcon);
-            m_cellApiRefCommand.Click += cellApiRefCommand_Click;
-            PluginManager.Core.AddMenuItem("Help", m_sphereApiRefCommand);
-            PluginManager.Core.AddMenuItem("Help", m_runtimeApiRefCommand);
-            PluginManager.Core.AddMenuItem("Help", m_cellApiRefCommand);
+            sphereApiRefCommand = new ToolStripMenuItem("Sphere v2 Core API Reference", Resources.EvalIcon);
+            runtimeApiRefCommand = new ToolStripMenuItem("Sphere Runtime API Reference", Resources.EvalIcon);
+            cellApiRefCommand = new ToolStripMenuItem("Cellscript API Reference", Resources.EvalIcon);
+            sphereApiRefCommand.Click += sphereApiRefCommand_Click;
+            runtimeApiRefCommand.Click += miniRTApiRefCommand_Click;
+            cellApiRefCommand.Click += cellApiRefCommand_Click;
+            PluginManager.Core.AddMenuItem("Help", sphereApiRefCommand);
+            PluginManager.Core.AddMenuItem("Help", runtimeApiRefCommand);
+            PluginManager.Core.AddMenuItem("Help", cellApiRefCommand);
 
             PluginManager.Core.UnloadProject += on_UnloadProject;
         }
@@ -51,9 +52,9 @@ namespace SphereStudio
         public void ShutDown()
         {
             PluginManager.Core.UnloadProject -= on_UnloadProject;
-            PluginManager.Core.RemoveMenuItem(m_sphereApiRefCommand);
-            PluginManager.Core.RemoveMenuItem(m_runtimeApiRefCommand);
-            PluginManager.Core.RemoveMenuItem(m_cellApiRefCommand);
+            PluginManager.Core.RemoveMenuItem(sphereApiRefCommand);
+            PluginManager.Core.RemoveMenuItem(runtimeApiRefCommand);
+            PluginManager.Core.RemoveMenuItem(cellApiRefCommand);
             PluginManager.UnregisterAll(this);
         }
 
@@ -140,7 +141,7 @@ namespace SphereStudio
             set => settings.SetValue("testInWindow", value);
         }
 
-        public bool UseRetroMode
+        public bool TestInRetroMode
         {
             get => settings.GetBoolean("debugInRetroMode", false);
             set => settings.SetValue("debugInRetroMode", value);

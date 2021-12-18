@@ -23,7 +23,7 @@ namespace SphereStudio.SettingsPages
 
         public Control Control { get; private set; }
 
-        public bool Apply()
+        public bool Save()
         {
             _conf.SetValue("enginePath", enginePathTextBox.Text);
             return true;

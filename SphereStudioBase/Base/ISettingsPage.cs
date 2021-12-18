@@ -16,6 +16,6 @@ namespace SphereStudio.Base
         /// Applies the settings selected on this settings page.
         /// </summary>
         /// <returns>true if the settings were applied successfully.</returns>
-        bool Apply();
+        bool Save();
     }
 }
