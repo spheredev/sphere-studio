@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sphere1xSupportPlugin", "Sp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "neoSphereSupportPlugin", "neoSphereSupportPlugin\neoSphereSupportPlugin.csproj", "{D242F8EF-7D85-4B6B-9446-6758B68A7F54}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OozaruSupportPlugin", "OozaruSupportPlugin\OozaruSupportPlugin.csproj", "{B0C58DBB-A783-42A5-9B0D-55BCEE78B5B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,6 +86,10 @@ Global
 		{D242F8EF-7D85-4B6B-9446-6758B68A7F54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D242F8EF-7D85-4B6B-9446-6758B68A7F54}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D242F8EF-7D85-4B6B-9446-6758B68A7F54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0C58DBB-A783-42A5-9B0D-55BCEE78B5B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0C58DBB-A783-42A5-9B0D-55BCEE78B5B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0C58DBB-A783-42A5-9B0D-55BCEE78B5B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0C58DBB-A783-42A5-9B0D-55BCEE78B5B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

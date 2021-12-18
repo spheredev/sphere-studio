@@ -19,7 +19,7 @@ namespace SphereStudio.StyleProviders
                 ToolColor = Color.FromArgb(48, 48, 48),
             };
 
-            var lightTheme = new UIStyle("Blue") {
+            var blueTheme = new UIStyle("Blue") {
                 AccentColor = Color.FromArgb(208, 208, 224),
                 BackColor = Color.White,
                 FixedFont = new Font("Consolas", 10.0f),
@@ -30,7 +30,7 @@ namespace SphereStudio.StyleProviders
                 ToolColor = Color.FromArgb(192, 192, 208),
             };
 
-            Styles = new[] { lightTheme, darkTheme };
+            Styles = new[] { blueTheme, darkTheme };
         }
 
         public UIStyle[] Styles { get; private set; }

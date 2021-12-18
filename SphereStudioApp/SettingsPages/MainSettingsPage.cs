@@ -17,7 +17,7 @@ namespace SphereStudio.SettingsPages
             StyleManager.AutoStyle(this);
         }
 
-        public Control Control { get => this; }
+        public Control Control => this;
 
         public void ApplyStyle(UIStyle style)
         {

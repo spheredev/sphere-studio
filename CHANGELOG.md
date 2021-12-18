@@ -4,6 +4,7 @@ Sphere Studio Changelog
 v.Next - TBD
 ------------
 
+* Adds an Oozaru support plugin that allows local testing with Oozaru.
 * Adds support for launching neoSphere in Retrograde mode.
 
 2.1.0 - December 14, 2021

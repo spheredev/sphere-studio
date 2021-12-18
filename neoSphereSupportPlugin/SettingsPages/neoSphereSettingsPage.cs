@@ -13,10 +13,11 @@ namespace SphereStudio.SettingsPages
         {
             InitializeComponent();
             StyleManager.AutoStyle(this);
+
             this.main = main;
         }
 
-        public Control Control { get { return this; } }
+        public Control Control => this;
 
         public void ApplyStyle(UIStyle style)
         {

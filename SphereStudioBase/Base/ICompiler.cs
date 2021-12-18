@@ -3,7 +3,8 @@
 namespace SphereStudio.Base
 {
     /// <summary>
-    /// Specifies the base interface for a compiler.
+    /// Specifies the base interface for a compiler. Compilers correspond 1:1 to project
+    /// types in Sphere Studio.
     /// </summary>
     public interface ICompiler : IPlugin
     {

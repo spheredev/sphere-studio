@@ -299,6 +299,10 @@
       <Project>{83d6d166-7f7d-46ca-81bf-9baf8e35f6bc}</Project>
       <Name>DefaultImageEditorPlugin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OozaruSupportPlugin\OozaruSupportPlugin.csproj">
+      <Project>{b0c58dbb-a783-42a5-9b0d-55bcee78b5b9}</Project>
+      <Name>OozaruSupportPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sphere1xSupportPlugin\Sphere1xSupportPlugin.csproj">
       <Project>{da72d708-3f08-4804-b5bb-5a1a78b16605}</Project>
       <Name>Sphere1xSupportPlugin</Name>
