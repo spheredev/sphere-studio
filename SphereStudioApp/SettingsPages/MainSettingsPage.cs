@@ -19,19 +19,6 @@ namespace SphereStudio.SettingsPages
 
         public Control Control { get => this; }
 
-        public bool Save()
-        {
-            string[] paths = new string[dirsListBox.Items.Count];
-            dirsListBox.Items.CopyTo(paths, 0);
-
-            Session.Settings.StyleName = styleDropDown.Text;
-            Session.Settings.UseStartPage = useStartPageButton.Checked;
-            Session.Settings.AutoOpenLastProject = rememberProjectButton.Checked;
-            Session.Settings.ProjectPaths = paths;
-            Session.Settings.Apply();
-            return true;
-        }
-
         public void ApplyStyle(UIStyle style)
         {
             style.AsUIElement(this);
@@ -51,7 +38,7 @@ namespace SphereStudio.SettingsPages
             style.AsAccent(moveDirDownButton);
         }
 
-        protected override void OnLoad(EventArgs e)
+        public void Populate()
         {
             styleDropDown.Items.Clear();
             dirsListBox.Items.Clear();
@@ -74,7 +61,23 @@ namespace SphereStudio.SettingsPages
 
             removeDirButton.Enabled = dirsListBox.Items.Count > 0 && dirsListBox.SelectedIndex >= 0;
             moveDirUpButton.Enabled = moveDirDownButton.Enabled = removeDirButton.Enabled;
-            base.OnLoad(e);
+        }
+
+        public void Save()
+        {
+            var paths = new string[dirsListBox.Items.Count];
+            dirsListBox.Items.CopyTo(paths, 0);
+
+            Session.Settings.StyleName = styleDropDown.Text;
+            Session.Settings.UseStartPage = useStartPageButton.Checked;
+            Session.Settings.AutoOpenLastProject = rememberProjectButton.Checked;
+            Session.Settings.ProjectPaths = paths;
+            Session.Settings.Apply();
+        }
+
+        public bool Verify()
+        {
+            return true;
         }
 
         private void PathList_SelectedIndexChanged(object sender, EventArgs e)

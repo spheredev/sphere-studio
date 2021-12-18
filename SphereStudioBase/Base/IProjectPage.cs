@@ -25,15 +25,15 @@ namespace SphereStudio.Base
         void Populate(IProject project);
 
         /// <summary>
-        /// Saves the settings the user entered on this project page. Validation is assumed to
-        /// have succeeded.
+        /// Saves the settings the user entered on this project page.  Only called if <c>Verify</c>
+        /// succeeds for all project pages.
         /// </summary>
         /// <param name="settings">The <c>ISettings</c> object to use to store the settings.</param>
         void Save(ISettings settings);
 
         /// <summary>
-        /// Validates the settings the user entered on this project page an displays an error message
-        /// if any settings are invalid.
+        /// Validates the settings the user entered on this project page. If any settings are
+        /// invalid, the method should display an error message and return <c>false</c>.
         /// </summary>
         /// <returns><c>true</c> if the user-provided settings are valid.</returns>
         bool Verify();

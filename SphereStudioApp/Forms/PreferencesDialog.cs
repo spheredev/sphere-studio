@@ -15,8 +15,8 @@ namespace SphereStudio.Forms
 {
     partial class PreferencesDialog : Form, IStyleAware
     {
-        private List<ISettingsPage> _applyList = new List<ISettingsPage>();
-        private Control _currentPage = null;
+        private List<ISettingsPage> applyList = new List<ISettingsPage>();
+        private Control currentPage = null;
 
         public PreferencesDialog()
         {
@@ -37,8 +37,8 @@ namespace SphereStudio.Forms
 
         protected override void OnLoad(EventArgs e)
         {
-            string[] pageNames = PluginManager.GetNames<ISettingsPage>();
-            foreach (string name in pageNames)
+            var pageNames = PluginManager.GetNames<ISettingsPage>();
+            foreach (var name in pageNames)
             {
                 var plugin = PluginManager.Get<ISettingsPage>(name);
                 var page = new TabPage(name) { Tag = plugin };
@@ -51,15 +51,22 @@ namespace SphereStudio.Forms
         private void okButton_Click(object sender, EventArgs e)
         {
             bool canClose = true;
-            foreach (ISettingsPage page in _applyList)
-                canClose &= page.Save();
-            if (!canClose)
+            foreach (ISettingsPage page in applyList)
+                canClose &= page.Verify();
+            if (canClose)
+            {
+                foreach (ISettingsPage page in applyList)
+                    page.Save();
+            }
+            else
+            {
                 DialogResult = DialogResult.None;
+            }
         }
 
         private void applyButton_Click(object sender, EventArgs e)
         {
-            foreach (ISettingsPage page in _applyList)
+            foreach (ISettingsPage page in applyList)
                 page.Save();
         }
 
@@ -71,14 +78,15 @@ namespace SphereStudio.Forms
         private void loadSettingsPage()
         {
             var plugin = tabControl.SelectedTab.Tag as ISettingsPage;
-            if (!_applyList.Contains(plugin))
-                _applyList.Add(plugin);
+            plugin.Populate();
+            if (!applyList.Contains(plugin))
+                applyList.Add(plugin);
             plugin.Control.Dock = DockStyle.Fill;
             tabControl.SelectedTab.Controls.Add(plugin.Control);
-            if (_currentPage != null)
-                _currentPage.Hide();
+            if (currentPage != null)
+                currentPage.Hide();
             plugin.Control.Show();
-            _currentPage = plugin.Control;
+            currentPage = plugin.Control;
         }
     }
 }

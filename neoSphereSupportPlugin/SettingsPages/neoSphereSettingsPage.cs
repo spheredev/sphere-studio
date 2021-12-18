@@ -41,19 +41,7 @@ namespace SphereStudio.SettingsPages
             style.AsAccent(browseDirButton);
         }
 
-        public bool Save()
-        {
-            main.Conf.EnginePath = enginePathTextBox.Text;
-            main.Conf.MakeDebugPackages = useSourceMapsButton.Checked;
-            main.Conf.AlwaysUseConsole = testWithConsoleButton.Checked;
-            main.Conf.ShowTraceInfo = showTracesButton.Checked;
-            main.Conf.TestInWindow = testInWindowButton.Checked;
-            main.Conf.Verbosity = logLevelDropDown.SelectedIndex;
-            main.Conf.TestInRetroMode = retroModeCheckBox.Checked;
-            return true;
-        }
-
-        protected override void OnLoad(EventArgs e)
+        public void Populate()
         {
             enginePathTextBox.Text = main.Conf.EnginePath;
             useSourceMapsButton.Checked = main.Conf.MakeDebugPackages;
@@ -62,7 +50,22 @@ namespace SphereStudio.SettingsPages
             testInWindowButton.Checked = main.Conf.TestInWindow;
             logLevelDropDown.SelectedIndex = main.Conf.Verbosity;
             retroModeCheckBox.Checked = main.Conf.TestInRetroMode;
-            base.OnLoad(e);
+        }
+
+        public void Save()
+        {
+            main.Conf.EnginePath = enginePathTextBox.Text;
+            main.Conf.MakeDebugPackages = useSourceMapsButton.Checked;
+            main.Conf.AlwaysUseConsole = testWithConsoleButton.Checked;
+            main.Conf.ShowTraceInfo = showTracesButton.Checked;
+            main.Conf.TestInWindow = testInWindowButton.Checked;
+            main.Conf.Verbosity = logLevelDropDown.SelectedIndex;
+            main.Conf.TestInRetroMode = retroModeCheckBox.Checked;
+        }
+
+        public bool Verify()
+        {
+            return true;
         }
 
         private void BrowseButton_Click(object sender, EventArgs e)

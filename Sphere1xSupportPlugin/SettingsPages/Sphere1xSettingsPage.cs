@@ -9,25 +9,17 @@ namespace SphereStudio.SettingsPages
 {
     partial class Sphere1xSettingsPage : UserControl, ISettingsPage, IStyleAware
     {
-        private ISettings _conf;
+        private ISettings conf;
 
         public Sphere1xSettingsPage(ISettings conf)
         {
             InitializeComponent();
-            Control = this;
-
-            _conf = conf;
-
             StyleManager.AutoStyle(this);
+
+            this.conf = conf;
         }
 
-        public Control Control { get; private set; }
-
-        public bool Save()
-        {
-            _conf.SetValue("enginePath", enginePathTextBox.Text);
-            return true;
-        }
+        public Control Control => this;
 
         public void ApplyStyle(UIStyle style)
         {
@@ -40,10 +32,19 @@ namespace SphereStudio.SettingsPages
             style.AsAccent(browseDirButton);
         }
 
-        protected override void OnLoad(EventArgs e)
+        public void Populate()
         {
-            enginePathTextBox.Text = _conf.GetString("enginePath", "");
-            base.OnLoad(e);
+            enginePathTextBox.Text = conf.GetString("enginePath", "");
+        }
+
+        public void Save()
+        {
+            conf.SetValue("enginePath", enginePathTextBox.Text);
+        }
+
+        public bool Verify()
+        {
+            return true;
         }
 
         private void BrowseButton_Click(object sender, EventArgs e)
