@@ -1,28 +1,38 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 
 using SphereStudio.Base;
 
 using EmbedIO;
+using EmbedIO.Files;
 
 namespace SphereStudio.Starters
 {
-    class OozaruStarter : IStarter
+    class OozaruStarter : IStarter, IDisposable
     {
-        private WebServer oozaruServer = null;
+        private WebServer gameServer;
         private ISettings settings;
 
         public OozaruStarter(ISettings settings)
         {
             this.settings = settings;
         }
-        
+
         public bool CanConfigure => false;
 
         public void Configure()
         {
             throw new Exception("Oozaru doesn't support engine configuration.");
+        }
+
+        public void Dispose()
+        {
+            if (gameServer != null)
+                gameServer.Dispose();
+            gameServer = null;
+            settings = null;
         }
 
         public void Start(string gamePath, bool isPackage)
@@ -38,17 +48,15 @@ namespace SphereStudio.Starters
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if (oozaruServer != null)
-                oozaruServer.Dispose();
-            oozaruServer = new WebServer(8080)
-                .WithStaticFolder("/dist", gamePath, true)
+            if (gameServer != null)
+                gameServer.Dispose();
+            var enginePort = settings.GetInteger("serverPort", 8080);
+            gameServer = new WebServer($"http://localhost:{enginePort}")
+                .WithStaticFolder("/dist", gamePath, true, m => m
+                    .WithoutContentCaching())
                 .WithStaticFolder("/", enginePath, false);
-            oozaruServer.RunAsync();
-            var browser = new System.Diagnostics.Process()
-            {
-                StartInfo = new System.Diagnostics.ProcessStartInfo("http://localhost:8080/") { UseShellExecute = true }
-            };
-            browser.Start();
+            gameServer.RunAsync();
+            Process.Start($"http://localhost:{enginePort}/");
         }
     }
 }

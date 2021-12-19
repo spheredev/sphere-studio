@@ -13,19 +13,28 @@ namespace SphereStudio
     public class PluginMain : IPluginMain
     {
         public string Name => "Oozaru Support";
-        public string Description => "Provides support for Oozaru (Web-based Sphere).";
+        public string Description => "Provides support for the Oozaru engine (Web Sphere).";
         public string Version => Versioning.Version;
         public string Author => Versioning.Author;
 
+        private OozaruSettingsPage settingsPage;
+        private OozaruStarter starter;
+
         public void Initialize(ISettings settings)
         {
-            PluginManager.Register(this, new OozaruStarter(settings), "Oozaru");
-            PluginManager.Register(this, new OozaruSettingsPage(settings), "Oozaru");
+            starter = new OozaruStarter(settings);
+            settingsPage = new OozaruSettingsPage(settings);
+            PluginManager.Register(this, starter, "Oozaru");
+            PluginManager.Register(this, settingsPage, "Oozaru");
         }
 
         public void ShutDown()
         {
             PluginManager.UnregisterAll(this);
+            settingsPage.Dispose();
+            starter.Dispose();
+            settingsPage = null;
+            starter = null;
         }
     }
 }
