@@ -20,19 +20,19 @@ namespace SphereStudio.Starters
             this.settings = settings;
         }
 
-        public bool CanConfigure => false;
-
-        public void Configure()
-        {
-            throw new Exception("Oozaru doesn't support engine configuration.");
-        }
-
         public void Dispose()
         {
             if (gameServer != null)
                 gameServer.Dispose();
             gameServer = null;
             settings = null;
+        }
+
+        public bool CanConfigure => false;
+
+        public void Configure()
+        {
+            throw new Exception("Oozaru doesn't support engine configuration.");
         }
 
         public void Start(string gamePath, bool isPackage)

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using SphereStudio.Base;
+﻿using SphereStudio.Base;
 using SphereStudio.SettingsPages;
 using SphereStudio.Starters;
 
@@ -13,7 +7,7 @@ namespace SphereStudio
     public class PluginMain : IPluginMain
     {
         public string Name => "Oozaru Support";
-        public string Description => "Provides support for the Oozaru engine (Web Sphere).";
+        public string Description => "Provides support for the Oozaru Web-based engine.";
         public string Version => Versioning.Version;
         public string Author => Versioning.Author;
 

@@ -117,4 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="label2.Text" xml:space="preserve">
+    <value>When run through Sphere Studio, Oozaru is hosted entirely on-device and the engine instance is not made available to other computers on the Internet. If you want to publish your game, you'll need to find a proper Web hosting solution.</value>
+  </data>
 </root>

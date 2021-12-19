@@ -24,6 +24,9 @@ namespace SphereStudio.SettingsPages
         {
             style.AsUIElement(this);
 
+            style.AsHeading(infoHeading);
+            style.AsAccent(infoPanel);
+            
             style.AsHeading(directoryHeading);
             style.AsAccent(directoryPanel);
             style.AsTextView(enginePathTextBox);
