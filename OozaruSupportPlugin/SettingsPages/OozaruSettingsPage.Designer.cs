@@ -36,14 +36,14 @@
             this.directoryHeading = new System.Windows.Forms.Label();
             this.enginePathTextBox = new System.Windows.Forms.TextBox();
             this.pathLabel = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.infoPanel = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.infoHeading = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.infoPanel = new System.Windows.Forms.Panel();
             this.directoryPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.portUpDown)).BeginInit();
-            this.infoPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.infoPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // directoryPanel
@@ -57,7 +57,7 @@
             this.directoryPanel.Controls.Add(this.directoryHeading);
             this.directoryPanel.Controls.Add(this.enginePathTextBox);
             this.directoryPanel.Controls.Add(this.pathLabel);
-            this.directoryPanel.Location = new System.Drawing.Point(9, 106);
+            this.directoryPanel.Location = new System.Drawing.Point(9, 111);
             this.directoryPanel.Name = "directoryPanel";
             this.directoryPanel.Size = new System.Drawing.Size(453, 95);
             this.directoryPanel.TabIndex = 5;
@@ -73,6 +73,7 @@
             // 
             // portUpDown
             // 
+            this.portUpDown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.portUpDown.Location = new System.Drawing.Point(69, 58);
             this.portUpDown.Maximum = new decimal(new int[] {
             65535,
@@ -137,16 +138,35 @@
             this.pathLabel.TabIndex = 0;
             this.pathLabel.Text = "Run From";
             // 
+            // infoHeading
+            // 
+            this.infoHeading.Dock = System.Windows.Forms.DockStyle.Top;
+            this.infoHeading.Location = new System.Drawing.Point(0, 0);
+            this.infoHeading.Name = "infoHeading";
+            this.infoHeading.Size = new System.Drawing.Size(451, 23);
+            this.infoHeading.TabIndex = 0;
+            this.infoHeading.Text = "Oozaru Support";
+            this.infoHeading.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // label2
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoEllipsis = true;
             this.label2.Location = new System.Drawing.Point(35, 34);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(403, 41);
+            this.label2.Size = new System.Drawing.Size(406, 45);
             this.label2.TabIndex = 7;
             this.label2.Text = resources.GetString("label2.Text");
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::SphereStudio.Properties.Resources.InfoIcon;
+            this.pictureBox1.Location = new System.Drawing.Point(13, 34);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(16, 16);
+            this.pictureBox1.TabIndex = 8;
+            this.pictureBox1.TabStop = false;
             // 
             // infoPanel
             // 
@@ -158,27 +178,8 @@
             this.infoPanel.Controls.Add(this.infoHeading);
             this.infoPanel.Location = new System.Drawing.Point(9, 12);
             this.infoPanel.Name = "infoPanel";
-            this.infoPanel.Size = new System.Drawing.Size(453, 88);
+            this.infoPanel.Size = new System.Drawing.Size(453, 93);
             this.infoPanel.TabIndex = 8;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::SphereStudio.Properties.Resources.InfoIcon;
-            this.pictureBox1.Location = new System.Drawing.Point(13, 34);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(16, 16);
-            this.pictureBox1.TabIndex = 8;
-            this.pictureBox1.TabStop = false;
-            // 
-            // infoHeading
-            // 
-            this.infoHeading.Dock = System.Windows.Forms.DockStyle.Top;
-            this.infoHeading.Location = new System.Drawing.Point(0, 0);
-            this.infoHeading.Name = "infoHeading";
-            this.infoHeading.Size = new System.Drawing.Size(451, 23);
-            this.infoHeading.TabIndex = 0;
-            this.infoHeading.Text = "Oozaru Support";
-            this.infoHeading.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // OozaruSettingsPage
             // 
@@ -190,8 +191,8 @@
             this.directoryPanel.ResumeLayout(false);
             this.directoryPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.portUpDown)).EndInit();
-            this.infoPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.infoPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -205,9 +206,9 @@
         private System.Windows.Forms.Label pathLabel;
         private System.Windows.Forms.NumericUpDown portUpDown;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Panel infoPanel;
         private System.Windows.Forms.Label infoHeading;
+        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Panel infoPanel;
     }
 }

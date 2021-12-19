@@ -31,6 +31,7 @@ namespace SphereStudio.SettingsPages
             style.AsAccent(directoryPanel);
             style.AsTextView(enginePathTextBox);
             style.AsAccent(browseDirButton);
+            style.AsTextView(portUpDown);
         }
 
         public void Populate()
