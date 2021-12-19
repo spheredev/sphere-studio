@@ -40,10 +40,10 @@ namespace SphereStudio.Starters
             if (isPackage)
                 throw new Exception("Oozaru doesn't support running games from an SPK package.");
             var enginePath = settings.GetString("enginePath", string.Empty);
-            if (!File.Exists(Path.Combine(enginePath, "index.html")))
+            if (!File.Exists(Path.Combine(enginePath, "oozaru.json")))
             {
                 MessageBox.Show(
-                    "Unable to launch a local Oozaru server.  Please select a valid Oozaru distribution in Preferences.",
+                    "Unable to launch an Oozaru engine instance.  Please select a valid Oozaru distribution in Preferences.",
                     "Unable to Start Oozaru",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;

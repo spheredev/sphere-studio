@@ -49,8 +49,8 @@ namespace SphereStudio.SettingsPages
         public bool Verify()
         {
             var enginePath = enginePathTextBox.Text.Trim();
-            var indexPath = Path.Combine(enginePathTextBox.Text, "index.html");
-            if (enginePath != string.Empty && !File.Exists(indexPath))
+            var jsonPath = Path.Combine(enginePathTextBox.Text, "oozaru.json");
+            if (enginePath != string.Empty && !File.Exists(jsonPath))
             {
                 var result = MessageBox.Show(
                     "The directory you selected doesn't seem to contain an Oozaru distribution.  Are you sure you want to use this directory?",
@@ -67,7 +67,7 @@ namespace SphereStudio.SettingsPages
         {
             FolderBrowserDialog fb = new FolderBrowserDialog()
             {
-                Description = "Select a directory containing a compiled Oozaru distribution.",
+                Description = "Select a directory containing a compiled Oozaru engine instance.",
                 ShowNewFolderButton = false
             };
             if (fb.ShowDialog(this) == DialogResult.OK)
