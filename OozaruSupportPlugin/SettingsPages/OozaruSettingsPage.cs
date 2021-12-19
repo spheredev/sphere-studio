@@ -1,8 +1,12 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 
 using SphereStudio.Base;
+
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace SphereStudio.SettingsPages
 {
@@ -58,9 +62,34 @@ namespace SphereStudio.SettingsPages
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Exclamation);
                 if (result != DialogResult.Yes)
+                {
+                    enginePathTextBox.Focus();
+                    enginePathTextBox.SelectAll();
                     return false;
+                }
             }
             return true;
+        }
+
+        private void enginePathTextBox_TextChanged(object sender, EventArgs e)
+        {
+            var enginePath = enginePathTextBox.Text.Trim();
+            var jsonPath = Path.Combine(enginePathTextBox.Text, "oozaru.json");
+            try
+            {
+                var jsonText = File.ReadAllText(jsonPath, Encoding.UTF8);
+                var jsonData = JsonConvert.DeserializeObject<JObject>(jsonText);
+                var engineName = (string)jsonData["name"];
+                var author = jsonData.ContainsKey("publisher") ? (string)jsonData["publisher"] : "Unknown";
+                var version = jsonData.ContainsKey("version") ? (string)jsonData["version"] : string.Empty;
+                engineLabel.Text = $"{engineName} {version}";
+                publisherLabel.Text = author;
+            }
+            catch
+            {
+                engineLabel.Text = "No Oozaru distribution could be found there.";
+                publisherLabel.Text = "N/A";
+            }
         }
 
         private void browseDirButton_Click(object sender, EventArgs e)

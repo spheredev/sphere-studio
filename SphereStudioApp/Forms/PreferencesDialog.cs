@@ -66,8 +66,14 @@ namespace SphereStudio.Forms
 
         private void applyButton_Click(object sender, EventArgs e)
         {
+            bool canSave = true;
             foreach (ISettingsPage page in applyList)
-                page.Save();
+                canSave &= page.Verify();
+            if (canSave)
+            {
+                foreach (ISettingsPage page in applyList)
+                    page.Save();
+            }
         }
 
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
