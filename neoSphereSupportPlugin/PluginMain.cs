@@ -30,7 +30,7 @@ namespace SphereStudio
             Conf = new PluginConf(conf);
 
             PluginManager.Register(this, new neoSphereStarter(this), "neoSphere");
-            PluginManager.Register(this, new neoSphereStarter(this, true), "neoSphere Retrograde");
+            PluginManager.Register(this, new neoSphereStarter(this, true), "neoSphere R");
             PluginManager.Register(this, new CellCompiler(this), "Cell");
             PluginManager.Register(this, new neoSphereSettingsPage(this), "neoSphere");
 

@@ -30,6 +30,10 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OozaruSettingsPage));
             this.directoryPanel = new System.Windows.Forms.Panel();
+            this.publisherLabel = new System.Windows.Forms.Label();
+            this.engineLabel = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.portUpDown = new System.Windows.Forms.NumericUpDown();
             this.browseDirButton = new System.Windows.Forms.Button();
@@ -40,10 +44,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.infoPanel = new System.Windows.Forms.Panel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.engineLabel = new System.Windows.Forms.Label();
-            this.publisherLabel = new System.Windows.Forms.Label();
             this.directoryPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.portUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -69,6 +69,42 @@
             this.directoryPanel.Name = "directoryPanel";
             this.directoryPanel.Size = new System.Drawing.Size(453, 148);
             this.directoryPanel.TabIndex = 5;
+            // 
+            // publisherLabel
+            // 
+            this.publisherLabel.AutoSize = true;
+            this.publisherLabel.Location = new System.Drawing.Point(66, 117);
+            this.publisherLabel.Name = "publisherLabel";
+            this.publisherLabel.Size = new System.Drawing.Size(53, 13);
+            this.publisherLabel.TabIndex = 10;
+            this.publisherLabel.Text = "Unknown";
+            // 
+            // engineLabel
+            // 
+            this.engineLabel.AutoSize = true;
+            this.engineLabel.Location = new System.Drawing.Point(66, 94);
+            this.engineLabel.Name = "engineLabel";
+            this.engineLabel.Size = new System.Drawing.Size(68, 13);
+            this.engineLabel.TabIndex = 9;
+            this.engineLabel.Text = "Oozaru 0.0.0";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(13, 117);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(50, 13);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "Publisher";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(23, 94);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(40, 13);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "Engine";
             // 
             // label1
             // 
@@ -154,7 +190,7 @@
             this.infoHeading.Name = "infoHeading";
             this.infoHeading.Size = new System.Drawing.Size(451, 23);
             this.infoHeading.TabIndex = 0;
-            this.infoHeading.Text = "Oozaru Support";
+            this.infoHeading.Text = "note about Oozaru support";
             this.infoHeading.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label2
@@ -189,42 +225,6 @@
             this.infoPanel.Name = "infoPanel";
             this.infoPanel.Size = new System.Drawing.Size(453, 93);
             this.infoPanel.TabIndex = 8;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(23, 94);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(40, 13);
-            this.label3.TabIndex = 7;
-            this.label3.Text = "Engine";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(13, 117);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(50, 13);
-            this.label4.TabIndex = 8;
-            this.label4.Text = "Publisher";
-            // 
-            // engineLabel
-            // 
-            this.engineLabel.AutoSize = true;
-            this.engineLabel.Location = new System.Drawing.Point(66, 94);
-            this.engineLabel.Name = "engineLabel";
-            this.engineLabel.Size = new System.Drawing.Size(68, 13);
-            this.engineLabel.TabIndex = 9;
-            this.engineLabel.Text = "Oozaru 0.0.0";
-            // 
-            // publisherLabel
-            // 
-            this.publisherLabel.AutoSize = true;
-            this.publisherLabel.Location = new System.Drawing.Point(66, 117);
-            this.publisherLabel.Name = "publisherLabel";
-            this.publisherLabel.Size = new System.Drawing.Size(53, 13);
-            this.publisherLabel.TabIndex = 10;
-            this.publisherLabel.Text = "Unknown";
             // 
             // OozaruSettingsPage
             // 

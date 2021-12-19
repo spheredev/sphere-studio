@@ -20,18 +20,18 @@ which allows new features to be added by writing a plugin in C# or VB.NET.
 Download
 ========
 
-The most recent stable release as of this writing is **Sphere Studio 2.1.0**.
-You can download the latest release from GitHub here:
+**Sphere Studio 2.2.0** was released on Sunday, December 19, 2021 and can be
+downloaded from the releases page on GitHub here:
 
 - <https://github.com/fatcerberus/sphere-studio/releases>
 
-*note:* .NET 4.8 or later is required to run Sphere Studio.  The latest
-framework can be downloaded from Microsoft by
-[clicking here](https://www.microsoft.com/en-us/download/details.aspx?id=49981).
+.NET 4.8 or later is required to run Sphere Studio.  The latest .NET Framework
+can be downloaded from Microsoft's website
+[here](https://www.microsoft.com/en-us/download/details.aspx?id=49981).
 
 
 Authors
 =======
 
-- Andrew Helenius - Creator & Developer
-- Bruce Pascoe - Developer
+- Bruce Pascoe - developer, primary maintainer
+- Andrew Helenius - original creator

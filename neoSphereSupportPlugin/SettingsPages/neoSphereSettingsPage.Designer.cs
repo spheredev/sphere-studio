@@ -193,9 +193,9 @@
             this.retroModeCheckBox.AutoSize = true;
             this.retroModeCheckBox.Location = new System.Drawing.Point(13, 126);
             this.retroModeCheckBox.Name = "retroModeCheckBox";
-            this.retroModeCheckBox.Size = new System.Drawing.Size(343, 17);
+            this.retroModeCheckBox.Size = new System.Drawing.Size(375, 17);
             this.retroModeCheckBox.TabIndex = 5;
-            this.retroModeCheckBox.Text = "Always use Retrograde mode when using the Test Game command";
+            this.retroModeCheckBox.Text = "Always use R mode (API retrograde) when using the Test Game command";
             this.retroModeCheckBox.UseVisualStyleBackColor = true;
             // 
             // debugHeading
