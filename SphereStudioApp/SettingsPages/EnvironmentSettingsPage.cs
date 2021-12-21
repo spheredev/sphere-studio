@@ -9,15 +9,16 @@ using SphereStudio.Core;
 namespace SphereStudio.SettingsPages
 {
     [ToolboxItem(false)]
-    partial class MainSettingsPage : UserControl, IStyleAware, ISettingsPage
+    partial class EnvironmentSettingsPage : UserControl, IStyleAware, ISettingsPage
     {
-        public MainSettingsPage()
+        public EnvironmentSettingsPage()
         {
             InitializeComponent();
             StyleManager.AutoStyle(this);
         }
 
         public Control Control => this;
+        public SettingsPageType Type => SettingsPageType.TopLevel;
 
         public void ApplyStyle(UIStyle style)
         {

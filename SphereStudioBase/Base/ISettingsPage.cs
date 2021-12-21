@@ -2,6 +2,13 @@
 
 namespace SphereStudio.Base
 {
+    public enum SettingsPageType
+    {
+        TopLevel,
+        Engine,
+        Compiler,
+    }
+    
     /// <summary>
     /// Specifies the interface for a Preferences tab page.
     /// </summary>
@@ -11,6 +18,8 @@ namespace SphereStudio.Base
         /// Gets the physical UserControl for this settings page.
         /// </summary>
         Control Control { get; }
+
+        SettingsPageType Type { get; }
 
         /// <summary>
         /// Populates the settings page with the current settings.

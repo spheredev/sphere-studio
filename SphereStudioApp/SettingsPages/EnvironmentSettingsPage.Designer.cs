@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.SettingsPages
 {
-    partial class MainSettingsPage
+    partial class EnvironmentSettingsPage
     {
         /// <summary>
         /// Required designer variable.

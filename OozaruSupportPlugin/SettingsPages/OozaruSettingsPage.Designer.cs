@@ -73,7 +73,7 @@
             // publisherLabel
             // 
             this.publisherLabel.AutoSize = true;
-            this.publisherLabel.Location = new System.Drawing.Point(66, 117);
+            this.publisherLabel.Location = new System.Drawing.Point(69, 117);
             this.publisherLabel.Name = "publisherLabel";
             this.publisherLabel.Size = new System.Drawing.Size(53, 13);
             this.publisherLabel.TabIndex = 10;
@@ -82,7 +82,7 @@
             // engineLabel
             // 
             this.engineLabel.AutoSize = true;
-            this.engineLabel.Location = new System.Drawing.Point(66, 94);
+            this.engineLabel.Location = new System.Drawing.Point(69, 94);
             this.engineLabel.Name = "engineLabel";
             this.engineLabel.Size = new System.Drawing.Size(68, 13);
             this.engineLabel.TabIndex = 9;
@@ -100,11 +100,11 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(23, 94);
+            this.label3.Location = new System.Drawing.Point(21, 94);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(40, 13);
+            this.label3.Size = new System.Drawing.Size(42, 13);
             this.label3.TabIndex = 7;
-            this.label3.Text = "Engine";
+            this.label3.Text = "Version";
             // 
             // label1
             // 

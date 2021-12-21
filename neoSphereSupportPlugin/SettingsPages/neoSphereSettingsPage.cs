@@ -18,6 +18,7 @@ namespace SphereStudio.SettingsPages
         }
 
         public Control Control => this;
+        public SettingsPageType Type => SettingsPageType.Engine;
 
         public void ApplyStyle(UIStyle style)
         {

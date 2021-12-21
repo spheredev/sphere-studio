@@ -164,11 +164,11 @@
     <Compile Include="DockPanes\FileListPane.Designer.cs">
       <DependentUpon>FileListPane.cs</DependentUpon>
     </Compile>
-    <Compile Include="SettingsPages\MainSettingsPage.cs">
+    <Compile Include="SettingsPages\EnvironmentSettingsPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SettingsPages\MainSettingsPage.Designer.cs">
-      <DependentUpon>MainSettingsPage.cs</DependentUpon>
+    <Compile Include="SettingsPages\EnvironmentSettingsPage.Designer.cs">
+      <DependentUpon>EnvironmentSettingsPage.cs</DependentUpon>
     </Compile>
     <Compile Include="StyleProviders\DefaultStyleProvider.cs" />
     <Compile Include="IO\IniFile.cs" />
@@ -221,8 +221,8 @@
     <EmbeddedResource Include="ProjectPages\SphereProjectPage.resx">
       <DependentUpon>SphereProjectPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SettingsPages\MainSettingsPage.resx">
-      <DependentUpon>MainSettingsPage.cs</DependentUpon>
+    <EmbeddedResource Include="SettingsPages\EnvironmentSettingsPage.resx">
+      <DependentUpon>EnvironmentSettingsPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DocumentViews\StartPageView.resx">
       <DependentUpon>StartPageView.cs</DependentUpon>
@@ -342,6 +342,12 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="Resources\OpenFolderIcon.png" />
+    <None Include="Resources\InfoIcon.png" />
+    <Content Include="Resources\EngineIcon.png" />
+    <Content Include="Resources\SettingsIcon.png" />
+    <Content Include="Resources\ClosedFolderIcon.png" />
+    <Content Include="Resources\SphereIcon16.png" />
     <Content Include="Sphere Studio.ico" />
     <None Include="Spherical.ico" />
   </ItemGroup>
