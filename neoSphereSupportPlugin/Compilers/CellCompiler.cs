@@ -121,8 +121,8 @@ namespace SphereStudio.Compilers
             string cellPath = Path.Combine(main.Conf.EnginePath, "cell.exe");
             if (!File.Exists(cellPath))
             {
-                console.Print("ERROR: no 'cell' executable was found, did Gohan kill Cell already?\n");
-                console.Print("       (Please check your GDK path in Settings Center.)\n");
+                console.Print("ERROR: unable to build - the Cell compiler was not found.\n");
+                console.Print("       please check neoSphere settings in Preferences.\n");
                 return false;
             }
 

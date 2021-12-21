@@ -114,7 +114,7 @@
             this.pagesTreeView.Location = new System.Drawing.Point(12, 36);
             this.pagesTreeView.Name = "pagesTreeView";
             this.pagesTreeView.SelectedImageIndex = 0;
-            this.pagesTreeView.Size = new System.Drawing.Size(170, 413);
+            this.pagesTreeView.Size = new System.Drawing.Size(146, 413);
             this.pagesTreeView.TabIndex = 6;
             this.pagesTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.pagesTreeView_AfterSelect);
             // 
@@ -125,6 +125,7 @@
             this.treeImageList.Images.SetKeyName(0, "SettingsIcon.png");
             this.treeImageList.Images.SetKeyName(1, "OpenFolderIcon.png");
             this.treeImageList.Images.SetKeyName(2, "SphereIcon16.png");
+            this.treeImageList.Images.SetKeyName(3, "CompilerIcon16.png");
             // 
             // pagePanel
             // 
@@ -132,9 +133,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pagePanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pagePanel.Location = new System.Drawing.Point(188, 36);
+            this.pagePanel.Location = new System.Drawing.Point(164, 36);
             this.pagePanel.Name = "pagePanel";
-            this.pagePanel.Size = new System.Drawing.Size(477, 413);
+            this.pagePanel.Size = new System.Drawing.Size(501, 413);
             this.pagePanel.TabIndex = 7;
             // 
             // PreferencesDialog

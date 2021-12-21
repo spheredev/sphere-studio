@@ -59,6 +59,10 @@ namespace SphereStudio.Forms
                         node = new TreeNode(page.Name, 2, 2) { Tag = page.Plugin };
                         engineNode.Nodes.Add(node);
                         break;
+                    case SettingsPageType.Compiler:
+                        node = new TreeNode(page.Name, 3, 3) { Tag = page.Plugin };
+                        compilerNode.Nodes.Add(node);
+                        break;
                 }
             }
             if (engineNode.Nodes.Count > 0)

@@ -29,11 +29,11 @@ namespace SphereStudio.SettingsPages
         {
             style.AsUIElement(this);
 
-            style.AsHeading(infoHeading);
-            style.AsAccent(infoPanel);
+            style.AsHeading(tipHeading);
+            style.AsAccent(tipPanel);
             
-            style.AsHeading(directoryHeading);
-            style.AsAccent(directoryPanel);
+            style.AsHeading(serverHeading);
+            style.AsAccent(serverPanel);
             style.AsTextView(enginePathTextBox);
             style.AsAccent(browseDirButton);
             style.AsTextView(portUpDown);

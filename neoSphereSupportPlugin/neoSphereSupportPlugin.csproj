@@ -47,6 +47,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SettingsPages\CellSettingsPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPages\CellSettingsPage.Designer.cs">
+      <DependentUpon>CellSettingsPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="SsjKi\KiMessage.cs" />
     <Compile Include="SsjKi\KiAtom.cs" />
     <Compile Include="SsjKi\PropDesc.cs" />
@@ -91,6 +97,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Forms\JsObjectViewer.resx">
       <DependentUpon>JsObjectViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPages\CellSettingsPage.resx">
+      <DependentUpon>CellSettingsPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SettingsPages\neoSphereSettingsPage.resx">
       <DependentUpon>neoSphereSettingsPage.cs</DependentUpon>

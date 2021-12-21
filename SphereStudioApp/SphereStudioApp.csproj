@@ -344,7 +344,7 @@
   <ItemGroup>
     <None Include="Resources\OpenFolderIcon.png" />
     <None Include="Resources\InfoIcon.png" />
-    <Content Include="Resources\EngineIcon.png" />
+    <Content Include="Resources\CompilerIcon16.png" />
     <Content Include="Resources\SettingsIcon.png" />
     <Content Include="Resources\ClosedFolderIcon.png" />
     <Content Include="Resources\SphereIcon16.png" />

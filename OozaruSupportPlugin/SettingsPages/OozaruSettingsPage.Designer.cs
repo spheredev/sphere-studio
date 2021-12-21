@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OozaruSettingsPage));
-            this.directoryPanel = new System.Windows.Forms.Panel();
+            this.serverPanel = new System.Windows.Forms.Panel();
             this.publisherLabel = new System.Windows.Forms.Label();
             this.engineLabel = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -37,38 +37,38 @@
             this.label1 = new System.Windows.Forms.Label();
             this.portUpDown = new System.Windows.Forms.NumericUpDown();
             this.browseDirButton = new System.Windows.Forms.Button();
-            this.directoryHeading = new System.Windows.Forms.Label();
+            this.serverHeading = new System.Windows.Forms.Label();
             this.enginePathTextBox = new System.Windows.Forms.TextBox();
             this.pathLabel = new System.Windows.Forms.Label();
-            this.infoHeading = new System.Windows.Forms.Label();
+            this.tipHeading = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.infoPanel = new System.Windows.Forms.Panel();
-            this.directoryPanel.SuspendLayout();
+            this.tipPanel = new System.Windows.Forms.Panel();
+            this.serverPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.portUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.infoPanel.SuspendLayout();
+            this.tipPanel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // directoryPanel
+            // serverPanel
             // 
-            this.directoryPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.serverPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.directoryPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.directoryPanel.Controls.Add(this.publisherLabel);
-            this.directoryPanel.Controls.Add(this.engineLabel);
-            this.directoryPanel.Controls.Add(this.label4);
-            this.directoryPanel.Controls.Add(this.label3);
-            this.directoryPanel.Controls.Add(this.label1);
-            this.directoryPanel.Controls.Add(this.portUpDown);
-            this.directoryPanel.Controls.Add(this.browseDirButton);
-            this.directoryPanel.Controls.Add(this.directoryHeading);
-            this.directoryPanel.Controls.Add(this.enginePathTextBox);
-            this.directoryPanel.Controls.Add(this.pathLabel);
-            this.directoryPanel.Location = new System.Drawing.Point(9, 111);
-            this.directoryPanel.Name = "directoryPanel";
-            this.directoryPanel.Size = new System.Drawing.Size(453, 148);
-            this.directoryPanel.TabIndex = 5;
+            this.serverPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.serverPanel.Controls.Add(this.publisherLabel);
+            this.serverPanel.Controls.Add(this.engineLabel);
+            this.serverPanel.Controls.Add(this.label4);
+            this.serverPanel.Controls.Add(this.label3);
+            this.serverPanel.Controls.Add(this.label1);
+            this.serverPanel.Controls.Add(this.portUpDown);
+            this.serverPanel.Controls.Add(this.browseDirButton);
+            this.serverPanel.Controls.Add(this.serverHeading);
+            this.serverPanel.Controls.Add(this.enginePathTextBox);
+            this.serverPanel.Controls.Add(this.pathLabel);
+            this.serverPanel.Location = new System.Drawing.Point(9, 111);
+            this.serverPanel.Name = "serverPanel";
+            this.serverPanel.Size = new System.Drawing.Size(453, 148);
+            this.serverPanel.TabIndex = 5;
             // 
             // publisherLabel
             // 
@@ -153,15 +153,15 @@
             this.browseDirButton.UseVisualStyleBackColor = true;
             this.browseDirButton.Click += new System.EventHandler(this.browseDirButton_Click);
             // 
-            // directoryHeading
+            // serverHeading
             // 
-            this.directoryHeading.Dock = System.Windows.Forms.DockStyle.Top;
-            this.directoryHeading.Location = new System.Drawing.Point(0, 0);
-            this.directoryHeading.Name = "directoryHeading";
-            this.directoryHeading.Size = new System.Drawing.Size(451, 23);
-            this.directoryHeading.TabIndex = 0;
-            this.directoryHeading.Text = "Server Configuration";
-            this.directoryHeading.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.serverHeading.Dock = System.Windows.Forms.DockStyle.Top;
+            this.serverHeading.Location = new System.Drawing.Point(0, 0);
+            this.serverHeading.Name = "serverHeading";
+            this.serverHeading.Size = new System.Drawing.Size(451, 23);
+            this.serverHeading.TabIndex = 0;
+            this.serverHeading.Text = "Local Server";
+            this.serverHeading.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // enginePathTextBox
             // 
@@ -183,15 +183,15 @@
             this.pathLabel.TabIndex = 0;
             this.pathLabel.Text = "Run From";
             // 
-            // infoHeading
+            // tipHeading
             // 
-            this.infoHeading.Dock = System.Windows.Forms.DockStyle.Top;
-            this.infoHeading.Location = new System.Drawing.Point(0, 0);
-            this.infoHeading.Name = "infoHeading";
-            this.infoHeading.Size = new System.Drawing.Size(451, 23);
-            this.infoHeading.TabIndex = 0;
-            this.infoHeading.Text = "note about Oozaru support";
-            this.infoHeading.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.tipHeading.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tipHeading.Location = new System.Drawing.Point(0, 0);
+            this.tipHeading.Name = "tipHeading";
+            this.tipHeading.Size = new System.Drawing.Size(451, 23);
+            this.tipHeading.TabIndex = 0;
+            this.tipHeading.Text = "note about Oozaru support";
+            this.tipHeading.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label2
             // 
@@ -213,48 +213,48 @@
             this.pictureBox1.TabIndex = 8;
             this.pictureBox1.TabStop = false;
             // 
-            // infoPanel
+            // tipPanel
             // 
-            this.infoPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.tipPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.infoPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.infoPanel.Controls.Add(this.pictureBox1);
-            this.infoPanel.Controls.Add(this.label2);
-            this.infoPanel.Controls.Add(this.infoHeading);
-            this.infoPanel.Location = new System.Drawing.Point(9, 12);
-            this.infoPanel.Name = "infoPanel";
-            this.infoPanel.Size = new System.Drawing.Size(453, 93);
-            this.infoPanel.TabIndex = 8;
+            this.tipPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tipPanel.Controls.Add(this.pictureBox1);
+            this.tipPanel.Controls.Add(this.label2);
+            this.tipPanel.Controls.Add(this.tipHeading);
+            this.tipPanel.Location = new System.Drawing.Point(9, 12);
+            this.tipPanel.Name = "tipPanel";
+            this.tipPanel.Size = new System.Drawing.Size(453, 93);
+            this.tipPanel.TabIndex = 8;
             // 
             // OozaruSettingsPage
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
-            this.Controls.Add(this.infoPanel);
-            this.Controls.Add(this.directoryPanel);
+            this.Controls.Add(this.tipPanel);
+            this.Controls.Add(this.serverPanel);
             this.Name = "OozaruSettingsPage";
             this.Size = new System.Drawing.Size(472, 332);
-            this.directoryPanel.ResumeLayout(false);
-            this.directoryPanel.PerformLayout();
+            this.serverPanel.ResumeLayout(false);
+            this.serverPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.portUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.infoPanel.ResumeLayout(false);
+            this.tipPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Panel directoryPanel;
+        private System.Windows.Forms.Panel serverPanel;
         private System.Windows.Forms.Button browseDirButton;
-        private System.Windows.Forms.Label directoryHeading;
+        private System.Windows.Forms.Label serverHeading;
         private System.Windows.Forms.TextBox enginePathTextBox;
         private System.Windows.Forms.Label pathLabel;
         private System.Windows.Forms.NumericUpDown portUpDown;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label infoHeading;
+        private System.Windows.Forms.Label tipHeading;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Panel infoPanel;
+        private System.Windows.Forms.Panel tipPanel;
         private System.Windows.Forms.Label publisherLabel;
         private System.Windows.Forms.Label engineLabel;
         private System.Windows.Forms.Label label4;

@@ -25,14 +25,15 @@ namespace SphereStudio
         private ToolStripMenuItem cellApiRefCommand;
         private ToolStripMenuItem runtimeApiRefCommand;
 
-        public void Initialize(ISettings conf)
+        public void Initialize(ISettings settings)
         {
-            Conf = new PluginConf(conf);
+            Conf = new PluginConf(settings);
 
             PluginManager.Register(this, new neoSphereStarter(this), "neoSphere");
             PluginManager.Register(this, new neoSphereStarter(this, true), "neoSphere R");
             PluginManager.Register(this, new CellCompiler(this), "Cell");
             PluginManager.Register(this, new neoSphereSettingsPage(this), "neoSphere");
+            PluginManager.Register(this, new CellSettingsPage(Conf), "Cell");
 
             Panes.Initialize(this);
 

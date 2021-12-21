@@ -30,7 +30,6 @@
         {
             this.showTracesButton = new System.Windows.Forms.CheckBox();
             this.testInWindowButton = new System.Windows.Forms.CheckBox();
-            this.useSourceMapsButton = new System.Windows.Forms.CheckBox();
             this.logLevelDropDown = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.testWithConsoleButton = new System.Windows.Forms.CheckBox();
@@ -49,7 +48,7 @@
             // showTracesButton
             // 
             this.showTracesButton.AutoSize = true;
-            this.showTracesButton.Location = new System.Drawing.Point(13, 103);
+            this.showTracesButton.Location = new System.Drawing.Point(13, 80);
             this.showTracesButton.Name = "showTracesButton";
             this.showTracesButton.Size = new System.Drawing.Size(278, 17);
             this.showTracesButton.TabIndex = 4;
@@ -59,22 +58,12 @@
             // testInWindowButton
             // 
             this.testInWindowButton.AutoSize = true;
-            this.testInWindowButton.Location = new System.Drawing.Point(13, 80);
+            this.testInWindowButton.Location = new System.Drawing.Point(13, 57);
             this.testInWindowButton.Name = "testInWindowButton";
             this.testInWindowButton.Size = new System.Drawing.Size(411, 17);
             this.testInWindowButton.TabIndex = 3;
             this.testInWindowButton.Text = "Force the engine to start in windowed mode when using the Test Game command";
             this.testInWindowButton.UseVisualStyleBackColor = true;
-            // 
-            // useSourceMapsButton
-            // 
-            this.useSourceMapsButton.AutoSize = true;
-            this.useSourceMapsButton.Location = new System.Drawing.Point(13, 57);
-            this.useSourceMapsButton.Name = "useSourceMapsButton";
-            this.useSourceMapsButton.Size = new System.Drawing.Size(324, 17);
-            this.useSourceMapsButton.TabIndex = 2;
-            this.useSourceMapsButton.Text = "Include source maps when building an SPK package using Cell";
-            this.useSourceMapsButton.UseVisualStyleBackColor = true;
             // 
             // logLevelDropDown
             // 
@@ -180,22 +169,21 @@
             this.debugPanel.Controls.Add(this.testWithConsoleButton);
             this.debugPanel.Controls.Add(this.testInWindowButton);
             this.debugPanel.Controls.Add(this.logLevelDropDown);
-            this.debugPanel.Controls.Add(this.useSourceMapsButton);
             this.debugPanel.Controls.Add(this.debugHeading);
             this.debugPanel.Controls.Add(this.label2);
             this.debugPanel.Location = new System.Drawing.Point(9, 113);
             this.debugPanel.Name = "debugPanel";
-            this.debugPanel.Size = new System.Drawing.Size(526, 154);
+            this.debugPanel.Size = new System.Drawing.Size(526, 132);
             this.debugPanel.TabIndex = 5;
             // 
             // retroModeCheckBox
             // 
             this.retroModeCheckBox.AutoSize = true;
-            this.retroModeCheckBox.Location = new System.Drawing.Point(13, 126);
+            this.retroModeCheckBox.Location = new System.Drawing.Point(13, 103);
             this.retroModeCheckBox.Name = "retroModeCheckBox";
-            this.retroModeCheckBox.Size = new System.Drawing.Size(375, 17);
+            this.retroModeCheckBox.Size = new System.Drawing.Size(338, 17);
             this.retroModeCheckBox.TabIndex = 5;
-            this.retroModeCheckBox.Text = "Always use R mode (API retrograde) when using the Test Game command";
+            this.retroModeCheckBox.Text = "Always use R mode (\'--retro\') when using the Test Game command";
             this.retroModeCheckBox.UseVisualStyleBackColor = true;
             // 
             // debugHeading
@@ -229,7 +217,6 @@
         private System.Windows.Forms.TextBox enginePathTextBox;
         private System.Windows.Forms.Label PathLabel;
         private System.Windows.Forms.CheckBox testWithConsoleButton;
-        private System.Windows.Forms.CheckBox useSourceMapsButton;
         private System.Windows.Forms.CheckBox testInWindowButton;
         private System.Windows.Forms.ComboBox logLevelDropDown;
         private System.Windows.Forms.Label label2;

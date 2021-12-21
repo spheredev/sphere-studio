@@ -32,7 +32,6 @@ namespace SphereStudio.SettingsPages
             style.AsHeading(debugHeading);
             style.AsAccent(debugPanel);
             style.AsAccent(testWithConsoleButton);
-            style.AsAccent(useSourceMapsButton);
             style.AsAccent(testInWindowButton);
             style.AsAccent(showTracesButton);
             style.AsAccent(retroModeCheckBox);
@@ -46,7 +45,6 @@ namespace SphereStudio.SettingsPages
         public void Populate()
         {
             enginePathTextBox.Text = main.Conf.EnginePath;
-            useSourceMapsButton.Checked = main.Conf.MakeDebugPackages;
             showTracesButton.Checked = main.Conf.ShowTraceInfo;
             testWithConsoleButton.Checked = main.Conf.AlwaysUseConsole;
             testInWindowButton.Checked = main.Conf.TestInWindow;
@@ -57,7 +55,6 @@ namespace SphereStudio.SettingsPages
         public void Save()
         {
             main.Conf.EnginePath = enginePathTextBox.Text;
-            main.Conf.MakeDebugPackages = useSourceMapsButton.Checked;
             main.Conf.AlwaysUseConsole = testWithConsoleButton.Checked;
             main.Conf.ShowTraceInfo = showTracesButton.Checked;
             main.Conf.TestInWindow = testInWindowButton.Checked;
