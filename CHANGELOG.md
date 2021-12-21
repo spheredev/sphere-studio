@@ -1,8 +1,8 @@
 Sphere Studio Changelog
 =======================
 
-v2.2.1 - TBD
-------------
+v2.2.1 - December 21, 2021
+--------------------------
 
 * Improves the Preferences dialog by replacing the tab bar with a tree view
   and splitting the settings pages into separate categories for Engines and
