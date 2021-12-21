@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 using SphereStudio.Base;
+using SphereStudio.Properties;
 
 namespace SphereStudio.DockPanes
 {
@@ -19,13 +20,10 @@ namespace SphereStudio.DockPanes
             StyleManager.AutoStyle(this);
         }
 
-        public Control Control { get { return this; } }
-
-        public DockHint DockHint { get { return DockHint.Bottom; } }
-
-        public Bitmap DockIcon { get { return Properties.Resources.application_view_list; } }
-
-        public bool ShowInViewMenu { get { return true; } }
+        public Control Control => this;
+        public DockHint DockHint => DockHint.Bottom;
+        public Bitmap DockIcon => Resources.application_view_list;
+        public bool ShowInViewMenu => true;
 
         public void Clear()
         {

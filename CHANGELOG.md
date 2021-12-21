@@ -1,14 +1,25 @@
 Sphere Studio Changelog
 =======================
 
-2.2.0 - December 19, 2021
--------------------------
+v2.2.1 - TBD
+------------
+
+* Improves the Preferences dialog by replacing the tab bar with a tree view
+  and splitting the settings pages into separate categories for Engines and
+  Compilers.
+* Improves the layout of the toolbar to make certain commands easier to find.
+* Fixes a bug where performing a "Save All" command while the Start Page is
+  open crashes the IDE.
+
+v2.2.0 - December 19, 2021
+--------------------------
 
 * Adds an Oozaru support plugin that allows local testing with Oozaru.
 * Adds support for launching neoSphere in Retrograde mode.
 
-2.1.0 - December 14, 2021
--------------------------
+
+v2.1.0 - December 14, 2021
+--------------------------
 
 * Adds a new **Sphere Classic** project type which allows targeting Sphere v2
   without the use of a Cellscript or a separate `dist` directory, and which is
@@ -20,8 +31,9 @@ Sphere Studio Changelog
 * Fixes a bug where the **Show in Windows Explorer** command didn't open the
   correct directory.
 
-2.0.0 - November 29, 2021
--------------------------
+
+v2.0.0 - November 29, 2021
+--------------------------
 
 This is the first formal Sphere Studio release under Spherical management.
 No changelog was maintained prior to this point.

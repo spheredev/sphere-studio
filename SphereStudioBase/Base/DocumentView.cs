@@ -16,7 +16,7 @@ namespace SphereStudio.Base
         /// <summary>
         /// Gets whether the DocumentView contains saveable content.
         /// </summary>
-        public virtual bool CanSave { get { return true; } }
+        public virtual bool CanSave => true;
         
         /// <summary>
         /// Gets whether the document has been edited since the last save.
@@ -42,7 +42,7 @@ namespace SphereStudio.Base
         /// <summary>
         /// Gets the recommended file extension (sans dot) when saving the document.
         /// </summary>
-        public virtual string[] FileExtensions { get { return null; } }
+        public virtual string[] FileExtensions => null;
 
         /// <summary>
         /// Gets the icon associated with the document.
@@ -81,7 +81,11 @@ namespace SphereStudio.Base
         /// Saves the contents of the document to a specified filename.
         /// </summary>
         /// <param name="filename">The filename to save under.</param>
-        public virtual void Save(string filename) { throw new NotImplementedException(); }
+        public virtual void Save(string filename)
+        {
+            if (CanSave)
+                throw new NotImplementedException("Saveable DocumentView doesn't implement Save()");
+        }
         
         /// <summary>
         /// Refreshes the document when the UI style has changed.

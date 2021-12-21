@@ -160,7 +160,7 @@
             this.serverHeading.Name = "serverHeading";
             this.serverHeading.Size = new System.Drawing.Size(451, 23);
             this.serverHeading.TabIndex = 0;
-            this.serverHeading.Text = "Local Server";
+            this.serverHeading.Text = "Oozaru Server";
             this.serverHeading.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // enginePathTextBox

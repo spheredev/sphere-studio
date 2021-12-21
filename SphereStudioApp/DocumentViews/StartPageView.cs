@@ -46,7 +46,7 @@ namespace SphereStudio.DocumentViews
             InitializeView();
         }
 
-        public override bool CanSave { get { return false; } }
+        public override bool CanSave => false;
 
         public void ApplyStyle(UIStyle style)
         {
