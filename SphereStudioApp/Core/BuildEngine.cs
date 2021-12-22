@@ -90,8 +90,9 @@ namespace SphereStudio.Core
         /// </summary>
         /// <param name="project">The project to build.</param>
         /// <param name="debuggable">Whether the project should be built with debugging info.</param>
+        /// <param name="rebuilding">Whether the project should be rebuilt from scratch.</param>
         /// <returns>The full path of the compiled distribution.</returns>
-        public static async Task<string> Build(Project project, bool debuggable)
+        public static async Task<string> Build(Project project, bool debuggable, bool rebuilding = false)
         {
             var compiler = PluginManager.Get<ICompiler>(project.Compiler);
             if (compiler == null)
@@ -107,7 +108,9 @@ namespace SphereStudio.Core
             PluginManager.Core.Docking.Activate(buildView);
 
             buildView.Print($"------------------- Build started: {project.Name} -------------------\n");
-            var outPath = await compiler.Build(project, debuggable, buildView);
+            var outPath = rebuilding
+                ? await compiler.Rebuild(project, debuggable, buildView)
+                : await compiler.Build(project, debuggable, buildView);
             if (outPath != null)
             {
                 buildView.Print($"================= Successfully built: {project.Name} ================");
@@ -152,14 +155,15 @@ namespace SphereStudio.Core
         /// Starts single-step debugging a project using the current engine.
         /// </summary>
         /// <param name="project">The project to debug.</param>
+        /// <param name="rebuilding">Whether the project should be completely rebuilt first.</param>
         /// <returns>An IDebugger used to manage the debugging session.</returns>
-        public static async Task<IDebugger> Debug(Project project)
+        public static async Task<IDebugger> Debug(Project project, bool rebuilding = false)
         {
             if (!CanDebug(project))
                 throw new NotSupportedException("The current engine starter doesn't support debugging.");
 
             var starter = PluginManager.Get<IDebugStarter>(project.User.Engine);
-            string outPath = await Build(project, true);
+            string outPath = await Build(project, true, rebuilding);
             try
             {
                 if (outPath != null)
@@ -180,12 +184,13 @@ namespace SphereStudio.Core
         /// Tests the game with the current engine.
         /// </summary>
         /// <param name="project">The project to test.</param>
-        public static async Task Test(Project project)
+        /// <param name="rebuilding">Whether the project should be completely rebuilt first.</param>
+        public static async Task Test(Project project, bool rebuilding = false)
         {
             var starter = PluginManager.Get<IStarter>(project.User.Engine);
             if (starter != null)
             {
-                string outPath = await Build(project, false);
+                string outPath = await Build(project, false, rebuilding);
                 if (outPath != null)
                 {
                     try

@@ -687,7 +687,7 @@ namespace SphereStudio.Forms
 
         private async void menuTestGame_Click(object sender, EventArgs e)
         {
-            await StartEngine(false);
+            await StartEngine(false, true);
         }
 
         private void menuRefreshProject_Click(object sender, EventArgs e)
@@ -972,7 +972,7 @@ namespace SphereStudio.Forms
                     content.DockHandler.Activate();
         }
 
-        private async Task StartEngine(bool wantDebugger)
+        private async Task StartEngine(bool wantDebugger, bool rebuilding = false)
         {
             foreach (DocumentTab tab in
                 from tab in _tabs
@@ -982,14 +982,14 @@ namespace SphereStudio.Forms
                 tab.SaveIfDirty();
             }
             menuTestGame.Enabled = toolTestGame.Enabled = false;
-            menuDebug.Enabled = toolDebug.Enabled = false;
+            buildRunCommand.Enabled = runGameToolButton.Enabled = false;
 
             if (TestGame != null)
                 TestGame(null, EventArgs.Empty);
 
             if (wantDebugger && BuildEngine.CanDebug(Session.Project))
             {
-                Debugger = await BuildEngine.Debug(Session.Project);
+                Debugger = await BuildEngine.Debug(Session.Project, rebuilding);
                 if (Debugger != null)
                 {
                     Debugger.Detached += debugger_Detached;
@@ -1000,8 +1000,8 @@ namespace SphereStudio.Forms
                     _isFirstDebugStop = true;
                     if (await Debugger.Attach())
                     {
-                        menuDebug.Text = "&Resume";
-                        toolDebug.Text = "Resume";
+                        buildRunCommand.Text = buildRunToolCommand.Text = "&Resume Running";
+                        runGameToolButton.Text = "Resume";
                         var breaks = Session.Project.GetAllBreakpoints();
                         foreach (string filename in breaks.Keys)
                             foreach (int lineNumber in breaks[filename])
@@ -1019,7 +1019,7 @@ namespace SphereStudio.Forms
             }
             else
             {
-                await BuildEngine.Test(Session.Project);
+                await BuildEngine.Test(Session.Project, rebuilding);
             }
 
             UpdateControls();
@@ -1035,15 +1035,15 @@ namespace SphereStudio.Forms
 
             toolConfigEngine.Enabled = menuConfigEngine.Enabled = haveConfig;
 
-            menuBuildPackage.Enabled = Session.Project != null
+            packageGameCommand.Enabled = Session.Project != null
                 && BuildEngine.CanPackage(Session.Project);
 
             menuTestGame.Enabled = toolTestGame.Enabled = Session.Project != null
                 && BuildEngine.CanTest(Session.Project) && Debugger == null;
-            menuDebug.Enabled = Session.Project != null
-                && BuildEngine.CanDebug(Session.Project)
-                && (Debugger == null || !Debugger.Running);
-            toolDebug.Enabled = Session.Project != null && (Debugger == null || !Debugger.Running);
+            buildRunCommand.Enabled = Session.Project != null && (Debugger == null || !Debugger.Running);
+            rebuildRunCommand.Enabled = Session.Project != null && Debugger == null;
+            runGameToolButton.Enabled = Session.Project != null && (Debugger == null || !Debugger.Running);
+            rebuildRunToolCommand.Enabled = Session.Project != null && Debugger == null;
             menuBreakNow.Enabled = toolPauseDebug.Enabled = Debugger != null && Debugger.Running;
             menuStopDebug.Enabled = toolStopDebug.Enabled = Debugger != null;
             menuStepInto.Enabled = Debugger != null && !Debugger.Running;
@@ -1103,8 +1103,9 @@ namespace SphereStudio.Forms
                 view.ErrorLine = 0;
             }
             Debugger = null;
-            menuDebug.Text = "Start &Debugging";
-            toolDebug.Text = "&Run Game";
+            buildRunCommand.Text = "Build && &Run";
+            buildRunToolCommand.Text = "Build && Run";
+            runGameToolButton.Text = "&Run Game";
             UpdateControls();
         }
 
@@ -1158,7 +1159,7 @@ namespace SphereStudio.Forms
             Debugger.StepOver();
         }
 
-        private async void menuDebug_Click(object sender, EventArgs e)
+        private async void debugCommand_Click(object sender, EventArgs e)
         {
             if (Debugger != null)
                 await Debugger.Resume();
@@ -1176,7 +1177,17 @@ namespace SphereStudio.Forms
             Debugger.Detach();
         }
 
-        private async void menuBuildPackage_Click(object sender, EventArgs e)
+        private async void buildCommand_Click(object sender, EventArgs e)
+        {
+            await BuildEngine.Build(Session.Project, true);
+        }
+
+        private async void rebuildCommand_Click(object sender, EventArgs e)
+        {
+            await BuildEngine.Build(Session.Project, true, true);
+        }
+
+        private async void packageGameCommand_Click(object sender, EventArgs e)
         {
             SaveFileDialog sfd = new SaveFileDialog()
             {
@@ -1190,6 +1201,16 @@ namespace SphereStudio.Forms
             {
                 await BuildEngine.Package(Session.Project, sfd.FileName, false);
             }
+        }
+
+        private async void rebuildRunCommand_Click(object sender, EventArgs e)
+        {
+            await StartEngine(true, true);
+        }
+
+        private void debugToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

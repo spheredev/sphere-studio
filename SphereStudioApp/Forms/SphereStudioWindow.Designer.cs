@@ -48,7 +48,9 @@
             this.ToolSeperator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolTestGame = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolDebug = new System.Windows.Forms.ToolStripButton();
+            this.runGameToolButton = new System.Windows.Forms.ToolStripSplitButton();
+            this.buildRunToolCommand = new System.Windows.Forms.ToolStripMenuItem();
+            this.rebuildRunToolCommand = new System.Windows.Forms.ToolStripMenuItem();
             this.toolPauseDebug = new System.Windows.Forms.ToolStripButton();
             this.toolStopDebug = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -113,12 +115,17 @@
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.EditorMenu = new System.Windows.Forms.MenuStrip();
             this.buildToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuBuildPackage = new System.Windows.Forms.ToolStripMenuItem();
+            this.buildCommand = new System.Windows.Forms.ToolStripMenuItem();
+            this.rebuildCommand = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
+            this.packageGameCommand = new System.Windows.Forms.ToolStripMenuItem();
             this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuDebug = new System.Windows.Forms.ToolStripMenuItem();
+            this.buildRunCommand = new System.Windows.Forms.ToolStripMenuItem();
             this.menuBreakNow = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStopDebug = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.rebuildRunCommand = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStepInto = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStepOver = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStepOut = new System.Windows.Forms.ToolStripMenuItem();
@@ -195,7 +202,7 @@
             this.ToolSeperator1,
             this.toolTestGame,
             this.toolStripSeparator2,
-            this.toolDebug,
+            this.runGameToolButton,
             this.toolPauseDebug,
             this.toolStopDebug,
             this.toolStripSeparator1,
@@ -324,7 +331,7 @@
             this.toolTestGame.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             this.toolTestGame.Size = new System.Drawing.Size(23, 25);
             this.toolTestGame.Text = "Test Game";
-            this.toolTestGame.ToolTipText = "Test Game without Debugger";
+            this.toolTestGame.ToolTipText = "Test without Debugger";
             this.toolTestGame.Click += new System.EventHandler(this.menuTestGame_Click);
             // 
             // toolStripSeparator2
@@ -333,15 +340,33 @@
             this.toolStripSeparator2.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 28);
             // 
-            // toolDebug
+            // runGameToolButton
             // 
-            this.toolDebug.Image = global::SphereStudio.Properties.Resources.play;
-            this.toolDebug.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolDebug.Name = "toolDebug";
-            this.toolDebug.Size = new System.Drawing.Size(82, 25);
-            this.toolDebug.Text = "&Run Game";
-            this.toolDebug.ToolTipText = "Start Debugging";
-            this.toolDebug.Click += new System.EventHandler(this.menuDebug_Click);
+            this.runGameToolButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.buildRunToolCommand,
+            this.rebuildRunToolCommand});
+            this.runGameToolButton.Image = global::SphereStudio.Properties.Resources.play;
+            this.runGameToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.runGameToolButton.Name = "runGameToolButton";
+            this.runGameToolButton.Size = new System.Drawing.Size(94, 25);
+            this.runGameToolButton.Text = "&Run Game";
+            this.runGameToolButton.ToolTipText = "Start Debugging";
+            this.runGameToolButton.ButtonClick += new System.EventHandler(this.debugCommand_Click);
+            // 
+            // buildRunToolCommand
+            // 
+            this.buildRunToolCommand.Image = global::SphereStudio.Properties.Resources.play;
+            this.buildRunToolCommand.Name = "buildRunToolCommand";
+            this.buildRunToolCommand.Size = new System.Drawing.Size(180, 22);
+            this.buildRunToolCommand.Text = "Build && &Run";
+            this.buildRunToolCommand.Click += new System.EventHandler(this.debugCommand_Click);
+            // 
+            // rebuildRunToolCommand
+            // 
+            this.rebuildRunToolCommand.Name = "rebuildRunToolCommand";
+            this.rebuildRunToolCommand.Size = new System.Drawing.Size(180, 22);
+            this.rebuildRunToolCommand.Text = "R&ebuild && Run";
+            this.rebuildRunToolCommand.Click += new System.EventHandler(this.rebuildRunCommand_Click);
             // 
             // toolPauseDebug
             // 
@@ -414,7 +439,7 @@
             this.toolEditorSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolEditorSettings.Name = "toolEditorSettings";
             this.toolEditorSettings.Size = new System.Drawing.Size(23, 25);
-            this.toolEditorSettings.Text = "Settings Center";
+            this.toolEditorSettings.Text = "Preferences";
             this.toolEditorSettings.Click += new System.EventHandler(this.menuEditorSettings_Click);
             // 
             // EditorStatus
@@ -873,27 +898,51 @@
             // buildToolStripMenuItem
             // 
             this.buildToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuBuildPackage});
+            this.buildCommand,
+            this.rebuildCommand,
+            this.toolStripSeparator10,
+            this.packageGameCommand});
             this.buildToolStripMenuItem.Name = "buildToolStripMenuItem";
             this.buildToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.buildToolStripMenuItem.Text = "&Build";
             this.buildToolStripMenuItem.DropDownClosed += new System.EventHandler(this.menu_DropDownClosed);
             this.buildToolStripMenuItem.DropDownOpening += new System.EventHandler(this.menu_DropDownOpening);
             // 
-            // menuBuildPackage
+            // buildCommand
             // 
-            this.menuBuildPackage.Name = "menuBuildPackage";
-            this.menuBuildPackage.Size = new System.Drawing.Size(193, 22);
-            this.menuBuildPackage.Text = "Make Game &Package...";
-            this.menuBuildPackage.Click += new System.EventHandler(this.menuBuildPackage_Click);
+            this.buildCommand.Name = "buildCommand";
+            this.buildCommand.Size = new System.Drawing.Size(193, 22);
+            this.buildCommand.Text = "&Build Project";
+            this.buildCommand.Click += new System.EventHandler(this.buildCommand_Click);
+            // 
+            // rebuildCommand
+            // 
+            this.rebuildCommand.Name = "rebuildCommand";
+            this.rebuildCommand.Size = new System.Drawing.Size(193, 22);
+            this.rebuildCommand.Text = "&Rebuild Project";
+            this.rebuildCommand.Click += new System.EventHandler(this.rebuildCommand_Click);
+            // 
+            // toolStripSeparator10
+            // 
+            this.toolStripSeparator10.Name = "toolStripSeparator10";
+            this.toolStripSeparator10.Size = new System.Drawing.Size(190, 6);
+            // 
+            // packageGameCommand
+            // 
+            this.packageGameCommand.Name = "packageGameCommand";
+            this.packageGameCommand.Size = new System.Drawing.Size(193, 22);
+            this.packageGameCommand.Text = "Make Game &Package...";
+            this.packageGameCommand.Click += new System.EventHandler(this.packageGameCommand_Click);
             // 
             // debugToolStripMenuItem
             // 
             this.debugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuDebug,
+            this.buildRunCommand,
             this.menuBreakNow,
             this.menuStopDebug,
             this.toolStripSeparator4,
+            this.rebuildRunCommand,
+            this.toolStripSeparator11,
             this.menuStepInto,
             this.menuStepOver,
             this.menuStepOut,
@@ -904,21 +953,22 @@
             this.debugToolStripMenuItem.Text = "&Test";
             this.debugToolStripMenuItem.DropDownClosed += new System.EventHandler(this.menu_DropDownClosed);
             this.debugToolStripMenuItem.DropDownOpening += new System.EventHandler(this.menu_DropDownOpening);
+            this.debugToolStripMenuItem.Click += new System.EventHandler(this.debugToolStripMenuItem_Click);
             // 
-            // menuDebug
+            // buildRunCommand
             // 
-            this.menuDebug.Image = global::SphereStudio.Properties.Resources.play;
-            this.menuDebug.Name = "menuDebug";
-            this.menuDebug.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.menuDebug.Size = new System.Drawing.Size(273, 22);
-            this.menuDebug.Text = "Sta&rt Debugging";
-            this.menuDebug.Click += new System.EventHandler(this.menuDebug_Click);
+            this.buildRunCommand.Image = global::SphereStudio.Properties.Resources.play;
+            this.buildRunCommand.Name = "buildRunCommand";
+            this.buildRunCommand.ShortcutKeys = System.Windows.Forms.Keys.F5;
+            this.buildRunCommand.Size = new System.Drawing.Size(239, 22);
+            this.buildRunCommand.Text = "Build && &Run";
+            this.buildRunCommand.Click += new System.EventHandler(this.debugCommand_Click);
             // 
             // menuBreakNow
             // 
             this.menuBreakNow.Image = global::SphereStudio.Properties.Resources.pause;
             this.menuBreakNow.Name = "menuBreakNow";
-            this.menuBreakNow.Size = new System.Drawing.Size(273, 22);
+            this.menuBreakNow.Size = new System.Drawing.Size(239, 22);
             this.menuBreakNow.Text = "&Break into Debugger";
             this.menuBreakNow.Click += new System.EventHandler(this.debugBreakNow_Click);
             // 
@@ -927,21 +977,33 @@
             this.menuStopDebug.Enabled = false;
             this.menuStopDebug.Image = global::SphereStudio.Properties.Resources.stop;
             this.menuStopDebug.Name = "menuStopDebug";
-            this.menuStopDebug.Size = new System.Drawing.Size(273, 22);
+            this.menuStopDebug.Size = new System.Drawing.Size(239, 22);
             this.menuStopDebug.Text = "S&top Debugging";
             this.menuStopDebug.Click += new System.EventHandler(this.menuStopDebug_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(270, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(236, 6);
+            // 
+            // rebuildRunCommand
+            // 
+            this.rebuildRunCommand.Name = "rebuildRunCommand";
+            this.rebuildRunCommand.Size = new System.Drawing.Size(239, 22);
+            this.rebuildRunCommand.Text = "R&ebuild && Run";
+            this.rebuildRunCommand.Click += new System.EventHandler(this.rebuildRunCommand_Click);
+            // 
+            // toolStripSeparator11
+            // 
+            this.toolStripSeparator11.Name = "toolStripSeparator11";
+            this.toolStripSeparator11.Size = new System.Drawing.Size(236, 6);
             // 
             // menuStepInto
             // 
             this.menuStepInto.Enabled = false;
             this.menuStepInto.Name = "menuStepInto";
             this.menuStepInto.ShortcutKeys = System.Windows.Forms.Keys.F11;
-            this.menuStepInto.Size = new System.Drawing.Size(273, 22);
+            this.menuStepInto.Size = new System.Drawing.Size(239, 22);
             this.menuStepInto.Text = "Step &Into";
             this.menuStepInto.Click += new System.EventHandler(this.menuStepInto_Click);
             // 
@@ -950,7 +1012,7 @@
             this.menuStepOver.Enabled = false;
             this.menuStepOver.Name = "menuStepOver";
             this.menuStepOver.ShortcutKeys = System.Windows.Forms.Keys.F10;
-            this.menuStepOver.Size = new System.Drawing.Size(273, 22);
+            this.menuStepOver.Size = new System.Drawing.Size(239, 22);
             this.menuStepOver.Text = "&Step Over";
             this.menuStepOver.Click += new System.EventHandler(this.menuStepOver_Click);
             // 
@@ -958,14 +1020,14 @@
             // 
             this.menuStepOut.Enabled = false;
             this.menuStepOut.Name = "menuStepOut";
-            this.menuStepOut.Size = new System.Drawing.Size(273, 22);
+            this.menuStepOut.Size = new System.Drawing.Size(239, 22);
             this.menuStepOut.Text = "Step &Out";
             this.menuStepOut.Click += new System.EventHandler(this.menuStepOut_Click);
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(270, 6);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(236, 6);
             // 
             // menuTestGame
             // 
@@ -973,8 +1035,8 @@
             this.menuTestGame.Image = global::SphereStudio.Properties.Resources.lightning;
             this.menuTestGame.Name = "menuTestGame";
             this.menuTestGame.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F5)));
-            this.menuTestGame.Size = new System.Drawing.Size(273, 22);
-            this.menuTestGame.Text = "Test &Game without Debugger";
+            this.menuTestGame.Size = new System.Drawing.Size(239, 22);
+            this.menuTestGame.Text = "&Test without Debugger";
             this.menuTestGame.Click += new System.EventHandler(this.menuTestGame_Click);
             // 
             // menuTools
@@ -1130,10 +1192,9 @@
         private System.Windows.Forms.ToolStripMenuItem menuConfigManager;
         private System.Windows.Forms.ToolStripMenuItem menuEditorSettings;
         internal WeifenLuo.WinFormsUI.Docking.DockPanel MainDock;
-        private System.Windows.Forms.ToolStripButton toolDebug;
         private System.Windows.Forms.ToolStripMenuItem debugToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem menuTestGame;
-        private System.Windows.Forms.ToolStripMenuItem menuDebug;
+        private System.Windows.Forms.ToolStripMenuItem buildRunCommand;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem menuStepInto;
         private System.Windows.Forms.ToolStripMenuItem menuStepOver;
@@ -1143,7 +1204,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuBreakNow;
         private System.Windows.Forms.ToolStripButton toolTestGame;
         private System.Windows.Forms.ToolStripMenuItem buildToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem menuBuildPackage;
+        private System.Windows.Forms.ToolStripMenuItem packageGameCommand;
         internal System.Windows.Forms.ToolStripMenuItem menuNew;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
@@ -1155,6 +1216,14 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
         private System.Windows.Forms.ToolStripButton saveAllTool;
+        private System.Windows.Forms.ToolStripSplitButton runGameToolButton;
+        private System.Windows.Forms.ToolStripMenuItem rebuildRunToolCommand;
+        private System.Windows.Forms.ToolStripMenuItem buildCommand;
+        private System.Windows.Forms.ToolStripMenuItem rebuildCommand;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
+        private System.Windows.Forms.ToolStripMenuItem rebuildRunCommand;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
+        private System.Windows.Forms.ToolStripMenuItem buildRunToolCommand;
     }
 }
 

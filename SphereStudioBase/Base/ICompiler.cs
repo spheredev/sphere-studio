@@ -20,10 +20,20 @@ namespace SphereStudio.Base
         /// Builds a game distribution from a Sphere Studio project.
         /// </summary>
         /// <param name="project">The project to build.</param>
-        /// <param name="debuggable">'true' the project should be built with debugging information.</param>
-        /// <param name="con">An IConsole where compiler output will be sent.</param>
+        /// <param name="debuggable">Whether to include debugging information in the build.</param>
+        /// <param name="console">An IConsole where compiler output will be sent.</param>
         /// <returns>The full path of the directory where the game was built.</returns>
-        Task<string> Build(IProject project, bool debuggable, IConsole con);
+        Task<string> Build(IProject project, bool debuggable, IConsole console);
+
+        /// <summary>
+        /// Completely rebuilds a game distribution from a Sphere Studio project, even parts that have
+        /// already been built.
+        /// </summary>
+        /// <param name="project">The project to rebuild.</param>
+        /// <param name="debuggable">Whether to include debugging information in the build.</param>
+        /// <param name="console">An IConsole where compiler output will be sent.</param>
+        /// <returns>The full path of the directory where the game was built.</returns>
+        Task<string> Rebuild(IProject project, bool debuggable, IConsole console);
     }
 
     /// <summary>

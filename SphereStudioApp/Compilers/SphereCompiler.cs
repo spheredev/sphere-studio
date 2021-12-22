@@ -122,5 +122,10 @@ namespace SphereStudio.Compilers
             console.Print("Sphere Classic build succeeded.\n");
             return project.RootPath;
         }
+
+        public async Task<string> Rebuild(IProject project, bool debuggable, IConsole console)
+        {
+            return await Build(project, debuggable, console);
+        }
     }
 }

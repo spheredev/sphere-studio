@@ -1,6 +1,11 @@
 Sphere Studio Changelog
 =======================
 
+v2.2.2 - TBD
+------------
+
+* Adds new "Rebuild" commands that trigger the compiler to do a full rebuild.
+
 v2.2.1 - December 21, 2021
 --------------------------
 

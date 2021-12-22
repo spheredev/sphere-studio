@@ -75,6 +75,17 @@ namespace SphereStudio.Compilers
             return succeeded ? outPath : null;
         }
 
+        public async Task<string> Rebuild(IProject project, bool debuggable, IConsole console)
+        {
+            var inPath = project.RootPath.Replace(Path.DirectorySeparatorChar, '/');
+            var outPath = $"{inPath}/dist";
+            var options = debuggable ? "--debug" : "--release";
+            var succeeded = await RunCell(
+                $@"--rebuild --in-dir ""{inPath}"" --out-dir ""{outPath}"" {options}",
+                console);
+            return succeeded ? outPath : null;
+        }
+
         public async Task<bool> Package(IProject project, string fileName, bool debuggable, IConsole console)
         {
             var inPath = project.RootPath.Replace(Path.DirectorySeparatorChar, '/');
