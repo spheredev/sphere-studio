@@ -328,7 +328,7 @@ namespace SphereStudio.Forms
                     "Welcome to Sphere Studio", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
                 if (selection == DialogResult.Yes)
                 {
-                    menuConfigManager_Click(null, EventArgs.Empty);
+                    showPluginManager();
                     Session.Settings.SetValue("setupComplete", true);
                 }
                 else
@@ -676,7 +676,7 @@ namespace SphereStudio.Forms
         #region Project menu Click handlers
         private void menuGameSettings_Click(object sender, EventArgs e)
         {
-            OpenProjectProps();
+            showProjectProperties();
         }
 
         private void menuOpenGameDir_Click(object sender, EventArgs e)
@@ -703,16 +703,9 @@ namespace SphereStudio.Forms
                 .Configure();
         }
 
-        private void menuConfigManager_Click(object sender, EventArgs e)
+        private void preferencesCommand_Click(object sender, EventArgs e)
         {
-            new PluginManagerDialog().ShowDialog(this);
-            UpdateEngineList();
-            UpdateControls();
-        }
-
-        private void menuEditorSettings_Click(object sender, EventArgs e)
-        {
-            OpenEditorSettings();
+            showPreferencesDialog();
         }
         #endregion
 
@@ -734,8 +727,7 @@ namespace SphereStudio.Forms
             // user selected Configure (always at bottom)
             if (toolEngineCombo.SelectedIndex == toolEngineCombo.Items.Count - 1)
             {
-                menuConfigManager_Click(null, EventArgs.Empty);
-                UpdateEngineList();
+                showPluginManager();
                 return;
             }
 
@@ -918,9 +910,14 @@ namespace SphereStudio.Forms
             return collection.OfType<ToolStripMenuItem>().FirstOrDefault(item => item.Text.Replace("&", "") == name);
         }
 
-        public void OpenEditorSettings()
+        private void showPluginManager()
         {
-            var form = new PreferencesDialog();
+            showPreferencesDialog("Plugins");
+        }
+        
+        private void showPreferencesDialog(string pageName = null)
+        {
+            var form = new PreferencesDialog(pageName);
             if (form.ShowDialog() == DialogResult.OK)
             {
                 Session.Settings.Apply();
@@ -928,7 +925,7 @@ namespace SphereStudio.Forms
             }
         }
 
-        private void OpenProjectProps()
+        private void showProjectProperties()
         {
             var form = new ProjectPropertiesDialog(Session.Project);
             if (form.ShowDialog() == DialogResult.OK)

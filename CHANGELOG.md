@@ -5,6 +5,7 @@ v2.2.2 - TBD
 ------------
 
 * Adds new "Rebuild" commands that trigger the compiler to do a full rebuild.
+* Moves the plugin management UI into the Preferences dialog.
 
 v2.2.1 - December 21, 2021
 --------------------------

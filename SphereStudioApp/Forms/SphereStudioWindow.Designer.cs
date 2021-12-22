@@ -58,7 +58,7 @@
             this.toolConfigEngine = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.GameToolButton = new System.Windows.Forms.ToolStripButton();
-            this.toolEditorSettings = new System.Windows.Forms.ToolStripButton();
+            this.preferencesToolButton = new System.Windows.Forms.ToolStripButton();
             this.EditorStatus = new System.Windows.Forms.StatusStrip();
             this.helpLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.SsResizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -134,8 +134,7 @@
             this.menuTools = new System.Windows.Forms.ToolStripMenuItem();
             this.menuConfigEngine = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuConfigManager = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuEditorSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.preferencesCommand = new System.Windows.Forms.ToolStripMenuItem();
             this.EditorTabContextMenu.SuspendLayout();
             this.EditorTools.SuspendLayout();
             this.EditorStatus.SuspendLayout();
@@ -210,7 +209,7 @@
             this.toolConfigEngine,
             this.toolStripSeparator9,
             this.GameToolButton,
-            this.toolEditorSettings});
+            this.preferencesToolButton});
             this.EditorTools.Location = new System.Drawing.Point(0, 24);
             this.EditorTools.Name = "EditorTools";
             this.EditorTools.Padding = new System.Windows.Forms.Padding(5, 0, 1, 0);
@@ -357,14 +356,14 @@
             // 
             this.buildRunToolCommand.Image = global::SphereStudio.Properties.Resources.play;
             this.buildRunToolCommand.Name = "buildRunToolCommand";
-            this.buildRunToolCommand.Size = new System.Drawing.Size(180, 22);
+            this.buildRunToolCommand.Size = new System.Drawing.Size(151, 22);
             this.buildRunToolCommand.Text = "Build && &Run";
             this.buildRunToolCommand.Click += new System.EventHandler(this.debugCommand_Click);
             // 
             // rebuildRunToolCommand
             // 
             this.rebuildRunToolCommand.Name = "rebuildRunToolCommand";
-            this.rebuildRunToolCommand.Size = new System.Drawing.Size(180, 22);
+            this.rebuildRunToolCommand.Size = new System.Drawing.Size(151, 22);
             this.rebuildRunToolCommand.Text = "R&ebuild && Run";
             this.rebuildRunToolCommand.Click += new System.EventHandler(this.rebuildRunCommand_Click);
             // 
@@ -434,13 +433,13 @@
             // 
             // toolEditorSettings
             // 
-            this.toolEditorSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolEditorSettings.Image = global::SphereStudio.Properties.Resources.application_view_list;
-            this.toolEditorSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolEditorSettings.Name = "toolEditorSettings";
-            this.toolEditorSettings.Size = new System.Drawing.Size(23, 25);
-            this.toolEditorSettings.Text = "Preferences";
-            this.toolEditorSettings.Click += new System.EventHandler(this.menuEditorSettings_Click);
+            this.preferencesToolButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.preferencesToolButton.Image = global::SphereStudio.Properties.Resources.application_view_list;
+            this.preferencesToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.preferencesToolButton.Name = "toolEditorSettings";
+            this.preferencesToolButton.Size = new System.Drawing.Size(23, 25);
+            this.preferencesToolButton.Text = "Preferences";
+            this.preferencesToolButton.Click += new System.EventHandler(this.preferencesCommand_Click);
             // 
             // EditorStatus
             // 
@@ -1044,8 +1043,7 @@
             this.menuTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuConfigEngine,
             this.toolStripSeparator5,
-            this.menuConfigManager,
-            this.menuEditorSettings});
+            this.preferencesCommand});
             this.menuTools.Name = "menuTools";
             this.menuTools.Size = new System.Drawing.Size(61, 20);
             this.menuTools.Text = "&Settings";
@@ -1066,21 +1064,13 @@
             this.toolStripSeparator5.Name = "toolStripSeparator5";
             this.toolStripSeparator5.Size = new System.Drawing.Size(183, 6);
             // 
-            // menuConfigManager
-            // 
-            this.menuConfigManager.Image = global::SphereStudio.Properties.Resources.SphericalLogo;
-            this.menuConfigManager.Name = "menuConfigManager";
-            this.menuConfigManager.Size = new System.Drawing.Size(186, 22);
-            this.menuConfigManager.Text = "&Plugins...";
-            this.menuConfigManager.Click += new System.EventHandler(this.menuConfigManager_Click);
-            // 
             // menuEditorSettings
             // 
-            this.menuEditorSettings.Image = global::SphereStudio.Properties.Resources.application_view_list;
-            this.menuEditorSettings.Name = "menuEditorSettings";
-            this.menuEditorSettings.Size = new System.Drawing.Size(186, 22);
-            this.menuEditorSettings.Text = "P&references...";
-            this.menuEditorSettings.Click += new System.EventHandler(this.menuEditorSettings_Click);
+            this.preferencesCommand.Image = global::SphereStudio.Properties.Resources.application_view_list;
+            this.preferencesCommand.Name = "menuEditorSettings";
+            this.preferencesCommand.Size = new System.Drawing.Size(186, 22);
+            this.preferencesCommand.Text = "P&references...";
+            this.preferencesCommand.Click += new System.EventHandler(this.preferencesCommand_Click);
             // 
             // SphereStudioWindow
             // 
@@ -1138,7 +1128,7 @@
         private System.Windows.Forms.ToolStripMenuItem ExportTilesetItem;
         private System.Windows.Forms.ToolStripMenuItem UpdateFromMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel helpLabel;
-        private System.Windows.Forms.ToolStripButton toolEditorSettings;
+        private System.Windows.Forms.ToolStripButton preferencesToolButton;
         private System.Windows.Forms.ToolStripMenuItem SsResizeMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SsRescaleMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SpriteTilesetMenuItem;
@@ -1189,8 +1179,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuTools;
         private System.Windows.Forms.ToolStripMenuItem menuConfigEngine;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
-        private System.Windows.Forms.ToolStripMenuItem menuConfigManager;
-        private System.Windows.Forms.ToolStripMenuItem menuEditorSettings;
+        private System.Windows.Forms.ToolStripMenuItem preferencesCommand;
         internal WeifenLuo.WinFormsUI.Docking.DockPanel MainDock;
         private System.Windows.Forms.ToolStripMenuItem debugToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem menuTestGame;

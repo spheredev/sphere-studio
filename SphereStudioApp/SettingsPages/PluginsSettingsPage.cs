@@ -1,38 +1,39 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using SphereStudio.Base;
 using SphereStudio.Core;
+using SphereStudio.Forms;
 using SphereStudio.IO;
 
-namespace SphereStudio.Forms
+namespace SphereStudio.SettingsPages
 {
-    partial class PluginManagerDialog : Form, IStyleAware
+    public partial class PluginsSettingsPage : UserControl, ISettingsPage, IStyleAware
     {
         private bool updatingHandlers = false;
         private bool updatingPresets = false;
         private bool updatingPlugins = false;
 
-        public PluginManagerDialog()
+        public PluginsSettingsPage()
         {
             InitializeComponent();
             StyleManager.AutoStyle(this);
-
-            updatePresets();
-            updatePlugins();
-            updateHandlers();
-            
-            presetDropDown_SelectedIndexChanged(null, EventArgs.Empty);
         }
+
+        public Control Control => this;
+        public SettingsPageType Type => SettingsPageType.TopLevel;
 
         public void ApplyStyle(UIStyle style)
         {
             style.AsUIElement(this);
-            style.AsHeading(header);
-            style.AsHeading(footer);
-            style.AsAccent(okButton);
 
             style.AsTextView(presetDropDown);
             style.AsAccent(savePresetButton);
@@ -40,16 +41,47 @@ namespace SphereStudio.Forms
 
             style.AsHeading(defaultsHeading);
             style.AsAccent(defaultsPanel);
-            style.AsTextView(engineDropDown);
-            style.AsTextView(typeDropDown);
-            style.AsTextView(otherDropDown);
-            style.AsTextView(scriptDropDown);
+            style.AsTextView(engineComboBox);
+            style.AsTextView(typeComboBox);
+            style.AsTextView(otherComboBox);
+            style.AsTextView(scriptComboBox);
             style.AsTextView(imageDropDown);
             style.AsTextView(presetDropDown);
 
             style.AsHeading(pluginsHeading);
             style.AsAccent(pluginsPanel);
             style.AsTextView(pluginsListView);
+        }
+
+        public void Populate()
+        {
+            updatePresets();
+            updatePlugins();
+            updateHandlers();
+        }
+
+        public void Save()
+        {
+            Session.Settings.Preset = presetDropDown.Text;
+        }
+
+        public bool Verify()
+        {
+            bool haveAllPlugins = PluginManager.Get<IStarter>(Session.Settings.Engine) != null
+                && PluginManager.Get<ICompiler>(Session.Settings.Compiler) != null
+                && PluginManager.Get<IFileOpener>(Session.Settings.FileOpener) != null
+                && PluginManager.Get<IEditor<TextView>>(Session.Settings.TextEditor) != null
+                && PluginManager.Get<IEditor<ImageView>>(Session.Settings.ImageEditor) != null;
+            if (!haveAllPlugins)
+            {
+                DialogResult result = MessageBox.Show(
+                    "You haven't selected plugins for one or more tasks. Continue?",
+                    "No Handler Selected",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.No)
+                    return false;
+            }
+            return true;
         }
 
         private string getPluginName(ComboBox comboBox)
@@ -62,10 +94,10 @@ namespace SphereStudio.Forms
             if (updatingHandlers)
                 return;
 
-            Session.Settings.Engine = getPluginName(engineDropDown);
-            Session.Settings.Compiler = getPluginName(typeDropDown);
-            Session.Settings.FileOpener = getPluginName(otherDropDown);
-            Session.Settings.TextEditor = getPluginName(scriptDropDown);
+            Session.Settings.Engine = getPluginName(engineComboBox);
+            Session.Settings.Compiler = getPluginName(typeComboBox);
+            Session.Settings.FileOpener = getPluginName(otherComboBox);
+            Session.Settings.TextEditor = getPluginName(scriptComboBox);
             Session.Settings.ImageEditor = getPluginName(imageDropDown);
             Session.Settings.Apply();
             updatePresets();
@@ -89,23 +121,23 @@ namespace SphereStudio.Forms
         {
             if (updatingHandlers)
                 return;
-            
+
             updatingHandlers = true;
 
-            populateHandlers<ICompiler>(typeDropDown, Session.Settings.Compiler);
-            populateHandlers<IStarter>(engineDropDown, Session.Settings.Engine);
-            populateHandlers<IEditor<TextView>>(otherDropDown, Session.Settings.FileOpener);
-            populateHandlers<IEditor<TextView>>(scriptDropDown, Session.Settings.TextEditor);
+            populateHandlers<ICompiler>(typeComboBox, Session.Settings.Compiler);
+            populateHandlers<IStarter>(engineComboBox, Session.Settings.Engine);
+            populateHandlers<IEditor<TextView>>(otherComboBox, Session.Settings.FileOpener);
+            populateHandlers<IEditor<TextView>>(scriptComboBox, Session.Settings.TextEditor);
             populateHandlers<IEditor<ImageView>>(imageDropDown, Session.Settings.ImageEditor);
 
             updatingHandlers = false;
         }
-        
+
         private void updatePlugins()
         {
             if (updatingPlugins)
                 return;
-            
+
             updatingPlugins = true;
 
             pluginsListView.CreateGraphics();  // workaround for early ItemCheck event
@@ -114,24 +146,24 @@ namespace SphereStudio.Forms
             {
                 ListViewItem item = new ListViewItem();
                 item.Text = pair.Value.Main.Name;
-                item.SubItems.Add(pair.Value.Main.Author);
                 item.SubItems.Add(pair.Value.Main.Version);
-                item.SubItems.Add(pair.Value.Main.Description);
+                item.SubItems.Add(pair.Value.Main.Author);
+                item.ToolTipText = pair.Value.Main.Description;
                 item.Tag = pair.Key;
                 item.Checked = !Session.Settings.DisabledPlugins.Contains(pair.Value.Handle);
                 pluginsListView.Items.Add(item);
             }
-            
+
             updatingPlugins = false;
         }
-        
+
         private void updatePresets()
         {
             if (updatingPresets)
                 return;
-            
+
             updatingPresets = true;
-            
+
             presetDropDown.Items.Clear();
             string presetPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -160,65 +192,16 @@ namespace SphereStudio.Forms
             updatingPresets = false;
         }
 
-        private void okButton_Click(object sender, EventArgs e)
-        {
-            bool haveAllPlugins = PluginManager.Get<IStarter>(Session.Settings.Engine) != null
-                && PluginManager.Get<ICompiler>(Session.Settings.Compiler) != null
-                && PluginManager.Get<IFileOpener>(Session.Settings.FileOpener) != null
-                && PluginManager.Get<IEditor<TextView>>(Session.Settings.TextEditor) != null
-                && PluginManager.Get<IEditor<ImageView>>(Session.Settings.ImageEditor) != null;
-            if (!haveAllPlugins)
-            {
-                DialogResult result = MessageBox.Show(
-                    "You haven't selected plugins for one or more tasks. Continue?",
-                    "No Handler Selected",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (result == DialogResult.No)
-                {
-                    DialogResult = DialogResult.None;
-                    return;
-                }
-            }
-            Session.Settings.Preset = presetDropDown.Text;
-        }
-
         private void presetDropDown_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (updatingPresets)
                 return;
-            
+
             Session.Settings.Preset = presetDropDown.Text;
             Session.Settings.Apply();
             updatePlugins();
             updateHandlers();
             updatePresets();
-        }
-
-        private void savePresetButton_Click(object sender, EventArgs e)
-        {
-            using (var diag = new SavePresetDialog())
-            {
-                if (diag.ShowDialog() != DialogResult.OK)
-                    return;
-                string fileName = diag.PresetName + ".preset";
-                string path = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                    "Sphere Studio", "pluginPresets", fileName);
-                Directory.CreateDirectory(Path.GetDirectoryName(path));
-                using (var preset = new IniFile(path, false))
-                {
-                    preset.SetValue("Preset", "compiler", getPluginName(typeDropDown));
-                    preset.SetValue("Preset", "engine", getPluginName(engineDropDown));
-                    preset.SetValue("Preset", "defaultFileOpener", getPluginName(otherDropDown));
-                    preset.SetValue("Preset", "textEditor", getPluginName(scriptDropDown));
-                    preset.SetValue("Preset", "imageEditor", getPluginName(imageDropDown));
-                    preset.SetValue("Preset", "disabledPlugins", string.Join("|", Session.Settings.DisabledPlugins));
-                    preset.Save();
-                }
-                Session.Settings.Preset = Path.GetFileNameWithoutExtension(fileName);
-                Session.Settings.Apply();
-                updatePresets();
-            }
         }
 
         private void deletePresetButton_Click(object sender, EventArgs e)
@@ -237,42 +220,49 @@ namespace SphereStudio.Forms
             }
         }
 
+        private void savePresetButton_Click(object sender, EventArgs e)
+        {
+            using (var diag = new SavePresetDialog())
+            {
+                if (diag.ShowDialog() != DialogResult.OK)
+                    return;
+                string fileName = diag.PresetName + ".preset";
+                string path = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    "Sphere Studio", "pluginPresets", fileName);
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
+                using (var preset = new IniFile(path, false))
+                {
+                    preset.SetValue("Preset", "compiler", getPluginName(typeComboBox));
+                    preset.SetValue("Preset", "engine", getPluginName(engineComboBox));
+                    preset.SetValue("Preset", "defaultFileOpener", getPluginName(otherComboBox));
+                    preset.SetValue("Preset", "textEditor", getPluginName(scriptComboBox));
+                    preset.SetValue("Preset", "imageEditor", getPluginName(imageDropDown));
+                    preset.SetValue("Preset", "disabledPlugins", string.Join("|", Session.Settings.DisabledPlugins));
+                    preset.Save();
+                }
+                Session.Settings.Preset = Path.GetFileNameWithoutExtension(fileName);
+                Session.Settings.Apply();
+                updatePresets();
+            }
+        }
+
+        private void pluginComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            handleSelectionChanged();
+        }
+
         private void pluginsListView_ItemChecked(object sender, ItemCheckedEventArgs e)
         {
             if (updatingPlugins)
                 return;
 
             Session.Settings.DisabledPlugins = (from ListViewItem item in pluginsListView.Items
-                                        where !item.Checked
-                                        select item.Tag as string).ToArray();
+                                                where !item.Checked
+                                                select item.Tag as string).ToArray();
             Session.Settings.Apply();
             updateHandlers();
             updatePresets();
-            handleSelectionChanged();
-        }
-
-        private void engineDropDown_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            handleSelectionChanged();
-        }
-
-        private void typeDropDown_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            handleSelectionChanged();
-        }
-
-        private void otherDropDown_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            handleSelectionChanged();
-        }
-
-        private void scriptDropDown_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            handleSelectionChanged();
-        }
-
-        private void imageDropDown_SelectedIndexChanged(object sender, EventArgs e)
-        {
             handleSelectionChanged();
         }
     }

@@ -19,6 +19,9 @@ namespace SphereStudio.Base
         /// </summary>
         Control Control { get; }
 
+        /// <summary>
+        /// Specifies which category the settings page is listed under.
+        /// </summary>
         SettingsPageType Type { get; }
 
         /// <summary>

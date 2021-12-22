@@ -28,6 +28,7 @@ namespace SphereStudio
             PluginManager.Register(null, new DefaultStyleProvider(), "Default");
             PluginManager.Register(null, new SphereCompiler(), Defaults.Compiler);
             PluginManager.Register(null, new EnvironmentSettingsPage(), "Environment");
+            PluginManager.Register(null, new PluginsSettingsPage(), "Plugins");
             PluginManager.Register(null, new SphereProjectPage(), "Sphere Game");
 
             Window = new SphereStudioWindow();

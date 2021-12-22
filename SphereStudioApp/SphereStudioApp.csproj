@@ -130,12 +130,6 @@
     <Compile Include="Forms\AboutDialog.Designer.cs">
       <DependentUpon>AboutDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\PluginManagerDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\PluginManagerDialog.Designer.cs">
-      <DependentUpon>PluginManagerDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\SavePresetDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -169,6 +163,12 @@
     </Compile>
     <Compile Include="SettingsPages\EnvironmentSettingsPage.Designer.cs">
       <DependentUpon>EnvironmentSettingsPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPages\PluginsSettingsPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPages\PluginsSettingsPage.Designer.cs">
+      <DependentUpon>PluginsSettingsPage.cs</DependentUpon>
     </Compile>
     <Compile Include="StyleProviders\DefaultStyleProvider.cs" />
     <Compile Include="IO\IniFile.cs" />
@@ -208,9 +208,6 @@
     <EmbeddedResource Include="Forms\AboutDialog.resx">
       <DependentUpon>AboutDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\PluginManagerDialog.resx">
-      <DependentUpon>PluginManagerDialog.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\SavePresetDialog.resx">
       <DependentUpon>SavePresetDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -242,6 +239,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPages\PluginsSettingsPage.resx">
+      <DependentUpon>PluginsSettingsPage.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\app.manifest">

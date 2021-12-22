@@ -47,9 +47,9 @@
             this.footer.Controls.Add(this.cancelButton);
             this.footer.Controls.Add(this.okButton);
             this.footer.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.footer.Location = new System.Drawing.Point(0, 457);
+            this.footer.Location = new System.Drawing.Point(0, 494);
             this.footer.Name = "footer";
-            this.footer.Size = new System.Drawing.Size(677, 50);
+            this.footer.Size = new System.Drawing.Size(716, 50);
             this.footer.TabIndex = 3;
             // 
             // applyButton
@@ -57,7 +57,7 @@
             this.applyButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.applyButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.applyButton.Location = new System.Drawing.Point(585, 13);
+            this.applyButton.Location = new System.Drawing.Point(624, 13);
             this.applyButton.Name = "applyButton";
             this.applyButton.Size = new System.Drawing.Size(80, 25);
             this.applyButton.TabIndex = 2;
@@ -71,7 +71,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cancelButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cancelButton.Location = new System.Drawing.Point(499, 13);
+            this.cancelButton.Location = new System.Drawing.Point(538, 13);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(80, 25);
             this.cancelButton.TabIndex = 1;
@@ -84,7 +84,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.okButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.okButton.Location = new System.Drawing.Point(413, 13);
+            this.okButton.Location = new System.Drawing.Point(452, 13);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(80, 25);
             this.okButton.TabIndex = 0;
@@ -97,7 +97,7 @@
             this.header.Dock = System.Windows.Forms.DockStyle.Top;
             this.header.Location = new System.Drawing.Point(0, 0);
             this.header.Name = "header";
-            this.header.Size = new System.Drawing.Size(677, 23);
+            this.header.Size = new System.Drawing.Size(716, 23);
             this.header.TabIndex = 5;
             this.header.Text = "configure the Sphere Studio integrated development environment";
             this.header.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -114,7 +114,7 @@
             this.pagesTreeView.Location = new System.Drawing.Point(12, 36);
             this.pagesTreeView.Name = "pagesTreeView";
             this.pagesTreeView.SelectedImageIndex = 0;
-            this.pagesTreeView.Size = new System.Drawing.Size(146, 413);
+            this.pagesTreeView.Size = new System.Drawing.Size(146, 450);
             this.pagesTreeView.TabIndex = 6;
             this.pagesTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.pagesTreeView_AfterSelect);
             // 
@@ -135,7 +135,7 @@
             this.pagePanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pagePanel.Location = new System.Drawing.Point(164, 36);
             this.pagePanel.Name = "pagePanel";
-            this.pagePanel.Size = new System.Drawing.Size(501, 413);
+            this.pagePanel.Size = new System.Drawing.Size(540, 450);
             this.pagePanel.TabIndex = 7;
             // 
             // PreferencesDialog
@@ -144,7 +144,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(677, 507);
+            this.ClientSize = new System.Drawing.Size(716, 544);
             this.Controls.Add(this.pagePanel);
             this.Controls.Add(this.pagesTreeView);
             this.Controls.Add(this.header);

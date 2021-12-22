@@ -17,13 +17,17 @@ namespace SphereStudio.Forms
     partial class PreferencesDialog : Form, IStyleAware
     {
         private List<ISettingsPage> applyList = new List<ISettingsPage>();
-        private ISettingsPage currentPage = null;
         private TreeNode currentNode;
+        private ISettingsPage currentPage;
+        private ISettingsPage firstPage;
 
-        public PreferencesDialog()
+        public PreferencesDialog(string pageName = null)
         {
             InitializeComponent();
             StyleManager.AutoStyle(this);
+
+            if (pageName != null)
+                firstPage = PluginManager.Get<ISettingsPage>(pageName);
         }
 
         public void ApplyStyle(UIStyle style)
@@ -48,7 +52,7 @@ namespace SphereStudio.Forms
             var compilerNode = new TreeNode("Compilers", 1, 1);
             foreach (var page in pages)
             {
-                TreeNode node;
+                TreeNode node = null;
                 switch (page.Plugin.Type)
                 {
                     case SettingsPageType.TopLevel:
@@ -64,13 +68,15 @@ namespace SphereStudio.Forms
                         compilerNode.Nodes.Add(node);
                         break;
                 }
+                if (page.Plugin == firstPage)
+                    currentNode = node;
             }
             if (engineNode.Nodes.Count > 0)
                 pagesTreeView.Nodes.Add(engineNode);
             if (compilerNode.Nodes.Count > 0)
                 pagesTreeView.Nodes.Add(compilerNode);
             pagesTreeView.ExpandAll();
-            pagesTreeView.SelectedNode = pagesTreeView.Nodes[0];
+            pagesTreeView.SelectedNode = currentNode ?? pagesTreeView.Nodes[0];
             pagesTreeView.EndUpdate();
             
             loadSettingsPage();
