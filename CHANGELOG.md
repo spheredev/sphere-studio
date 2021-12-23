@@ -1,8 +1,8 @@
 Sphere Studio Changelog
 =======================
 
-v2.2.2 - TBD
-------------
+v2.2.2 - December 23, 2021
+--------------------------
 
 * Adds new "Rebuild" commands that trigger the compiler to do a full rebuild.
 * Moves the plugin management UI into the Preferences dialog.
