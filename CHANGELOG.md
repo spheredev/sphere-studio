@@ -6,6 +6,8 @@ v2.2.2 - TBD
 
 * Adds new "Rebuild" commands that trigger the compiler to do a full rebuild.
 * Moves the plugin management UI into the Preferences dialog.
+* Fixes a bug that could cause Sphere Studio to delete a non-empty task list
+  file when unloading a project.
 
 v2.2.1 - December 21, 2021
 --------------------------

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,7 +15,6 @@ using SphereStudio.Base;
 using SphereStudio.Core;
 using SphereStudio.DockPanes;
 using SphereStudio.DocumentViews;
-using System.Media;
 
 namespace SphereStudio.Forms
 {
@@ -238,7 +238,8 @@ namespace SphereStudio.Forms
                     return;
             }
 
-            if (!CloseCurrentProject()) return;
+            if (!CloseCurrentProject())
+                return;
             Session.Project = pj;
 
             RefreshProject();
@@ -884,6 +885,7 @@ namespace SphereStudio.Forms
             {
                 UnloadProject?.Invoke(null, EventArgs.Empty);
                 Session.Project.Save();
+                Session.Project = null;
             }
 
             // clear the project tree

@@ -44,7 +44,7 @@ namespace SphereStudio.Plugins
         private void on_UnloadProject(object sender, EventArgs e)
         {
             dockPane.SaveTaskList();
-            dockPane.Clear();
+            dockPane.Clear(true);
         }
     }
 }

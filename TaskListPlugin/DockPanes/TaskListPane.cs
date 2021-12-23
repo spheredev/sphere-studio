@@ -84,10 +84,10 @@ namespace SphereStudio.Plugins.UI
         }
 
         /// <summary>
-        /// Attempts to delete the tasklist file if there is nothing left.
+        /// Attempts to delete the task list file if there are no tasks left.
         /// </summary>
         /// <returns>True if the file was clean, false if there is stuff to save.</returns>
-        private bool Clean()
+        private bool DeleteIfEmpty()
         {
             if (string.IsNullOrEmpty(tasksFilePath))
                 return true;
@@ -99,9 +99,16 @@ namespace SphereStudio.Plugins.UI
         }
 
         /// <summary>
-        /// Clears the list out
+        /// Clears all tasks from the task list UI and optionally unloads the
+        /// current task file.
         /// </summary>
-        public void Clear() => listView.ClearObjects();
+        /// <param name="unload">Whether to unload the current task file.</param>
+        public void Clear(bool unload = false)
+        {
+            listView.ClearObjects();
+            if (unload)
+                tasksFilePath = null;
+        }
 
         /// <summary>
         /// Tasks are saved as follows:
@@ -115,7 +122,7 @@ namespace SphereStudio.Plugins.UI
         public void SaveTaskList()
         {
             // clean the file
-            if (Clean())
+            if (DeleteIfEmpty())
                 return;
 
             using (BinaryWriter writer = new BinaryWriter(File.OpenWrite(tasksFilePath)))
@@ -157,7 +164,10 @@ namespace SphereStudio.Plugins.UI
             }
         }
 
-        private void ClearAllItem_Click(object sender, EventArgs e) => Clear();
+        private void ClearAllItem_Click(object sender, EventArgs e)
+        {
+            Clear();
+        }
 
         private void priorityUpButton_Click(object sender, EventArgs e)
         {
