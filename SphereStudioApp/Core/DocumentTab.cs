@@ -32,7 +32,7 @@ namespace SphereStudio.Core
         /// <param name="view">The IDocumentView the tab is hosting.</param>
         /// <param name="fileName">The fully-qualified filename of the document, or null if untitled.</param>
         /// <param name="restoreView">'true' to restore the last saved view state. Has no effect on untitled tabs.</param>
-        public DocumentTab(SphereStudioWindow ide, DocumentView view, string fileName = null, bool restoreView = false)
+        public DocumentTab(IdeWindow ide, DocumentView view, string fileName = null, bool restoreView = false)
         {
             FileName = fileName;
             View = view;
@@ -49,7 +49,7 @@ namespace SphereStudio.Core
             _content.TabText = _tabText;
             _content.ToolTipText = FileName;
             _content.Controls.Add(View);
-            _content.Show(ide.MainDock, DockState.Document);
+            _content.Show(ide.mainDockPanel, DockState.Document);
             View.DirtyChanged += on_DirtyChanged;
 
             UpdateTabText();

@@ -19,11 +19,11 @@ namespace SphereStudio.DockPanes
     [ToolboxItem(false)]
     partial class FileListPane : UserControl, IDockPane, IStyleAware
     {
-        private readonly SphereStudioWindow _hostForm;
+        private readonly IdeWindow _hostForm;
         private readonly ImageList _iconlist = new ImageList();
         private readonly ToolTip _tip = new ToolTip();
 
-        public FileListPane(SphereStudioWindow hostForm)
+        public FileListPane(IdeWindow hostForm)
         {
             InitializeComponent();
             StyleManager.AutoStyle(this);
@@ -31,9 +31,9 @@ namespace SphereStudio.DockPanes
             _hostForm = hostForm;
 
             // TODO: fix this ugly hack! (ProjectTree New submenu)
-            NewFileItem.DropDown = _hostForm.menuNew.DropDown;
-            NewFileItem.DropDownOpening += _hostForm.menuNew_DropDownOpening;
-            NewFileItem.DropDownClosed += _hostForm.menuNew_DropDownClosed;
+            NewFileItem.DropDown = _hostForm.newMenuItem.DropDown;
+            NewFileItem.DropDownOpening += _hostForm.newMenuItem_DropDownOpening;
+            NewFileItem.DropDownClosed += _hostForm.newMenuItem_DropDownClosed;
 
             _tip.ToolTipTitle = "Image";
             _tip.ToolTipIcon = ToolTipIcon.Info;

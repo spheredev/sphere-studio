@@ -21,21 +21,22 @@ namespace SphereStudio.Forms
     /// <summary>
     /// Represents an instance of the Sphere Studio IDE.
     /// </summary>
-    partial class SphereStudioWindow : Form, ICore, IStyleAware
+    partial class IdeWindow : Form, IStyleAware, ICore
     {
-        private DocumentTab _activeTab;
-        private string _defaultActiveName;
+        private DocumentTab currentTab;
+        private string defaultActiveDocumentName;
         private DockManager dockManager = null;
-        private bool _isFirstDebugStop;
-        private bool _loadingPresets = false;
+        private bool isFirstDebugStop;
+        private bool loadingPresets = false;
         private FileListPane fileListPane;
-        private StartPageView _startPage = null;
-        private DocumentTab _startTab = null;
-        private List<DocumentTab> _tabs = new List<DocumentTab>();
+        private StartPageView startPageView = null;
+        private DocumentTab startPageTab = null;
+        private List<DocumentTab> tabs = new List<DocumentTab>();
 
-        public SphereStudioWindow()
+        public IdeWindow()
         {
             InitializeComponent();
+            StyleManager.AutoStyle(this);
 
             PluginManager.Core = this;
 
@@ -43,7 +44,7 @@ namespace SphereStudio.Forms
             PluginManager.Register(null, fileListPane, "File List");
 
             Text = Versioning.IsWiP ? $"{Versioning.Name} WiP" : Versioning.Name;
-            toolNew.DropDown = menuNew.DropDown;
+            newToolButton.DropDown = newMenuItem.DropDown;
 
             BuildEngine.Initialize();
             Session.Settings.Apply();
@@ -53,16 +54,14 @@ namespace SphereStudio.Forms
             Refresh();
 
             if (Session.Settings.AutoOpenLastProject)
-                menuOpenLastProject_Click(null, EventArgs.Empty);
-
-            StyleManager.AutoStyle(this);
+                openLastProjectMenuItem.PerformClick();
         }
 
         public event EventHandler LoadProject;
         public event EventHandler TestGame;
         public event EventHandler UnloadProject;
 
-        public DocumentView ActiveDocument => _activeTab.View;
+        public DocumentView ActiveDocument => currentTab.View;
         public IDebugger Debugger { get; private set; }
         public IDock Docking => dockManager;
         public IProject Project => Session.Project;
@@ -75,27 +74,27 @@ namespace SphereStudio.Forms
             // directly.
             get
             {
-                if (_startTab != null && !_tabs.Contains(_startTab))
+                if (startPageTab != null && !tabs.Contains(startPageTab))
                 {
-                    _startTab.Dispose();
-                    _startTab = null;
+                    startPageTab.Dispose();
+                    startPageTab = null;
                 }
-                return _startTab != null;
+                return startPageTab != null;
             }
             set
             {
                 if (value && !StartVisible)
                 {
-                    _startPage = new StartPageView(this) { HelpLabel = helpLabel };
-                    _startPage.RepopulateProjects();
-                    _startTab = AddDocument(_startPage, "Start Page");
-                    _startTab.Restyle();
+                    startPageView = new StartPageView(this) { HelpLabel = helpLabel };
+                    startPageView.RepopulateProjects();
+                    startPageTab = AddDocument(startPageView, "Start Page");
+                    startPageTab.Restyle();
                 }
                 else if (!value && StartVisible)
                 {
-                    _startTab.Close(true);
-                    _startTab.Dispose();
-                    _startTab = null;
+                    startPageTab.Close(true);
+                    startPageTab.Dispose();
+                    startPageTab = null;
                 }
             }
         }
@@ -107,15 +106,15 @@ namespace SphereStudio.Forms
         /// <param name="before">The name of the menu before which this one will be inserted.</param>
         public void AddMenuItem(ToolStripMenuItem item, string before = "")
         {
-            if (string.IsNullOrEmpty(before)) EditorMenu.Items.Add(item);
+            if (string.IsNullOrEmpty(before)) mainMenuStrip.Items.Add(item);
             int insertion = -1;
-            foreach (ToolStripItem menuitem in EditorMenu.Items)
+            foreach (ToolStripItem menuitem in mainMenuStrip.Items)
             {
                 if (menuitem.Text.Replace("&", "") == before)
-                    insertion = EditorMenu.Items.IndexOf(menuitem);
+                    insertion = mainMenuStrip.Items.IndexOf(menuitem);
             }
             CreateRootMenuItem(item);
-            EditorMenu.Items.Insert(insertion, item);
+            mainMenuStrip.Items.Insert(insertion, item);
         }
 
         /// <summary>
@@ -126,12 +125,12 @@ namespace SphereStudio.Forms
         public void AddMenuItem(string location, ToolStripItem newItem)
         {
             string[] items = location.Split('.');
-            ToolStripMenuItem item = GetMenuItem(EditorMenu.Items, items[0]);
+            ToolStripMenuItem item = GetMenuItem(mainMenuStrip.Items, items[0]);
             if (item == null)
             {
                 item = new ToolStripMenuItem(items[0]);
                 CreateRootMenuItem(item);
-                EditorMenu.Items.Add(item);
+                mainMenuStrip.Items.Add(item);
             }
 
             for (int i = 1; i < items.Length; ++i)
@@ -156,7 +155,7 @@ namespace SphereStudio.Forms
 
         public void RemoveMenuItem(string name)
         {
-            ToolStripMenuItem item = GetMenuItem(EditorMenu.Items, name);
+            ToolStripMenuItem item = GetMenuItem(mainMenuStrip.Items, name);
             if (item != null) item.Dispose();
         }
 
@@ -199,7 +198,9 @@ namespace SphereStudio.Forms
                 IFileOpener defaultOpener = PluginManager.Get<IFileOpener>(Session.Settings.FileOpener);
                 IFileOpener opener = plugins.FirstOrDefault() ?? defaultOpener;
                 if (opener != null)
+                {
                     view = opener.Open(filePath);
+                }
                 else
                 {
                     MessageBox.Show(string.Format("Sphere Studio doesn't know how to open that type of file and no default file opener is available.  Tip: Open Configuration Manager and check your plugins.\n\nFile Type: {0}\n\nPath to File:\n{1}", fileExtension.ToLower(), filePath),
@@ -253,49 +254,72 @@ namespace SphereStudio.Forms
             string[] docs = Session.Project.User.Documents;
             foreach (string s in docs)
             {
-                if (string.IsNullOrWhiteSpace(s)) continue;
+                if (string.IsNullOrWhiteSpace(s))
+                    continue;
                 try { OpenFile(s, true); }
                 catch (Exception) { }
             }
 
-            // if the form is not visible, don't try to mess with the panels.
-            // it will be done in Form_Load.
+            // if the form isn't visible, don't try to mess with the panels.
+            // it will be done in OnLoad.
             if (Visible)
             {
                 if (Session.Project.User.StartPageHidden)
                     StartVisible = false;
 
-                DocumentTab tab = GetDocument(Session.Project.User.ActiveDocument);
-                if (tab != null)
-                    tab.Activate();
+                var tab = GetDocument(Session.Project.User.ActiveDocument);
+                tab?.Activate();
             }
 
-            UpdateEngineList();
-            UpdateControls();
-        }
-
-        public override void Refresh()
-        {
-            base.Refresh();
-
-            foreach (DocumentTab tab in _tabs)
-                tab.Restyle();
-            dockManager.Refresh();
             UpdateEngineList();
             UpdateControls();
         }
 
         public void ApplyStyle(UIStyle style)
         {
-            style.AsUIElement(MainDock);
+            style.AsUIElement(mainDockPanel);
             style.AsHeading(MainMenuStrip);
-            style.AsUIElement(EditorTools);
-            style.AsHeading(EditorStatus);
+            style.AsUIElement(mainToolStrip);
+            style.AsHeading(mainStatusStrip);
             UpdateMenuItems();
         }
 
-        #region Main IDE form event handlers
-        private void IDEForm_Load(object sender, EventArgs e)
+        public override void Refresh()
+        {
+            base.Refresh();
+
+            foreach (DocumentTab tab in tabs)
+                tab.Restyle();
+            dockManager.Refresh();
+            UpdateEngineList();
+            UpdateControls();
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            if (e.Cancel)
+                return;
+
+            Rectangle savedBounds = WindowState != FormWindowState.Normal ? RestoreBounds : Bounds;
+            Properties.Settings.Default.WindowX = savedBounds.X;
+            Properties.Settings.Default.WindowY = savedBounds.Y;
+            Properties.Settings.Default.WindowWidth = savedBounds.Width;
+            Properties.Settings.Default.WindowHeight = savedBounds.Height;
+            Properties.Settings.Default.WindowMaxed = WindowState == FormWindowState.Maximized;
+            Properties.Settings.Default.Save();
+
+            Size = new Size(Properties.Settings.Default.WindowWidth, Properties.Settings.Default.WindowHeight);
+            WindowState = Properties.Settings.Default.WindowMaxed ? FormWindowState.Maximized : FormWindowState.Normal;
+
+            if (!CloseCurrentProject(true))
+                e.Cancel = true;
+            else
+                dockManager.Persist();
+
+            base.OnFormClosing(e);
+        }
+
+        protected override void OnLoad(EventArgs e)
         {
             Location = new Point(Properties.Settings.Default.WindowX, Properties.Settings.Default.WindowY);
             Size = new Size(Properties.Settings.Default.WindowWidth, Properties.Settings.Default.WindowHeight);
@@ -316,9 +340,11 @@ namespace SphereStudio.Forms
             {
                 StartVisible = Session.Settings.UseStartPage;
             }
+
+            base.OnLoad(e);
         }
 
-        private void IDEForm_Shown(object sender, EventArgs e)
+        protected override void OnShown(EventArgs e)
         {
             bool isFirstRun = !Session.Settings.GetBoolean("setupComplete", false);
             if (isFirstRun)
@@ -338,38 +364,16 @@ namespace SphereStudio.Forms
                 }
             }
 
-            if (!String.IsNullOrWhiteSpace(_defaultActiveName))
+            if (!string.IsNullOrWhiteSpace(defaultActiveDocumentName))
             {
-                DocumentTab tab = GetDocument(_defaultActiveName);
-                if (tab != null) tab.Activate();
+                var tab = GetDocument(defaultActiveDocumentName);
+                tab?.Activate();
             }
+
+            base.OnShown(e);
         }
 
-        private void IDEForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (e.Cancel)
-                return;
-
-            Rectangle savedBounds = WindowState != FormWindowState.Normal ? RestoreBounds : Bounds;
-            Properties.Settings.Default.WindowX = savedBounds.X;
-            Properties.Settings.Default.WindowY = savedBounds.Y;
-            Properties.Settings.Default.WindowWidth = savedBounds.Width;
-            Properties.Settings.Default.WindowHeight = savedBounds.Height;
-            Properties.Settings.Default.WindowMaxed = WindowState == FormWindowState.Maximized;
-            Properties.Settings.Default.Save();
-
-            Size = new Size(Properties.Settings.Default.WindowWidth, Properties.Settings.Default.WindowHeight);
-            WindowState = Properties.Settings.Default.WindowMaxed ? FormWindowState.Maximized : FormWindowState.Normal;
-
-            if (!CloseCurrentProject(true))
-                e.Cancel = true;
-            else
-            {
-                dockManager.Persist();
-            }
-        }
-
-        void menu_DropDownOpening(object sender, EventArgs e)
+        void topMenu_DropDownOpening(object sender, EventArgs e)
         {
             Color c = ((ToolStripMenuItem) sender).DropDown.BackColor;
             if (c.R + c.G + c.B > 380)
@@ -378,7 +382,7 @@ namespace SphereStudio.Forms
                 ((ToolStripMenuItem) sender).ForeColor = Color.White;
         }
 
-        void menu_DropDownClosed(object sender, EventArgs e)
+        void topMenu_DropDownClosed(object sender, EventArgs e)
         {
             Color c = MainMenuStrip.BackColor;
             if (c.R + c.G + c.B > 380) // find contrast level.
@@ -387,37 +391,37 @@ namespace SphereStudio.Forms
                 ((ToolStripMenuItem) sender).ForeColor = Color.White;
         }
 
-        private void MainDock_ActiveDocumentChanged(object sender, EventArgs e)
+        private void mainDockPanel_ActiveDocumentChanged(object sender, EventArgs e)
         {
-            if (MainDock.ActiveDocument == null) return;
-            DockContent content = MainDock.ActiveDocument as DockContent;
+            if (mainDockPanel.ActiveDocument == null)
+                return;
+            DockContent content = mainDockPanel.ActiveDocument as DockContent;
             if (content.Tag is DocumentTab)
             {
-                if (_activeTab != null) _activeTab.Deactivate();
-                _activeTab = content.Tag as DocumentTab;
-                _activeTab.Activate();
+                if (currentTab != null) currentTab.Deactivate();
+                currentTab = content.Tag as DocumentTab;
+                currentTab.Activate();
             }
             UpdateControls();
         }
-        #endregion
 
         #region File menu Click handlers
         private void menuFile_DropDownOpening(object sender, EventArgs e)
         {
-            menuSaveAs.Enabled = menuSave.Enabled = (_activeTab != null);
-            menuCloseProject.Enabled = IsProjectOpen;
-            menuOpenLastProject.Enabled = (!IsProjectOpen ||
+            saveAsMenuItem.Enabled = saveMenuItem.Enabled = (currentTab != null);
+            closeProjectMenuItem.Enabled = IsProjectOpen;
+            openLastProjectMenuItem.Enabled = (!IsProjectOpen ||
                 Session.Settings.LastProject != Session.Project.RootPath);
-            menu_DropDownOpening(sender, e);
+            topMenu_DropDownOpening(sender, e);
         }
 
-        internal void menuNew_DropDownOpening(object sender, EventArgs e)
+        internal void newMenuItem_DropDownOpening(object sender, EventArgs e)
         {
-            ToolStripDropDown dropdown = ((ToolStripDropDownItem) sender).DropDown;
+            ToolStripDropDown dropDown = ((ToolStripDropDownItem)sender).DropDown;
 
             string[] pluginNames = PluginManager.GetNames<INewFileOpener>();
             if (pluginNames.Length > 0)
-                dropdown.Items.Add(new ToolStripSeparator() { Name = "8:12" });
+                dropDown.Items.Add(new ToolStripSeparator() { Name = "8:12" });
             var plugins = from name in pluginNames
                           let plugin = PluginManager.Get<INewFileOpener>(name)
                           orderby plugin.FileTypeName ascending
@@ -428,15 +432,15 @@ namespace SphereStudio.Forms
                 item.Image = plugin.FileIcon;
                 item.Click += (s, ea) =>
                 {
-                    DocumentView view = plugin.New();
+                    var view = plugin.New();
                     if (view != null)
                         AddDocument(view);
                 };
-                dropdown.Items.Add(item);
+                dropDown.Items.Add(item);
             }
         }
 
-        internal void menuNew_DropDownClosed(object sender, EventArgs e)
+        internal void newMenuItem_DropDownClosed(object sender, EventArgs e)
         {
             ToolStripDropDown dropdown = ((ToolStripDropDownItem) sender).DropDown;
 
@@ -446,17 +450,17 @@ namespace SphereStudio.Forms
             }
         }
 
-        private void menuExit_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        private void menuCloseProject_Click(object sender, EventArgs e)
+        private void closeProjectMenuItem_Click(object sender, EventArgs e)
         {
             CloseCurrentProject();
         }
 
-        private void menuNewProject_Click(object sender, EventArgs e)
+        private void exitMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void newProjectMenuItem_Click(object sender, EventArgs e)
         {
             string rootPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
@@ -480,7 +484,7 @@ namespace SphereStudio.Forms
                 {
                     npf.NewProject.Save();
                     OpenProject(npf.NewProject.FileName, false);
-                    _startPage.RepopulateProjects();
+                    startPageView.RepopulateProjects();
                 }
                 else
                 {
@@ -489,19 +493,27 @@ namespace SphereStudio.Forms
             }
         }
 
-        private void menuOpen_Click(object sender, EventArgs e)
+        private void openMenuItem_Click(object sender, EventArgs e)
         {
             string[] fileNames = GetFilesToOpen(false);
             if (fileNames == null) return;
             OpenFile(fileNames[0]);
         }
 
-        private void menuOpenProject_Click(object sender, EventArgs e)
+        private void openLastProjectMenuItem_Click(object sender, EventArgs e)
+        {
+            if (File.Exists(Session.Settings.LastProject))
+                OpenProject(Session.Settings.LastProject, false);
+            else
+                UpdateControls();
+        }
+
+        private void openProjectMenuItem_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog projDiag = new OpenFileDialog())
             {
-                projDiag.Title = @"Open Project";
-                projDiag.Filter = @"All Supported Projects|*.ssproj;game.sgm|Sphere Studio Projects|*.ssproj|Sphere 1.x Game Manifest|game.sgm";
+                projDiag.Title = "Open Project";
+                projDiag.Filter = "All Supported Projects|*.ssproj;game.sgm|Sphere Studio Projects|*.ssproj|Sphere 1.x Game Manifest|game.sgm";
                 projDiag.InitialDirectory = Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                     "Sphere Projects");
@@ -511,87 +523,78 @@ namespace SphereStudio.Forms
             }
         }
 
-        private void menuOpenLastProject_Click(object sender, EventArgs e)
-        {
-            if (File.Exists(Session.Settings.LastProject))
-                OpenProject(Session.Settings.LastProject, false);
-            else
-                UpdateControls();
-        }
-
-        private void menuSave_Click(object sender, EventArgs e)
+        private void saveMenuItem_Click(object sender, EventArgs e)
         {
             string savePath = IsProjectOpen ? Session.Project.RootPath : null;
-            if (_activeTab != null)
-                _activeTab.Save(savePath);
+            if (currentTab != null)
+                currentTab.Save(savePath);
         }
 
-        private void menuSaveAs_Click(object sender, EventArgs e)
-        {
-            string savePath = IsProjectOpen ? Session.Project.RootPath : null;
-            if (_activeTab != null)
-                _activeTab.SaveAs(savePath);
-        }
-
-        private void menuSaveAll_Click(object sender, EventArgs e)
+        private void saveAllMenuItem_Click(object sender, EventArgs e)
         {
             SaveAllDocuments();
+        }
+
+        private void saveAsMenuItem_Click(object sender, EventArgs e)
+        {
+            string savePath = IsProjectOpen ? Session.Project.RootPath : null;
+            if (currentTab != null)
+                currentTab.SaveAs(savePath);
         }
         #endregion
 
         #region Edit menu Click handlers
-        private void menuEdit_DropDownOpening(object sender, EventArgs e)
+        private void editMenu_DropDownOpening(object sender, EventArgs e)
         {
-            menuCut.Enabled = menuSelectAll.Enabled = _activeTab != null;
-            CopyToolButton.Enabled = menuCopy.Enabled = menuRedo.Enabled = menuUndo.Enabled = _activeTab != null;
-            menuPaste.Enabled = PasteToolButton.Enabled = true;
-            menuZoomIn.Enabled = menuZoomOut.Enabled = _activeTab != null;
-            menu_DropDownOpening(sender, e);
+            cutMenuItem.Enabled = selectAllMenuItem.Enabled = currentTab != null;
+            copyToolButton.Enabled = copyMenuItem.Enabled = redoMenuItem.Enabled = undoMenuItem.Enabled = currentTab != null;
+            pasteMenuItem.Enabled = pasteToolButton.Enabled = true;
+            zoomInMenuItem.Enabled = zoomOutMenuItem.Enabled = currentTab != null;
+            topMenu_DropDownOpening(sender, e);
         }
 
-        private void menuCopy_Click(object sender, EventArgs e)
+        private void copyMenuItem_Click(object sender, EventArgs e)
         {
-            if (_activeTab != null) _activeTab.Copy();
+            currentTab?.Copy();
         }
 
-        private void menuCut_Click(object sender, EventArgs e)
+        private void cutMenuItem_Click(object sender, EventArgs e)
         {
-            if (_activeTab != null) _activeTab.Cut();
+            currentTab?.Cut();
         }
 
-        private void menuPaste_Click(object sender, EventArgs e)
+        private void pasteMenuItem_Click(object sender, EventArgs e)
         {
-            if (_activeTab != null) _activeTab.Paste();
+            currentTab?.Paste();
         }
 
-        private void menuRedo_Click(object sender, EventArgs e)
+        private void redoMenuItem_Click(object sender, EventArgs e)
         {
-            if (_activeTab != null) _activeTab.Redo();
+            currentTab?.Redo();
         }
 
-        private void menuSelectAll_Click(object sender, EventArgs e)
+        private void selectAllMenuItem_Click(object sender, EventArgs e)
         {
-            //if (_activeTab != null) _activeTab.SelectAll();
         }
 
-        private void menuUndo_Click(object sender, EventArgs e)
+        private void undoMenuItem_Click(object sender, EventArgs e)
         {
-            if (_activeTab != null) _activeTab.Undo();
+            currentTab?.Undo();
         }
 
-        private void menuZoomIn_Click(object sender, EventArgs e)
+        private void zoomInMenuItem_Click(object sender, EventArgs e)
         {
-            if (_activeTab != null) _activeTab.ZoomIn();
+            currentTab?.ZoomIn();
         }
 
-        private void menuZoomOut_Click(object sender, EventArgs e)
+        private void zoomOutMenuItem_Click(object sender, EventArgs e)
         {
-            if (_activeTab != null) _activeTab.ZoomOut();
+            currentTab?.ZoomOut();
         }
         #endregion
 
         #region View menu Click handlers
-        private void menuView_DropDownOpening(object sender, EventArgs e)
+        private void viewMenu_DropDownOpening(object sender, EventArgs e)
         {
             var panelNames = from name in PluginManager.GetNames<IDockPane>()
                              let plugin = PluginManager.Get<IDockPane>(name)
@@ -600,7 +603,7 @@ namespace SphereStudio.Forms
             if (panelNames.Any())
             {
                 ToolStripSeparator ts = new ToolStripSeparator { Name = "zz_v" };
-                menuView.DropDownItems.Add(ts);
+                viewMenu.DropDownItems.Add(ts);
                 foreach (string title in panelNames)
                 {
                     var plugin = PluginManager.Get<IDockPane>(title);
@@ -608,131 +611,197 @@ namespace SphereStudio.Forms
                     item.Image = plugin.DockIcon;
                     item.Checked = dockManager.IsVisible(plugin);
                     item.Click += (o, ev) => dockManager.Toggle(plugin);
-                    menuView.DropDownItems.Add(item);
+                    viewMenu.DropDownItems.Add(item);
                 }
             }
 
-            menuStartPage.Checked = _activeTab == _startTab;
-            var tabList = from tab in _tabs where tab != _startTab
+            startPageMenuItem.Checked = currentTab == startPageTab;
+            var tabList = from tab in tabs where tab != startPageTab
                           select tab;
             if (tabList.Count() > 0)
             {
                 ToolStripSeparator ts = new ToolStripSeparator { Name = "zz_v" };
-                menuView.DropDownItems.Add(ts);
+                viewMenu.DropDownItems.Add(ts);
                 foreach (DocumentTab tab in tabList)
                 {
                     ToolStripMenuItem item = new ToolStripMenuItem(tab.Title) { Name = "zz_v" };
-                    item.Click += menuDocumentItem_Click;
+                    item.Click += documentMenuItem_Click;
                     item.Image = tab.View.Icon.ToBitmap();
                     item.Tag = tab.FileName;
-                    item.Checked = tab == _activeTab;
-                    menuView.DropDownItems.Add(item);
+                    item.Checked = tab == currentTab;
+                    viewMenu.DropDownItems.Add(item);
                 }
             }
 
-            menu_DropDownOpening(sender, e);
+            topMenu_DropDownOpening(sender, e);
         }
 
-        private void menuView_DropDownClosed(object sender, EventArgs e)
+        private void viewMenu_DropDownClosed(object sender, EventArgs e)
         {
-            for (int i = 0; i < menuView.DropDownItems.Count; ++i)
+            for (int i = 0; i < viewMenu.DropDownItems.Count; ++i)
             {
-                if (menuView.DropDownItems[i].Name == "zz_v")
+                if (viewMenu.DropDownItems[i].Name == "zz_v")
                 {
-                    menuView.DropDownItems.RemoveAt(i);
+                    viewMenu.DropDownItems.RemoveAt(i);
                     i--;
                 }
             }
-            menu_DropDownClosed(sender, e);
+            topMenu_DropDownClosed(sender, e);
         }
 
-        void menuDocumentItem_Click(object sender, EventArgs e)
+        private void closeDocumentMenuItem_Click(object sender, EventArgs e)
         {
-            DocumentTab tab = GetDocument(((ToolStripItem) sender).Tag as string);
+            if (mainDockPanel.ActiveDocument == null) return;
+
+            if (mainDockPanel.ActiveDocument is DockContent &&
+                ((DockContent)mainDockPanel.ActiveDocument).Controls[0] is StartPageView)
+            {
+                startPageMenuItem.PerformClick();
+            }
+            else mainDockPanel.ActiveDocument.DockHandler.Close();
+        }
+
+        void documentMenuItem_Click(object sender, EventArgs e)
+        {
+            DocumentTab tab = GetDocument(((ToolStripItem)sender).Tag as string);
             if (tab != null)
                 tab.Activate();
             else
-                SelectDockPane((string) ((ToolStripMenuItem) sender).Tag);
+                SelectDockPane((string)((ToolStripMenuItem)sender).Tag);
         }
 
-        private void menuClosePane_Click(object sender, EventArgs e)
-        {
-            if (MainDock.ActiveDocument == null) return;
-
-            if (MainDock.ActiveDocument is DockContent &&
-                ((DockContent) MainDock.ActiveDocument).Controls[0] is StartPageView)
-            {
-                menuStartPage_Click(null, EventArgs.Empty);
-            }
-            else MainDock.ActiveDocument.DockHandler.Close();
-        }
-
-        private void menuStartPage_Click(object sender, EventArgs e)
+        private void startPageMenuItem_Click(object sender, EventArgs e)
         {
             StartVisible = true;
-            _startTab.Activate();
+            startPageTab.Activate();
         }
         #endregion
 
         #region Project menu Click handlers
-        private void menuGameSettings_Click(object sender, EventArgs e)
+        private void exploreProjectMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("explorer.exe", $@"/select,""{Session.Project.FileName}""")
+                .Dispose();
+        }
+
+        private void projectPropertiesMenuItem_Click(object sender, EventArgs e)
         {
             showProjectProperties();
         }
 
-        private void menuOpenGameDir_Click(object sender, EventArgs e)
-        {
-            var proc = Process.Start("explorer.exe", $@"/select,""{Session.Project.FileName}""");
-            proc.Dispose();
-        }
-
-        private async void menuTestGame_Click(object sender, EventArgs e)
-        {
-            await StartEngine(false, true);
-        }
-
-        private void menuRefreshProject_Click(object sender, EventArgs e)
+        private void refreshProjectMenuItem_Click(object sender, EventArgs e)
         {
             RefreshProject();
         }
         #endregion
 
-        #region Tools menu Click handlers
-        private void menuConfigEngine_Click(object sender, EventArgs e)
+        #region Build menu Click handlers
+        private async void buildMenuItem_Click(object sender, EventArgs e)
+        {
+            await BuildEngine.Build(Session.Project, true);
+        }
+
+        private async void packageGameMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog()
+            {
+                Title = "Build Game Package",
+                InitialDirectory = Session.Project.RootPath,
+                Filter = BuildEngine.GetSaveFileFilters(Session.Project),
+                DefaultExt = "spk",
+                AddExtension = true,
+            };
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                await BuildEngine.Package(Session.Project, sfd.FileName, false);
+            }
+        }
+
+        private async void rebuildMenuItem_Click(object sender, EventArgs e)
+        {
+            await BuildEngine.Build(Session.Project, true, true);
+        }
+        #endregion
+
+        #region Run menu Click handlers
+        private void breakNowMenuItem_Click(object sender, EventArgs e)
+        {
+            Debugger.Pause();
+        }
+
+        private async void buildRunMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Debugger != null)
+                await Debugger.Resume();
+            else
+                await StartEngine(true);
+        }
+
+        private async void rebuildRunMenuItem_Click(object sender, EventArgs e)
+        {
+            await StartEngine(true, true);
+        }
+
+        private void stepIntoMenuItem_Click(object sender, EventArgs e)
+        {
+            Debugger.StepInto();
+        }
+
+        private void stepOutMenuItem_Click(object sender, EventArgs e)
+        {
+            Debugger.StepOut();
+        }
+
+        private void stepOverMenuItem_Click(object sender, EventArgs e)
+        {
+            Debugger.StepOver();
+        }
+
+        private void stopDebuggingMenuItem_Click(object sender, EventArgs e)
+        {
+            Debugger.Detach();
+        }
+
+        private async void testGameMenuItem_Click(object sender, EventArgs e)
+        {
+            await StartEngine(false, true);
+        }
+        #endregion
+
+        #region Settings menu Click handlers
+        private void configureEngineMenuItem_Click(object sender, EventArgs e)
         {
             PluginManager.Get<IStarter>(Session.Project.User.Engine)
                 .Configure();
         }
 
-        private void preferencesCommand_Click(object sender, EventArgs e)
+        private void preferencesMenuItem_Click(object sender, EventArgs e)
         {
             showPreferencesDialog();
         }
         #endregion
 
         #region Help menu Click handlers
-        private void menuAbout_Click(object sender, EventArgs e)
+        private void aboutMenuItem_Click(object sender, EventArgs e)
         {
-            using (AboutDialog about = new AboutDialog())
-            {
+            using (var about = new AboutDialog())
                 about.ShowDialog();
-            }
         }
         #endregion
 
         #region Configuration Selector handlers
-        private void toolEngineCombo_SelectedIndexChanged(object sender, EventArgs e)
+        private void engineToolComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (_loadingPresets) return;
+            if (loadingPresets) return;
 
             // user selected Configure (always at bottom)
-            if (toolEngineCombo.SelectedIndex == toolEngineCombo.Items.Count - 1)
+            if (engineToolComboBox.SelectedIndex == engineToolComboBox.Items.Count - 1)
             {
                 showPluginManager();
                 return;
             }
 
-            Session.Project.User.Engine = toolEngineCombo.Text;
+            Session.Project.User.Engine = engineToolComboBox.Text;
             UpdateControls();
             UpdateEngineList();
         }
@@ -742,7 +811,7 @@ namespace SphereStudio.Forms
         private void InitializeDocking()
         {
             fileListPane = new FileListPane(this);
-            dockManager = new DockManager(MainDock);
+            dockManager = new DockManager(mainDockPanel);
         }
 
         /// <summary>
@@ -752,7 +821,7 @@ namespace SphereStudio.Forms
         /// <returns>The DocumentTab of the document, or null if none was found.</returns>
         internal DocumentTab GetDocument(string filepath)
         {
-            foreach (DocumentTab tab in _tabs)
+            foreach (DocumentTab tab in tabs)
             {
                 if (tab.FileName == filepath) return tab;
             }
@@ -795,7 +864,7 @@ namespace SphereStudio.Forms
         /// <param name="name">File path of the document to set.</param>
         internal void SetDefaultActive(string name)
         {
-            _defaultActiveName = name;
+            defaultActiveDocumentName = name;
         }
 
         private bool IsProjectOpen
@@ -806,9 +875,9 @@ namespace SphereStudio.Forms
         internal DocumentTab AddDocument(DocumentView view, string filepath = null, bool restoreView = false)
         {
             DocumentTab tab = new DocumentTab(this, view, filepath, restoreView);
-            tab.Closed += (sender, e) => _tabs.Remove(tab);
+            tab.Closed += (sender, e) => tabs.Remove(tab);
             tab.Activate();
-            _tabs.Add(tab);
+            tabs.Add(tab);
             return tab;
         }
 
@@ -822,7 +891,7 @@ namespace SphereStudio.Forms
 
             UpdateControls();
             SuspendLayout();
-            _startPage.RepopulateProjects();
+            startPageView.RepopulateProjects();
             UpdateMenuItems();
             Invalidate(true);
             ResumeLayout();
@@ -835,7 +904,7 @@ namespace SphereStudio.Forms
         /// <returns>true if all documents were closed, false if a save prompt was canceled.</returns>
         private bool CloseAllDocuments(bool forceClose = false)
         {
-            DocumentTab[] toClose = (from tab in _tabs select tab).ToArray();
+            DocumentTab[] toClose = (from tab in tabs select tab).ToArray();
             if (!forceClose)
             {
                 foreach (DocumentTab tab in toClose)
@@ -869,12 +938,12 @@ namespace SphereStudio.Forms
 
             // user values will be lost if we don't record them now.
             Session.Project.User.StartPageHidden = !StartVisible;
-            Session.Project.User.Documents = _tabs
+            Session.Project.User.Documents = tabs
                 .Where(it => it.FileName != null)
                 .Select(it => it.FileName)
                 .ToArray();
-            Session.Project.User.ActiveDocument = _activeTab != null
-                ? _activeTab.FileName : "";
+            Session.Project.User.ActiveDocument = currentTab != null
+                ? currentTab.FileName : "";
 
             // close all open document tabs
             if (!CloseAllDocuments(forceClose))
@@ -890,7 +959,7 @@ namespace SphereStudio.Forms
 
             // clear the project tree
             fileListPane.Close();
-            menuOpenLastProject.Enabled = (Session.Settings.LastProject.Length > 0);
+            openLastProjectMenuItem.Enabled = (Session.Settings.LastProject.Length > 0);
 
             // all clear!
             Text = Versioning.Name;
@@ -903,8 +972,8 @@ namespace SphereStudio.Forms
         // color themes. Eg, White text on a white theme = unreadable.
         private void CreateRootMenuItem(ToolStripMenuItem item)
         {
-            item.DropDownOpening += menu_DropDownOpening;
-            item.DropDownClosed += menu_DropDownClosed;
+            item.DropDownOpening += topMenu_DropDownOpening;
+            item.DropDownClosed += topMenu_DropDownClosed;
         }
 
         private ToolStripMenuItem GetMenuItem(ToolStripItemCollection collection, string name)
@@ -953,7 +1022,7 @@ namespace SphereStudio.Forms
 
         private void SaveAllDocuments()
         {
-            foreach (DocumentTab tab in _tabs)
+            foreach (DocumentTab tab in tabs)
             {
                 tab.Save();
             }
@@ -966,7 +1035,7 @@ namespace SphereStudio.Forms
         /// <param name="name">The registered name of the dock pane to select.</param>
         private void SelectDockPane(string name)
         {
-            foreach (IDockContent content in MainDock.Contents)
+            foreach (IDockContent content in mainDockPanel.Contents)
                 if (content.DockHandler.TabText == name)
                     content.DockHandler.Activate();
         }
@@ -974,14 +1043,14 @@ namespace SphereStudio.Forms
         private async Task StartEngine(bool wantDebugger, bool rebuilding = false)
         {
             foreach (DocumentTab tab in
-                from tab in _tabs
+                from tab in tabs
                 where tab.FileName != null
                 select tab)
             {
                 tab.SaveIfDirty();
             }
-            menuTestGame.Enabled = toolTestGame.Enabled = false;
-            buildRunCommand.Enabled = runGameToolButton.Enabled = false;
+            testGameMenuItem.Enabled = testGameToolButton.Enabled = false;
+            buildRunMenuItem.Enabled = runGameToolButton.Enabled = false;
 
             if (TestGame != null)
                 TestGame(null, EventArgs.Empty);
@@ -994,12 +1063,12 @@ namespace SphereStudio.Forms
                     Debugger.Detached += debugger_Detached;
                     Debugger.Paused += debugger_Paused;
                     Debugger.Resumed += debugger_Resumed;
-                    menuTestGame.Enabled = false;
-                    toolTestGame.Enabled = false;
-                    _isFirstDebugStop = true;
+                    testGameMenuItem.Enabled = false;
+                    testGameToolButton.Enabled = false;
+                    isFirstDebugStop = true;
                     if (await Debugger.Attach())
                     {
-                        buildRunCommand.Text = buildRunToolCommand.Text = "&Resume Running";
+                        buildRunMenuItem.Text = buildRunToolCommand.Text = "&Resume Running";
                         runGameToolButton.Text = "Resume";
                         var breaks = Session.Project.GetAllBreakpoints();
                         foreach (string filename in breaks.Keys)
@@ -1032,31 +1101,31 @@ namespace SphereStudio.Forms
             bool haveConfig = starter != null && starter.CanConfigure;
             bool haveLastProject = !string.IsNullOrEmpty(Session.Settings.LastProject);
 
-            toolConfigEngine.Enabled = menuConfigEngine.Enabled = haveConfig;
+            configureEngineToolButton.Enabled = configureEngineMenuItem.Enabled = haveConfig;
 
-            packageGameCommand.Enabled = Session.Project != null
+            packageGameMenuItem.Enabled = Session.Project != null
                 && BuildEngine.CanPackage(Session.Project);
 
-            menuTestGame.Enabled = toolTestGame.Enabled = Session.Project != null
+            testGameMenuItem.Enabled = testGameToolButton.Enabled = Session.Project != null
                 && BuildEngine.CanTest(Session.Project) && Debugger == null;
-            buildRunCommand.Enabled = Session.Project != null && (Debugger == null || !Debugger.Running);
-            rebuildRunCommand.Enabled = Session.Project != null && Debugger == null;
+            buildRunMenuItem.Enabled = Session.Project != null && (Debugger == null || !Debugger.Running);
+            rebuildRunMenuItem.Enabled = Session.Project != null && Debugger == null;
             runGameToolButton.Enabled = Session.Project != null && (Debugger == null || !Debugger.Running);
             rebuildRunToolCommand.Enabled = Session.Project != null && Debugger == null;
-            menuBreakNow.Enabled = toolPauseDebug.Enabled = Debugger != null && Debugger.Running;
-            menuStopDebug.Enabled = toolStopDebug.Enabled = Debugger != null;
-            menuStepInto.Enabled = Debugger != null && !Debugger.Running;
-            menuStepOut.Enabled = Debugger != null && !Debugger.Running;
-            menuStepOver.Enabled = Debugger != null && !Debugger.Running;
+            breakNowMenuItem.Enabled = pauseToolButton.Enabled = Debugger != null && Debugger.Running;
+            stopDebuggingMenuItem.Enabled = stopToolButton.Enabled = Debugger != null;
+            stepIntoMenuItem.Enabled = Debugger != null && !Debugger.Running;
+            stepOutMenuItem.Enabled = Debugger != null && !Debugger.Running;
+            stepOverMenuItem.Enabled = Debugger != null && !Debugger.Running;
 
-            menuOpenLastProject.Enabled = haveLastProject;
+            openLastProjectMenuItem.Enabled = haveLastProject;
 
-            menuProjectProps.Enabled = GameToolButton.Enabled = IsProjectOpen;
-            menuOpenGameDir.Enabled = menuRefreshProject.Enabled = IsProjectOpen;
+            projectPropertiesMenuItem.Enabled = projectPropertiesToolButton.Enabled = IsProjectOpen;
+            exploreProjectMenuItem.Enabled = refreshProjectMenuItem.Enabled = IsProjectOpen;
 
-            SaveToolButton.Enabled = _activeTab != null && _activeTab.View.CanSave;
-            CutToolButton.Enabled = _activeTab != null;
-            CopyToolButton.Enabled = _activeTab != null;
+            saveToolButton.Enabled = currentTab != null && currentTab.View.CanSave;
+            cutToolButton.Enabled = currentTab != null;
+            copyToolButton.Enabled = currentTab != null;
 
             if (dockManager != null) dockManager.Refresh();
         }
@@ -1064,36 +1133,36 @@ namespace SphereStudio.Forms
         private void UpdateMenuItems()
         {
             foreach (ToolStripMenuItem item in MainMenuStrip.Items)
-                menu_DropDownClosed(item, null);
+                topMenu_DropDownClosed(item, null);
         }
 
         private void UpdateEngineList()
         {
-            bool wasLoadingPresets = _loadingPresets;
-            _loadingPresets = true;
+            bool wasLoadingPresets = loadingPresets;
+            loadingPresets = true;
 
-            toolEngineCombo.Items.Clear();
+            engineToolComboBox.Items.Clear();
             string[] engines = PluginManager.GetNames<IStarter>();
             if (IsProjectOpen && engines.Length > 0)
             {
                 foreach (string name in engines)
-                    toolEngineCombo.Items.Add(name);
-                toolEngineCombo.Items.Add("Plugin Manager...");
-                toolEngineCombo.Text = Session.Project.User.Engine;
-                toolEngineCombo.Enabled = true;
+                    engineToolComboBox.Items.Add(name);
+                engineToolComboBox.Items.Add("Plugin Manager...");
+                engineToolComboBox.Text = Session.Project.User.Engine;
+                engineToolComboBox.Enabled = true;
             }
             else
             {
-                toolEngineCombo.Enabled = false;
+                engineToolComboBox.Enabled = false;
             }
 
-            _loadingPresets = wasLoadingPresets;
+            loadingPresets = wasLoadingPresets;
         }
         #endregion
 
         private void debugger_Detached(object sender, EventArgs e)
         {
-            var scriptViews = from tab in _tabs
+            var scriptViews = from tab in tabs
                               where tab.View is TextView
                               select tab.View;
             foreach (TextView view in scriptViews)
@@ -1102,18 +1171,18 @@ namespace SphereStudio.Forms
                 view.ErrorLine = 0;
             }
             Debugger = null;
-            buildRunCommand.Text = "Build && &Run";
-            buildRunToolCommand.Text = "Build && Run";
+            buildRunMenuItem.Text = "Build && &Run";
+            buildRunToolCommand.Text = "Build && &Run (Default)";
             runGameToolButton.Text = "&Run Game";
             UpdateControls();
         }
 
         private void debugger_Paused(object sender, PausedEventArgs e)
         {
-            if (_isFirstDebugStop)
+            if (isFirstDebugStop)
             {
                 // ignore first pause
-                _isFirstDebugStop = false;
+                isFirstDebugStop = false;
                 return;
             }
 
@@ -1132,7 +1201,7 @@ namespace SphereStudio.Forms
 
         private void debugger_Resumed(object sender, EventArgs e)
         {
-            var scriptViews = from tab in _tabs
+            var scriptViews = from tab in tabs
                               where tab.View is TextView
                               select tab.View;
             foreach (TextView view in scriptViews)
@@ -1141,75 +1210,6 @@ namespace SphereStudio.Forms
                 view.ErrorLine = 0;
             }
             UpdateControls();
-        }
-
-        private void menuStepInto_Click(object sender, EventArgs e)
-        {
-            Debugger.StepInto();
-        }
-
-        private void menuStepOut_Click(object sender, EventArgs e)
-        {
-            Debugger.StepOut();
-        }
-
-        private void menuStepOver_Click(object sender, EventArgs e)
-        {
-            Debugger.StepOver();
-        }
-
-        private async void debugCommand_Click(object sender, EventArgs e)
-        {
-            if (Debugger != null)
-                await Debugger.Resume();
-            else
-                await StartEngine(true);
-        }
-
-        private void debugBreakNow_Click(object sender, EventArgs e)
-        {
-            Debugger.Pause();
-        }
-
-        private void menuStopDebug_Click(object sender, EventArgs e)
-        {
-            Debugger.Detach();
-        }
-
-        private async void buildCommand_Click(object sender, EventArgs e)
-        {
-            await BuildEngine.Build(Session.Project, true);
-        }
-
-        private async void rebuildCommand_Click(object sender, EventArgs e)
-        {
-            await BuildEngine.Build(Session.Project, true, true);
-        }
-
-        private async void packageGameCommand_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog sfd = new SaveFileDialog()
-            {
-                Title = "Build Game Package",
-                InitialDirectory = Session.Project.RootPath,
-                Filter = BuildEngine.GetSaveFileFilters(Session.Project),
-                DefaultExt = "spk",
-                AddExtension = true,
-            };
-            if (sfd.ShowDialog() == DialogResult.OK)
-            {
-                await BuildEngine.Package(Session.Project, sfd.FileName, false);
-            }
-        }
-
-        private async void rebuildRunCommand_Click(object sender, EventArgs e)
-        {
-            await StartEngine(true, true);
-        }
-
-        private void debugToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

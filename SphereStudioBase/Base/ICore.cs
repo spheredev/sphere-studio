@@ -22,7 +22,7 @@ namespace SphereStudio.Base
         IProject Project { get; }
 
         /// <summary>
-        /// Gets the DocumentView of the document being edited.
+        /// Gets the DocumentView for the document currently being edited.
         /// </summary>
         DocumentView ActiveDocument { get; }
 
