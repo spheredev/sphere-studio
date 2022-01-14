@@ -400,8 +400,8 @@ namespace SphereStudio.Forms
             openLastProjectMenuItem.Enabled = (Session.Settings.LastProject.Length > 0);
 
             // all clear!
-            refreshEngineList();
             refreshProject();
+            refreshEngineList();
             refreshUI();
             statusLabel.Text = closedProjectStatusText;
             return true;
@@ -485,11 +485,10 @@ namespace SphereStudio.Forms
             refreshingEngines = true;
 
             engineToolComboBox.Items.Clear();
-            string[] engines = PluginManager.GetNames<IStarter>();
-            if (isProjectLoaded() && engines.Length > 0)
+            var engineNames = PluginManager.GetNames<IStarter>();
+            if (isProjectLoaded() && engineNames.Length > 0)
             {
-                foreach (string name in engines)
-                    engineToolComboBox.Items.Add(name);
+                engineToolComboBox.Items.AddRange(engineNames);
                 engineToolComboBox.Items.Add("Plugin Manager...");
                 engineToolComboBox.Text = Session.Project.User.Engine;
                 engineToolComboBox.Enabled = true;
@@ -530,7 +529,7 @@ namespace SphereStudio.Forms
 
             var canBreak = Debugger?.Running ?? false;
             var canConfigureEngine = starter?.CanConfigure ?? false;
-            var canCopyPaste = currentTab != null;
+            var canCopyPaste = currentTab != null && currentTab != startPageTab;
             var canLaunch = isProjectLoaded() && Debugger == null;
             var canSave = currentTab?.View.CanSave ?? false;
             var canStep = Debugger != null && !Debugger.Running;
@@ -539,6 +538,7 @@ namespace SphereStudio.Forms
             configureEngineToolButton.Enabled = canConfigureEngine;
             copyToolButton.Enabled = canCopyPaste;
             cutToolButton.Enabled = canCopyPaste;
+            pasteToolButton.Enabled = canCopyPaste;
             pauseToolButton.Enabled = canBreak;
             projectPropertiesToolButton.Enabled = isProjectLoaded();
             runGameToolButton.Enabled = canLaunch || canStep;
@@ -686,14 +686,21 @@ namespace SphereStudio.Forms
 
         private void mainDockPanel_ActiveDocumentChanged(object sender, EventArgs e)
         {
-            if (mainDockPanel.ActiveDocument == null)
-                return;
-            DockContent content = mainDockPanel.ActiveDocument as DockContent;
-            if (content.Tag is DocumentTab)
+            if (mainDockPanel.ActiveDocument != null)
+            {
+                var content = mainDockPanel.ActiveDocument as DockContent;
+                if (content.Tag is DocumentTab)
+                {
+                    currentTab?.Deactivate();
+                    currentTab = content.Tag as DocumentTab;
+                    currentTab.Activate();
+                }
+            }
+            else
             {
                 currentTab?.Deactivate();
-                currentTab = content.Tag as DocumentTab;
-                currentTab.Activate();
+                currentTab = null;
+                return;
             }
             refreshUI();
         }
@@ -861,14 +868,15 @@ namespace SphereStudio.Forms
         #region Edit menu Click handlers
         private void editMenu_DropDownOpening(object sender, EventArgs e)
         {
-            var canEdit = currentTab != null;
-            copyMenuItem.Enabled = canEdit;
-            cutMenuItem.Enabled = canEdit;
-            pasteMenuItem.Enabled = true;
-            redoMenuItem.Enabled = canEdit;
-            undoMenuItem.Enabled = canEdit;
-            zoomInMenuItem.Enabled = canEdit;
-            zoomOutMenuItem.Enabled = canEdit;
+            var canCopyPaste = currentTab != null && currentTab != startPageTab;
+            copyMenuItem.Enabled = canCopyPaste;
+            cutMenuItem.Enabled = canCopyPaste;
+            pasteMenuItem.Enabled = canCopyPaste;
+            redoMenuItem.Enabled = canCopyPaste;
+            selectAllMenuItem.Enabled = canCopyPaste;
+            undoMenuItem.Enabled = canCopyPaste;
+            zoomInMenuItem.Enabled = canCopyPaste;
+            zoomOutMenuItem.Enabled = canCopyPaste;
         }
 
         private void copyMenuItem_Click(object sender, EventArgs e)
