@@ -112,11 +112,11 @@
   <ItemGroup>
     <Compile Include="Compilers\SphereCompiler.cs" />
     <Compile Include="Core\PluginShim.cs" />
-    <Compile Include="Forms\PreferencesDialog.cs">
+    <Compile Include="Forms\PreferencesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\PreferencesDialog.Designer.cs">
-      <DependentUpon>PreferencesDialog.cs</DependentUpon>
+    <Compile Include="Forms\PreferencesForm.Designer.cs">
+      <DependentUpon>PreferencesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="DockPanes\BuildLogPane.cs">
       <SubType>UserControl</SubType>
@@ -124,17 +124,17 @@
     <Compile Include="DockPanes\BuildLogPane.Designer.cs">
       <DependentUpon>BuildLogPane.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AboutDialog.cs">
+    <Compile Include="Forms\AboutBoxForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\AboutDialog.Designer.cs">
-      <DependentUpon>AboutDialog.cs</DependentUpon>
+    <Compile Include="Forms\AboutBoxForm.Designer.cs">
+      <DependentUpon>AboutBoxForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\SavePresetDialog.cs">
+    <Compile Include="Forms\SavePresetForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\SavePresetDialog.Designer.cs">
-      <DependentUpon>SavePresetDialog.cs</DependentUpon>
+    <Compile Include="Forms\SavePresetForm.Designer.cs">
+      <DependentUpon>SavePresetForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Core\Session.cs" />
     <Compile Include="Core\BuildEngine.cs" />
@@ -178,38 +178,38 @@
     <Compile Include="DocumentViews\StartPageView.Designer.cs">
       <DependentUpon>StartPageView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\IdeWindow.cs">
+    <Compile Include="Forms\IdeWindowForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\IdeWindow.Designer.cs">
-      <DependentUpon>IdeWindow.cs</DependentUpon>
+    <Compile Include="Forms\IdeWindowForm.Designer.cs">
+      <DependentUpon>IdeWindowForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ProjectPropertiesDialog.cs">
+    <Compile Include="Forms\ProjectPropertiesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ProjectPropertiesDialog.designer.cs">
-      <DependentUpon>ProjectPropertiesDialog.cs</DependentUpon>
+    <Compile Include="Forms\ProjectPropertiesForm.designer.cs">
+      <DependentUpon>ProjectPropertiesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
-    <Compile Include="Forms\NewProjectDialog.cs">
+    <Compile Include="Forms\NewProjectForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\NewProjectDialog.Designer.cs">
-      <DependentUpon>NewProjectDialog.cs</DependentUpon>
+    <Compile Include="Forms\NewProjectForm.Designer.cs">
+      <DependentUpon>NewProjectForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\Project.cs" />
-    <EmbeddedResource Include="Forms\PreferencesDialog.resx">
-      <DependentUpon>PreferencesDialog.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\PreferencesForm.resx">
+      <DependentUpon>PreferencesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DockPanes\BuildLogPane.resx">
       <DependentUpon>BuildLogPane.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AboutDialog.resx">
-      <DependentUpon>AboutDialog.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\AboutBoxForm.resx">
+      <DependentUpon>AboutBoxForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SavePresetDialog.resx">
-      <DependentUpon>SavePresetDialog.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\SavePresetForm.resx">
+      <DependentUpon>SavePresetForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DockPanes\FileListPane.resx">
       <DependentUpon>FileListPane.cs</DependentUpon>
@@ -225,15 +225,15 @@
       <DependentUpon>StartPageView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\IdeWindow.resx">
-      <DependentUpon>IdeWindow.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\IdeWindowForm.resx">
+      <DependentUpon>IdeWindowForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ProjectPropertiesDialog.resx">
-      <DependentUpon>ProjectPropertiesDialog.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\ProjectPropertiesForm.resx">
+      <DependentUpon>ProjectPropertiesForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\NewProjectDialog.resx">
-      <DependentUpon>NewProjectDialog.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\NewProjectForm.resx">
+      <DependentUpon>NewProjectForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

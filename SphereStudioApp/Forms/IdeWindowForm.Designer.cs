@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.Forms
 {
-    partial class IdeWindow
+    partial class IdeWindowForm
     {
         /// <summary>
         /// Required designer variable.
@@ -27,7 +27,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(IdeWindow));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(IdeWindowForm));
             this.mainDockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.mainToolStrip = new System.Windows.Forms.ToolStrip();
             this.newToolButton = new System.Windows.Forms.ToolStripDropDownButton();
@@ -128,10 +128,10 @@
             this.mainDockPanel.DockBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(54)))), ((int)(((byte)(75)))));
             this.mainDockPanel.DockLeftPortion = 0.2D;
             this.mainDockPanel.DockRightPortion = 0.2D;
-            this.mainDockPanel.Location = new System.Drawing.Point(0, 52);
+            this.mainDockPanel.Location = new System.Drawing.Point(0, 49);
             this.mainDockPanel.Name = "mainDockPanel";
             this.mainDockPanel.ShowDocumentIcon = true;
-            this.mainDockPanel.Size = new System.Drawing.Size(787, 479);
+            this.mainDockPanel.Size = new System.Drawing.Size(787, 482);
             this.mainDockPanel.SupportDeeplyNestedContent = true;
             this.mainDockPanel.TabIndex = 0;
             this.mainDockPanel.ActiveDocumentChanged += new System.EventHandler(this.mainDockPanel_ActiveDocumentChanged);
@@ -139,7 +139,6 @@
             // mainToolStrip
             // 
             this.mainToolStrip.AllowItemReorder = true;
-            this.mainToolStrip.AutoSize = false;
             this.mainToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.mainToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newToolButton,
@@ -166,7 +165,7 @@
             this.mainToolStrip.Name = "mainToolStrip";
             this.mainToolStrip.Padding = new System.Windows.Forms.Padding(5, 0, 1, 0);
             this.mainToolStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.mainToolStrip.Size = new System.Drawing.Size(787, 28);
+            this.mainToolStrip.Size = new System.Drawing.Size(787, 25);
             this.mainToolStrip.TabIndex = 2;
             this.mainToolStrip.Text = "Tool Strip";
             // 
@@ -175,7 +174,7 @@
             this.newToolButton.Image = global::SphereStudio.Properties.Resources.script_edit;
             this.newToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newToolButton.Name = "newToolButton";
-            this.newToolButton.Size = new System.Drawing.Size(60, 25);
+            this.newToolButton.Size = new System.Drawing.Size(60, 22);
             this.newToolButton.Text = "&New";
             this.newToolButton.DropDownClosed += new System.EventHandler(this.newMenuItem_DropDownClosed);
             this.newToolButton.DropDownOpening += new System.EventHandler(this.newMenuItem_DropDownOpening);
@@ -189,7 +188,7 @@
             this.openToolButton.Image = global::SphereStudio.Properties.Resources.open;
             this.openToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.openToolButton.Name = "openToolButton";
-            this.openToolButton.Size = new System.Drawing.Size(29, 25);
+            this.openToolButton.Size = new System.Drawing.Size(29, 22);
             this.openToolButton.Text = "&Open";
             // 
             // openProjectToolMenuItem
@@ -215,7 +214,7 @@
             this.saveToolButton.Image = global::SphereStudio.Properties.Resources.disk;
             this.saveToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveToolButton.Name = "saveToolButton";
-            this.saveToolButton.Size = new System.Drawing.Size(23, 25);
+            this.saveToolButton.Size = new System.Drawing.Size(23, 22);
             this.saveToolButton.Text = "&Save";
             this.saveToolButton.Click += new System.EventHandler(this.saveMenuItem_Click);
             // 
@@ -225,14 +224,14 @@
             this.saveAllToolButton.Image = global::SphereStudio.Properties.Resources.disk_multiple;
             this.saveAllToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveAllToolButton.Name = "saveAllToolButton";
-            this.saveAllToolButton.Size = new System.Drawing.Size(23, 25);
+            this.saveAllToolButton.Size = new System.Drawing.Size(23, 22);
             this.saveAllToolButton.Text = "Save All";
             this.saveAllToolButton.Click += new System.EventHandler(this.saveAllMenuItem_Click);
             // 
             // ToolSeperator2
             // 
             this.ToolSeperator2.Name = "ToolSeperator2";
-            this.ToolSeperator2.Size = new System.Drawing.Size(6, 28);
+            this.ToolSeperator2.Size = new System.Drawing.Size(6, 25);
             // 
             // cutToolButton
             // 
@@ -241,7 +240,7 @@
             this.cutToolButton.Image = global::SphereStudio.Properties.Resources.cut;
             this.cutToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.cutToolButton.Name = "cutToolButton";
-            this.cutToolButton.Size = new System.Drawing.Size(23, 25);
+            this.cutToolButton.Size = new System.Drawing.Size(23, 22);
             this.cutToolButton.Text = "C&ut";
             this.cutToolButton.Click += new System.EventHandler(this.cutMenuItem_Click);
             // 
@@ -252,7 +251,7 @@
             this.copyToolButton.Image = global::SphereStudio.Properties.Resources.page_copy;
             this.copyToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.copyToolButton.Name = "copyToolButton";
-            this.copyToolButton.Size = new System.Drawing.Size(23, 25);
+            this.copyToolButton.Size = new System.Drawing.Size(23, 22);
             this.copyToolButton.Text = "&Copy";
             this.copyToolButton.Click += new System.EventHandler(this.copyMenuItem_Click);
             // 
@@ -262,7 +261,7 @@
             this.pasteToolButton.Image = global::SphereStudio.Properties.Resources.paste_plain;
             this.pasteToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.pasteToolButton.Name = "pasteToolButton";
-            this.pasteToolButton.Size = new System.Drawing.Size(23, 25);
+            this.pasteToolButton.Size = new System.Drawing.Size(23, 22);
             this.pasteToolButton.Text = "&Paste";
             this.pasteToolButton.Click += new System.EventHandler(this.pasteMenuItem_Click);
             // 
@@ -270,7 +269,7 @@
             // 
             this.ToolSeperator1.ForeColor = System.Drawing.SystemColors.ControlText;
             this.ToolSeperator1.Name = "ToolSeperator1";
-            this.ToolSeperator1.Size = new System.Drawing.Size(6, 28);
+            this.ToolSeperator1.Size = new System.Drawing.Size(6, 25);
             // 
             // testGameToolButton
             // 
@@ -280,7 +279,7 @@
             this.testGameToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.testGameToolButton.Name = "testGameToolButton";
             this.testGameToolButton.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.testGameToolButton.Size = new System.Drawing.Size(23, 25);
+            this.testGameToolButton.Size = new System.Drawing.Size(23, 22);
             this.testGameToolButton.Text = "Test Game";
             this.testGameToolButton.ToolTipText = "Test without Debugger";
             this.testGameToolButton.Click += new System.EventHandler(this.testGameMenuItem_Click);
@@ -289,7 +288,7 @@
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 28);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
             // runGameToolButton
             // 
@@ -299,7 +298,7 @@
             this.runGameToolButton.Image = global::SphereStudio.Properties.Resources.play;
             this.runGameToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.runGameToolButton.Name = "runGameToolButton";
-            this.runGameToolButton.Size = new System.Drawing.Size(94, 25);
+            this.runGameToolButton.Size = new System.Drawing.Size(94, 22);
             this.runGameToolButton.Text = "&Run Game";
             this.runGameToolButton.ToolTipText = "Start Debugging";
             this.runGameToolButton.ButtonClick += new System.EventHandler(this.buildRunMenuItem_Click);
@@ -325,7 +324,7 @@
             this.pauseToolButton.Image = global::SphereStudio.Properties.Resources.pause;
             this.pauseToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.pauseToolButton.Name = "pauseToolButton";
-            this.pauseToolButton.Size = new System.Drawing.Size(23, 25);
+            this.pauseToolButton.Size = new System.Drawing.Size(23, 22);
             this.pauseToolButton.Text = "Pause";
             this.pauseToolButton.ToolTipText = "Break into Debugger";
             this.pauseToolButton.Click += new System.EventHandler(this.breakNowMenuItem_Click);
@@ -336,7 +335,7 @@
             this.stopToolButton.Image = global::SphereStudio.Properties.Resources.stop;
             this.stopToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.stopToolButton.Name = "stopToolButton";
-            this.stopToolButton.Size = new System.Drawing.Size(23, 25);
+            this.stopToolButton.Size = new System.Drawing.Size(23, 22);
             this.stopToolButton.Text = "Stop";
             this.stopToolButton.ToolTipText = "Stop Debugging";
             this.stopToolButton.Click += new System.EventHandler(this.stopDebuggingMenuItem_Click);
@@ -344,7 +343,7 @@
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 28);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // engineToolComboBox
             // 
@@ -353,7 +352,7 @@
             this.engineToolComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Standard;
             this.engineToolComboBox.Name = "engineToolComboBox";
             this.engineToolComboBox.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.engineToolComboBox.Size = new System.Drawing.Size(160, 28);
+            this.engineToolComboBox.Size = new System.Drawing.Size(160, 25);
             this.engineToolComboBox.SelectedIndexChanged += new System.EventHandler(this.engineToolComboBox_SelectedIndexChanged);
             // 
             // configureEngineToolButton
@@ -363,14 +362,14 @@
             this.configureEngineToolButton.Image = global::SphereStudio.Properties.Resources.cog;
             this.configureEngineToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.configureEngineToolButton.Name = "configureEngineToolButton";
-            this.configureEngineToolButton.Size = new System.Drawing.Size(23, 25);
+            this.configureEngineToolButton.Size = new System.Drawing.Size(23, 22);
             this.configureEngineToolButton.Text = "Configure Engine";
             this.configureEngineToolButton.Click += new System.EventHandler(this.configureEngineMenuItem_Click);
             // 
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(6, 28);
+            this.toolStripSeparator9.Size = new System.Drawing.Size(6, 25);
             // 
             // projectPropertiesToolButton
             // 
@@ -379,7 +378,7 @@
             this.projectPropertiesToolButton.Image = global::SphereStudio.Properties.Resources.SphereEditor;
             this.projectPropertiesToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.projectPropertiesToolButton.Name = "projectPropertiesToolButton";
-            this.projectPropertiesToolButton.Size = new System.Drawing.Size(23, 25);
+            this.projectPropertiesToolButton.Size = new System.Drawing.Size(23, 22);
             this.projectPropertiesToolButton.Text = "Project Properties";
             this.projectPropertiesToolButton.Click += new System.EventHandler(this.projectPropertiesMenuItem_Click);
             // 
@@ -389,7 +388,7 @@
             this.preferencesToolButton.Image = global::SphereStudio.Properties.Resources.application_view_list;
             this.preferencesToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.preferencesToolButton.Name = "preferencesToolButton";
-            this.preferencesToolButton.Size = new System.Drawing.Size(23, 25);
+            this.preferencesToolButton.Size = new System.Drawing.Size(23, 22);
             this.preferencesToolButton.Text = "Preferences";
             this.preferencesToolButton.Click += new System.EventHandler(this.preferencesMenuItem_Click);
             // 
@@ -955,7 +954,7 @@
             this.preferencesMenuItem.Text = "P&references...";
             this.preferencesMenuItem.Click += new System.EventHandler(this.preferencesMenuItem_Click);
             // 
-            // IdeWindow
+            // IdeWindowForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -970,7 +969,7 @@
             this.KeyPreview = true;
             this.MainMenuStrip = this.mainMenuStrip;
             this.MinimumSize = new System.Drawing.Size(480, 360);
-            this.Name = "IdeWindow";
+            this.Name = "IdeWindowForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sphere Studio";
             this.mainToolStrip.ResumeLayout(false);

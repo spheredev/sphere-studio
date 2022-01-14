@@ -31,7 +31,7 @@ namespace SphereStudio
             PluginManager.Register(null, new PluginsSettingsPage(), "Plugins");
             PluginManager.Register(null, new SphereProjectPage(), "Sphere Game");
 
-            Window = new IdeWindow();
+            Window = new IdeWindowForm();
 
             // check for and open files dragged onto the app.
             foreach (var fileName in args)
@@ -50,6 +50,6 @@ namespace SphereStudio
             Application.Run(Window);
         }
 
-        public static IdeWindow Window { get; private set; }
+        public static IdeWindowForm Window { get; private set; }
     }
 }

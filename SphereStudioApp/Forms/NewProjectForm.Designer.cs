@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.Forms
 {
-    partial class NewProjectDialog
+    partial class NewProjectForm
     {
         /// <summary>
         /// Required designer variable.

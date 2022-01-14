@@ -31,7 +31,7 @@ namespace SphereStudio.Plugins
             Settings = settings;
 
             PluginManager.Register(this, this, Name);
-            PluginManager.Core.AddMenuItem(_rootMenu, "Tools");
+            PluginManager.Core.AddMenuItem(_rootMenu, "Project");
 
             // check off the active settings in the menus
             _autoCompleteItem.Checked = Settings.GetBoolean("script-autocomplete", true);

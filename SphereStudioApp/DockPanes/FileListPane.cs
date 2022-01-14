@@ -19,11 +19,11 @@ namespace SphereStudio.DockPanes
     [ToolboxItem(false)]
     partial class FileListPane : UserControl, IDockPane, IStyleAware
     {
-        private readonly IdeWindow _hostForm;
+        private readonly IdeWindowForm _hostForm;
         private readonly ImageList _iconlist = new ImageList();
         private readonly ToolTip _tip = new ToolTip();
 
-        public FileListPane(IdeWindow hostForm)
+        public FileListPane(IdeWindowForm hostForm)
         {
             InitializeComponent();
             StyleManager.AutoStyle(this);
@@ -391,7 +391,7 @@ namespace SphereStudio.DockPanes
 
         private void GameSettingsItem_Click(object sender, EventArgs e)
         {
-            using (var form = new ProjectPropertiesDialog(Session.Project))
+            using (var form = new ProjectPropertiesForm(Session.Project))
             {
                 form.ShowDialog(_hostForm);
             }

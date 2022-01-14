@@ -18,51 +18,54 @@ namespace SphereStudio.Plugins
         public string[] FileExtensions => new[] { "bmp", "gif", "jpg", "png", "tif", "tiff" };
         public Bitmap FileIcon => Properties.Resources.palette;
 
-        internal static void ShowMenus(bool show) => _imageMenu.Visible = show;
+        private ToolStripMenuItem imageMenu;
+        private ToolStripMenuItem rescaleMenuItem;
+        private ToolStripMenuItem resizeMenuItem;
 
         public void Initialize(ISettings conf)
         {
+            imageMenu = new ToolStripMenuItem("&Image") { Visible = false };
+            rescaleMenuItem = new ToolStripMenuItem("Re&scale...", Properties.Resources.arrow_inout, rescaleMenuItem_Click);
+            resizeMenuItem = new ToolStripMenuItem("&Resize...", Properties.Resources.arrow_inout, resizeMenuItem_Click);
+            imageMenu.DropDownItems.AddRange(new[] {
+                resizeMenuItem,
+                rescaleMenuItem
+            });
+
             PluginManager.Register(this, this, Name);
-            PluginManager.Core.AddMenuItem(_imageMenu, "Tools");
+            PluginManager.Core.AddMenuItem(imageMenu, "Project");
         }
 
         public void ShutDown()
         {
-            PluginManager.Core.RemoveMenuItem(_imageMenu);
+            PluginManager.Core.RemoveMenuItem(imageMenu);
             PluginManager.UnregisterAll(this);
         }
 
-        public ImageView CreateEditView() => new ImageEditView();
+        public ImageView CreateEditView()
+        {
+            return new ImageEditView(this);
+        }
 
         public DocumentView New()
         {
-            DocumentView view = new ImageEditView();
+            var view = new ImageEditView(this);
             return view.NewDocument() ? view : null;
         }
 
         public DocumentView Open(string fileName)
         {
-            DocumentView view = new ImageEditView();
+            var view = new ImageEditView(this);
             view.Load(fileName);
             return view;
         }
 
-        #region Initialize the Image menu
-        private static ToolStripMenuItem _imageMenu;
-        private static ToolStripMenuItem _rescaleMenuItem;
-        private static ToolStripMenuItem _resizeMenuItem;
-
-        static PluginMain()
+        internal void showMenus(bool visible)
         {
-            _imageMenu = new ToolStripMenuItem("&Image") { Visible = false };
-            _rescaleMenuItem = new ToolStripMenuItem("Re&scale...", Properties.Resources.arrow_inout, menuRescale_Click);
-            _resizeMenuItem = new ToolStripMenuItem("&Resize...", Properties.Resources.arrow_inout, menuResize_Click);
-            _imageMenu.DropDownItems.AddRange(new ToolStripItem[] {
-                _resizeMenuItem,
-                _rescaleMenuItem });
+            imageMenu.Visible = visible;
         }
 
-        private static void menuRescale_Click(object sender, EventArgs e)
+        private void rescaleMenuItem_Click(object sender, EventArgs e)
         {
             using (SizeForm form = new SizeForm())
             {
@@ -74,7 +77,7 @@ namespace SphereStudio.Plugins
             }
         }
 
-        private static void menuResize_Click(object sender, EventArgs e)
+        private void resizeMenuItem_Click(object sender, EventArgs e)
         {
             using (SizeForm form = new SizeForm())
             {
@@ -89,6 +92,5 @@ namespace SphereStudio.Plugins
                 }
             }
         }
-        #endregion
     }
-    }
+}

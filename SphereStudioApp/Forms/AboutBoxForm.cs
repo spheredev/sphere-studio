@@ -7,9 +7,9 @@ using SphereStudio.Base;
 
 namespace SphereStudio.Forms
 {
-    partial class AboutDialog : Form, IStyleAware
+    partial class AboutBoxForm : Form, IStyleAware
     {
-        public AboutDialog()
+        public AboutBoxForm()
         {
             InitializeComponent();
 

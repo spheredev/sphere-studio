@@ -26,7 +26,7 @@ namespace SphereStudio.Plugins
         public void Initialize(ISettings conf)
         {
             PluginManager.Register(this, this, Name);
-            PluginManager.Core.AddMenuItem(_mapMenu, "Tools");
+            PluginManager.Core.AddMenuItem(_mapMenu, "Project");
         }
 
         public void ShutDown()

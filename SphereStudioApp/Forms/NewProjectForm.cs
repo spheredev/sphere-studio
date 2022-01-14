@@ -9,12 +9,12 @@ using SphereStudio.Core;
 
 namespace SphereStudio.Forms
 {
-    partial class NewProjectDialog : Form, IStyleAware
+    partial class NewProjectForm : Form, IStyleAware
     {
         private bool autoTitleMode = true;
         private string projectRoot;
 
-        public NewProjectDialog(string projectRootPath)
+        public NewProjectForm(string projectRootPath)
         {
             InitializeComponent();
             StyleManager.AutoStyle(this);

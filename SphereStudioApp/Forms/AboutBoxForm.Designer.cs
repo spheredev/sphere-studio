@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.Forms
 {
-    partial class AboutDialog
+    partial class AboutBoxForm
     {
         /// <summary>
         /// Required designer variable.

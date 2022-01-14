@@ -21,7 +21,7 @@ namespace SphereStudio.Forms
     /// <summary>
     /// Represents an instance of the Sphere Studio IDE.
     /// </summary>
-    partial class IdeWindow : Form, IStyleAware, ICore
+    partial class IdeWindowForm : Form, IStyleAware, ICore
     {
         private DocumentTab currentTab;
         private string defaultActiveDocumentName;
@@ -33,7 +33,7 @@ namespace SphereStudio.Forms
         private DocumentTab startPageTab = null;
         private List<DocumentTab> tabs = new List<DocumentTab>();
 
-        public IdeWindow()
+        public IdeWindowForm()
         {
             InitializeComponent();
             StyleManager.AutoStyle(this);
@@ -123,7 +123,7 @@ namespace SphereStudio.Forms
         /// </summary>
         /// <param name="location">The menu to add the item to. Use dots to drill down, e.g. "File.New"</param>
         /// <param name="newItem">The ToolStripItem of the menu item to add.</param>
-        public void AddMenuItem(string location, ToolStripItem newItem)
+        public void AddMenuItem(string location, ToolStripMenuItem newItem)
         {
             string[] items = location.Split('.');
             ToolStripMenuItem item = GetMenuItem(mainMenuStrip.Items, items[0]);
@@ -148,7 +148,7 @@ namespace SphereStudio.Forms
             item.DropDownItems.Add(newItem);
         }
 
-        public void RemoveMenuItem(ToolStripItem item)
+        public void RemoveMenuItem(ToolStripMenuItem item)
         {
             ToolStripMenuItem menuItem = item.OwnerItem as ToolStripMenuItem;
             if (menuItem != null) menuItem.DropDownItems.Remove(item);
@@ -247,7 +247,7 @@ namespace SphereStudio.Forms
                 return;
             Session.Project = pj;
 
-            RefreshProject();
+            refreshProject();
 
             LoadProject?.Invoke(null, EventArgs.Empty);
 
@@ -275,17 +275,17 @@ namespace SphereStudio.Forms
                 tab?.Activate();
             }
 
-            UpdateEngineList();
-            UpdateControls();
+            refreshEngineList();
+            refreshUI();
         }
 
         public void ApplyStyle(UIStyle style)
         {
+            style.AsUIElement(this);
             style.AsUIElement(mainDockPanel);
-            style.AsHeading(MainMenuStrip);
+            style.AsHeading(mainMenuStrip);
             style.AsUIElement(mainToolStrip);
             style.AsHeading(mainStatusStrip);
-            UpdateMenuItems();
         }
 
         public override void Refresh()
@@ -295,15 +295,12 @@ namespace SphereStudio.Forms
             foreach (DocumentTab tab in tabs)
                 tab.Restyle();
             dockManager.Refresh();
-            UpdateEngineList();
-            UpdateControls();
+            refreshEngineList();
+            refreshUI();
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            if (e.Cancel)
-                return;
-
             Rectangle savedBounds = WindowState != FormWindowState.Normal ? RestoreBounds : Bounds;
             Properties.Settings.Default.WindowX = savedBounds.X;
             Properties.Settings.Default.WindowY = savedBounds.Y;
@@ -406,7 +403,7 @@ namespace SphereStudio.Forms
                 currentTab = content.Tag as DocumentTab;
                 currentTab.Activate();
             }
-            UpdateControls();
+            refreshUI();
         }
 
         #region File menu Click handlers
@@ -469,7 +466,7 @@ namespace SphereStudio.Forms
             string rootPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 "Sphere Projects");
-            NewProjectDialog npf = new NewProjectDialog(rootPath);
+            NewProjectForm npf = new NewProjectForm(rootPath);
 
             var starter = PluginManager.Get<IStarter>(Session.Settings.Engine);
             var compiler = PluginManager.Get<ICompiler>(Session.Settings.Compiler);
@@ -509,7 +506,7 @@ namespace SphereStudio.Forms
             if (File.Exists(Session.Settings.LastProject))
                 OpenProject(Session.Settings.LastProject, false);
             else
-                UpdateControls();
+                refreshUI();
         }
 
         private void openProjectMenuItem_Click(object sender, EventArgs e)
@@ -536,7 +533,8 @@ namespace SphereStudio.Forms
 
         private void saveAllMenuItem_Click(object sender, EventArgs e)
         {
-            SaveAllDocuments();
+            foreach (DocumentTab tab in tabs)
+                tab.Save();
         }
 
         private void saveAsMenuItem_Click(object sender, EventArgs e)
@@ -667,11 +665,11 @@ namespace SphereStudio.Forms
 
         void documentMenuItem_Click(object sender, EventArgs e)
         {
-            DocumentTab tab = GetDocument(((ToolStripItem)sender).Tag as string);
+            var tab = GetDocument(((ToolStripItem)sender).Tag as string);
             if (tab != null)
                 tab.Activate();
             else
-                SelectDockPane((string)((ToolStripMenuItem)sender).Tag);
+                selectDockPane((string)((ToolStripMenuItem)sender).Tag);
         }
 
         private void startPageMenuItem_Click(object sender, EventArgs e)
@@ -690,12 +688,18 @@ namespace SphereStudio.Forms
 
         private void projectPropertiesMenuItem_Click(object sender, EventArgs e)
         {
-            showProjectProperties();
+            var form = new ProjectPropertiesForm(Session.Project);
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                refreshEngineList();
+                refreshUI();
+                refreshProject();
+            }
         }
 
         private void refreshProjectMenuItem_Click(object sender, EventArgs e)
         {
-            RefreshProject();
+            refreshProject();
         }
         #endregion
 
@@ -738,12 +742,12 @@ namespace SphereStudio.Forms
             if (Debugger != null)
                 await Debugger.Resume();
             else
-                await StartEngine(true);
+                await startEngine(true);
         }
 
         private async void rebuildRunMenuItem_Click(object sender, EventArgs e)
         {
-            await StartEngine(true, true);
+            await startEngine(true, true);
         }
 
         private void stepIntoMenuItem_Click(object sender, EventArgs e)
@@ -768,7 +772,7 @@ namespace SphereStudio.Forms
 
         private async void testGameMenuItem_Click(object sender, EventArgs e)
         {
-            await StartEngine(false, true);
+            await startEngine(false, true);
         }
         #endregion
 
@@ -788,7 +792,7 @@ namespace SphereStudio.Forms
         #region Help menu Click handlers
         private void aboutMenuItem_Click(object sender, EventArgs e)
         {
-            using (var about = new AboutDialog())
+            using (var about = new AboutBoxForm())
                 about.ShowDialog();
         }
         #endregion
@@ -806,12 +810,11 @@ namespace SphereStudio.Forms
             }
 
             Session.Project.User.Engine = engineToolComboBox.Text;
-            UpdateControls();
-            UpdateEngineList();
+            refreshUI();
+            refreshEngineList();
         }
         #endregion
 
-        #region Private IDE routines
         private void InitializeDocking()
         {
             fileListPane = new FileListPane(this);
@@ -887,22 +890,6 @@ namespace SphereStudio.Forms
         }
 
         /// <summary>
-        /// Refreshes the GUI.
-        /// </summary>
-        private void ApplyRefresh(bool ignore_presets = false)
-        {
-            if (!ignore_presets)
-                UpdateEngineList();
-
-            UpdateControls();
-            SuspendLayout();
-            startPageView.RepopulateProjects();
-            UpdateMenuItems();
-            Invalidate(true);
-            ResumeLayout();
-        }
-
-        /// <summary>
         /// Closes all opened documents; optionally saving them as well.
         /// </summary>
         /// <param name="forceClose">If true, closes unsaved documents without prompting.</param>
@@ -968,8 +955,8 @@ namespace SphereStudio.Forms
 
             // all clear!
             Text = Versioning.Name;
-            UpdateEngineList();
-            UpdateControls();
+            refreshEngineList();
+            refreshUI();
             return true;
         }
 
@@ -986,33 +973,30 @@ namespace SphereStudio.Forms
             return collection.OfType<ToolStripMenuItem>().FirstOrDefault(item => item.Text.Replace("&", "") == name);
         }
 
-        private void showPluginManager()
+        private void refreshEngineList()
         {
-            showPreferencesDialog("Plugins");
-        }
-        
-        private void showPreferencesDialog(string pageName = null)
-        {
-            var form = new PreferencesDialog(pageName);
-            if (form.ShowDialog() == DialogResult.OK)
+            bool wasLoadingPresets = loadingPresets;
+            loadingPresets = true;
+
+            engineToolComboBox.Items.Clear();
+            string[] engines = PluginManager.GetNames<IStarter>();
+            if (IsProjectOpen && engines.Length > 0)
             {
-                Session.Settings.Apply();
-                ApplyRefresh();
+                foreach (string name in engines)
+                    engineToolComboBox.Items.Add(name);
+                engineToolComboBox.Items.Add("Plugin Manager...");
+                engineToolComboBox.Text = Session.Project.User.Engine;
+                engineToolComboBox.Enabled = true;
             }
+            else
+            {
+                engineToolComboBox.Enabled = false;
+            }
+
+            loadingPresets = wasLoadingPresets;
         }
 
-        private void showProjectProperties()
-        {
-            var form = new ProjectPropertiesDialog(Session.Project);
-            if (form.ShowDialog() == DialogResult.OK)
-            {
-                UpdateEngineList();
-                UpdateControls();
-                RefreshProject();
-            }
-        }
-
-        private void RefreshProject()
+        private void refreshProject()
         {
             var ideName = Versioning.IsWiP ? $"{Versioning.Name} WiP" : Versioning.Name;
             Text = Session.Project.GameOnly
@@ -1022,30 +1006,72 @@ namespace SphereStudio.Forms
             fileListPane.Refresh();
             if (Session.Project != null)
                 Session.Settings.LastProject = Session.Project.FileName;
-            UpdateControls();
+            refreshUI();
         }
 
-        private void SaveAllDocuments()
+        private void refreshUI()
         {
-            foreach (DocumentTab tab in tabs)
-            {
-                tab.Save();
-            }
+            var starter = IsProjectOpen
+                ? PluginManager.Get<IStarter>(Session.Project.User.Engine)
+                : null;
+            bool haveConfig = starter != null && starter.CanConfigure;
+            bool haveLastProject = !string.IsNullOrEmpty(Session.Settings.LastProject);
+
+            configureEngineToolButton.Enabled = configureEngineMenuItem.Enabled = haveConfig;
+
+            packageGameMenuItem.Enabled = Session.Project != null
+                && BuildEngine.CanPackage(Session.Project);
+
+            testGameMenuItem.Enabled = testGameToolButton.Enabled = Session.Project != null
+                && BuildEngine.CanTest(Session.Project) && Debugger == null;
+            buildRunMenuItem.Enabled = Session.Project != null && (Debugger == null || !Debugger.Running);
+            rebuildRunMenuItem.Enabled = Session.Project != null && Debugger == null;
+            runGameToolButton.Enabled = Session.Project != null && (Debugger == null || !Debugger.Running);
+            rebuildRunToolMenuItem.Enabled = Session.Project != null && Debugger == null;
+            breakNowMenuItem.Enabled = pauseToolButton.Enabled = Debugger != null && Debugger.Running;
+            stopDebuggingMenuItem.Enabled = stopToolButton.Enabled = Debugger != null;
+            stepIntoMenuItem.Enabled = Debugger != null && !Debugger.Running;
+            stepOutMenuItem.Enabled = Debugger != null && !Debugger.Running;
+            stepOverMenuItem.Enabled = Debugger != null && !Debugger.Running;
+
+            openLastProjectMenuItem.Enabled = haveLastProject;
+
+            projectPropertiesMenuItem.Enabled = projectPropertiesToolButton.Enabled = IsProjectOpen;
+            exploreProjectMenuItem.Enabled = refreshProjectMenuItem.Enabled = IsProjectOpen;
+
+            saveToolButton.Enabled = currentTab != null && currentTab.View.CanSave;
+            cutToolButton.Enabled = currentTab != null;
+            copyToolButton.Enabled = currentTab != null;
+
+            dockManager?.Refresh();
         }
 
-        /// <summary>
-        /// Selects a dock pane by tab name, this is not ideal for documents but useful for
-        /// persistent panes like the project tree and plugins.
-        /// </summary>
-        /// <param name="name">The registered name of the dock pane to select.</param>
-        private void SelectDockPane(string name)
+        private void selectDockPane(string name)
         {
             foreach (IDockContent content in mainDockPanel.Contents)
                 if (content.DockHandler.TabText == name)
                     content.DockHandler.Activate();
         }
 
-        private async Task StartEngine(bool wantDebugger, bool rebuilding = false)
+        private void showPluginManager()
+        {
+            showPreferencesDialog("Plugins");
+        }
+
+        private void showPreferencesDialog(string pageName = null)
+        {
+            var form = new PreferencesForm(pageName);
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                Session.Settings.Apply();
+                refreshEngineList();
+                refreshProject();
+                refreshUI();
+                startPageView.RepopulateProjects();
+            }
+        }
+
+        private async Task startEngine(bool wantDebugger, bool rebuilding = false)
         {
             foreach (DocumentTab tab in
                 from tab in tabs
@@ -1086,7 +1112,7 @@ namespace SphereStudio.Forms
                         SystemSounds.Hand.Play();
                         helpStatusLabel.Text = "An error occurred launching a debugging session.";
                         Debugger = null;
-                        UpdateControls();
+                        refreshUI();
                     }
                 }
             }
@@ -1095,75 +1121,8 @@ namespace SphereStudio.Forms
                 await BuildEngine.Test(Session.Project, rebuilding);
             }
 
-            UpdateControls();
+            refreshUI();
         }
-
-        private void UpdateControls()
-        {
-            var starter = IsProjectOpen
-                ? PluginManager.Get<IStarter>(Session.Project.User.Engine)
-                : null;
-            bool haveConfig = starter != null && starter.CanConfigure;
-            bool haveLastProject = !string.IsNullOrEmpty(Session.Settings.LastProject);
-
-            configureEngineToolButton.Enabled = configureEngineMenuItem.Enabled = haveConfig;
-
-            packageGameMenuItem.Enabled = Session.Project != null
-                && BuildEngine.CanPackage(Session.Project);
-
-            testGameMenuItem.Enabled = testGameToolButton.Enabled = Session.Project != null
-                && BuildEngine.CanTest(Session.Project) && Debugger == null;
-            buildRunMenuItem.Enabled = Session.Project != null && (Debugger == null || !Debugger.Running);
-            rebuildRunMenuItem.Enabled = Session.Project != null && Debugger == null;
-            runGameToolButton.Enabled = Session.Project != null && (Debugger == null || !Debugger.Running);
-            rebuildRunToolMenuItem.Enabled = Session.Project != null && Debugger == null;
-            breakNowMenuItem.Enabled = pauseToolButton.Enabled = Debugger != null && Debugger.Running;
-            stopDebuggingMenuItem.Enabled = stopToolButton.Enabled = Debugger != null;
-            stepIntoMenuItem.Enabled = Debugger != null && !Debugger.Running;
-            stepOutMenuItem.Enabled = Debugger != null && !Debugger.Running;
-            stepOverMenuItem.Enabled = Debugger != null && !Debugger.Running;
-
-            openLastProjectMenuItem.Enabled = haveLastProject;
-
-            projectPropertiesMenuItem.Enabled = projectPropertiesToolButton.Enabled = IsProjectOpen;
-            exploreProjectMenuItem.Enabled = refreshProjectMenuItem.Enabled = IsProjectOpen;
-
-            saveToolButton.Enabled = currentTab != null && currentTab.View.CanSave;
-            cutToolButton.Enabled = currentTab != null;
-            copyToolButton.Enabled = currentTab != null;
-
-            if (dockManager != null) dockManager.Refresh();
-        }
-
-        private void UpdateMenuItems()
-        {
-            foreach (ToolStripMenuItem item in MainMenuStrip.Items)
-                topMenu_DropDownClosed(item, null);
-        }
-
-        private void UpdateEngineList()
-        {
-            bool wasLoadingPresets = loadingPresets;
-            loadingPresets = true;
-
-            engineToolComboBox.Items.Clear();
-            string[] engines = PluginManager.GetNames<IStarter>();
-            if (IsProjectOpen && engines.Length > 0)
-            {
-                foreach (string name in engines)
-                    engineToolComboBox.Items.Add(name);
-                engineToolComboBox.Items.Add("Plugin Manager...");
-                engineToolComboBox.Text = Session.Project.User.Engine;
-                engineToolComboBox.Enabled = true;
-            }
-            else
-            {
-                engineToolComboBox.Enabled = false;
-            }
-
-            loadingPresets = wasLoadingPresets;
-        }
-        #endregion
 
         private void debugger_Detached(object sender, EventArgs e)
         {
@@ -1179,7 +1138,7 @@ namespace SphereStudio.Forms
             buildRunMenuItem.Text = "Build && &Run";
             buildRunToolMenuItem.Text = "Build && &Run (Default)";
             runGameToolButton.Text = "&Run Game";
-            UpdateControls();
+            refreshUI();
         }
 
         private void debugger_Paused(object sender, PausedEventArgs e)
@@ -1201,7 +1160,7 @@ namespace SphereStudio.Forms
             }
             if (!Debugger.Running)
                 Activate();
-            UpdateControls();
+            refreshUI();
         }
 
         private void debugger_Resumed(object sender, EventArgs e)
@@ -1214,7 +1173,7 @@ namespace SphereStudio.Forms
                 view.ActiveLine = 0;
                 view.ErrorLine = 0;
             }
-            UpdateControls();
+            refreshUI();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.Forms
 {
-    partial class ProjectPropertiesDialog
+    partial class ProjectPropertiesForm
     {
         /// <summary>
         /// Required designer variable.

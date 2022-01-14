@@ -19,12 +19,14 @@ namespace SphereStudio.Plugins
         private readonly DockPanel _editorDock = new DockPanel();
 
         private ColorBox _selectedBox;
+        private PluginMain plugin;
 
-        public ImageEditView()
+        public ImageEditView(PluginMain plugin)
         {
             InitializeComponent();
             InitializeDocking();
 
+            this.plugin = plugin;
             Icon = Icon.FromHandle(Properties.Resources.palette.GetHicon());
 
             for (int i = 0; i < 8; ++i)
@@ -80,12 +82,12 @@ namespace SphereStudio.Plugins
 
         public override void Activate()
         {
-            PluginMain.ShowMenus(true);
+            plugin.showMenus(true);
         }
 
         public override void Deactivate()
         {
-            PluginMain.ShowMenus(false);
+            plugin.showMenus(false);
         }
 
         public override void Undo()

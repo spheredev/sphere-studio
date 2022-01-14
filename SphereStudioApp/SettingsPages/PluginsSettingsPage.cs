@@ -216,7 +216,7 @@ namespace SphereStudio.SettingsPages
 
         private void savePresetButton_Click(object sender, EventArgs e)
         {
-            using (var diag = new SavePresetDialog())
+            using (var diag = new SavePresetForm())
             {
                 if (diag.ShowDialog() != DialogResult.OK)
                     return;

@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.Forms
 {
-    partial class SavePresetDialog
+    partial class SavePresetForm
     {
         /// <summary>
         /// Required designer variable.

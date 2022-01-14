@@ -14,14 +14,14 @@ using SphereStudio.UI;
 
 namespace SphereStudio.Forms
 {
-    partial class PreferencesDialog : Form, IStyleAware
+    partial class PreferencesForm : Form, IStyleAware
     {
         private List<ISettingsPage> applyList = new List<ISettingsPage>();
         private TreeNode currentNode;
         private ISettingsPage currentPage;
         private ISettingsPage firstPage;
 
-        public PreferencesDialog(string pageName = null)
+        public PreferencesForm(string pageName = null)
         {
             InitializeComponent();
             StyleManager.AutoStyle(this);

@@ -63,7 +63,7 @@ namespace SphereStudio.Base
         /// </summary>
         /// <param name="location">Ex: 'View' or 'View.extra1.extra2'</param>
         /// <param name="newItem">The ToolStripMenuItem to add.</param>
-        void AddMenuItem(string location, ToolStripItem newItem);
+        void AddMenuItem(string location, ToolStripMenuItem newItem);
 
         /// <summary>
         /// Opens a file as a document in the IDE.
@@ -76,7 +76,7 @@ namespace SphereStudio.Base
         /// Removes the menu item from it's containing drop down menu.
         /// </summary>
         /// <param name="item">The ToolStripMenuItem to remove.</param>
-        void RemoveMenuItem(ToolStripItem item);
+        void RemoveMenuItem(ToolStripMenuItem item);
 
         /// <summary>
         /// Removes a root level menu item with the associated name.

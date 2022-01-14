@@ -9,12 +9,12 @@ using SphereStudio.Core;
 
 namespace SphereStudio.Forms
 {
-    partial class ProjectPropertiesDialog : Form, IStyleAware
+    partial class ProjectPropertiesForm : Form, IStyleAware
     {
         private Dictionary<IProjectPage, TabPage> pageMap = new Dictionary<IProjectPage, TabPage>();
         private Project project;
 
-        public ProjectPropertiesDialog(Project project)
+        public ProjectPropertiesForm(Project project)
         {
             InitializeComponent();
             StyleManager.AutoStyle(this);

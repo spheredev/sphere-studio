@@ -30,7 +30,7 @@ namespace SphereStudio.Plugins
             Settings = settings;
 
             PluginManager.Register(this, this, Name);
-            PluginManager.Core.AddMenuItem(_spritesetMenu, "View");
+            PluginManager.Core.AddMenuItem(_spritesetMenu, "Project");
         }
 
         public void ShutDown()
