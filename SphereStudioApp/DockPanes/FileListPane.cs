@@ -58,7 +58,7 @@ namespace SphereStudio.DockPanes
         private void ImportFileItem_Click(object sender, EventArgs e)
         {
             var path = ResolvePath(fileTree.SelectedNode);
-            var filesToAdd = _hostForm.GetFilesToOpen(true);
+            var filesToAdd = _hostForm.getFilesToOpen(true);
             
             if (filesToAdd == null || filesToAdd.Length == 0)
                 return;

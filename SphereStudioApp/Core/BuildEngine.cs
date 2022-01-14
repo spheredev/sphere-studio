@@ -37,10 +37,11 @@ namespace SphereStudio.Core
         /// <summary>
         /// Checks whether a project's compiler supports packaging.
         /// </summary>
-        /// <returns>true iff the compiler supports packaging.</returns>
+        /// <returns>A boolean value indicating whether the project can be packaged.</returns>
         public static bool CanPackage(Project project)
         {
-            return PluginManager.Get<IPackager>(project.Compiler) != null;
+            return project != null
+                && PluginManager.Get<IPackager>(project.Compiler) != null;
         }
 
         /// <summary>
@@ -50,7 +51,8 @@ namespace SphereStudio.Core
         /// <returns></returns>
         public static bool CanTest(Project project)
         {
-            return PluginManager.Get<IStarter>(project.User.Engine) != null
+            return project != null
+                && PluginManager.Get<IStarter>(project.User.Engine) != null
                 && PluginManager.Get<ICompiler>(project.Compiler) != null;
         }
 

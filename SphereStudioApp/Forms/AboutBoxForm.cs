@@ -12,11 +12,12 @@ namespace SphereStudio.Forms
         public AboutBoxForm()
         {
             InitializeComponent();
+            StyleManager.AutoStyle(this);
 
-            this.labelProductName.Text = $"{Versioning.Name} {Versioning.Version}";
-            this.labelCopyright.Text = $"\xA9 {Versioning.Copyright}";
-            this.labelCompanyName.Text = Versioning.Author;
-            this.creditsTextBox.Text = Versioning.Credits;
+            labelProductName.Text = $"{Versioning.Name} {Versioning.Version}";
+            labelCopyright.Text = $"\xA9 {Versioning.Copyright}";
+            labelCompanyName.Text = Versioning.Author;
+            creditsTextBox.Text = Versioning.Credits;
 
             // get the installed Windows version
             var os = Environment.OSVersion;
@@ -27,7 +28,7 @@ namespace SphereStudio.Forms
                 : os.Version.Major == 6 && os.Version.Minor == 3 ? "8.1"
                 : os.Version.Major == 10 && os.Version.Minor == 0 ? "10"
                 : $"{os.Version.Major}.{os.Version.Minor}";
-            string updateName = os.ServicePack;
+            var updateName = os.ServicePack;
             if (os.Version.Major == 10 && os.Version.Minor == 0)
             {
                 // Windows 11 releases start at build number 22000
@@ -56,9 +57,7 @@ namespace SphereStudio.Forms
                 : RuntimeInformation.OSArchitecture == Architecture.Arm64 ? "ARM64"
                 : RuntimeInformation.OSArchitecture == Architecture.Arm ? "ARM"
                 : "x86";
-            this.labelPlatform.Text = $"Windows {windowsVersion} {architecture}\n{updateName}";
-
-            StyleManager.AutoStyle(this);
+            labelPlatform.Text = $"Windows {windowsVersion} {architecture}\n{updateName}";
         }
 
         public void ApplyStyle(UIStyle style)

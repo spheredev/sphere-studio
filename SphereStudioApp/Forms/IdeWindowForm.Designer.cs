@@ -55,7 +55,8 @@
             this.projectPropertiesToolButton = new System.Windows.Forms.ToolStripButton();
             this.preferencesToolButton = new System.Windows.Forms.ToolStripButton();
             this.mainStatusStrip = new System.Windows.Forms.StatusStrip();
-            this.helpStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.projectStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.fileMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.newProjectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openProjectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -395,20 +396,28 @@
             // mainStatusStrip
             // 
             this.mainStatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.helpStatusLabel});
+            this.projectStatusLabel,
+            this.statusLabel});
             this.mainStatusStrip.Location = new System.Drawing.Point(0, 531);
             this.mainStatusStrip.Name = "mainStatusStrip";
             this.mainStatusStrip.Size = new System.Drawing.Size(787, 22);
             this.mainStatusStrip.TabIndex = 3;
-            this.mainStatusStrip.Text = "Status";
             // 
-            // helpStatusLabel
+            // projectStatusLabel
             // 
-            this.helpStatusLabel.BackColor = System.Drawing.Color.Transparent;
-            this.helpStatusLabel.Margin = new System.Windows.Forms.Padding(2, 3, 0, 2);
-            this.helpStatusLabel.Name = "helpStatusLabel";
-            this.helpStatusLabel.Size = new System.Drawing.Size(150, 17);
-            this.helpStatusLabel.Text = "Welcome to Sphere Studio!";
+            this.projectStatusLabel.Name = "projectStatusLabel";
+            this.projectStatusLabel.Size = new System.Drawing.Size(61, 17);
+            this.projectStatusLabel.Text = "no project";
+            // 
+            // statusLabel
+            // 
+            this.statusLabel.BackColor = System.Drawing.Color.Transparent;
+            this.statusLabel.Margin = new System.Windows.Forms.Padding(2, 3, 0, 2);
+            this.statusLabel.Name = "statusLabel";
+            this.statusLabel.Size = new System.Drawing.Size(678, 17);
+            this.statusLabel.Spring = true;
+            this.statusLabel.Text = "Welcome to Sphere Studio!";
+            this.statusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // fileMenu
             // 
@@ -429,8 +438,7 @@
             this.fileMenu.Name = "fileMenu";
             this.fileMenu.Size = new System.Drawing.Size(37, 20);
             this.fileMenu.Text = "&File";
-            this.fileMenu.DropDownClosed += new System.EventHandler(this.topMenu_DropDownClosed);
-            this.fileMenu.DropDownOpening += new System.EventHandler(this.menuFile_DropDownOpening);
+            this.fileMenu.DropDownOpening += new System.EventHandler(this.fileMenu_DropDownOpening);
             // 
             // newProjectMenuItem
             // 
@@ -563,7 +571,6 @@
             this.editMenu.Name = "editMenu";
             this.editMenu.Size = new System.Drawing.Size(39, 20);
             this.editMenu.Text = "&Edit";
-            this.editMenu.DropDownClosed += new System.EventHandler(this.topMenu_DropDownClosed);
             this.editMenu.DropDownOpening += new System.EventHandler(this.editMenu_DropDownOpening);
             // 
             // undoMenuItem
@@ -667,8 +674,7 @@
             this.projectMenu.Name = "projectMenu";
             this.projectMenu.Size = new System.Drawing.Size(56, 20);
             this.projectMenu.Text = "&Project";
-            this.projectMenu.DropDownClosed += new System.EventHandler(this.topMenu_DropDownClosed);
-            this.projectMenu.DropDownOpening += new System.EventHandler(this.topMenu_DropDownOpening);
+            this.projectMenu.DropDownOpening += new System.EventHandler(this.projectMenu_DropDownOpening);
             // 
             // exploreProjectMenuItem
             // 
@@ -744,8 +750,6 @@
             this.helpMenu.Name = "helpMenu";
             this.helpMenu.Size = new System.Drawing.Size(44, 20);
             this.helpMenu.Text = "&Help";
-            this.helpMenu.DropDownClosed += new System.EventHandler(this.topMenu_DropDownClosed);
-            this.helpMenu.DropDownOpening += new System.EventHandler(this.topMenu_DropDownOpening);
             // 
             // aboutMenuItem
             // 
@@ -787,8 +791,7 @@
             this.buildMenu.Name = "buildMenu";
             this.buildMenu.Size = new System.Drawing.Size(46, 20);
             this.buildMenu.Text = "&Build";
-            this.buildMenu.DropDownClosed += new System.EventHandler(this.topMenu_DropDownClosed);
-            this.buildMenu.DropDownOpening += new System.EventHandler(this.topMenu_DropDownOpening);
+            this.buildMenu.DropDownOpening += new System.EventHandler(this.buildMenu_DropDownOpening);
             // 
             // buildMenuItem
             // 
@@ -833,8 +836,7 @@
             this.runMenu.Name = "runMenu";
             this.runMenu.Size = new System.Drawing.Size(40, 20);
             this.runMenu.Text = "&Run";
-            this.runMenu.DropDownClosed += new System.EventHandler(this.topMenu_DropDownClosed);
-            this.runMenu.DropDownOpening += new System.EventHandler(this.topMenu_DropDownOpening);
+            this.runMenu.DropDownOpening += new System.EventHandler(this.runMenu_DropDownOpening);
             // 
             // buildRunMenuItem
             // 
@@ -929,8 +931,7 @@
             this.settingsMenu.Name = "settingsMenu";
             this.settingsMenu.Size = new System.Drawing.Size(61, 20);
             this.settingsMenu.Text = "&Settings";
-            this.settingsMenu.DropDownClosed += new System.EventHandler(this.topMenu_DropDownClosed);
-            this.settingsMenu.DropDownOpening += new System.EventHandler(this.topMenu_DropDownOpening);
+            this.settingsMenu.DropDownOpening += new System.EventHandler(this.settingsMenu_DropDownOpening);
             // 
             // configureEngineMenuItem
             // 
@@ -995,7 +996,7 @@
         private System.Windows.Forms.ToolStripButton copyToolButton;
         private System.Windows.Forms.ToolStripButton pasteToolButton;
         private System.Windows.Forms.ToolStripButton projectPropertiesToolButton;
-        private System.Windows.Forms.ToolStripStatusLabel helpStatusLabel;
+        private System.Windows.Forms.ToolStripStatusLabel statusLabel;
         private System.Windows.Forms.ToolStripButton preferencesToolButton;
         private System.Windows.Forms.ToolStripDropDownButton newToolButton;
         private System.Windows.Forms.ToolStripMenuItem fileMenu;
@@ -1074,6 +1075,7 @@
         private System.Windows.Forms.ToolStripMenuItem rebuildRunMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
         private System.Windows.Forms.ToolStripMenuItem buildRunToolMenuItem;
+        private System.Windows.Forms.ToolStripStatusLabel projectStatusLabel;
     }
 }
 

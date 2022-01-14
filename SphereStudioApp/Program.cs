@@ -44,7 +44,7 @@ namespace SphereStudio
 
             if (args.Length > 0 && File.Exists(args[args.Length - 1]))
             {
-                Window.SetDefaultActive(args[args.Length - 1]);
+                Window.setDefaultActiveFile(args[args.Length - 1]);
             }
 
             Application.Run(Window);
