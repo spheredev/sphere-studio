@@ -182,9 +182,9 @@
             this.upgradeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.upgradeButton.Location = new System.Drawing.Point(12, 13);
             this.upgradeButton.Name = "upgradeButton";
-            this.upgradeButton.Size = new System.Drawing.Size(171, 25);
+            this.upgradeButton.Size = new System.Drawing.Size(120, 25);
             this.upgradeButton.TabIndex = 2;
-            this.upgradeButton.Text = "&Upgrade to Sphere Studio...";
+            this.upgradeButton.Text = "&Upgrade Project...";
             this.upgradeButton.UseVisualStyleBackColor = true;
             this.upgradeButton.Visible = false;
             this.upgradeButton.Click += new System.EventHandler(this.upgradeButton_Click);

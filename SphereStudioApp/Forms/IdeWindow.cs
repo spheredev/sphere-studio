@@ -85,7 +85,7 @@ namespace SphereStudio.Forms
             {
                 if (value && !StartVisible)
                 {
-                    startPageView = new StartPageView(this) { HelpLabel = helpLabel };
+                    startPageView = new StartPageView(this);
                     startPageView.RepopulateProjects();
                     startPageTab = AddDocument(startPageView, "Start Page");
                     startPageTab.Restyle();
@@ -106,7 +106,8 @@ namespace SphereStudio.Forms
         /// <param name="before">The name of the menu before which this one will be inserted.</param>
         public void AddMenuItem(ToolStripMenuItem item, string before = "")
         {
-            if (string.IsNullOrEmpty(before)) mainMenuStrip.Items.Add(item);
+            if (string.IsNullOrEmpty(before))
+                mainMenuStrip.Items.Add(item);
             int insertion = -1;
             foreach (ToolStripItem menuitem in mainMenuStrip.Items)
             {
@@ -203,8 +204,10 @@ namespace SphereStudio.Forms
                 }
                 else
                 {
-                    MessageBox.Show(string.Format("Sphere Studio doesn't know how to open that type of file and no default file opener is available.  Tip: Open Configuration Manager and check your plugins.\n\nFile Type: {0}\n\nPath to File:\n{1}", fileExtension.ToLower(), filePath),
-                        @"Unable to Open File", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(
+                        $"Sphere Studio doesn't know how to open that type of file and no default file opener is available.  Tip: Go to Preferences -> Plugins and check your plugins.\n\nFile Type: {fileExtension.ToLower()}\n\nPath to File:\n{filePath}",
+                        "Unable to Open File",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (IOException)
@@ -233,8 +236,9 @@ namespace SphereStudio.Forms
             if (usePluginWarning && (starter == null || compiler == null))
             {
                 var answer = MessageBox.Show(
-                    string.Format("One or more plugins required to work on '{0}' are either disabled or not installed.  Please open Configuration Manager and check your plugins.\n\nCompiler required:\n{1}\n\nIf you continue, data may be lost.  Open this project anyway?", pj.Name, pj.Compiler),
-                    "Proceed with Caution", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    $"One or more plugins required to work on '{pj.Name}' are either disabled or not installed.  Please open Configuration Manager and check your plugins.\n\nCompiler required:\n{pj.Compiler}\n\nIf you continue, data may be lost.  Open this project anyway?",
+                    "Proceed with Caution",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (answer == DialogResult.No)
                     return;
             }
@@ -247,7 +251,7 @@ namespace SphereStudio.Forms
 
             LoadProject?.Invoke(null, EventArgs.Empty);
 
-            helpLabel.Text = "Game project loaded successfully!";
+            helpStatusLabel.Text = "Project was loaded successfully.";
 
             StartVisible = true;
 
@@ -472,7 +476,7 @@ namespace SphereStudio.Forms
             if (starter == null || compiler == null)
             {
                 MessageBox.Show(
-                    "Unable to create a new Sphere Studio project.\n\nDefault engine and/or compiler plugins have not yet been selected.  Please open Configuration Manager and select a default engine and compiler plugin, then try again.",
+                    "Unable to create a new Sphere Studio project.\n\nDefault engine and/or compiler plugins have not yet been selected.  Please go to Preferences -> Plugins and select a default engine and compiler plugin, then try again.",
                     "Operation Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
@@ -828,31 +832,32 @@ namespace SphereStudio.Forms
             return null;
         }
 
-        internal string[] GetFilesToOpen(bool multiselect)
+        internal string[] GetFilesToOpen(bool multiSelect)
         {
             using (OpenFileDialog dialog = new OpenFileDialog())
             {
-                string filterString = "";
                 var plugins = from name in PluginManager.GetNames<IFileOpener>()
                               let plugin = PluginManager.Get<IFileOpener>(name)
                               where plugin.FileExtensions != null
                               orderby plugin.FileTypeName ascending
                               select plugin;
+                var filterString = string.Empty;
                 foreach (IFileOpener plugin in plugins)
                 {
-                    StringBuilder filter = new StringBuilder();
+                    var extensions = string.Empty;
                     foreach (string extension in plugin.FileExtensions)
                     {
-                        if (filter.Length > 0) filter.Append(";");
-                        filter.AppendFormat("*.{0}", extension);
+                        if (extensions.Length > 0)
+                            extensions += ";";
+                        extensions += $"*.{extension}";
                     }
-                    filterString += String.Format("{0}|{1}|", plugin.FileTypeName, filter);
+                    filterString += $"{plugin.FileTypeName}|{extensions}|";
                 }
-                filterString += @"All Files|*.*";
+                filterString += "All Files|*.*";
                 dialog.Filter = filterString;
                 dialog.FilterIndex = plugins.Count() + 1;
                 dialog.InitialDirectory = Session.Project.RootPath;
-                dialog.Multiselect = multiselect;
+                dialog.Multiselect = multiSelect;
                 return dialog.ShowDialog() == DialogResult.OK ? dialog.FileNames : null;
             }
         }
@@ -1068,7 +1073,7 @@ namespace SphereStudio.Forms
                     isFirstDebugStop = true;
                     if (await Debugger.Attach())
                     {
-                        buildRunMenuItem.Text = buildRunToolCommand.Text = "&Resume Running";
+                        buildRunMenuItem.Text = buildRunToolMenuItem.Text = "&Resume Running";
                         runGameToolButton.Text = "Resume";
                         var breaks = Session.Project.GetAllBreakpoints();
                         foreach (string filename in breaks.Keys)
@@ -1079,7 +1084,7 @@ namespace SphereStudio.Forms
                     else
                     {
                         SystemSounds.Hand.Play();
-                        helpLabel.Text = "Sphere Studio was unable to launch a debugging session.";
+                        helpStatusLabel.Text = "An error occurred launching a debugging session.";
                         Debugger = null;
                         UpdateControls();
                     }
@@ -1111,7 +1116,7 @@ namespace SphereStudio.Forms
             buildRunMenuItem.Enabled = Session.Project != null && (Debugger == null || !Debugger.Running);
             rebuildRunMenuItem.Enabled = Session.Project != null && Debugger == null;
             runGameToolButton.Enabled = Session.Project != null && (Debugger == null || !Debugger.Running);
-            rebuildRunToolCommand.Enabled = Session.Project != null && Debugger == null;
+            rebuildRunToolMenuItem.Enabled = Session.Project != null && Debugger == null;
             breakNowMenuItem.Enabled = pauseToolButton.Enabled = Debugger != null && Debugger.Running;
             stopDebuggingMenuItem.Enabled = stopToolButton.Enabled = Debugger != null;
             stepIntoMenuItem.Enabled = Debugger != null && !Debugger.Running;
@@ -1172,7 +1177,7 @@ namespace SphereStudio.Forms
             }
             Debugger = null;
             buildRunMenuItem.Text = "Build && &Run";
-            buildRunToolCommand.Text = "Build && &Run (Default)";
+            buildRunToolMenuItem.Text = "Build && &Run (Default)";
             runGameToolButton.Text = "&Run Game";
             UpdateControls();
         }

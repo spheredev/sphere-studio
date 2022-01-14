@@ -71,8 +71,6 @@ namespace SphereStudio.DocumentViews
             }
         }
 
-        public ToolStripLabel HelpLabel { get; set; }
-
         /// <summary>
         /// Adds Sphere games to the games panel for start-up use.
         /// </summary>
