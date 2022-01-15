@@ -56,7 +56,7 @@ namespace SphereStudio.Base
         int LineNumber { get; }
 
         /// <summary>
-        /// Gets whether the debuggee is currently executing.
+        /// Gets a boolean value indicating whether the debuggee is actively executing code.
         /// </summary>
         bool Running { get; }
 

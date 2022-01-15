@@ -66,10 +66,11 @@
             this.newMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newProjectMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.openMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.Seperator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.saveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Seperator3 = new System.Windows.Forms.ToolStripSeparator();
             this.exitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -90,8 +91,6 @@
             this.Separator7 = new System.Windows.Forms.ToolStripSeparator();
             this.projectPropertiesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.closeDocumentMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.startPageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -414,7 +413,7 @@
             this.statusLabel.BackColor = System.Drawing.Color.Transparent;
             this.statusLabel.Margin = new System.Windows.Forms.Padding(2, 3, 0, 2);
             this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(678, 17);
+            this.statusLabel.Size = new System.Drawing.Size(709, 17);
             this.statusLabel.Spring = true;
             this.statusLabel.Text = "Welcome to Sphere Studio!";
             this.statusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -429,10 +428,11 @@
             this.toolStripSeparator7,
             this.newMenuItem,
             this.openMenuItem,
-            this.Seperator2,
+            this.toolStripSeparator3,
             this.saveMenuItem,
             this.saveAsMenuItem,
             this.saveAllMenuItem,
+            this.closeMenuItem,
             this.Seperator3,
             this.exitMenuItem});
             this.fileMenu.Name = "fileMenu";
@@ -445,8 +445,9 @@
             this.newProjectMenuItem.Image = global::SphereStudio.Properties.Resources.new_item;
             this.newProjectMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newProjectMenuItem.Name = "newProjectMenuItem";
-            this.newProjectMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.newProjectMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.newProjectMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.N)));
+            this.newProjectMenuItem.Size = new System.Drawing.Size(227, 22);
             this.newProjectMenuItem.Text = "New &Project...";
             this.newProjectMenuItem.Click += new System.EventHandler(this.newProjectMenuItem_Click);
             // 
@@ -455,9 +456,10 @@
             this.openProjectMenuItem.Image = global::SphereStudio.Properties.Resources.folder;
             this.openProjectMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.openProjectMenuItem.Name = "openProjectMenuItem";
-            this.openProjectMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openProjectMenuItem.Size = new System.Drawing.Size(195, 22);
-            this.openProjectMenuItem.Text = "&Open Project...";
+            this.openProjectMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.O)));
+            this.openProjectMenuItem.Size = new System.Drawing.Size(227, 22);
+            this.openProjectMenuItem.Text = "Open P&roject...";
             this.openProjectMenuItem.Click += new System.EventHandler(this.openProjectMenuItem_Click);
             // 
             // closeProjectMenuItem
@@ -465,21 +467,21 @@
             this.closeProjectMenuItem.Enabled = false;
             this.closeProjectMenuItem.Image = global::SphereStudio.Properties.Resources.cross;
             this.closeProjectMenuItem.Name = "closeProjectMenuItem";
-            this.closeProjectMenuItem.Size = new System.Drawing.Size(195, 22);
-            this.closeProjectMenuItem.Text = "&Close Project";
+            this.closeProjectMenuItem.Size = new System.Drawing.Size(227, 22);
+            this.closeProjectMenuItem.Text = "Cl&ose Project";
             this.closeProjectMenuItem.Click += new System.EventHandler(this.closeProjectMenuItem_Click);
             // 
             // openLastProjectMenuItem
             // 
             this.openLastProjectMenuItem.Name = "openLastProjectMenuItem";
-            this.openLastProjectMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.openLastProjectMenuItem.Size = new System.Drawing.Size(227, 22);
             this.openLastProjectMenuItem.Text = "Open &Last Project";
             this.openLastProjectMenuItem.Click += new System.EventHandler(this.openLastProjectMenuItem_Click);
             // 
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(192, 6);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(224, 6);
             // 
             // newMenuItem
             // 
@@ -487,7 +489,7 @@
             this.newProjectMenuItem2});
             this.newMenuItem.Image = global::SphereStudio.Properties.Resources.page_white_edit;
             this.newMenuItem.Name = "newMenuItem";
-            this.newMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.newMenuItem.Size = new System.Drawing.Size(227, 22);
             this.newMenuItem.Text = "&New";
             this.newMenuItem.DropDownClosed += new System.EventHandler(this.newMenuItem_DropDownClosed);
             this.newMenuItem.DropDownOpening += new System.EventHandler(this.newMenuItem_DropDownOpening);
@@ -504,14 +506,15 @@
             // 
             this.openMenuItem.Image = global::SphereStudio.Properties.Resources.open;
             this.openMenuItem.Name = "openMenuItem";
-            this.openMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.openMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.openMenuItem.Size = new System.Drawing.Size(227, 22);
             this.openMenuItem.Text = "&Open...";
             this.openMenuItem.Click += new System.EventHandler(this.openMenuItem_Click);
             // 
-            // Seperator2
+            // toolStripSeparator3
             // 
-            this.Seperator2.Name = "Seperator2";
-            this.Seperator2.Size = new System.Drawing.Size(192, 6);
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(224, 6);
             // 
             // saveMenuItem
             // 
@@ -519,14 +522,14 @@
             this.saveMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveMenuItem.Name = "saveMenuItem";
             this.saveMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.saveMenuItem.Size = new System.Drawing.Size(227, 22);
             this.saveMenuItem.Text = "&Save";
             this.saveMenuItem.Click += new System.EventHandler(this.saveMenuItem_Click);
             // 
             // saveAsMenuItem
             // 
             this.saveAsMenuItem.Name = "saveAsMenuItem";
-            this.saveAsMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.saveAsMenuItem.Size = new System.Drawing.Size(227, 22);
             this.saveAsMenuItem.Text = "Save &As...";
             this.saveAsMenuItem.Click += new System.EventHandler(this.saveAsMenuItem_Click);
             // 
@@ -536,21 +539,29 @@
             this.saveAllMenuItem.Name = "saveAllMenuItem";
             this.saveAllMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.S)));
-            this.saveAllMenuItem.Size = new System.Drawing.Size(195, 22);
-            this.saveAllMenuItem.Text = "Save &All";
+            this.saveAllMenuItem.Size = new System.Drawing.Size(227, 22);
+            this.saveAllMenuItem.Text = "Save A&ll";
             this.saveAllMenuItem.Click += new System.EventHandler(this.saveAllMenuItem_Click);
+            // 
+            // closeMenuItem
+            // 
+            this.closeMenuItem.Name = "closeMenuItem";
+            this.closeMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F4)));
+            this.closeMenuItem.Size = new System.Drawing.Size(227, 22);
+            this.closeMenuItem.Text = "&Close";
+            this.closeMenuItem.Click += new System.EventHandler(this.closeMenuItem_Click);
             // 
             // Seperator3
             // 
             this.Seperator3.Name = "Seperator3";
-            this.Seperator3.Size = new System.Drawing.Size(192, 6);
+            this.Seperator3.Size = new System.Drawing.Size(224, 6);
             // 
             // exitMenuItem
             // 
             this.exitMenuItem.Image = global::SphereStudio.Properties.Resources.door_in;
             this.exitMenuItem.Name = "exitMenuItem";
             this.exitMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.exitMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.exitMenuItem.Size = new System.Drawing.Size(227, 22);
             this.exitMenuItem.Text = "E&xit";
             this.exitMenuItem.Click += new System.EventHandler(this.exitMenuItem_Click);
             // 
@@ -712,8 +723,6 @@
             // viewMenu
             // 
             this.viewMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.closeDocumentMenuItem,
-            this.toolStripSeparator3,
             this.startPageMenuItem});
             this.viewMenu.Name = "viewMenu";
             this.viewMenu.Size = new System.Drawing.Size(44, 20);
@@ -721,24 +730,11 @@
             this.viewMenu.DropDownClosed += new System.EventHandler(this.viewMenu_DropDownClosed);
             this.viewMenu.DropDownOpening += new System.EventHandler(this.viewMenu_DropDownOpening);
             // 
-            // closeDocumentMenuItem
-            // 
-            this.closeDocumentMenuItem.Name = "closeDocumentMenuItem";
-            this.closeDocumentMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
-            this.closeDocumentMenuItem.Size = new System.Drawing.Size(213, 22);
-            this.closeDocumentMenuItem.Text = "Close Active Pane";
-            this.closeDocumentMenuItem.Click += new System.EventHandler(this.closeDocumentMenuItem_Click);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(210, 6);
-            // 
             // startPageMenuItem
             // 
             this.startPageMenuItem.Image = global::SphereStudio.Properties.Resources.SphereEditor;
             this.startPageMenuItem.Name = "startPageMenuItem";
-            this.startPageMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.startPageMenuItem.Size = new System.Drawing.Size(127, 22);
             this.startPageMenuItem.Text = "&Start Page";
             this.startPageMenuItem.Click += new System.EventHandler(this.startPageMenuItem_Click);
             // 
@@ -1005,7 +1001,6 @@
         private System.Windows.Forms.ToolStripMenuItem closeProjectMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openLastProjectMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openMenuItem;
-        private System.Windows.Forms.ToolStripSeparator Seperator2;
         private System.Windows.Forms.ToolStripMenuItem saveMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveAsMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveAllMenuItem;
@@ -1029,8 +1024,6 @@
         private System.Windows.Forms.ToolStripSeparator Separator7;
         private System.Windows.Forms.ToolStripMenuItem refreshProjectMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewMenu;
-        private System.Windows.Forms.ToolStripMenuItem closeDocumentMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem startPageMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpMenu;
         private System.Windows.Forms.ToolStripMenuItem aboutMenuItem;
@@ -1076,6 +1069,8 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
         private System.Windows.Forms.ToolStripMenuItem buildRunToolMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel projectStatusLabel;
+        private System.Windows.Forms.ToolStripMenuItem closeMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
     }
 }
 

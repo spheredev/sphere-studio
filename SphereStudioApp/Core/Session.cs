@@ -161,7 +161,7 @@ namespace SphereStudio.Core
             set { Preset = null; SetValue("textEditor", value); }
         }
 
-        public string LastProject
+        public string LastProjectFileName
         {
             get { return GetString("lastProject", ""); }
             set { SetValue("lastProject", value); }

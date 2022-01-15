@@ -347,15 +347,11 @@ namespace SphereStudio.Forms
 
         private bool closeAllDocuments(bool forceClose = false)
         {
-            DocumentTab[] toClose = (from tab in tabs select tab).ToArray();
-            if (!forceClose)
-            {
-                foreach (DocumentTab tab in toClose)
-                    if (!tab.PromptSave()) return false;
-            }
-            foreach (DocumentTab tab in toClose)
+            var tabsToClose = tabs.ToArray();
+            if (!forceClose && !tabsToClose.All(tab => tab.PromptSave()))
+                return false;
+            foreach (var tab in tabsToClose)
                 tab.Close(true);
-
             StartPageVisible = false;
             return true;
         }
@@ -397,7 +393,7 @@ namespace SphereStudio.Forms
 
             // clear the project tree
             fileListPane.Close();
-            openLastProjectMenuItem.Enabled = (Session.Settings.LastProject.Length > 0);
+            openLastProjectMenuItem.Enabled = (Session.Settings.LastProjectFileName.Length > 0);
 
             // all clear!
             refreshProject();
@@ -506,7 +502,7 @@ namespace SphereStudio.Forms
             var ideName = Versioning.IsWiP ? $"{Versioning.Name} WiP" : Versioning.Name;
             if (isProjectLoaded())
             {
-                Session.Settings.LastProject = Session.Project.FileName;
+                Session.Settings.LastProjectFileName = Session.Project.FileName;
                 Text = Session.Project.GameOnly
                     ? $"{Project.Name} (Sphere Game) - {ideName}"
                     : $"{Project.Name} - {ideName}";
@@ -715,6 +711,7 @@ namespace SphereStudio.Forms
             if (engineToolComboBox.SelectedIndex == engineToolComboBox.Items.Count - 1)
             {
                 showPluginManager();
+                refreshEngineList();
                 return;
             }
 
@@ -727,20 +724,26 @@ namespace SphereStudio.Forms
         #region File menu Click handlers
         private void fileMenu_DropDownOpening(object sender, EventArgs e)
         {
+            var canClose = currentTab != null;
             var canSave = currentTab?.View.CanSave ?? false;
-            var haveLastProject = !string.IsNullOrEmpty(Session.Settings.LastProject);
+            var haveLastProject = !string.IsNullOrEmpty(Session.Settings.LastProjectFileName);
+
+            closeMenuItem.Enabled = canClose;
             closeProjectMenuItem.Enabled = isProjectLoaded();
             openLastProjectMenuItem.Enabled = haveLastProject
-                && (!isProjectLoaded() || Session.Settings.LastProject != Session.Project.FileName);
+                && (!isProjectLoaded() || Session.Settings.LastProjectFileName != Session.Project.FileName);
             saveMenuItem.Enabled = canSave;
             saveAsMenuItem.Enabled = canSave;
+
+            closeMenuItem.Text = canClose ? $"&Close {currentTab.Title}" : "&Close";
+            saveMenuItem.Text = canSave ? $"&Save {currentTab.Title}" : "&Save";
         }
 
         internal void newMenuItem_DropDownOpening(object sender, EventArgs e)
         {
             ToolStripDropDown dropDown = ((ToolStripDropDownItem)sender).DropDown;
 
-            string[] pluginNames = PluginManager.GetNames<INewFileOpener>();
+            var pluginNames = PluginManager.GetNames<INewFileOpener>();
             if (pluginNames.Length > 0)
                 dropDown.Items.Add(new ToolStripSeparator() { Name = "8:12" });
             var plugins = from name in pluginNames
@@ -763,12 +766,14 @@ namespace SphereStudio.Forms
 
         internal void newMenuItem_DropDownClosed(object sender, EventArgs e)
         {
-            ToolStripDropDown dropdown = ((ToolStripDropDownItem)sender).DropDown;
+            var dropDown = ((ToolStripDropDownItem)sender).DropDown;
+            while (dropDown.Items.ContainsKey("8:12"))
+                dropDown.Items.RemoveByKey("8:12");
+        }
 
-            while (dropdown.Items.ContainsKey("8:12"))
-            {
-                dropdown.Items.RemoveByKey("8:12");
-            }
+        private void closeMenuItem_Click(object sender, EventArgs e)
+        {
+            currentTab?.Close();
         }
 
         private void closeProjectMenuItem_Click(object sender, EventArgs e)
@@ -800,7 +805,8 @@ namespace SphereStudio.Forms
 
             if (npf.ShowDialog() == DialogResult.OK)
             {
-                if (!closeCurrentProject()) return;
+                if (!closeCurrentProject())
+                    return;
                 if (BuildEngine.Prep(npf.NewProject))
                 {
                     npf.NewProject.Save();
@@ -823,8 +829,8 @@ namespace SphereStudio.Forms
 
         private void openLastProjectMenuItem_Click(object sender, EventArgs e)
         {
-            if (File.Exists(Session.Settings.LastProject))
-                OpenProject(Session.Settings.LastProject, false);
+            if (File.Exists(Session.Settings.LastProjectFileName))
+                OpenProject(Session.Settings.LastProjectFileName, false);
             else
                 refreshUI();
         }
@@ -869,6 +875,7 @@ namespace SphereStudio.Forms
         private void editMenu_DropDownOpening(object sender, EventArgs e)
         {
             var canCopyPaste = currentTab != null && currentTab != startPageTab;
+
             copyMenuItem.Enabled = canCopyPaste;
             cutMenuItem.Enabled = canCopyPaste;
             pasteMenuItem.Enabled = canCopyPaste;
@@ -922,6 +929,9 @@ namespace SphereStudio.Forms
         #region View menu Click handlers
         private void viewMenu_DropDownOpening(object sender, EventArgs e)
         {
+            startPageMenuItem.Checked = currentTab == startPageTab;
+
+            // add dock panels to View menu
             var panelNames = from name in PluginManager.GetNames<IDockPane>()
                              let plugin = PluginManager.Get<IDockPane>(name)
                              where plugin.ShowInViewMenu
@@ -941,11 +951,11 @@ namespace SphereStudio.Forms
                 }
             }
 
-            startPageMenuItem.Checked = currentTab == startPageTab;
+            // add open documents to View menu
             var tabList = from tab in tabs
                           where tab != startPageTab
                           select tab;
-            if (tabList.Count() > 0)
+            if (tabList.Any())
             {
                 ToolStripSeparator ts = new ToolStripSeparator { Name = "zz_v" };
                 viewMenu.DropDownItems.Add(ts);
@@ -963,26 +973,12 @@ namespace SphereStudio.Forms
 
         private void viewMenu_DropDownClosed(object sender, EventArgs e)
         {
+            // remove documents and dock panels from View menu
             for (int i = 0; i < viewMenu.DropDownItems.Count; ++i)
             {
                 if (viewMenu.DropDownItems[i].Name == "zz_v")
-                {
-                    viewMenu.DropDownItems.RemoveAt(i);
-                    i--;
-                }
+                    viewMenu.DropDownItems.RemoveAt(i--);
             }
-        }
-
-        private void closeDocumentMenuItem_Click(object sender, EventArgs e)
-        {
-            if (mainDockPanel.ActiveDocument == null) return;
-
-            if (mainDockPanel.ActiveDocument is DockContent &&
-                ((DockContent)mainDockPanel.ActiveDocument).Controls[0] is StartPageView)
-            {
-                startPageMenuItem.PerformClick();
-            }
-            else mainDockPanel.ActiveDocument.DockHandler.Close();
         }
 
         void documentMenuItem_Click(object sender, EventArgs e)
@@ -1005,6 +1001,7 @@ namespace SphereStudio.Forms
         private void projectMenu_DropDownOpening(object sender, EventArgs e)
         {
             var haveProject = isProjectLoaded();
+
             exploreProjectMenuItem.Enabled = haveProject;
             projectPropertiesMenuItem.Enabled = haveProject;
             refreshProjectMenuItem.Enabled = haveProject;
@@ -1077,6 +1074,7 @@ namespace SphereStudio.Forms
             var canLaunch = isProjectLoaded() && Debugger == null;
             var canStep = Debugger != null && !Debugger.Running;
             var canTestGame = BuildEngine.CanTest(Session.Project) && Debugger == null;
+
             breakNowMenuItem.Enabled = canBreak;
             buildRunMenuItem.Enabled = canLaunch || canStep;
             rebuildRunMenuItem.Enabled = canLaunch;
@@ -1137,7 +1135,9 @@ namespace SphereStudio.Forms
             var starter = isProjectLoaded()
                ? PluginManager.Get<IStarter>(Session.Project.User.Engine)
                : null;
+
             var canConfigureEngine = starter?.CanConfigure ?? false;
+
             configureEngineMenuItem.Enabled = canConfigureEngine;
         }
 
@@ -1156,8 +1156,8 @@ namespace SphereStudio.Forms
         #region Help menu Click handlers
         private void aboutMenuItem_Click(object sender, EventArgs e)
         {
-            using (var about = new AboutBoxForm())
-                about.ShowDialog();
+            using (var aboutBox = new AboutBoxForm())
+                aboutBox.ShowDialog();
         }
         #endregion
     }
