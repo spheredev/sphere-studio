@@ -428,17 +428,20 @@ namespace SphereStudio.DockPanes
 
         private void OpenItem(TreeNode node)
         {
-            if (_hostForm == null || node == null) return;
-            string pathtop = node.FullPath;
+            if (_hostForm == null || node == null)
+                return;
+            var pathtop = node.FullPath;
 
             int idx = pathtop.IndexOf('\\');
-            if (idx < 0) return; // we're at root.
+            if (idx < 0)
+                return;  // we're at root.
 
             pathtop = pathtop.Substring(idx);
-            string path = Session.Project.RootPath + pathtop;
+            var path = Session.Project.RootPath + pathtop;
 
             // if the node is anything other than a file, don't do anything
-            if ((string) node.Tag != "fileNode") return;
+            if ((string)node.Tag != "fileNode")
+                return;
 
             _hostForm.OpenFile(path);
         }

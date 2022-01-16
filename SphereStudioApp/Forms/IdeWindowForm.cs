@@ -216,14 +216,14 @@ namespace SphereStudio.Forms
 
         public void RemoveMenuItem(ToolStripMenuItem item)
         {
-            ToolStripMenuItem menuItem = item.OwnerItem as ToolStripMenuItem;
-            if (menuItem != null) menuItem.DropDownItems.Remove(item);
+            var menuItem = item.OwnerItem as ToolStripMenuItem;
+            menuItem?.DropDownItems.Remove(item);
         }
 
         public void RemoveMenuItem(string name)
         {
-            ToolStripMenuItem item = getMenuItem(mainMenuStrip.Items, name);
-            if (item != null) item.Dispose();
+            var item = getMenuItem(mainMenuStrip.Items, name);
+            item?.Dispose();
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -405,7 +405,7 @@ namespace SphereStudio.Forms
 
         private DocumentTab findDocumentTab(string fileName)
         {
-            return tabs.Find(it => it.FileName == fileName);
+            return tabs.Find(it => it.FileName.Equals(fileName, StringComparison.OrdinalIgnoreCase));
         }
 
         private ToolStripMenuItem getMenuItem(ToolStripItemCollection collection, string name)
@@ -422,10 +422,10 @@ namespace SphereStudio.Forms
 
         private DocumentView openFile(string fileName, bool restoreView)
         {
-            string extension = Path.GetExtension(fileName);
+            var extension = Path.GetExtension(fileName);
 
-            // is it a project?
-            if (extension.ToUpper() == ".SSPROJ")
+            // for Sphere Studio project files, load it into the IDE as a project
+            if (extension.Equals(".ssproj", StringComparison.OrdinalIgnoreCase))
             {
                 OpenProject(fileName);
                 return null;
@@ -444,12 +444,11 @@ namespace SphereStudio.Forms
             DocumentView view = null;
             try
             {
-                string fileExtension = Path.GetExtension(fileName);
-                if (fileExtension.StartsWith("."))  // remove dot from extension
-                    fileExtension = fileExtension.Substring(1);
+                if (extension.StartsWith("."))  // remove dot from extension
+                    extension = extension.Substring(1);
                 var plugins = from name in PluginManager.GetNames<IFileOpener>()
                               let plugin = PluginManager.Get<IFileOpener>(name)
-                              where plugin.FileExtensions.Any(it => it.ToUpperInvariant() == fileExtension.ToUpperInvariant())
+                              where plugin.FileExtensions.Any(it => extension.Equals(it, StringComparison.OrdinalIgnoreCase))
                               select plugin;
                 IFileOpener defaultOpener = PluginManager.Get<IFileOpener>(Session.Settings.FileOpener);
                 IFileOpener opener = plugins.FirstOrDefault() ?? defaultOpener;
@@ -460,14 +459,14 @@ namespace SphereStudio.Forms
                 else
                 {
                     MessageBox.Show(
-                        $"Sphere Studio doesn't know how to open that type of file and no default file opener is available.  Tip: Go to Preferences -> Plugins and check your plugins.\n\nFile Type: {fileExtension.ToLower()}\n\nPath to File:\n{fileName}",
+                        $"Sphere Studio doesn't know how to open that type of file and no default file opener is available.  Tip: Go to Preferences -> Plugins and check your plugins.\n\nFile Type: .{extension}\n\nPath to File:\n{fileName}",
                         "Unable to Open File",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (IOException)
             {
-                return null;
+                view = null;
             }
 
             if (view != null)
@@ -605,10 +604,10 @@ namespace SphereStudio.Forms
                     {
                         buildRunMenuItem.Text = buildRunToolMenuItem.Text = "&Resume Running";
                         runGameToolButton.Text = "Resume";
-                        var breaks = Session.Project.GetAllBreakpoints();
-                        foreach (string filename in breaks.Keys)
-                            foreach (int lineNumber in breaks[filename])
-                                await Debugger.SetBreakpoint(filename, lineNumber);
+                        var breakpoints = Session.Project.GetAllBreakpoints();
+                        foreach (var fileName in breakpoints.Keys)
+                            foreach (var lineNumber in breakpoints[fileName])
+                                await Debugger.SetBreakpoint(fileName, lineNumber);
                         await Debugger.Resume();
                     }
                     else
@@ -632,8 +631,8 @@ namespace SphereStudio.Forms
         {
             var scriptViews = from tab in tabs
                               where tab.View is TextView
-                              select tab.View;
-            foreach (TextView view in scriptViews)
+                              select (TextView)tab.View;
+            foreach (var view in scriptViews)
             {
                 view.ActiveLine = 0;
                 view.ErrorLine = 0;
@@ -654,8 +653,7 @@ namespace SphereStudio.Forms
                 return;
             }
 
-            TextView view = null;
-            view = OpenFile(Debugger.FileName) as TextView;
+            var view = OpenFile(Debugger.FileName) as TextView;
             if (view != null)
             {
                 view.ActiveLine = Debugger.LineNumber;
@@ -671,8 +669,8 @@ namespace SphereStudio.Forms
         {
             var scriptViews = from tab in tabs
                               where tab.View is TextView
-                              select tab.View;
-            foreach (TextView view in scriptViews)
+                              select (TextView)tab.View;
+            foreach (var view in scriptViews)
             {
                 view.ActiveLine = 0;
                 view.ErrorLine = 0;
@@ -684,11 +682,11 @@ namespace SphereStudio.Forms
         {
             if (mainDockPanel.ActiveDocument != null)
             {
-                var content = mainDockPanel.ActiveDocument as DockContent;
+                var content = (DockContent)mainDockPanel.ActiveDocument;
                 if (content.Tag is DocumentTab)
                 {
                     currentTab?.Deactivate();
-                    currentTab = content.Tag as DocumentTab;
+                    currentTab = (DocumentTab)content.Tag;
                     currentTab.Activate();
                 }
             }
@@ -696,7 +694,6 @@ namespace SphereStudio.Forms
             {
                 currentTab?.Deactivate();
                 currentTab = null;
-                return;
             }
             refreshUI();
         }
@@ -983,7 +980,7 @@ namespace SphereStudio.Forms
 
         void documentMenuItem_Click(object sender, EventArgs e)
         {
-            var tab = findDocumentTab(((ToolStripItem)sender).Tag as string);
+            var tab = findDocumentTab((string)((ToolStripItem)sender).Tag);
             if (tab != null)
                 tab.Activate();
             else
