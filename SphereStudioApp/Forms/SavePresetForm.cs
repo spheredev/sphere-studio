@@ -92,7 +92,7 @@ namespace SphereStudio.Forms
             if (File.Exists(path))
             {
                 DialogResult result = MessageBox.Show(
-                    String.Format("A configuration preset named \"{0}\" already exists. Do you want to overwrite it?", nameTextBox.Text),
+                    $@"A configuration preset named ""{nameTextBox.Text}"" already exists. Do you want to overwrite it?",
                     "Preset Already Exists", MessageBoxButtons.YesNo);
                 isSaveAllowed = result == DialogResult.Yes;
             }

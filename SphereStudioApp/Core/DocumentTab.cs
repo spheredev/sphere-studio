@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Security;
-using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using WeifenLuo.WinFormsUI.Docking;
@@ -40,7 +34,7 @@ namespace SphereStudio.Core
             View.Dock = DockStyle.Fill;
             
             _tabText = fileName != null ? Path.GetFileName(fileName)
-                : string.Format("Untitled{0}", _unsavedID++);
+                : $"Untitled {_unsavedID++}";
             _content = new DockContent();
             _content.FormClosing += on_FormClosing;
             _content.FormClosed += on_FormClosed;
@@ -77,8 +71,8 @@ namespace SphereStudio.Core
         public event EventHandler Closed;
         
         /// <summary>
-        /// Gets the fully-qualified file path for the document. If the document
-        /// hasn't been saved yet, this will be null.
+        /// Gets the fully-qualified file path for this tab. This is <c>null</c> for newly created
+        /// documents that haven't been saved yet.
         /// </summary>
         public string FileName { get; private set; }
 
@@ -86,10 +80,7 @@ namespace SphereStudio.Core
         /// Gets the tab's title text, including the trailing asterisk if the
         /// document has been modified.
         /// </summary>
-        public string Title
-        {
-            get { return _content.TabText; }
-        }
+        public string Title => _content.TabText;
         
         /// <summary>
         /// Gets the underlying IDocumentView for the tab.
@@ -107,7 +98,7 @@ namespace SphereStudio.Core
             {
                 Activate();
                 DialogResult result = MessageBox.Show(
-                    string.Format("{0}\n\nThis document has been modified. Any unsaved changes will be lost if you continue. Do you want to save it now?", _tabText),
+                    $"{_tabText}\n\nThis document has been modified. Any unsaved changes will be lost if you continue. Do you want to save it now?",
                     "Unsaved Changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
                 if (result == DialogResult.Cancel) return false;
                 if (result == DialogResult.Yes)
@@ -159,11 +150,12 @@ namespace SphereStudio.Core
             using (var diag = new SaveFileDialog())
             {
                 // set up the dialog parameters
-                string filterString = "";
+                var filterString = "";
                 foreach (string ext in View.FileExtensions)
                 {
-                    if (filterString != "") filterString += "|";
-                    filterString += string.Format(".{0} File|*.{0}", ext);
+                    if (filterString != string.Empty)
+                        filterString += "|";
+                    filterString += $".{ext} File|*.{ext}";
                 }
                 diag.Title = "Save As";
                 diag.InitialDirectory = path;
@@ -309,7 +301,7 @@ namespace SphereStudio.Core
 
         private void UpdateTabText()
         {
-            _content.TabText = View.IsDirty ? _tabText + "*" : _tabText;
+            _content.TabText = View.IsDirty ? $"{_tabText} *" : _tabText;
             if (View.ReadOnly)
                 _content.TabText += " (read-only)";
             _content.ToolTipText = FileName;
@@ -346,7 +338,7 @@ namespace SphereStudio.Core
 
         private void on_FormClosed(object sender, FormClosedEventArgs e)
         {
-            if (Closed != null) Closed(this, EventArgs.Empty);
+            Closed?.Invoke(this, EventArgs.Empty);
             Dispose();
         }
     }

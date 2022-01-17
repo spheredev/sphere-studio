@@ -374,11 +374,10 @@ namespace SphereStudio.DockPanes
 
         private void CopyPathItem_Click(object sender, EventArgs e)
         {
-            string text = fileTree.SelectedNode.FullPath.Replace('\\', '/');
+            var text = fileTree.SelectedNode.FullPath.Replace('\\', '/');
             text = text.Substring(text.IndexOf('/') + 1);
             text = text.Substring(text.IndexOf('/') + 1);
-            Clipboard.Clear();
-            Clipboard.SetText(string.Format("\"{0}\"", text), TextDataFormat.Text);
+            Clipboard.SetText($@"""{text}""", TextDataFormat.Text);
         }
 
         private void ProjectTreeView_BeforeLabelEdit(object sender, NodeLabelEditEventArgs e)

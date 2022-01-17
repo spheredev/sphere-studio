@@ -15,8 +15,6 @@ namespace SphereStudio.DockPanes
 {
     partial class InspectorPane : UserControl, IDockPane, IStyleAware
     {
-        private const string ValueBoxHint = "Select a variable from the list above to see what it contains.";
-
         private bool _isEvaling = false;
         private int _frame = -1;
         private IReadOnlyDictionary<string, KiAtom> _vars;
@@ -57,7 +55,7 @@ namespace SphereStudio.DockPanes
             m_callsListView.Items.Clear();
             foreach (var frame in stackFrames)
             {
-                var item = new ListViewItem(frame.FunctionName != "" ? string.Format("{0}()", frame.FunctionName) : "anon");
+                var item = new ListViewItem(frame.FunctionName != "" ? $"{frame.FunctionName}()" : "anon");
                 var lineNumberString = frame.LineNumber != 0 ? frame.LineNumber.ToString() : "";
                 item.SubItems.Add(frame.FileName);
                 item.SubItems.Add(lineNumberString);

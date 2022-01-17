@@ -313,9 +313,9 @@ namespace SphereStudio.Core
                         var scriptPath = mainPath.StartsWith("scripts/")
                             ? mainPath.Substring(8)
                             : $"../{mainPath}";
-                        writer.WriteLine(string.Format("screen_width={0}", resolution.Width));
-                        writer.WriteLine(string.Format("screen_height={0}", resolution.Height));
-                        writer.WriteLine(string.Format("script={0}", scriptPath));
+                        writer.WriteLine($"screen_width={resolution.Width}");
+                        writer.WriteLine($"screen_height={resolution.Height}");
+                        writer.WriteLine($"script={scriptPath}");
                     }
                 }
             }
@@ -349,8 +349,8 @@ namespace SphereStudio.Core
 
         private static string makeFileName(string name)
         {
-            string invalidChars = Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars()));
-            string pattern = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
+            string invalidChars = Regex.Escape(new string(Path.GetInvalidFileNameChars()));
+            string pattern = $@"([{invalidChars}]*\.+$)|([{invalidChars}]+)";
             return $"{Regex.Replace(name, pattern, "_")}.ssproj";
         }
     }

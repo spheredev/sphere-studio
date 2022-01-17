@@ -134,8 +134,8 @@ namespace SphereStudio.Plugins.Components
             {
                 if (!PerformFind())
                 {
-                    string message = string.Format("No matches were found for the following {1}:\n\n{0}",
-                        findTextBox.Text, regexButton.Checked ? "regular expression" : "text");
+                    var searchType = regexButton.Checked ? "regular expression" : "text";
+                    var message = $"No matches were found for the following {searchType}:\n\n{findTextBox.Text}";
                     MessageBox.Show(this, message, "Quick Find", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
@@ -224,8 +224,7 @@ namespace SphereStudio.Plugins.Components
                 ++numChanges;
             }
             codeBox.EndUndoAction();
-            MessageBox.Show(this,
-                string.Format("{0} replacement(s) were made.", numChanges), "Quick Replace",
+            MessageBox.Show(this, $"{numChanges} replacement(s) were made.", "Quick Replace",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 

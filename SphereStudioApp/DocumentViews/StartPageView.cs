@@ -262,7 +262,7 @@ namespace SphereStudio.DocumentViews
         private void OpenFolderItem_Click(object sender, EventArgs e)
         {
             string path = Path.GetDirectoryName((string)selectedItem.Tag);
-            Process p = Process.Start("explorer.exe", string.Format(@"/select,""{0}\game.sgm""", path));
+            Process p = Process.Start("explorer.exe", $@"/select,""{path}\game.sgm""");
             if (p != null) p.Dispose();
         }
 

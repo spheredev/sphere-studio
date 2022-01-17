@@ -406,7 +406,7 @@ namespace SphereStudio.SsjKi
                             string debugText = (string)message[3];
                             string prefix = type == LogOp.Trace ? "trace"
                                 : "log";
-                            Print?.Invoke(this, new TraceEventArgs(string.Format("{0}: {1}", prefix, debugText)));
+                            Print?.Invoke(this, new TraceEventArgs($"{prefix}: {debugText}"));
                             break;
                         case KiNotify.Pause:
                             FileName = (string)message[2];

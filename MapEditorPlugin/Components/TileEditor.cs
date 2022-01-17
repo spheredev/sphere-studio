@@ -148,16 +148,20 @@ namespace SphereStudio.Plugins.Components
 
         private void NextButton_Click(object sender, EventArgs e)
         {
-            if (_tileset.Selected[0] < _tileset.Tileset.Tiles.Count - 1) _tileset.Select(_tileset.Selected[0]);
-            else if (_tileset.Selected[0] == _tileset.Tileset.Tiles.Count - 1) _tileset.Select(0);
-            EditorLabel.Text = string.Format("Editing Tile #({0})", _tileset.Selected[0]);
+            if (_tileset.Selected[0] < _tileset.Tileset.Tiles.Count - 1)
+                _tileset.Select(_tileset.Selected[0]);
+            else if (_tileset.Selected[0] == _tileset.Tileset.Tiles.Count - 1)
+                _tileset.Select(0);
+            EditorLabel.Text = $"Editing Tile #({_tileset.Selected[0]})";
         }
 
         private void BackButton_Click(object sender, EventArgs e)
         {
-            if (_tileset.Selected[0] > 0) _tileset.Select(_tileset.Selected[0]--);
-            else if (_tileset.Selected[0] == 0) _tileset.Select((short)(_tileset.Tileset.Tiles.Count - 1));
-            EditorLabel.Text = string.Format("Editing Tile #({0})", _tileset.Selected);
+            if (_tileset.Selected[0] > 0)
+                _tileset.Select(_tileset.Selected[0]--);
+            else if (_tileset.Selected[0] == 0)
+                _tileset.Select((short)(_tileset.Tileset.Tiles.Count - 1));
+            EditorLabel.Text = $"Editing Tile #({_tileset.Selected})";
         }
 
         private void TileImage_MouseDown(object sender, MouseEventArgs e)

@@ -22,17 +22,17 @@ namespace SphereStudio.Compilers
             get { return "Sphere Game Package|*.spk"; }
         }
 
-        public bool Prep(IProject project, IConsole con)
+        public bool Prep(IProject project, IConsole console)
         {
-            con.Print("Installing project template... ");
+            console.Print("Installing project template... ");
             CopyDirectory(Path.Combine(main.Conf.EnginePath, "system", "template"), project.RootPath);
-            con.Print("OK.\n");
+            console.Print("OK.\n");
 
             var cellTemplatePath = Path.Combine(project.RootPath, "Cellscript.js.tmpl");
             var scriptTemplatePath = Path.Combine(project.RootPath, "scripts\\main.js.tmpl");
             try
             {
-                con.Print("Generating Cellscript... ");
+                console.Print("Generating Cellscript... ");
                 var cellscriptPath = Path.Combine(project.RootPath, "Cellscript.js");
                 var mainScriptPath = Path.Combine(project.RootPath, "scripts\\main.js");
                 var template = File.ReadAllText(cellTemplatePath);
@@ -43,8 +43,8 @@ namespace SphereStudio.Compilers
                     $"{resolution.Width}x{resolution.Height}");
                 File.WriteAllText(cellscriptPath, script);
                 File.Delete(cellTemplatePath);
-                con.Print("OK.\n");
-                con.Print("Generating main module... ");
+                console.Print("OK.\n");
+                console.Print("Generating main module... ");
                 template = File.ReadAllText(scriptTemplatePath);
                 script = string.Format(template,
                     JSifyString(project.Name, '"'), JSifyString(project.Author, '"'),
@@ -52,15 +52,15 @@ namespace SphereStudio.Compilers
                     $"{resolution.Width}x{resolution.Height}");
                 File.WriteAllText(mainScriptPath, script);
                 File.Delete(scriptTemplatePath);
-                con.Print("OK.\n");
+                console.Print("OK.\n");
             }
             catch (Exception exc)
             {
-                con.Print(string.Format("\n[error] {0}\n", exc.Message));
+                console.Print($"\n[error] {exc.Message}\n");
                 return false;
             }
 
-            con.Print("Success!\n");
+            console.Print("Success!\n");
             return true;
         }
 

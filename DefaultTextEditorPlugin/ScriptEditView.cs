@@ -214,14 +214,11 @@ namespace SphereStudio.Plugins
         {
             get
             {
-                return string.Format("{0}|{1}|{2}",
-                    _codeBox.CurrentPosition,
-                    _codeBox.AnchorPosition,
-                    _codeBox.FirstVisibleLine);
+                return $"{_codeBox.CurrentPosition}|{_codeBox.AnchorPosition}|{_codeBox.FirstVisibleLine}";
             }
             set
             {
-                string[] parse = value.Split('|');
+                var parse = value.Split('|');
                 _codeBox.CurrentPosition = Convert.ToInt32(parse[0]);
                 _codeBox.AnchorPosition = Convert.ToInt32(parse[1]);
                 _codeBox.FirstVisibleLine = Convert.ToInt32(parse[2]);
@@ -231,13 +228,6 @@ namespace SphereStudio.Plugins
         public override bool NewDocument()
         {
             _codeBox.Text = "";
-            if (_main.Settings.GetBoolean("autoScriptHeader", false))
-            {
-                string author = (PluginManager.Core.Project != null) ? PluginManager.Core.Project.Author : "Unnamed";
-                const string header = "/**\n* Script: Untitled.js\n* Written by: {0}\n* Updated: {1}\n**/";
-                _codeBox.Text = string.Format(header, author, DateTime.Today.ToShortDateString());
-            }
-
             _codeBox.Lexer = Lexer.Cpp;
             InitializeHighlighting(string.Empty);
             InitializeFolding();
