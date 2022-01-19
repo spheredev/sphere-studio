@@ -76,13 +76,13 @@ namespace SphereStudio.Plugins
 
         private static void menuExport_Click(object sender, EventArgs e)
         {
-            // TODO: Implement spriteset export
+            // TODO: implement spriteset export
             throw new NotImplementedException();
         }
 
         private static void menuImport_Click(object sender, EventArgs e)
         {
-            // TODO: Implement spriteset import
+            // TODO: implement spriteset import
             throw new NotImplementedException();
         }
 

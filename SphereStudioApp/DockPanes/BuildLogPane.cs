@@ -12,7 +12,7 @@ namespace SphereStudio.DockPanes
     [ToolboxItem(false)]
     partial class BuildLogPane : UserControl, IConsole, IDockPane, IStyleAware
     {
-        private string output = "";
+        private string logText = string.Empty;
 
         public BuildLogPane()
         {
@@ -25,36 +25,36 @@ namespace SphereStudio.DockPanes
         public Bitmap DockIcon => Resources.application_view_list;
         public bool ShowInViewMenu => true;
 
+        public void ApplyStyle(UIStyle style)
+        {
+            style.AsCodeView(textBox);
+        }
+
         public void Clear()
         {
-            output = "";
+            logText = string.Empty;
             PluginManager.Core.Invoke(new Action(() =>
             {
-                printTimer.Enabled = true;
+                uiTimer.Enabled = true;
             }), null);
         }
 
         public void Print(string lineText)
         {
-            output += Regex.Replace(lineText, "\r?\n", "\r\n");
+            logText += Regex.Replace(lineText, "\r?\n", "\r\n");
             PluginManager.Core.Invoke(new Action(() =>
             {
-                printTimer.Enabled = true;
+                uiTimer.Enabled = true;
             }), null);
         }
 
-        public void ApplyStyle(UIStyle theme)
+        private void uiTimer_Tick(object sender, EventArgs e)
         {
-            theme.AsCodeView(textbox);
-        }
-
-        private void printTimer_Tick(object sender, EventArgs e)
-        {
-            printTimer.Enabled = false;
-            textbox.Text = output;
-            textbox.SelectionStart = textbox.Text.Length;
-            textbox.SelectionLength = 0;
-            textbox.ScrollToCaret();
+            uiTimer.Enabled = false;
+            textBox.Text = logText;
+            textBox.SelectionStart = textBox.Text.Length;
+            textBox.SelectionLength = 0;
+            textBox.ScrollToCaret();
         }
     }
 }

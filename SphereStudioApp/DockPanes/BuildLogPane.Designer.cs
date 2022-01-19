@@ -29,33 +29,33 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.textbox = new System.Windows.Forms.TextBox();
-            this.printTimer = new System.Windows.Forms.Timer(this.components);
+            this.textBox = new System.Windows.Forms.TextBox();
+            this.uiTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
-            // textbox
+            // textBox
             // 
-            this.textbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textbox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textbox.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textbox.Location = new System.Drawing.Point(0, 0);
-            this.textbox.Multiline = true;
-            this.textbox.Name = "textbox";
-            this.textbox.ReadOnly = true;
-            this.textbox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textbox.Size = new System.Drawing.Size(659, 150);
-            this.textbox.TabIndex = 0;
+            this.textBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox.Location = new System.Drawing.Point(0, 0);
+            this.textBox.Multiline = true;
+            this.textBox.Name = "textBox";
+            this.textBox.ReadOnly = true;
+            this.textBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBox.Size = new System.Drawing.Size(659, 150);
+            this.textBox.TabIndex = 0;
             // 
-            // printTimer
+            // uiTimer
             // 
-            this.printTimer.Interval = 250;
-            this.printTimer.Tick += new System.EventHandler(this.printTimer_Tick);
+            this.uiTimer.Interval = 250;
+            this.uiTimer.Tick += new System.EventHandler(this.uiTimer_Tick);
             // 
             // BuildLogPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.textbox);
+            this.Controls.Add(this.textBox);
             this.Name = "BuildLogPane";
             this.Size = new System.Drawing.Size(659, 150);
             this.ResumeLayout(false);
@@ -65,7 +65,7 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textbox;
-        private System.Windows.Forms.Timer printTimer;
+        private System.Windows.Forms.TextBox textBox;
+        private System.Windows.Forms.Timer uiTimer;
     }
 }

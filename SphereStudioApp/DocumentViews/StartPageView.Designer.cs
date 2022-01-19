@@ -29,150 +29,140 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.ItemContextStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.PlayGameItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.LoadMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.RenameProjectItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.OpenFolderItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.SetIconItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.testGameMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exploreMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setIconMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.viewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tilesViewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.listViewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.smallIconsViewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.largeIconsViewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.detailsViewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.RefreshItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ViewItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.TilesItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ListItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.SmallIconItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.LargeIconItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.DetailsItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.refreshMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.header = new System.Windows.Forms.Label();
             this.projectListView = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.ItemContextStrip.SuspendLayout();
+            this.contextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
-            // ItemContextStrip
+            // contextMenu
             // 
-            this.ItemContextStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.PlayGameItem,
-            this.LoadMenuItem,
-            this.RenameProjectItem,
-            this.OpenFolderItem,
-            this.SetIconItem,
+            this.contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.testGameMenuItem,
+            this.openMenuItem,
+            this.exploreMenuItem,
+            this.setIconMenuItem,
+            this.toolStripSeparator2,
+            this.viewMenuItem,
             this.toolStripSeparator1,
-            this.RefreshItem,
-            this.ViewItem});
-            this.ItemContextStrip.Name = "ItemContextStrip";
-            this.ItemContextStrip.Size = new System.Drawing.Size(215, 164);
-            this.ItemContextStrip.Opening += new System.ComponentModel.CancelEventHandler(this.ItemContextStrip_Opening);
+            this.refreshMenuItem});
+            this.contextMenu.Name = "ItemContextStrip";
+            this.contextMenu.Size = new System.Drawing.Size(163, 148);
+            this.contextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenu_Opening);
             // 
-            // PlayGameItem
+            // testGameMenuItem
             // 
-            this.PlayGameItem.Image = global::SphereStudio.Properties.Resources.lightning;
-            this.PlayGameItem.Name = "PlayGameItem";
-            this.PlayGameItem.Size = new System.Drawing.Size(214, 22);
-            this.PlayGameItem.Text = "&Play Game";
-            this.PlayGameItem.Click += new System.EventHandler(this.PlayMenuItem_Click);
+            this.testGameMenuItem.Image = global::SphereStudio.Properties.Resources.lightning;
+            this.testGameMenuItem.Name = "testGameMenuItem";
+            this.testGameMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.testGameMenuItem.Text = "&Test Game";
+            this.testGameMenuItem.Click += new System.EventHandler(this.testGameMenuItem_Click);
             // 
-            // LoadMenuItem
+            // openMenuItem
             // 
-            this.LoadMenuItem.Image = global::SphereStudio.Properties.Resources.script_edit;
-            this.LoadMenuItem.Name = "LoadMenuItem";
-            this.LoadMenuItem.Size = new System.Drawing.Size(214, 22);
-            this.LoadMenuItem.Text = "&Open Project";
-            this.LoadMenuItem.Click += new System.EventHandler(this.LoadMenuItem_Click);
+            this.openMenuItem.Image = global::SphereStudio.Properties.Resources.script_edit;
+            this.openMenuItem.Name = "openMenuItem";
+            this.openMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.openMenuItem.Text = "&Open Project";
+            this.openMenuItem.Click += new System.EventHandler(this.openMenuItem_Click);
             // 
-            // RenameProjectItem
+            // exploreMenuItem
             // 
-            this.RenameProjectItem.Image = global::SphereStudio.Properties.Resources.application_view_list;
-            this.RenameProjectItem.Name = "RenameProjectItem";
-            this.RenameProjectItem.Size = new System.Drawing.Size(214, 22);
-            this.RenameProjectItem.Text = "&Rename Project";
-            this.RenameProjectItem.Click += new System.EventHandler(this.RenameMenuItem_Click);
+            this.exploreMenuItem.Image = global::SphereStudio.Properties.Resources.folder;
+            this.exploreMenuItem.Name = "exploreMenuItem";
+            this.exploreMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.exploreMenuItem.Text = "Show in Explorer";
+            this.exploreMenuItem.Click += new System.EventHandler(this.exploreMenuItem_Click);
             // 
-            // OpenFolderItem
+            // setIconMenuItem
             // 
-            this.OpenFolderItem.Image = global::SphereStudio.Properties.Resources.folder;
-            this.OpenFolderItem.Name = "OpenFolderItem";
-            this.OpenFolderItem.Size = new System.Drawing.Size(214, 22);
-            this.OpenFolderItem.Text = "Show in Windows Explorer";
-            this.OpenFolderItem.Click += new System.EventHandler(this.OpenFolderItem_Click);
+            this.setIconMenuItem.Image = global::SphereStudio.Properties.Resources.palette;
+            this.setIconMenuItem.Name = "setIconMenuItem";
+            this.setIconMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.setIconMenuItem.Text = "&Set Icon...";
+            this.setIconMenuItem.Click += new System.EventHandler(this.setIconMenuItem_Click);
             // 
-            // SetIconItem
+            // toolStripSeparator2
             // 
-            this.SetIconItem.Image = global::SphereStudio.Properties.Resources.palette;
-            this.SetIconItem.Name = "SetIconItem";
-            this.SetIconItem.Size = new System.Drawing.Size(214, 22);
-            this.SetIconItem.Text = "&Set Icon...";
-            this.SetIconItem.Click += new System.EventHandler(this.SetIconItem_Click);
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(159, 6);
+            // 
+            // viewMenuItem
+            // 
+            this.viewMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tilesViewMenuItem,
+            this.listViewMenuItem,
+            this.smallIconsViewMenuItem,
+            this.largeIconsViewMenuItem,
+            this.detailsViewMenuItem});
+            this.viewMenuItem.Name = "viewMenuItem";
+            this.viewMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.viewMenuItem.Text = "&View";
+            // 
+            // tilesViewMenuItem
+            // 
+            this.tilesViewMenuItem.Name = "tilesViewMenuItem";
+            this.tilesViewMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.tilesViewMenuItem.Text = "&Tiles";
+            this.tilesViewMenuItem.Click += new System.EventHandler(this.tilesViewMenuItem_Click);
+            // 
+            // listViewMenuItem
+            // 
+            this.listViewMenuItem.Name = "listViewMenuItem";
+            this.listViewMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.listViewMenuItem.Text = "&List";
+            this.listViewMenuItem.Click += new System.EventHandler(this.listViewMenuItem_Click);
+            // 
+            // smallIconsViewMenuItem
+            // 
+            this.smallIconsViewMenuItem.Name = "smallIconsViewMenuItem";
+            this.smallIconsViewMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.smallIconsViewMenuItem.Text = "&Small Icons";
+            this.smallIconsViewMenuItem.Click += new System.EventHandler(this.smallIconsViewMenuItem_Click);
+            // 
+            // largeIconsViewMenuItem
+            // 
+            this.largeIconsViewMenuItem.Name = "largeIconsViewMenuItem";
+            this.largeIconsViewMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.largeIconsViewMenuItem.Text = "&Large Icons";
+            this.largeIconsViewMenuItem.Click += new System.EventHandler(this.largeIconsViewMenuItem_Click);
+            // 
+            // detailsViewMenuItem
+            // 
+            this.detailsViewMenuItem.Name = "detailsViewMenuItem";
+            this.detailsViewMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.detailsViewMenuItem.Text = "&Details";
+            this.detailsViewMenuItem.Click += new System.EventHandler(this.detailsViewMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(211, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(159, 6);
             // 
-            // RefreshItem
+            // refreshMenuItem
             // 
-            this.RefreshItem.Image = global::SphereStudio.Properties.Resources.arrow_refresh;
-            this.RefreshItem.Name = "RefreshItem";
-            this.RefreshItem.Size = new System.Drawing.Size(214, 22);
-            this.RefreshItem.Text = "Re&fresh";
-            this.RefreshItem.Click += new System.EventHandler(this.RefreshItem_Click);
-            // 
-            // ViewItem
-            // 
-            this.ViewItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.TilesItem,
-            this.ListItem,
-            this.SmallIconItem,
-            this.LargeIconItem,
-            this.DetailsItem});
-            this.ViewItem.Name = "ViewItem";
-            this.ViewItem.Size = new System.Drawing.Size(214, 22);
-            this.ViewItem.Text = "&View";
-            // 
-            // TilesItem
-            // 
-            this.TilesItem.Checked = true;
-            this.TilesItem.CheckOnClick = true;
-            this.TilesItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.TilesItem.Name = "TilesItem";
-            this.TilesItem.Size = new System.Drawing.Size(134, 22);
-            this.TilesItem.Text = "&Tiles";
-            this.TilesItem.Click += new System.EventHandler(this.TilesItem_Click);
-            // 
-            // ListItem
-            // 
-            this.ListItem.CheckOnClick = true;
-            this.ListItem.Name = "ListItem";
-            this.ListItem.Size = new System.Drawing.Size(134, 22);
-            this.ListItem.Text = "&List";
-            this.ListItem.Click += new System.EventHandler(this.ListItem_Click);
-            // 
-            // SmallIconItem
-            // 
-            this.SmallIconItem.CheckOnClick = true;
-            this.SmallIconItem.Name = "SmallIconItem";
-            this.SmallIconItem.Size = new System.Drawing.Size(134, 22);
-            this.SmallIconItem.Text = "&Small Icons";
-            this.SmallIconItem.Click += new System.EventHandler(this.SmallIconItem_Click);
-            // 
-            // LargeIconItem
-            // 
-            this.LargeIconItem.CheckOnClick = true;
-            this.LargeIconItem.Name = "LargeIconItem";
-            this.LargeIconItem.Size = new System.Drawing.Size(134, 22);
-            this.LargeIconItem.Text = "&Large Icons";
-            this.LargeIconItem.Click += new System.EventHandler(this.LargeIconItem_Click);
-            // 
-            // DetailsItem
-            // 
-            this.DetailsItem.CheckOnClick = true;
-            this.DetailsItem.Name = "DetailsItem";
-            this.DetailsItem.Size = new System.Drawing.Size(134, 22);
-            this.DetailsItem.Text = "&Details";
-            this.DetailsItem.Click += new System.EventHandler(this.DetailsItem_Click);
+            this.refreshMenuItem.Image = global::SphereStudio.Properties.Resources.arrow_refresh;
+            this.refreshMenuItem.Name = "refreshMenuItem";
+            this.refreshMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.refreshMenuItem.Text = "Re&fresh";
+            this.refreshMenuItem.Click += new System.EventHandler(this.refreshMenuItem_Click);
             // 
             // header
             // 
@@ -192,12 +182,11 @@
             this.columnHeader4,
             this.columnHeader2,
             this.columnHeader3});
-            this.projectListView.ContextMenuStrip = this.ItemContextStrip;
+            this.projectListView.ContextMenuStrip = this.contextMenu;
             this.projectListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.projectListView.FullRowSelect = true;
             this.projectListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.projectListView.HideSelection = false;
-            this.projectListView.LabelEdit = true;
             this.projectListView.Location = new System.Drawing.Point(0, 23);
             this.projectListView.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.projectListView.MultiSelect = false;
@@ -241,31 +230,31 @@
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "StartPageView";
             this.Size = new System.Drawing.Size(568, 394);
-            this.ItemContextStrip.ResumeLayout(false);
+            this.contextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private System.Windows.Forms.ContextMenuStrip ItemContextStrip;
-        private System.Windows.Forms.ToolStripMenuItem PlayGameItem;
-        private System.Windows.Forms.ToolStripMenuItem LoadMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem RenameProjectItem;
-        private System.Windows.Forms.ToolStripMenuItem SetIconItem;
-        private System.Windows.Forms.ToolStripMenuItem ViewItem;
-        private System.Windows.Forms.ToolStripMenuItem ListItem;
-        private System.Windows.Forms.ToolStripMenuItem SmallIconItem;
-        private System.Windows.Forms.ToolStripMenuItem LargeIconItem;
-        private System.Windows.Forms.ToolStripMenuItem TilesItem;
-        private System.Windows.Forms.ToolStripMenuItem OpenFolderItem;
+        private System.Windows.Forms.ContextMenuStrip contextMenu;
+        private System.Windows.Forms.ToolStripMenuItem testGameMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setIconMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem viewMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem listViewMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem smallIconsViewMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem largeIconsViewMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tilesViewMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exploreMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem RefreshItem;
-        private System.Windows.Forms.ToolStripMenuItem DetailsItem;
+        private System.Windows.Forms.ToolStripMenuItem refreshMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem detailsViewMenuItem;
         private System.Windows.Forms.Label header;
         private System.Windows.Forms.ListView projectListView;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     }
 }

@@ -116,7 +116,8 @@ namespace SphereStudio.Core
         /// <param name="path">The default directory for the Save As dialog.</param>
         public bool Save(string path = null)
         {
-            if (View.ReadOnly) return true;
+            if (View.ReadOnly)
+                return true;
             if (FileName == null)
                 return SaveAs(path);
 

@@ -17,33 +17,31 @@ namespace SphereStudio.DocumentViews
     [ToolboxItem(false)]
     partial class StartPageView : DocumentView, IStyleAware
     {
+        private ImageList iconImageList = new ImageList();
+        private IdeWindowForm ideWindow;
         private Project project;
         private ListViewItem selectedItem;
+        private ImageList smallIconImageList = new ImageList();
 
-        private readonly IdeWindowForm _mainEditor;
-
-        private readonly ImageList _listIcons = new ImageList();
-        private readonly ImageList _listIconsSmall = new ImageList();
-
-        public StartPageView(IdeWindowForm mainEditor)
+        public StartPageView(IdeWindowForm ideWindow)
         {
             InitializeComponent();
             StyleManager.AutoStyle(this);
 
             Icon = Icon.FromHandle(Resources.SphereEditor.GetHicon());
 
-            _mainEditor = mainEditor;
+            this.ideWindow = ideWindow;
 
-            _listIcons.ImageSize = new Size(48, 48);
-            _listIcons.ColorDepth = ColorDepth.Depth32Bit;
-            _listIcons.Images.Add(Properties.Resources.SphereEditor);
-            _listIconsSmall.ImageSize = new Size(16, 16);
-            _listIconsSmall.ColorDepth = ColorDepth.Depth32Bit;
-            _listIconsSmall.Images.Add(Properties.Resources.SphereEditor);
-            projectListView.LargeImageList = _listIcons;
-            projectListView.SmallImageList = _listIconsSmall;
+            iconImageList.ImageSize = new Size(48, 48);
+            iconImageList.ColorDepth = ColorDepth.Depth32Bit;
+            iconImageList.Images.Add(Properties.Resources.SphereEditor);
+            smallIconImageList.ImageSize = new Size(16, 16);
+            smallIconImageList.ColorDepth = ColorDepth.Depth32Bit;
+            smallIconImageList.Images.Add(Properties.Resources.SphereEditor);
+            projectListView.LargeImageList = iconImageList;
+            projectListView.SmallImageList = smallIconImageList;
 
-            InitializeView();
+            projectListView.View = Session.Settings.StartPageView;
         }
 
         public override bool CanSave => false;
@@ -56,41 +54,22 @@ namespace SphereStudio.DocumentViews
             style.AsTextView(projectListView);
         }
 
-        private void InitializeView()
+        public override void Refresh()
         {
-            View v = Session.Settings.StartPageView;
-            projectListView.View = v;
-            TilesItem.Checked = false;
-            switch (v)
-            {
-                case View.Details: DetailsItem.Checked = true; break;
-                case View.Tile: TilesItem.Checked = true; break;
-                case View.List: ListItem.Checked = true; break;
-                case View.SmallIcon: SmallIconItem.Checked = true; break;
-                case View.LargeIcon: LargeIconItem.Checked = true; break;
-            }
-        }
+            var holdOnToMe = iconImageList.Images[0]; // keep this sucker alive.
+            iconImageList.Images.Clear();
+            iconImageList.Images.Add(holdOnToMe);
 
-        /// <summary>
-        /// Adds Sphere games to the games panel for start-up use.
-        /// </summary>
-        public void RepopulateProjects()
-        {
-            projectListView.Items.Clear();
             projectListView.BeginUpdate();
-            if (_listIcons.Images.Count == 0)
-                return;
-            var holdOnToMe = _listIcons.Images[0]; // keep this sucker alive.
-            _listIcons.Images.Clear();
-            _listIcons.Images.Add(holdOnToMe);
+            projectListView.Items.Clear();
 
-            // Search through a list of supplied directories.
-            string projectsDir = Path.Combine(
+            // search through a list of supplied directories.
+            var projectsDirPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 "Sphere Projects");
-            Directory.CreateDirectory(projectsDir);
+            Directory.CreateDirectory(projectsDirPath);
             var paths = new List<string>(Session.Settings.ProjectPaths);
-            paths.Insert(0, projectsDir);
+            paths.Insert(0, projectsDirPath);
             foreach (string path in paths)
             {
                 if (string.IsNullOrWhiteSpace(path) || !Directory.Exists(path))
@@ -126,7 +105,44 @@ namespace SphereStudio.DocumentViews
                 }
             }
             projectListView.EndUpdate();
-            projectListView.Invalidate();
+
+            base.Refresh();
+        }
+
+        private int getImageIndex(string projectRoot)
+        {
+            try
+            {
+                var paths = Directory.GetFiles(projectRoot);
+                foreach (var path in paths)
+                {
+                    if (path.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
+                    {
+                        iconImageList.Images.Add(Image.FromFile(path));
+                        smallIconImageList.Images.Add(Image.FromFile(path));
+                        return iconImageList.Images.Count - 1;
+                    }
+                    if (path.EndsWith(".ico", StringComparison.OrdinalIgnoreCase))
+                    {
+                        iconImageList.Images.Add(new Icon(path));
+                        smallIconImageList.Images.Add(new Icon(path));
+                        return iconImageList.Images.Count - 1;
+                    }
+                }
+            }
+            catch
+            {
+                // *MUNCH*
+            }
+            return 0;
+        }
+
+        private void projectListView_ItemActivate(object sender, EventArgs e)
+        {
+            selectedItem = projectListView.SelectedItems[0];
+            if (selectedItem == null)
+                return;
+            ideWindow.OpenProject((string)selectedItem.Tag);
         }
 
         private void projectListView_MouseClick(object sender, MouseEventArgs e)
@@ -137,166 +153,105 @@ namespace SphereStudio.DocumentViews
             project = Project.Open((string)selectedItem.Tag);
         }
 
-        private async void PlayMenuItem_Click(object sender, EventArgs e)
+        private void contextMenu_Opening(object sender, CancelEventArgs e)
+        {
+            var haveProject = projectListView.SelectedItems.Count > 0;
+            var view = projectListView.View;
+
+            exploreMenuItem.Enabled = haveProject;
+            openMenuItem.Enabled = haveProject;
+            setIconMenuItem.Enabled = haveProject;
+            testGameMenuItem.Enabled = haveProject;
+
+            detailsViewMenuItem.Checked = view == View.Details;
+            largeIconsViewMenuItem.Checked = view == View.LargeIcon;
+            listViewMenuItem.Checked = view == View.List;
+            smallIconsViewMenuItem.Checked = view == View.SmallIcon;
+            tilesViewMenuItem.Checked = view == View.Tile;
+        }
+
+        private void exploreMenuItem_Click(object sender, EventArgs e)
+        {
+            var path = (string)selectedItem.Tag;
+            Process.Start("explorer.exe", $@"/select,""{path}""");
+        }
+
+        private void openMenuItem_Click(object sender, EventArgs e)
+        {
+            if (selectedItem == null)
+                return;
+            ideWindow.OpenProject((string)selectedItem.Tag);
+        }
+
+        private void refreshMenuItem_Click(object sender, EventArgs e)
+        {
+            Refresh();
+        }
+
+        private void setIconMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var dialog = new OpenFileDialog())
+            {
+                var projectRoot = Path.GetDirectoryName((string)selectedItem.Tag);
+                var iconFilePath = Path.Combine(projectRoot, "icon.png");
+                dialog.Filter = @"PNG Image Files (.png)|*.png";
+                dialog.InitialDirectory = projectRoot;
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    if (dialog.FileName == iconFilePath)
+                        return;
+                    if (File.Exists(iconFilePath))
+                        File.Delete(iconFilePath);
+                    File.Copy(dialog.FileName, iconFilePath);
+                    if (selectedItem.ImageIndex == 0)
+                    {
+                        iconImageList.Images.Add(Image.FromFile(iconFilePath));
+                        selectedItem.ImageIndex = iconImageList.Images.Count - 1;
+                    }
+                    else
+                    {
+                        iconImageList.Images.RemoveAt(selectedItem.ImageIndex);
+                        iconImageList.Images.Add(Image.FromFile(iconFilePath));
+                        selectedItem.ImageIndex = iconImageList.Images.Count - 1;
+                    }
+                    Refresh();
+                }
+            }
+        }
+
+        private async void testGameMenuItem_Click(object sender, EventArgs e)
         {
             await BuildEngine.Test(project);
         }
 
-        private void LoadMenuItem_Click(object sender, EventArgs e)
+        private void detailsViewMenuItem_Click(object sender, EventArgs e)
         {
-            if (selectedItem == null) return;
-            _mainEditor.OpenProject((string)selectedItem.Tag);
+            projectListView.View = View.Details;
+            Session.Settings.StartPageView = projectListView.View;
         }
 
-        private void RenameMenuItem_Click(object sender, EventArgs e)
+        private void largeIconsViewMenuItem_Click(object sender, EventArgs e)
         {
-            selectedItem.BeginEdit();
+            projectListView.View = View.LargeIcon;
+            Session.Settings.StartPageView = projectListView.View;
         }
 
-        private void projectListView_AfterLabelEdit(object sender, LabelEditEventArgs e)
+        private void listViewMenuItem_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(e.Label))
-            {
-                e.CancelEdit = true;
-                return;
-            }
-
-            ListViewItem item = projectListView.Items[e.Item];
-            string path = Path.GetDirectoryName(Path.GetDirectoryName(projectListView.Items[e.Item].Tag as string));
-
-            if (File.Exists($"{path}{e.Label}"))
-                e.CancelEdit = true;
-            else if (!RenameProject($@"{path}\{item.Text}", $@"{path}\{e.Label}"))
-                e.CancelEdit = true;
+            projectListView.View = View.List;
+            Session.Settings.StartPageView = projectListView.View;
         }
 
-        private void projectListView_ItemActivate(object sender, EventArgs e)
+        private void smallIconsViewMenuItem_Click(object sender, EventArgs e)
         {
-            selectedItem = projectListView.SelectedItems[0];
-            if (selectedItem == null) return;
-            _mainEditor.OpenProject((string)selectedItem.Tag);
+            projectListView.View = View.SmallIcon;
+            Session.Settings.StartPageView = projectListView.View;
         }
 
-        private bool RenameProject(string oldname, string newname)
+        private void tilesViewMenuItem_Click(object sender, EventArgs e)
         {
-            if (oldname == Session.Project.RootPath)
-            {
-                MessageBox.Show(@"Can't change name of active project.", @"Name Change", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-            Directory.Move(oldname, newname);
-            return true;
-        }
-
-        private void SetIconItem_Click(object sender, EventArgs e)
-        {
-            using (OpenFileDialog diag = new OpenFileDialog())
-            {
-                var projectRoot = Path.GetDirectoryName((string)selectedItem.Tag);
-                var iconFilePath = Path.GetFullPath($@"{projectRoot}\icon.png");
-                diag.Filter = @"PNG Image Files (.png)|*.png";
-                diag.InitialDirectory = projectRoot;
-                if (diag.ShowDialog() == DialogResult.OK)
-                {
-                    if (diag.FileName == iconFilePath)
-                        return;
-                    if (File.Exists(iconFilePath))
-                        File.Delete(iconFilePath);
-                    File.Copy(diag.FileName, iconFilePath);
-
-                    if (selectedItem.ImageIndex == 0)
-                    {
-                        _listIcons.Images.Add(Image.FromFile(iconFilePath));
-                        selectedItem.ImageIndex = _listIcons.Images.Count - 1;
-                    }
-                    else
-                    {
-                        _listIcons.Images.RemoveAt(selectedItem.ImageIndex);
-                        _listIcons.Images.Add(Image.FromFile(iconFilePath));
-                        selectedItem.ImageIndex = _listIcons.Images.Count - 1;
-                    }
-                    RepopulateProjects();
-                }
-            }
-        }
-
-        private void TilesItem_Click(object sender, EventArgs e)
-        {
-            DetailsItem.Checked = ListItem.Checked = SmallIconItem.Checked = LargeIconItem.Checked = false;
-            Session.Settings.StartPageView = projectListView.View = View.Tile;
-        }
-
-        private void ListItem_Click(object sender, EventArgs e)
-        {
-            DetailsItem.Checked = TilesItem.Checked = SmallIconItem.Checked = LargeIconItem.Checked = false;
-            Session.Settings.StartPageView = projectListView.View = View.List;
-        }
-
-        private void SmallIconItem_Click(object sender, EventArgs e)
-        {
-            DetailsItem.Checked = TilesItem.Checked = ListItem.Checked = LargeIconItem.Checked = false;
-            Session.Settings.StartPageView = projectListView.View = View.SmallIcon;
-        }
-
-        private void LargeIconItem_Click(object sender, EventArgs e)
-        {
-            DetailsItem.Checked = TilesItem.Checked = ListItem.Checked = SmallIconItem.Checked = false;
-            Session.Settings.StartPageView = projectListView.View = View.LargeIcon;
-        }
-
-        private void DetailsItem_Click(object sender, EventArgs e)
-        {
-            ListItem.Checked = TilesItem.Checked = SmallIconItem.Checked = LargeIconItem.Checked = false;
-            Session.Settings.StartPageView = projectListView.View = View.Details;
-        }
-
-        private void ItemContextStrip_Opening(object sender, CancelEventArgs e)
-        {
-            Point p = projectListView.PointToClient(Cursor.Position);
-            selectedItem = projectListView.GetItemAt(p.X, p.Y);
-            PlayGameItem.Visible = LoadMenuItem.Visible =
-                RenameProjectItem.Visible = SetIconItem.Visible =
-                OpenFolderItem.Visible = (selectedItem != null);
-        }
-
-        private void OpenFolderItem_Click(object sender, EventArgs e)
-        {
-            string path = Path.GetDirectoryName((string)selectedItem.Tag);
-            Process p = Process.Start("explorer.exe", $@"/select,""{path}\game.sgm""");
-            if (p != null) p.Dispose();
-        }
-
-        private void RefreshItem_Click(object sender, EventArgs e)
-        {
-            RepopulateProjects();
-        }
-
-        private int getImageIndex(string fullpath)
-        {
-            try
-            {
-                string[] files = Directory.GetFiles(fullpath);
-                foreach (string s in files)
-                {
-                    if (s.ToUpperInvariant().EndsWith(".PNG"))
-                    {
-                        _listIcons.Images.Add(Image.FromFile(s));
-                        _listIconsSmall.Images.Add(Image.FromFile(s));
-                        return _listIcons.Images.Count - 1;
-                    }
-                    if (s.ToUpperInvariant().EndsWith(".ICO"))
-                    {
-                        _listIcons.Images.Add(new Icon(s));
-                        _listIconsSmall.Images.Add(new Icon(s));
-                        return _listIcons.Images.Count - 1;
-                    }
-                }
-            }
-            catch
-            {
-                return 0;
-            }
-            return 0;
+            projectListView.View = View.Tile;
+            Session.Settings.StartPageView = projectListView.View;
         }
     }
 }

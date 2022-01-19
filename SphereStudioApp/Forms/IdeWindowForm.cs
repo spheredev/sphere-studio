@@ -86,7 +86,7 @@ namespace SphereStudio.Forms
                 if (value && !StartPageVisible)
                 {
                     startPageView = new StartPageView(this);
-                    startPageView.RepopulateProjects();
+                    startPageView.Refresh();
                     startPageTab = addDocument(startPageView, "Start Page");
                     startPageTab.Restyle();
                 }
@@ -570,7 +570,7 @@ namespace SphereStudio.Forms
                 refreshProject();
                 refreshEngineList();
                 refreshUI();
-                startPageView.RepopulateProjects();
+                startPageView.Refresh();
             }
         }
 
@@ -698,7 +698,7 @@ namespace SphereStudio.Forms
             refreshUI();
         }
 
-        #region Toolbar control event handlers
+        #region toolbar control event handlers
         private void engineToolComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (refreshingEngines)
@@ -808,7 +808,7 @@ namespace SphereStudio.Forms
                 {
                     npf.NewProject.Save();
                     OpenProject(npf.NewProject.FileName, false);
-                    startPageView.RepopulateProjects();
+                    startPageView.Refresh();
                 }
                 else
                 {

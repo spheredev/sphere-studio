@@ -29,7 +29,7 @@ namespace SphereStudio.DockPanes
 
             this.ideWindow = ideWindow;
 
-            // TODO: fix this ugly hack! (ProjectTree New submenu)
+            // TODO: fix this hack ('New' submenu in FileListPane context menu)
             newMenuItem.DropDown = this.ideWindow.newMenuItem.DropDown;
             newMenuItem.DropDownOpening += this.ideWindow.newMenuItem_DropDownOpening;
             newMenuItem.DropDownClosed += this.ideWindow.newMenuItem_DropDownClosed;
