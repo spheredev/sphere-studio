@@ -94,7 +94,7 @@
             this.removeDirButton.TabIndex = 5;
             this.removeDirButton.Text = "Remove";
             this.removeDirButton.UseVisualStyleBackColor = true;
-            this.removeDirButton.Click += new System.EventHandler(this.RemovePathButton_Click);
+            this.removeDirButton.Click += new System.EventHandler(this.removeDirButton_Click);
             // 
             // addDirButton
             // 
@@ -106,7 +106,7 @@
             this.addDirButton.TabIndex = 4;
             this.addDirButton.Text = "Add...";
             this.addDirButton.UseVisualStyleBackColor = true;
-            this.addDirButton.Click += new System.EventHandler(this.AddPathButton_Click);
+            this.addDirButton.Click += new System.EventHandler(this.addDirButton_Click);
             // 
             // moveDirDownButton
             // 
@@ -121,7 +121,7 @@
             this.moveDirDownButton.TabIndex = 3;
             this.moveDirDownButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.moveDirDownButton.UseVisualStyleBackColor = true;
-            this.moveDirDownButton.Click += new System.EventHandler(this.DownButton_Click);
+            this.moveDirDownButton.Click += new System.EventHandler(this.moveDirDownButton_Click);
             // 
             // moveDirUpButton
             // 
@@ -136,7 +136,7 @@
             this.moveDirUpButton.TabIndex = 2;
             this.moveDirUpButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.moveDirUpButton.UseVisualStyleBackColor = true;
-            this.moveDirUpButton.Click += new System.EventHandler(this.UpButton_Click);
+            this.moveDirUpButton.Click += new System.EventHandler(this.moveDirUpButton_Click);
             // 
             // dirsListBox
             // 
@@ -151,7 +151,7 @@
             this.dirsListBox.Name = "dirsListBox";
             this.dirsListBox.Size = new System.Drawing.Size(342, 94);
             this.dirsListBox.TabIndex = 1;
-            this.dirsListBox.SelectedIndexChanged += new System.EventHandler(this.PathList_SelectedIndexChanged);
+            this.dirsListBox.SelectedIndexChanged += new System.EventHandler(this.dirsListBox_SelectedIndexChanged);
             // 
             // stylePanel
             // 

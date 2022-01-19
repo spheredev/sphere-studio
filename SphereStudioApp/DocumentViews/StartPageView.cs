@@ -19,8 +19,6 @@ namespace SphereStudio.DocumentViews
     {
         private ImageList iconImageList = new ImageList();
         private IdeWindowForm ideWindow;
-        private Project project;
-        private ListViewItem selectedItem;
         private ImageList smallIconImageList = new ImageList();
 
         public StartPageView(IdeWindowForm ideWindow)
@@ -34,13 +32,13 @@ namespace SphereStudio.DocumentViews
 
             iconImageList.ImageSize = new Size(48, 48);
             iconImageList.ColorDepth = ColorDepth.Depth32Bit;
-            iconImageList.Images.Add(Properties.Resources.SphereEditor);
+            iconImageList.Images.Add(Resources.SphereEditor);
             smallIconImageList.ImageSize = new Size(16, 16);
             smallIconImageList.ColorDepth = ColorDepth.Depth32Bit;
-            smallIconImageList.Images.Add(Properties.Resources.SphereEditor);
+            smallIconImageList.Images.Add(Resources.SphereEditor);
+
             projectListView.LargeImageList = iconImageList;
             projectListView.SmallImageList = smallIconImageList;
-
             projectListView.View = Session.Settings.StartPageView;
         }
 
@@ -49,16 +47,17 @@ namespace SphereStudio.DocumentViews
         public void ApplyStyle(UIStyle style)
         {
             style.AsUIElement(this);
-            style.AsHeading(header);
 
+            style.AsHeading(header);
             style.AsTextView(projectListView);
         }
 
         public override void Refresh()
         {
-            var holdOnToMe = iconImageList.Images[0]; // keep this sucker alive.
             iconImageList.Images.Clear();
-            iconImageList.Images.Add(holdOnToMe);
+            iconImageList.Images.Add(Resources.SphereEditor);
+            smallIconImageList.Images.Clear();
+            smallIconImageList.Images.Add(Resources.SphereEditor);
 
             projectListView.BeginUpdate();
             projectListView.Items.Clear();
@@ -75,10 +74,9 @@ namespace SphereStudio.DocumentViews
                 if (string.IsNullOrWhiteSpace(path) || !Directory.Exists(path))
                     continue;
                 var baseDir = new DirectoryInfo(path);
-                var fileInfos = baseDir.GetFiles("*.ssproj", SearchOption.AllDirectories);
-                var ssprojDirs = from fi in fileInfos
-                                 select $@"{fi.DirectoryName}\";
-                foreach (var fileInfo in fileInfos)
+                var ssprojFileInfos = baseDir.GetFiles("*.ssproj", SearchOption.AllDirectories);
+                var ssprojDirs = ssprojFileInfos.Select(fi => $@"{fi.DirectoryName}\");
+                foreach (var fileInfo in ssprojFileInfos)
                 {
                     var projectRoot = Path.GetDirectoryName(fileInfo.FullName);
                     var imageIndex = getImageIndex(projectRoot);
@@ -139,18 +137,8 @@ namespace SphereStudio.DocumentViews
 
         private void projectListView_ItemActivate(object sender, EventArgs e)
         {
-            selectedItem = projectListView.SelectedItems[0];
-            if (selectedItem == null)
-                return;
+            var selectedItem = projectListView.SelectedItems[0];
             ideWindow.OpenProject((string)selectedItem.Tag);
-        }
-
-        private void projectListView_MouseClick(object sender, MouseEventArgs e)
-        {
-            selectedItem = projectListView.GetItemAt(e.X, e.Y);
-            if (selectedItem == null)
-                return;
-            project = Project.Open((string)selectedItem.Tag);
         }
 
         private void contextMenu_Opening(object sender, CancelEventArgs e)
@@ -170,16 +158,34 @@ namespace SphereStudio.DocumentViews
             tilesViewMenuItem.Checked = view == View.Tile;
         }
 
+        private void detailsViewMenuItem_Click(object sender, EventArgs e)
+        {
+            projectListView.View = View.Details;
+            Session.Settings.StartPageView = projectListView.View;
+        }
+
         private void exploreMenuItem_Click(object sender, EventArgs e)
         {
+            var selectedItem = projectListView.SelectedItems[0];
             var path = (string)selectedItem.Tag;
             Process.Start("explorer.exe", $@"/select,""{path}""");
         }
 
+        private void largeIconsViewMenuItem_Click(object sender, EventArgs e)
+        {
+            projectListView.View = View.LargeIcon;
+            Session.Settings.StartPageView = projectListView.View;
+        }
+
+        private void listViewMenuItem_Click(object sender, EventArgs e)
+        {
+            projectListView.View = View.List;
+            Session.Settings.StartPageView = projectListView.View;
+        }
+
         private void openMenuItem_Click(object sender, EventArgs e)
         {
-            if (selectedItem == null)
-                return;
+            var selectedItem = projectListView.SelectedItems[0];
             ideWindow.OpenProject((string)selectedItem.Tag);
         }
 
@@ -190,6 +196,7 @@ namespace SphereStudio.DocumentViews
 
         private void setIconMenuItem_Click(object sender, EventArgs e)
         {
+            var selectedItem = projectListView.SelectedItems[0];
             using (var dialog = new OpenFileDialog())
             {
                 var projectRoot = Path.GetDirectoryName((string)selectedItem.Tag);
@@ -219,33 +226,17 @@ namespace SphereStudio.DocumentViews
             }
         }
 
-        private async void testGameMenuItem_Click(object sender, EventArgs e)
-        {
-            await BuildEngine.Test(project);
-        }
-
-        private void detailsViewMenuItem_Click(object sender, EventArgs e)
-        {
-            projectListView.View = View.Details;
-            Session.Settings.StartPageView = projectListView.View;
-        }
-
-        private void largeIconsViewMenuItem_Click(object sender, EventArgs e)
-        {
-            projectListView.View = View.LargeIcon;
-            Session.Settings.StartPageView = projectListView.View;
-        }
-
-        private void listViewMenuItem_Click(object sender, EventArgs e)
-        {
-            projectListView.View = View.List;
-            Session.Settings.StartPageView = projectListView.View;
-        }
-
         private void smallIconsViewMenuItem_Click(object sender, EventArgs e)
         {
             projectListView.View = View.SmallIcon;
             Session.Settings.StartPageView = projectListView.View;
+        }
+
+        private async void testGameMenuItem_Click(object sender, EventArgs e)
+        {
+            var selectedItem = projectListView.SelectedItems[0];
+            var project = Project.Open((string)selectedItem.Tag);
+            await BuildEngine.Test(project);
         }
 
         private void tilesViewMenuItem_Click(object sender, EventArgs e)

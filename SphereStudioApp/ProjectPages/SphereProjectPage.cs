@@ -9,9 +9,6 @@ namespace SphereStudio.ProjectPages
 {
     public partial class SphereProjectPage : UserControl, IStyleAware, IProjectPage
     {
-        public Control Control => this;
-        public string Compiler => Defaults.Compiler;
-
         public SphereProjectPage()
         {
             InitializeComponent();
@@ -23,6 +20,9 @@ namespace SphereStudio.ProjectPages
                 "Sphere v2 - neoSphere, Oozaru",
             });
         }
+
+        public string Compiler => Defaults.Compiler;
+        public Control Control => this;
 
         public void ApplyStyle(UIStyle style)
         {

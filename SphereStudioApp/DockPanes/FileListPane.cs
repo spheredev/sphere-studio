@@ -267,7 +267,7 @@ namespace SphereStudio.DockPanes
             {
                 MessageBox.Show(
                     $"A file or directory with that name already exists. Please choose a different name.\n\nRenaming: {oldPath}\nTo: {newPath}",
-                    "File Replacement", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    "Renaming Conflict", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 e.CancelEdit = true;
                 e.Node.BeginEdit();
             }

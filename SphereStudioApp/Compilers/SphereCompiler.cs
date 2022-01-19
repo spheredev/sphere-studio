@@ -13,14 +13,6 @@ namespace SphereStudio.Compilers
 {
     class SphereCompiler : ICompiler
     {
-        private readonly string[] fileFilters =
-        {
-            "*.rmp", "*.rss", "*.rts", "*.rfn", "*.rws",
-            "*.js", "*.mjs", "*.glsl",
-            "*.mp3", "*.ogg", "*.mid", "*.wav", "*.flac", "*.it", "*.s3m", "*.mod",
-            "*.png", "*.jpg", "*.bmp", "*.pcx", "*.mng",
-        };
-
         public bool Prep(IProject project, IConsole console)
         {
             console.Print("preparing Sphere Classic project... ");

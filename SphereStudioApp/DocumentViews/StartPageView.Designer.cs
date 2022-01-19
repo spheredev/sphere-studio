@@ -34,14 +34,13 @@
             this.openMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exploreMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setIconMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.viewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tilesViewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.listViewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.smallIconsViewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.largeIconsViewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.detailsViewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.refreshMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.header = new System.Windows.Forms.Label();
             this.projectListView = new System.Windows.Forms.ListView();
@@ -59,19 +58,23 @@
             this.openMenuItem,
             this.exploreMenuItem,
             this.setIconMenuItem,
-            this.toolStripSeparator2,
-            this.viewMenuItem,
             this.toolStripSeparator1,
-            this.refreshMenuItem});
+            this.refreshMenuItem,
+            this.toolStripSeparator2,
+            this.tilesViewMenuItem,
+            this.listViewMenuItem,
+            this.smallIconsViewMenuItem,
+            this.largeIconsViewMenuItem,
+            this.detailsViewMenuItem});
             this.contextMenu.Name = "ItemContextStrip";
-            this.contextMenu.Size = new System.Drawing.Size(163, 148);
+            this.contextMenu.Size = new System.Drawing.Size(181, 258);
             this.contextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenu_Opening);
             // 
             // testGameMenuItem
             // 
             this.testGameMenuItem.Image = global::SphereStudio.Properties.Resources.lightning;
             this.testGameMenuItem.Name = "testGameMenuItem";
-            this.testGameMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.testGameMenuItem.Size = new System.Drawing.Size(180, 22);
             this.testGameMenuItem.Text = "&Test Game";
             this.testGameMenuItem.Click += new System.EventHandler(this.testGameMenuItem_Click);
             // 
@@ -79,7 +82,7 @@
             // 
             this.openMenuItem.Image = global::SphereStudio.Properties.Resources.script_edit;
             this.openMenuItem.Name = "openMenuItem";
-            this.openMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.openMenuItem.Size = new System.Drawing.Size(180, 22);
             this.openMenuItem.Text = "&Open Project";
             this.openMenuItem.Click += new System.EventHandler(this.openMenuItem_Click);
             // 
@@ -87,7 +90,7 @@
             // 
             this.exploreMenuItem.Image = global::SphereStudio.Properties.Resources.folder;
             this.exploreMenuItem.Name = "exploreMenuItem";
-            this.exploreMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.exploreMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exploreMenuItem.Text = "Show in Explorer";
             this.exploreMenuItem.Click += new System.EventHandler(this.exploreMenuItem_Click);
             // 
@@ -95,26 +98,14 @@
             // 
             this.setIconMenuItem.Image = global::SphereStudio.Properties.Resources.palette;
             this.setIconMenuItem.Name = "setIconMenuItem";
-            this.setIconMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.setIconMenuItem.Size = new System.Drawing.Size(180, 22);
             this.setIconMenuItem.Text = "&Set Icon...";
             this.setIconMenuItem.Click += new System.EventHandler(this.setIconMenuItem_Click);
             // 
-            // toolStripSeparator2
+            // toolStripSeparator1
             // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(159, 6);
-            // 
-            // viewMenuItem
-            // 
-            this.viewMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tilesViewMenuItem,
-            this.listViewMenuItem,
-            this.smallIconsViewMenuItem,
-            this.largeIconsViewMenuItem,
-            this.detailsViewMenuItem});
-            this.viewMenuItem.Name = "viewMenuItem";
-            this.viewMenuItem.Size = new System.Drawing.Size(162, 22);
-            this.viewMenuItem.Text = "&View";
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
             // 
             // tilesViewMenuItem
             // 
@@ -151,16 +142,16 @@
             this.detailsViewMenuItem.Text = "&Details";
             this.detailsViewMenuItem.Click += new System.EventHandler(this.detailsViewMenuItem_Click);
             // 
-            // toolStripSeparator1
+            // toolStripSeparator2
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(159, 6);
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
             // 
             // refreshMenuItem
             // 
             this.refreshMenuItem.Image = global::SphereStudio.Properties.Resources.arrow_refresh;
             this.refreshMenuItem.Name = "refreshMenuItem";
-            this.refreshMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.refreshMenuItem.Size = new System.Drawing.Size(180, 22);
             this.refreshMenuItem.Text = "Re&fresh";
             this.refreshMenuItem.Click += new System.EventHandler(this.refreshMenuItem_Click);
             // 
@@ -198,7 +189,6 @@
             this.projectListView.TileSize = new System.Drawing.Size(256, 48);
             this.projectListView.UseCompatibleStateImageBehavior = false;
             this.projectListView.ItemActivate += new System.EventHandler(this.projectListView_ItemActivate);
-            this.projectListView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.projectListView_MouseClick);
             // 
             // columnHeader1
             // 
@@ -240,15 +230,9 @@
         private System.Windows.Forms.ToolStripMenuItem testGameMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setIconMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem viewMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem listViewMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem smallIconsViewMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem largeIconsViewMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem tilesViewMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exploreMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem refreshMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem detailsViewMenuItem;
         private System.Windows.Forms.Label header;
         private System.Windows.Forms.ListView projectListView;
         private System.Windows.Forms.ColumnHeader columnHeader1;
@@ -256,5 +240,10 @@
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem tilesViewMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem listViewMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem smallIconsViewMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem largeIconsViewMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem detailsViewMenuItem;
     }
 }

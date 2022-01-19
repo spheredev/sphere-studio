@@ -81,13 +81,13 @@ namespace SphereStudio.SettingsPages
             return true;
         }
 
-        private void PathList_SelectedIndexChanged(object sender, EventArgs e)
+        private void dirsListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             removeDirButton.Enabled = dirsListBox.Items.Count > 0 && dirsListBox.SelectedIndex >= 0;
             moveDirUpButton.Enabled = moveDirDownButton.Enabled = removeDirButton.Enabled;
         }
 
-        private void AddPathButton_Click(object sender, EventArgs e)
+        private void addDirButton_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog browser = new FolderBrowserDialog();
             browser.Description = "Select where you want Sphere Studio to search for projects.";
@@ -99,14 +99,14 @@ namespace SphereStudio.SettingsPages
             }
         }
 
-        private void RemovePathButton_Click(object sender, EventArgs e)
+        private void removeDirButton_Click(object sender, EventArgs e)
         {
             dirsListBox.Items.RemoveAt(dirsListBox.SelectedIndex);
             removeDirButton.Enabled = dirsListBox.Items.Count > 0 && dirsListBox.SelectedIndex >= 0;
             moveDirUpButton.Enabled = moveDirDownButton.Enabled = removeDirButton.Enabled;
         }
 
-        private void UpButton_Click(object sender, EventArgs e)
+        private void moveDirUpButton_Click(object sender, EventArgs e)
         {
             var idx = dirsListBox.SelectedIndex;
             if (idx - 1 >= 0)
@@ -118,7 +118,7 @@ namespace SphereStudio.SettingsPages
             }
         }
 
-        private void DownButton_Click(object sender, EventArgs e)
+        private void moveDirDownButton_Click(object sender, EventArgs e)
         {
             var idx = dirsListBox.SelectedIndex;
             if (idx + 1 < dirsListBox.Items.Count)
