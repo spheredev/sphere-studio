@@ -692,8 +692,8 @@
             this.exploreProjectMenuItem.Enabled = false;
             this.exploreProjectMenuItem.Image = global::SphereStudio.Properties.Resources.folder_closed;
             this.exploreProjectMenuItem.Name = "exploreProjectMenuItem";
-            this.exploreProjectMenuItem.Size = new System.Drawing.Size(214, 22);
-            this.exploreProjectMenuItem.Text = "Show in Windows &Explorer";
+            this.exploreProjectMenuItem.Size = new System.Drawing.Size(201, 22);
+            this.exploreProjectMenuItem.Text = "Show in &Explorer";
             this.exploreProjectMenuItem.Click += new System.EventHandler(this.exploreProjectMenuItem_Click);
             // 
             // refreshProjectMenuItem
@@ -702,21 +702,21 @@
             this.refreshProjectMenuItem.Image = global::SphereStudio.Properties.Resources.arrow_refresh;
             this.refreshProjectMenuItem.Name = "refreshProjectMenuItem";
             this.refreshProjectMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F5)));
-            this.refreshProjectMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.refreshProjectMenuItem.Size = new System.Drawing.Size(201, 22);
             this.refreshProjectMenuItem.Text = "&Refresh File List";
             this.refreshProjectMenuItem.Click += new System.EventHandler(this.refreshProjectMenuItem_Click);
             // 
             // Separator7
             // 
             this.Separator7.Name = "Separator7";
-            this.Separator7.Size = new System.Drawing.Size(211, 6);
+            this.Separator7.Size = new System.Drawing.Size(198, 6);
             // 
             // projectPropertiesMenuItem
             // 
             this.projectPropertiesMenuItem.Enabled = false;
             this.projectPropertiesMenuItem.Image = global::SphereStudio.Properties.Resources.SphereEditor;
             this.projectPropertiesMenuItem.Name = "projectPropertiesMenuItem";
-            this.projectPropertiesMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.projectPropertiesMenuItem.Size = new System.Drawing.Size(201, 22);
             this.projectPropertiesMenuItem.Text = "Project P&roperties...";
             this.projectPropertiesMenuItem.Click += new System.EventHandler(this.projectPropertiesMenuItem_Click);
             // 

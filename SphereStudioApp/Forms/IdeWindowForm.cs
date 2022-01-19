@@ -1006,8 +1006,7 @@ namespace SphereStudio.Forms
 
         private void exploreProjectMenuItem_Click(object sender, EventArgs e)
         {
-            Process.Start("explorer.exe", $@"/select,""{Session.Project.FileName}""")
-                .Dispose();
+            Process.Start("explorer.exe", $@"/select,""{Session.Project.FileName}""");
         }
 
         private void projectPropertiesMenuItem_Click(object sender, EventArgs e)

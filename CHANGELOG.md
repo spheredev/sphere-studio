@@ -1,6 +1,16 @@
 Sphere Studio Changelog
 =======================
 
+v2.2.3 - TBD
+------------
+
+* Improves the organization of the menu commands.
+* Fixes an issue where renaming a file from the file tree would allow existing
+  files to be overwritten by the rename.
+* Fixes a bug where the "Copy Full Path" command doesn't copy the correct path.
+* Fixes a bug where closing a project didn't disable the corresponding menu
+  commands.
+
 v2.2.2 - December 23, 2021
 --------------------------
 

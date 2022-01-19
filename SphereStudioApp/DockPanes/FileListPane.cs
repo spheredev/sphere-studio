@@ -19,28 +19,23 @@ namespace SphereStudio.DockPanes
     [ToolboxItem(false)]
     partial class FileListPane : UserControl, IDockPane, IStyleAware
     {
-        private readonly IdeWindowForm _hostForm;
-        private readonly ImageList _iconlist = new ImageList();
-        private readonly ToolTip _tip = new ToolTip();
+        private ImageList iconImageList = new ImageList();
+        private IdeWindowForm ideWindow;
 
-        public FileListPane(IdeWindowForm hostForm)
+        public FileListPane(IdeWindowForm ideWindow)
         {
             InitializeComponent();
             StyleManager.AutoStyle(this);
 
-            _hostForm = hostForm;
+            this.ideWindow = ideWindow;
 
             // TODO: fix this ugly hack! (ProjectTree New submenu)
-            NewFileItem.DropDown = _hostForm.newMenuItem.DropDown;
-            NewFileItem.DropDownOpening += _hostForm.newMenuItem_DropDownOpening;
-            NewFileItem.DropDownClosed += _hostForm.newMenuItem_DropDownClosed;
+            newMenuItem.DropDown = this.ideWindow.newMenuItem.DropDown;
+            newMenuItem.DropDownOpening += this.ideWindow.newMenuItem_DropDownOpening;
+            newMenuItem.DropDownClosed += this.ideWindow.newMenuItem_DropDownClosed;
 
-            _tip.ToolTipTitle = "Image";
-            _tip.ToolTipIcon = ToolTipIcon.Info;
-            _tip.UseFading = true;
-
-            fileTree.ImageList = _iconlist;
-            _iconlist.ColorDepth = ColorDepth.Depth32Bit;
+            fileTreeView.ImageList = iconImageList;
+            iconImageList.ColorDepth = ColorDepth.Depth32Bit;
         }
 
         public bool ShowInViewMenu => true;
@@ -52,123 +47,24 @@ namespace SphereStudio.DockPanes
         {
             style.AsUIElement(this);
             style.AsHeading(header);
-            style.AsTextView(fileTree);
+            style.AsTextView(fileTreeView);
         }
 
-        private void ImportFileItem_Click(object sender, EventArgs e)
+        public void Close()
         {
-            var path = ResolvePath(fileTree.SelectedNode);
-            var filesToAdd = _hostForm.getFilesToOpen(true);
-            
-            if (filesToAdd == null || filesToAdd.Length == 0)
-                return;
+            fileWatcher.EnableRaisingEvents = false;
+            fileTreeView.Nodes.Clear();
+        }
 
-            foreach (string filePath in filesToAdd)
+        public void Open()
+        {
+            if (!string.IsNullOrEmpty(Session.Project.RootPath))
             {
-                var newPath = Path.Combine(path, Path.GetFileName(filePath));
-                var allowCopy = true;
-                if (File.Exists(newPath))
-                {
-                    var text = $@"File '{newPath}' already exists.  Do you want to overwrite it with the file you're importing?";
-                    allowCopy = MessageBox.Show(text, "Overwrite", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes;
-                }
-                if (allowCopy)
-                    File.Copy(filePath, newPath, true);
+                fileWatcher.Path = Session.Project.RootPath;
+                fileWatcher.EnableRaisingEvents = true;
             }
         }
 
-        private void ProjectTreeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            if (e.Button != MouseButtons.Right)
-                return;
-            fileTree.SelectedNode = e.Node;
-
-            OpenFileItem.Visible = DeleteFileItem.Visible = false;
-            RenameFileItem.Visible = CopyPathItem.Visible = false;
-            GameSettingsItem.Visible = false;
-            NewFileItem.Visible = ImportFileItem.Visible = false;
-            AddSubfolderItem.Visible = DeleteFolderItem.Visible = false;
-
-            string tag = e.Node.Tag as string;
-            switch (tag)
-            {
-                case "projectNode":
-                    GameSettingsItem.Visible = true;
-                    AddSubfolderItem.Visible = true;
-                    break;
-                case "fileNode":
-                    OpenFileItem.Visible = DeleteFileItem.Visible = true;
-                    RenameFileItem.Visible = CopyPathItem.Visible = true;
-                    string s = e.Node.Text;
-                    break;
-                case "directoryNode":
-                    NewFileItem.Visible = ImportFileItem.Visible = true;
-                    AddSubfolderItem.Visible = DeleteFolderItem.Visible = true;
-                    break;
-            }
-
-            ProjectFileContextMenu.Show(fileTree, e.Location);
-        }
-
-        private void RenameFileItem_Click(object sender, EventArgs e)
-        {
-            TreeNode node = fileTree.SelectedNode;
-            if (node.Tag.Equals("fileNode")) node.BeginEdit();
-        }
-
-        private void DeleteFileItem_Click(object sender, EventArgs e)
-        {
-            TreeNode node = fileTree.SelectedNode;
-            string pathtop = node.FullPath.Substring(node.FullPath.IndexOf('\\'));
-            string path = Session.Project.RootPath + pathtop;
-
-            if (!File.Exists(path)) return;
-            try
-            {
-                FileSystem.DeleteFile(path, UIOption.AllDialogs, RecycleOption.SendToRecycleBin);
-            }
-            catch (OperationCanceledException) { return; }
-        }
-
-        /// <summary>
-        ///     Pauses the filesystem watcher from modifying this control.
-        /// </summary>
-        public void Pause()
-        {
-            if (string.IsNullOrEmpty(SystemWatcher.Path)) return;
-            SystemWatcher.EnableRaisingEvents = false;
-        }
-
-        /// <summary>
-        /// Resumes the filesystem watcher, enabling it to modify this control.
-        /// </summary>
-        public void Resume()
-        {
-            if (string.IsNullOrEmpty(SystemWatcher.Path)) return;
-            SystemWatcher.EnableRaisingEvents = true;
-        }
-
-        private void ProjectTreeView_AfterExpand(object sender, TreeViewEventArgs e)
-        {
-            if (e.Node.ImageIndex == 1)
-            {
-                e.Node.ImageIndex = 2;
-                e.Node.SelectedImageIndex = 2;
-            }
-        }
-
-        private void ProjectTreeView_AfterCollapse(object sender, TreeViewEventArgs e)
-        {
-            if (e.Node.ImageIndex == 2)
-            {
-                e.Node.ImageIndex = 1;
-                e.Node.SelectedImageIndex = 1;
-            }
-        }
-
-        /// <summary>
-        ///     Extends the Refresh method to update the contents of the tree.
-        /// </summary>
         public override void Refresh()
         {
             base.Refresh();
@@ -177,29 +73,26 @@ namespace SphereStudio.DockPanes
                 return;
 
             // update the icons
-            _iconlist.Images.Clear();
-            _iconlist.Images.Add(Resources.SphereEditor);
-            _iconlist.Images.Add(Resources.folder_closed);
-            _iconlist.Images.Add(Resources.folder);
-            _iconlist.Images.Add(Resources.new_item);
-            string[] pluginNames = PluginManager.GetNames<IFileOpener>();
-            foreach (string name in pluginNames)
+            iconImageList.Images.Clear();
+            iconImageList.Images.Add(Resources.SphereEditor);
+            iconImageList.Images.Add(Resources.folder_closed);
+            iconImageList.Images.Add(Resources.folder);
+            iconImageList.Images.Add(Resources.new_item);
+            foreach (var name in PluginManager.GetNames<IFileOpener>())
             {
                 var plugin = PluginManager.Get<IFileOpener>(name);
-                _iconlist.Images.Add(name, plugin.FileIcon ?? Resources.new_item);
+                iconImageList.Images.Add(name, plugin.FileIcon ?? Resources.new_item);
             }
 
             Cursor.Current = Cursors.WaitCursor;
 
-            // Save currently selected item and folder expansion states
-            string selectedNodePath = fileTree.SelectedNode != null
-                                          ? fileTree.SelectedNode.FullPath
-                                          : null;
+            // save currently selected item and folder expansion states
+            var selectedNodePath = fileTreeView.SelectedNode?.FullPath;
             var isExpandedTable = new Dictionary<string, bool>();
             var nodesToCheck = new Queue<TreeNode>();
-            if (fileTree.TopNode != null)
+            if (fileTreeView.TopNode != null)
             {
-                nodesToCheck.Enqueue(fileTree.TopNode);
+                nodesToCheck.Enqueue(fileTreeView.TopNode);
                 while (nodesToCheck.Count > 0)
                 {
                     TreeNode node = nodesToCheck.Dequeue();
@@ -212,26 +105,27 @@ namespace SphereStudio.DockPanes
                 }
             }
 
-            // Repopulate the tree
-            fileTree.BeginUpdate();
-            fileTree.Nodes.Clear();
+            // repopulate the file tree
+            fileTreeView.BeginUpdate();
+            fileTreeView.Nodes.Clear();
             var projectNode = new TreeNode(Session.Project.Name) { Tag = "projectNode" };
-            fileTree.Nodes.Add(projectNode);
-            var baseDir = new DirectoryInfo(SystemWatcher.Path);
-            PopulateDirectoryNode(fileTree.Nodes[0], baseDir);
+            fileTreeView.Nodes.Add(projectNode);
+            var baseDir = new DirectoryInfo(fileWatcher.Path);
+            populateFolderNode(fileTreeView.Nodes[0], baseDir);
 
-            // Re-expand folders and try to select previously-selected item
-            if (fileTree.TopNode != null)
+            // re-expand folders and try to select the previously-selected item
+            if (fileTreeView.TopNode != null)
             {
                 nodesToCheck.Clear();
-                nodesToCheck.Enqueue(fileTree.TopNode);
+                nodesToCheck.Enqueue(fileTreeView.TopNode);
                 while (nodesToCheck.Count > 0)
                 {
-                    TreeNode node = nodesToCheck.Dequeue();
-                    bool isExpanded;
-                    isExpandedTable.TryGetValue(node.FullPath, out isExpanded);
-                    if (isExpanded) node.Expand();
-                    if (node.FullPath == selectedNodePath) fileTree.SelectedNode = node;
+                    var node = nodesToCheck.Dequeue();
+                    isExpandedTable.TryGetValue(node.FullPath, out var isExpanded);
+                    if (isExpanded)
+                        node.Expand();
+                    if (node.FullPath == selectedNodePath)
+                        fileTreeView.SelectedNode = node;
                     foreach (TreeNode subnode in node.Nodes)
                     {
                         // emulate a recursive search of the tree view:
@@ -240,16 +134,64 @@ namespace SphereStudio.DockPanes
                 }
             }
 
-            if (fileTree.SelectedNode == null)
-                fileTree.SelectedNode = fileTree.TopNode;
-            if (!fileTree.Nodes[0].IsExpanded)
-                fileTree.Nodes[0].Expand();
+            if (fileTreeView.SelectedNode == null)
+                fileTreeView.SelectedNode = fileTreeView.TopNode;
+            if (!fileTreeView.Nodes[0].IsExpanded)
+                fileTreeView.Nodes[0].Expand();
             Cursor.Current = Cursors.Default;
-            fileTree.EndUpdate();
+            fileTreeView.EndUpdate();
         }
 
-        // RECURSIVE:
-        private static void PopulateDirectoryNode(TreeNode baseNode, DirectoryInfo dir)
+        private void deleteNode(TreeNode node)
+        {
+            var path = getFullPath(node);
+            switch ((string)node.Tag)
+            {
+                case "fileNode":
+                    if (!File.Exists(path))
+                        return;
+                    FileSystem.DeleteFile(path, UIOption.AllDialogs, RecycleOption.SendToRecycleBin, UICancelOption.DoNothing);
+                    break;
+                case "folderNode":
+                    if (!Directory.Exists(path))
+                        return;
+                    FileSystem.DeleteDirectory(path, UIOption.AllDialogs, RecycleOption.SendToRecycleBin, UICancelOption.DoNothing);
+                    break;
+            }
+        }
+
+        private string getFullPath(TreeNode node)
+        {
+            var projectRoot = Session.Project.RootPath;
+            if ((string)node.Tag != "projectNode")
+            {
+                var nodePath = node.FullPath.Substring(node.FullPath.IndexOf(@"\") + 1);
+                return Path.Combine(projectRoot, nodePath);
+            }
+            else
+            {
+                return projectRoot;
+            }
+        }
+
+        private void openNode(TreeNode node)
+        {
+            if (ideWindow == null || node == null)
+                return;
+
+            var path = getFullPath(node);
+            if ((string)node.Tag == "fileNode")
+                ideWindow.OpenFile(path);
+        }
+
+        private void pauseFileWatcher(bool paused)
+        {
+            if (string.IsNullOrEmpty(fileWatcher.Path))
+                return;
+            fileWatcher.EnableRaisingEvents = !paused;
+        }
+
+        private void populateFolderNode(TreeNode baseNode, DirectoryInfo dir)
         {
             var dirInfos = from dirInfo in dir.GetDirectories()
                            where !dirInfo.Attributes.HasFlag(FileAttributes.Hidden)
@@ -257,9 +199,9 @@ namespace SphereStudio.DockPanes
                            select dirInfo;
             foreach (var dirInfo in dirInfos)
             {
-                var subNode = new TreeNode(dirInfo.Name, 1, 1) { Tag = "directoryNode" };
+                var subNode = new TreeNode(dirInfo.Name, 1, 1) { Tag = "folderNode" };
                 baseNode.Nodes.Add(subNode);
-                PopulateDirectoryNode(subNode, dirInfo);
+                populateFolderNode(subNode, dirInfo);
             }
 
             var fileInfos = from fileInfo in dir.GetFiles()
@@ -269,12 +211,12 @@ namespace SphereStudio.DockPanes
             foreach (var fileInfo in fileInfos)
             {
                 var subNode = new TreeNode(fileInfo.Name) { Tag = "fileNode" };
-                UpdateImage(subNode);
+                updateImage(subNode);
                 baseNode.Nodes.Add(subNode);
             }
         }
 
-        private static void UpdateImage(TreeNode node)
+        private void updateImage(TreeNode node)
         {
             var pluginName = Session.GetFileOpenerName(node.Text);
             if (pluginName != null)
@@ -289,224 +231,225 @@ namespace SphereStudio.DockPanes
             }
         }
 
-        private void AddFolderItem_Click(object sender, EventArgs e)
+        private void fileTreeView_AfterCollapse(object sender, TreeViewEventArgs e)
         {
-            using (var form = new StringInputForm("New Folder", "give your new folder a name"))
+            if (e.Node.ImageIndex == 2)
             {
-                form.Input = "Untitled Folder";
-                if (form.ShowDialog() == DialogResult.OK)
-                {
-                    string path = "";
-                    if (fileTree.SelectedNode.Index == 0)
-                    {
-                        path = Path.Combine(Session.Project.RootPath, form.Input);
-                    }
-                    else
-                    {
-                        string toppath = fileTree.SelectedNode.FullPath;
-                        toppath = toppath.Substring(toppath.IndexOf('\\'));
-                        string rootpath = Session.Project.RootPath + toppath;
-                        path = Path.Combine(rootpath, form.Input);
-                    }
-
-                    if (!Directory.Exists(path))
-                    {
-                        Directory.CreateDirectory(path);
-                        TreeNode node = new TreeNode(form.Input, 2, 1) { Tag = "directoryNode" };
-                        fileTree.SelectedNode.Nodes.Add(node);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Directory already exists!", "Directory Exists", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    }
-                }
+                e.Node.ImageIndex = 1;
+                e.Node.SelectedImageIndex = 1;
             }
         }
 
-        /// <summary>
-        /// Gets the full length real path of the tree node item.
-        /// </summary>
-        /// <param name="node">The node to resolve path from.</param>
-        /// <returns>The full filepath the node corresponds to.</returns>
-        private static string ResolvePath(TreeNode node)
+        private void fileTreeView_AfterExpand(object sender, TreeViewEventArgs e)
         {
-            var root = Session.Project.RootPath;
-            var path = node.FullPath;
-            var idx = path.IndexOf("\\");
-            path = path.Substring(idx, path.Length - idx);
-            return root + path;
-        }
-
-        private void ProjectTreeView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
-        {
-            if (e.Label == null || e.Label == e.Node.Text) return;
-
-            var oldpath = ResolvePath(e.Node);
-            var oldroot = Path.GetDirectoryName(oldpath);
-            var newpath = oldroot + "\\" + e.Label;
-
-            var exists = File.Exists(newpath);
-            var overwrite = false;
-
-            if (exists)
+            if (e.Node.ImageIndex == 1)
             {
-                overwrite = MessageBox.Show("Overwrite existing file?\n\n" + oldpath + "\n\nto:\n\n" + newpath, "File Replacement", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes;
-                if (!overwrite)
-                {
-                    e.CancelEdit = true;
-                    return;
-                }
-            }
-
-            try
-            {
-                Pause();
-                if (overwrite) File.Delete(newpath);
-                File.Move(oldpath, newpath);
-                Resume();
-                
-            }
-            catch (Exception exc)
-            {
-                MessageBox.Show("Error in renaming file:\n" + exc.Message, "Rename Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                e.Node.ImageIndex = 2;
+                e.Node.SelectedImageIndex = 2;
             }
         }
 
-        private void CopyPathItem_Click(object sender, EventArgs e)
+        private void fileTreeView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
-            var text = fileTree.SelectedNode.FullPath.Replace('\\', '/');
-            text = text.Substring(text.IndexOf('/') + 1);
-            text = text.Substring(text.IndexOf('/') + 1);
-            Clipboard.SetText($@"""{text}""", TextDataFormat.Text);
-        }
+            if (e.Label == null || e.Label == e.Node.Text)
+                return;
 
-        private void ProjectTreeView_BeforeLabelEdit(object sender, NodeLabelEditEventArgs e)
-        {
-            if ((string)e.Node.Tag != "fileNode")
+            var oldPath = getFullPath(e.Node);
+            var oldRootPath = Path.GetDirectoryName(oldPath);
+            var newPath = Path.Combine(oldRootPath, e.Label);
+            if (!File.Exists(newPath) && !Directory.Exists(newPath))
             {
+                pauseFileWatcher(true);
+                Directory.Move(oldPath, newPath);
+                pauseFileWatcher(false);
+            }
+            else
+            {
+                MessageBox.Show(
+                    $"A file or directory with that name already exists. Please choose a different name.\n\nRenaming: {oldPath}\nTo: {newPath}",
+                    "File Replacement", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 e.CancelEdit = true;
+                e.Node.BeginEdit();
             }
         }
 
-        private void GameSettingsItem_Click(object sender, EventArgs e)
+        private void fileTreeView_BeforeLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
-            using (var form = new ProjectPropertiesForm(Session.Project))
-            {
-                form.ShowDialog(_hostForm);
-            }
+            if ((string)e.Node.Tag == "projectNode")
+                e.CancelEdit = true;
         }
 
-        private void DeleteFolderItem_Click(object sender, EventArgs e)
+        private void fileTreeView_KeyDown(object sender, KeyEventArgs e)
         {
-            TreeNode node = fileTree.SelectedNode;
-            string pathtop = node.FullPath.Substring(node.FullPath.IndexOf('\\'));
-            string path = Session.Project.RootPath + pathtop;
-
-            if (!Directory.Exists(path)) return;
-            try
-            {
-                FileSystem.DeleteDirectory(path, UIOption.AllDialogs, RecycleOption.SendToRecycleBin);
-            }
-            catch (OperationCanceledException) { return; }
-        }
-
-        public void Close()
-        {
-            fileTree.Nodes.Clear();
-            SystemWatcher.EnableRaisingEvents = false;
-        }
-
-        public void Open()
-        {
-            if (!string.IsNullOrEmpty(Session.Project.RootPath))
-                SystemWatcher.Path = Session.Project.RootPath;
-            else return;
-
-            SystemWatcher.EnableRaisingEvents = true;
-        }
-
-        private void OpenItem(TreeNode node)
-        {
-            if (_hostForm == null || node == null)
+            var node = fileTreeView.SelectedNode;
+            if (node == null)
                 return;
-            var pathtop = node.FullPath;
-
-            int idx = pathtop.IndexOf('\\');
-            if (idx < 0)
-                return;  // we're at root.
-
-            pathtop = pathtop.Substring(idx);
-            var path = Session.Project.RootPath + pathtop;
-
-            // if the node is anything other than a file, don't do anything
-            if ((string)node.Tag != "fileNode")
-                return;
-
-            _hostForm.OpenFile(path);
-        }
-
-        private void OpenFileItem_Click(object sender, EventArgs e)
-        {
-            OpenItem(fileTree.SelectedNode);
-        }
-
-        private void ProjectTreeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            OpenItem(fileTree.SelectedNode);
-        }
-
-        private void ProjectTreeView_KeyDown(object sender, KeyEventArgs e)
-        {
-            TreeNode node = fileTree.SelectedNode;
-            if (node == null) return;
             switch (e.KeyCode)
             {
                 case Keys.Return:
-                    if (!node.Tag.Equals("fileNode")) return;
-                    OpenItem(fileTree.SelectedNode);
+                    if ((string)node.Tag != "fileNode")
+                        return;
+                    openNode(fileTreeView.SelectedNode);
+                    e.Handled = true;
+                    break;
+                case Keys.Delete:
+                    if ((string)node.Tag == "projectNode")
+                        return;
+                    deleteNode(fileTreeView.SelectedNode);
                     e.Handled = true;
                     break;
                 case Keys.F2:
-                    fileTree.SelectedNode.BeginEdit();
+                    fileTreeView.SelectedNode.BeginEdit();
                     e.Handled = true;
                     break;
             }
         }
-        
-        private void ProjectTreeView_KeyPress(object sender, KeyPressEventArgs e)
+
+        private void fileTreeView_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // stops the beeping annoyance when user presses enter
-            if (e.KeyChar == '\r') e.Handled = true;
+            // prevent the annoying beep when pressing Enter in the treeview
+            if (e.KeyChar == '\r')
+                e.Handled = true;
         }
 
-        private void SystemWatcher_Created(object sender, IEnumerable<FileSystemEventArgs> eAll)
+        private void fileTreeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                fileTreeView.SelectedNode = e.Node;
+
+                copyPathMenuItem.Visible = false;
+                deleteMenuItem.Visible = false;
+                importMenuItem.Visible = false;
+                newMenuItem.Visible = false;
+                newFolderMenuItem.Visible = false;
+                openMenuItem.Visible = false;
+                projectPropertiesMenuItem.Visible = false;
+                renameMenuItem.Visible = false;
+                switch ((string)e.Node.Tag)
+                {
+                    case "fileNode":
+                        copyPathMenuItem.Visible = true;
+                        deleteMenuItem.Visible = true;
+                        openMenuItem.Visible = true;
+                        renameMenuItem.Visible = true;
+                        break;
+                    case "folderNode":
+                        copyPathMenuItem.Visible = true;
+                        deleteMenuItem.Visible = true;
+                        importMenuItem.Visible = true;
+                        newMenuItem.Visible = true;
+                        newFolderMenuItem.Visible = true;
+                        renameMenuItem.Visible = true;
+                        break;
+                    case "projectNode":
+                        newFolderMenuItem.Visible = true;
+                        projectPropertiesMenuItem.Visible = true;
+                        break;
+                }
+                contextMenu.Show(fileTreeView, e.Location);
+            }
+        }
+
+        private void fileTreeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            openNode(fileTreeView.SelectedNode);
+        }
+
+        private void fileWatcher_Created(object sender, IEnumerable<FileSystemEventArgs> eAll)
         {
             Refresh();
         }
-        
-        private void SystemWatcher_Deleted(object sender, IEnumerable<FileSystemEventArgs> eAll)
+
+        private void fileWatcher_Deleted(object sender, IEnumerable<FileSystemEventArgs> eAll)
         {
             Refresh();
         }
 
-        private void SystemWatcher_Renamed(object sender, IEnumerable<FileSystemEventArgs> eAll)
+        private void fileWatcher_Renamed(object sender, IEnumerable<FileSystemEventArgs> eAll)
         {
             Refresh();
         }
 
-        private void OpenFolderItem_Click(object sender, EventArgs e)
+        private void copyPathMenuItem_Click(object sender, EventArgs e)
         {
-            if (fileTree.SelectedNode == null)
-                return;
-            var node = fileTree.SelectedNode;
-            var path = node.Level == 0 && node.Index == 0
-                ? Session.Project.RootPath
-                : ResolvePath(node);
+            var path = getFullPath(fileTreeView.SelectedNode);
+            Clipboard.SetText(path, TextDataFormat.Text);
+        }
+
+        private void deleteMenuItem_Click(object sender, EventArgs e)
+        {
+            deleteNode(fileTreeView.SelectedNode);
+        }
+
+        private void exploreMenuItem_Click(object sender, EventArgs e)
+        {
+            var path = getFullPath(fileTreeView.SelectedNode);
             Process.Start("explorer.exe", $@"/select,""{path}""");
         }
 
-        private void ProjectFileContextMenu_Opening(object sender, CancelEventArgs e)
+        private void importMenuItem_Click(object sender, EventArgs e)
         {
+            var path = getFullPath(fileTreeView.SelectedNode);
+            var filesToAdd = ideWindow.getFilesToOpen(true);
+
+            if (filesToAdd == null || filesToAdd.Length == 0)
+                return;
+
+            foreach (var sourcePath in filesToAdd)
+            {
+                var newPath = Path.Combine(path, Path.GetFileName(sourcePath));
+                var canCopy = true;
+                if (File.Exists(newPath))
+                {
+                    var text = $@"A file with the name '{newPath}' already exists.  Do you want to overwrite it with the file you're importing?";
+                    canCopy = MessageBox.Show(text, "Overwrite", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes;
+                }
+                if (canCopy)
+                    File.Copy(sourcePath, newPath, true);
+            }
+        }
+
+        private void newFolderMenuItem_Click(object sender, EventArgs e)
+        {
+            var rootPath = getFullPath(fileTreeView.SelectedNode);
+            using (var form = new StringInputForm("New Folder", $"create a new folder in {rootPath}"))
+            {
+                form.Input = "untitled";
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    var path = Path.Combine(rootPath, form.Input);
+                    if (!Directory.Exists(path) && !File.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                        var node = new TreeNode(form.Input, 2, 1) { Tag = "folderNode" };
+                        fileTreeView.SelectedNode.Nodes.Add(node);
+                    }
+                    else
+                    {
+                        MessageBox.Show("A file or directory by that name already exists.", "Directory Exists", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
+                }
+            }
+        }
+
+        private void openMenuItem_Click(object sender, EventArgs e)
+        {
+            openNode(fileTreeView.SelectedNode);
+        }
+
+        private void projectPropertiesMenuItem_Click(object sender, EventArgs e)
+        {
+            var result = new ProjectPropertiesForm(Session.Project).ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                ideWindow.Refresh();
+            }
+        }
+
+        private void renameMenuItem_Click(object sender, EventArgs e)
+        {
+            fileTreeView.SelectedNode.BeginEdit();
         }
     }
 }
