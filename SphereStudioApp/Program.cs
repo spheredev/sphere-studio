@@ -25,31 +25,23 @@ namespace SphereStudio
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            // register built-in components
             PluginManager.Register(null, new DefaultStyleProvider(), "Default");
             PluginManager.Register(null, new SphereCompiler(), Defaults.Compiler);
             PluginManager.Register(null, new EnvironmentSettingsPage(), "Environment");
             PluginManager.Register(null, new PluginsSettingsPage(), "Plugins");
             PluginManager.Register(null, new SphereProjectPage(), "Sphere Game");
 
-            Window = new IdeWindowForm();
-
-            // check for and open files dragged onto the app.
+            // create the main IDE form and run the application
+            var ideWindow = new IdeWindowForm();
             foreach (var fileName in args)
             {
                 if (File.Exists(fileName))
-                {
-                    Window.OpenFile(fileName);
-                }
+                    ideWindow.OpenFile(fileName);
             }
-
             if (args.Length > 0 && File.Exists(args[args.Length - 1]))
-            {
-                Window.setDefaultActiveFile(args[args.Length - 1]);
-            }
-
-            Application.Run(Window);
+                ideWindow.setDefaultActiveFile(args[args.Length - 1]);
+            Application.Run(ideWindow);
         }
-
-        public static IdeWindowForm Window { get; private set; }
     }
 }

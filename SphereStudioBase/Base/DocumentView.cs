@@ -9,27 +9,30 @@ namespace SphereStudio.Base
     /// Provides a base class for editable documents in Sphere Studio.
     /// </summary>
     [ToolboxItem(false)]
-    public class DocumentView : UserControl
+    public abstract class DocumentView : UserControl
     {
-        private bool _isDirty = false;
+        private bool isDirty = false;
 
         /// <summary>
-        /// Gets whether the DocumentView contains saveable content.
+        /// Gets whether the <c>DocumentView</c> contains saveable content.
         /// </summary>
         public virtual bool CanSave => true;
         
         /// <summary>
         /// Gets whether the document has been edited since the last save.
         /// </summary>
-        public virtual bool IsDirty
+        public virtual bool Dirty
         {
-            get { return _isDirty; }
+            get
+            {
+                return isDirty;
+            }
             protected set
             {
-                bool oldvalue = _isDirty;
-                _isDirty = value;
-                if (value != oldvalue && DirtyChanged != null)
-                    DirtyChanged(this, EventArgs.Empty);
+                var oldValue = isDirty;
+                isDirty = value;
+                if (value != oldValue)
+                    DirtyChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -61,7 +64,7 @@ namespace SphereStudio.Base
         public virtual string ViewState { get; set; }
 
         /// <summary>
-        /// Fires when the document's 'dirty' status changes.
+        /// Fires when the document's <c>Dirty</c> value changes.
         /// </summary>
         public event EventHandler DirtyChanged;
 
@@ -80,8 +83,8 @@ namespace SphereStudio.Base
         /// <summary>
         /// Saves the contents of the document to a specified filename.
         /// </summary>
-        /// <param name="filename">The filename to save under.</param>
-        public virtual void Save(string filename)
+        /// <param name="fileName">The filename to save under.</param>
+        public virtual void Save(string fileName)
         {
             if (CanSave)
                 throw new NotImplementedException("Saveable DocumentView doesn't implement Save()");
@@ -117,6 +120,11 @@ namespace SphereStudio.Base
         /// </summary>
         public virtual void Paste() { }
 
+        /// <summary>
+        /// Selects everything in the document.
+        /// </summary>
+        public virtual void SelectAll() { }
+        
         /// <summary>
         /// Undoes the user's last modification to the document.
         /// </summary>

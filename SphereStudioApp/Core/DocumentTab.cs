@@ -14,58 +14,66 @@ namespace SphereStudio.Core
     /// </summary>
     class DocumentTab : IDisposable
     {
-        private static uint _unsavedID = 1;
+        private static uint untitledCounter = 1;
         
-        private DockContent _content;
-        private string _tabText;
+        private DockContent dockContent;
+        private IdeWindowForm ideWindow;
+        private string tabText;
         
         /// <summary>
         /// Creates a new Sphere Studio document tab.
         /// </summary>
-        /// <param name="ide">The IDE form that the tab will be created in.</param>
-        /// <param name="view">The IDocumentView the tab is hosting.</param>
-        /// <param name="fileName">The fully-qualified filename of the document, or null if untitled.</param>
-        /// <param name="restoreView">'true' to restore the last saved view state. Has no effect on untitled tabs.</param>
-        public DocumentTab(IdeWindowForm ide, DocumentView view, string fileName = null, bool restoreView = false)
+        /// <param name="ideWindow">The IDE form that the tab will be created in.</param>
+        /// <param name="view">The <c>DocumentView</c> to host in the new tab.</param>
+        /// <param name="fileName">The fully-qualified filename of the document, or <c>null</c> if untitled.</param>
+        /// <param name="restoreView">A boolean value specifying whether to restore the last saved view state. Has no effect on untitled tabs.</param>
+        public DocumentTab(IdeWindowForm ideWindow, DocumentView view, string fileName = null, bool restoreView = false)
         {
             FileName = fileName;
             View = view;
 
             View.Dock = DockStyle.Fill;
-            
-            _tabText = fileName != null ? Path.GetFileName(fileName)
-                : $"Untitled {_unsavedID++}";
-            _content = new DockContent();
-            _content.FormClosing += on_FormClosing;
-            _content.FormClosed += on_FormClosed;
-            _content.Tag = this;
-            _content.Icon = View.Icon;
-            _content.TabText = _tabText;
-            _content.ToolTipText = FileName;
-            _content.Controls.Add(View);
-            _content.Show(ide.mainDockPanel, DockState.Document);
-            View.DirtyChanged += on_DirtyChanged;
 
-            UpdateTabText();
+            this.ideWindow = ideWindow;
+            tabText = fileName != null ? Path.GetFileName(fileName)
+                : $"Untitled {untitledCounter++}";
+            dockContent = new DockContent();
+            dockContent.FormClosing += dockContent_FormClosing;
+            dockContent.FormClosed += dockContent_FormClosed;
+            dockContent.Tag = this;
+            dockContent.Icon = View.Icon;
+            dockContent.TabText = tabText;
+            dockContent.ToolTipText = FileName;
+            dockContent.Controls.Add(View);
+            dockContent.Show(ideWindow.mainDockPanel, DockState.Document);
+            View.DirtyChanged += documentView_DirtyChanged;
+
+            refreshTabText();
 
             if (View is TextView)
             {
-                TextView scriptView = View as TextView;
+                var scriptView = (TextView)View;
                 scriptView.Breakpoints = Session.Project.GetBreakpoints(FileName);
-                scriptView.BreakpointChanged += on_BreakpointSet;
+                scriptView.BreakpointChanged += scriptView_BreakpointSet;
             }
 
             if (restoreView && FileName != null)
             {
-                string setting = $"viewState:{FileName.GetHashCode():X8}";
-                try { View.ViewState = Session.Project.User.GetString(setting, ""); }
-                catch (Exception) { } // *munch*
+                try
+                {
+                    var settingID = $"viewState:{FileName.GetHashCode():X8}";
+                    View.ViewState = Session.Project.UserSettings.GetString(settingID, string.Empty);
+                }
+                catch (Exception)
+                {
+                    // *MUNCH*
+                }
             }
         }
 
         public void Dispose()
         {
-            _content.Dispose();
+            dockContent.Dispose();
         }
 
         public event EventHandler Closed;
@@ -80,10 +88,10 @@ namespace SphereStudio.Core
         /// Gets the tab's title text, including the trailing asterisk if the
         /// document has been modified.
         /// </summary>
-        public string Title => _content.TabText;
+        public string Title => dockContent.TabText;
         
         /// <summary>
-        /// Gets the underlying IDocumentView for the tab.
+        /// Gets the <c>DocumentView</c> being hosted by the tab.
         /// </summary>
         public DocumentView View { get; private set; }
 
@@ -94,11 +102,11 @@ namespace SphereStudio.Core
         /// <returns>'true' if the user saved, answered No, or if the file is clean; 'false' on cancel.</returns>
         public bool PromptSave()
         {
-            if (View.IsDirty)
+            if (View.Dirty)
             {
                 Activate();
                 DialogResult result = MessageBox.Show(
-                    $"{_tabText}\n\nThis document has been modified. Any unsaved changes will be lost if you continue. Do you want to save it now?",
+                    $"{tabText}\n\nThis document has been modified. Any unsaved changes will be lost if you continue. Do you want to save it now?",
                     "Unsaved Changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
                 if (result == DialogResult.Cancel) return false;
                 if (result == DialogResult.Yes)
@@ -110,29 +118,35 @@ namespace SphereStudio.Core
         }
 
         /// <summary>
-        /// Saves the document in this tab. If the document hasn't been saved yet,
+        /// Saves the document in this tab.  For untitled documents which haven't been saved yet,
         /// the user will be asked to provide a filename.
         /// </summary>
-        /// <param name="path">The default directory for the Save As dialog.</param>
-        public bool Save(string path = null)
+        /// <param name="savePath">The default directory for the Save As dialog.</param>
+        public bool Save(string savePath = null)
         {
             if (View.ReadOnly)
                 return true;
             if (FileName == null)
-                return SaveAs(path);
+                return SaveAs(savePath);
 
             View.Save(FileName);
-            SaveViewState();
+            saveViewState();
             return true;
         }
 
+        /// <summary>
+        /// Saves the document in this tab if it's been modified. This has no effect on untitled
+        /// documents.
+        /// </summary>
+        /// <returns>A boolean indicating whether the operation was successful.</returns>
         public bool SaveIfDirty()
         {
-            if (FileName == null) return true;
+            if (FileName == null)
+                return true;
 
-            if (!View.IsDirty)
+            if (!View.Dirty)
             {
-                SaveViewState();
+                saveViewState();
                 return true;
             }
             else
@@ -144,9 +158,9 @@ namespace SphereStudio.Core
         /// <summary>
         /// Saves the document in this tab with a filename provided by the user.
         /// </summary>
-        /// <param name="path">The default directory for the Save As dialog.</param>
-        /// <returns>true if the file was saved, false on cancel.</returns>
-        public bool SaveAs(string path = null)
+        /// <param name="savePath">The default directory for the Save As dialog.</param>
+        /// <returns>A boolean value indicating whether the Save As operation succeeded.</returns>
+        public bool SaveAs(string savePath = null)
         {
             using (var diag = new SaveFileDialog())
             {
@@ -159,8 +173,8 @@ namespace SphereStudio.Core
                     filterString += $".{ext} File|*.{ext}";
                 }
                 diag.Title = "Save As";
-                diag.InitialDirectory = path;
-                diag.FileName = _tabText;
+                diag.InitialDirectory = savePath;
+                diag.FileName = tabText;
                 diag.Filter = filterString;
                 diag.DefaultExt = View.FileExtensions[0];
 
@@ -168,9 +182,9 @@ namespace SphereStudio.Core
                 if (diag.ShowDialog() == DialogResult.OK)
                 {
                     FileName = diag.FileName;
-                    _tabText = Path.GetFileName(FileName);
-                    UpdateTabText();
-                    Save(path);
+                    tabText = Path.GetFileName(FileName);
+                    refreshTabText();
+                    Save(savePath);
                     return true;
                 }
                 else
@@ -183,18 +197,18 @@ namespace SphereStudio.Core
         /// <summary>
         /// Closes the tab.
         /// </summary>
-        /// <param name="forceClose">'true' to bypass the Unsaved Changes prompt.</param>
-        /// <returns>'true' if the tab was closed; 'false' on cancel.</returns>
+        /// <param name="forceClose">Whether to bypass the Unsaved Changes prompt.</param>
+        /// <returns>A boolean value indicating whether the tab was actually closed.</returns>
         public bool Close(bool forceClose = false)
         {
             if (forceClose || PromptSave())
             {
                 // unsubscribe FormClosing event to prevent duplicate prompt
-                _content.FormClosing -= on_FormClosing;
+                dockContent.FormClosing -= dockContent_FormClosing;
                 
-                // save view state and close tab
-                SaveViewState();
-                _content.Close();
+                // save the current view state and close the tab
+                saveViewState();
+                dockContent.Close();
                 return true;
             }
             else
@@ -217,16 +231,16 @@ namespace SphereStudio.Core
         /// </summary>
         public void Activate()
         {
-            _content.DockHandler.Activate();
+            dockContent.DockHandler.Activate();
             View.Activate();
         }
 
         /// <summary>
-        /// Notifies the underlying document that it has lost focus.
+        /// Sends a Copy command to the document view.
         /// </summary>
-        public void Deactivate()
+        public void Copy()
         {
-            View.Deactivate();
+            View.Copy();
         }
 
         /// <summary>
@@ -238,11 +252,11 @@ namespace SphereStudio.Core
         }
 
         /// <summary>
-        /// Sends a Copy command to the document view.
+        /// Notifies the underlying document that it has lost focus.
         /// </summary>
-        public void Copy()
+        public void Deactivate()
         {
-            View.Copy();
+            View.Deactivate();
         }
 
         /// <summary>
@@ -269,6 +283,11 @@ namespace SphereStudio.Core
             View.Redo();
         }
 
+        public void SelectAll()
+        {
+            View.SelectAll();
+        }
+
         /// <summary>
         /// Sends a Zoom In command to the document view.
         /// </summary>
@@ -285,62 +304,60 @@ namespace SphereStudio.Core
             View.ZoomOut();
         }
 
-        private void SaveViewState()
+        private void refreshTabText()
         {
-            if (FileName == null || Session.Project == null || View.IsDirty)
+            dockContent.TabText = View.Dirty ? $"{tabText} *" : tabText;
+            if (View.ReadOnly)
+                dockContent.TabText += " (read-only)";
+            dockContent.ToolTipText = FileName;
+        }
+
+        private void saveViewState()
+        {
+            if (FileName == null || Session.Project == null || View.Dirty)
                 return;  // save view only if clean
 
-            // record breakpoints if script tab
-            if (View is TextView)
-                Session.Project.SetBreakpoints(FileName, ((TextView)View).Breakpoints);
+            // record breakpoints if this is a text tab
+            if (View is TextView textView)
+                Session.Project.SetBreakpoints(FileName, textView.Breakpoints);
 
             // save view (cursor position, etc.)
-            Session.Project.User.SetValue(
+            Session.Project.UserSettings.SetValue(
                 $"viewState:{FileName.GetHashCode():X8}",
                 View.ViewState);
         }
 
-        private void UpdateTabText()
+        private void dockContent_FormClosed(object sender, FormClosedEventArgs e)
         {
-            _content.TabText = View.IsDirty ? $"{_tabText} *" : _tabText;
-            if (View.ReadOnly)
-                _content.TabText += " (read-only)";
-            _content.ToolTipText = FileName;
+            Closed?.Invoke(this, EventArgs.Empty);
+            Dispose();
         }
 
-        private async void on_BreakpointSet(object sender, BreakpointChangedEventArgs e)
+        private void dockContent_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = !PromptSave();
+            if (!e.Cancel)
+                saveViewState();
+        }
+
+        private void documentView_DirtyChanged(object sender, EventArgs e)
+        {
+            refreshTabText();
+        }
+
+        private async void scriptView_BreakpointSet(object sender, BreakpointChangedEventArgs e)
         {
             if (FileName == null) return;
             TextView view = View as TextView;
             Session.Project.SetBreakpoints(FileName, view.Breakpoints);
-            var debugger = Program.Window.Debugger;
-            if (Program.Window.Debugger != null)
+            var debugger = ideWindow.Debugger;
+            if (ideWindow.Debugger != null)
             {
                 if (e.Active)
                     await debugger.SetBreakpoint(FileName, e.LineNumber);
                 else
                     await debugger.ClearBreakpoint(FileName, e.LineNumber);
             }
-        }
-
-        private void on_DirtyChanged(object sender, EventArgs e)
-        {
-            UpdateTabText();
-        }
-
-        private void on_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            e.Cancel = !PromptSave();
-            if (!e.Cancel)
-            {
-                SaveViewState();
-            }
-        }
-
-        private void on_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            Closed?.Invoke(this, EventArgs.Empty);
-            Dispose();
         }
     }
 }

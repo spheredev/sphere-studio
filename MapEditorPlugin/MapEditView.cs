@@ -106,7 +106,7 @@ namespace SphereStudio.Plugins
                     }
                 }
             }
-            IsDirty = false;
+            Dirty = false;
         }
 
         public override void Activate()
@@ -279,7 +279,7 @@ namespace SphereStudio.Plugins
             MapControl.ResizeLayers(tileWidth, tileHeight);
             TilesetControl.UpdateTileSize();
             TilesetControl.Invalidate();
-            IsDirty = true;
+            Dirty = true;
         }
 
         public void UpdateTileset(string filename)
@@ -303,7 +303,7 @@ namespace SphereStudio.Plugins
             foreach (Zone zone in Map.Zones)
                 if (zone.Layer == layer.Index) zone.Visible = layer.Visible;
             MapControl.Invalidate();
-            IsDirty = true;
+            Dirty = true;
         }
 
         private void Layers_LayerSelected(LayerControl sender, LayerItem layer)
@@ -323,7 +323,7 @@ namespace SphereStudio.Plugins
             MapControl.SetLayers(layers, start);
             redoButton.Enabled = MapControl.CanRedo;
             undoButton.Enabled = MapControl.CanUndo;
-            IsDirty = true;
+            Dirty = true;
         }
 
         private void zoomInButton_Click(object sender, EventArgs e)
@@ -413,7 +413,7 @@ namespace SphereStudio.Plugins
         {
             redoButton.Enabled = MapControl.CanRedo;
             undoButton.Enabled = MapControl.CanUndo;
-            IsDirty = true;
+            Dirty = true;
         }
 
         private void zoneButton_Click(object sender, EventArgs e)
@@ -430,7 +430,7 @@ namespace SphereStudio.Plugins
             short th = TilesetControl.Tileset.TileHeight;
             TilesetControl.SetImages(TileDrawer.GetImages(tw, th));
             MapControl.RefreshLayers();
-            IsDirty = true;
+            Dirty = true;
         }
 
         private void MapControl_Paint(object sender, PaintEventArgs e)
@@ -464,7 +464,7 @@ namespace SphereStudio.Plugins
             LayerItem item = new LayerItem(lay) { Text = "Untitled", Visible = true };
             LayerEditor.Layers.AddItem(item);
             MapControl.RefreshLayers();
-            IsDirty = true;
+            Dirty = true;
         }
 
         private void Layers_LayerRemoved(object sender, EventArgs e)
@@ -483,7 +483,7 @@ namespace SphereStudio.Plugins
             Map.Layers.Remove(target);
             LayerEditor.Layers.RemoveItem(LayerEditor.Layers.SelectedIndex);
             MapControl.RefreshLayers();
-            IsDirty = true;
+            Dirty = true;
         }
 
         private void TilesetControl_TileSelected(List<short> tiles)
@@ -502,7 +502,7 @@ namespace SphereStudio.Plugins
             redoButton.Enabled = MapControl.CanRedo;
             undoButton.Enabled = MapControl.CanUndo;
             TilesetControl.Select(tile);
-            IsDirty = true;
+            Dirty = true;
         }
 
         private void TilesetControl_TileAdded(short tile, List<Tile> tiles)
@@ -516,7 +516,7 @@ namespace SphereStudio.Plugins
             redoButton.Enabled = MapControl.CanRedo;
             undoButton.Enabled = MapControl.CanUndo;
             TilesetControl.Select(tile);
-            IsDirty = true;
+            Dirty = true;
         }
 
         private void ShowNumButton_Click(object sender, EventArgs e)

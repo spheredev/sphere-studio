@@ -14,15 +14,15 @@ namespace SphereStudio.Core
     /// </summary>
     static class BuildEngine
     {
-        private static BuildLogPane buildView;
+        private static BuildLogPane buildLogPane;
 
         /// <summary>
         /// Initializes the build system.
         /// </summary>
         public static void Initialize()
         {
-            buildView = new BuildLogPane();
-            PluginManager.Register(null, buildView, "Build Log");
+            buildLogPane = new BuildLogPane();
+            PluginManager.Register(null, buildLogPane, "Build Log");
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace SphereStudio.Core
         /// <returns>true iff the engine supports single-step debugging.</returns>
         public static bool CanDebug(Project project)
         {
-            return PluginManager.Get<IDebugStarter>(project.User.Engine) != null;
+            return PluginManager.Get<IDebugStarter>(project.UserSettings.Engine) != null;
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace SphereStudio.Core
         public static bool CanTest(Project project)
         {
             return project != null
-                && PluginManager.Get<IStarter>(project.User.Engine) != null
+                && PluginManager.Get<IStarter>(project.UserSettings.Engine) != null
                 && PluginManager.Get<ICompiler>(project.Compiler) != null;
         }
 
@@ -70,19 +70,19 @@ namespace SphereStudio.Core
 
         public static bool Prep(Project project)
         {
-            buildView.Clear();
-            PluginManager.Core.Docking.Show(buildView);
-            PluginManager.Core.Docking.Activate(buildView);
-            buildView.Print($"-------------------- Prep started: {project.Name} -------------------\n");
+            buildLogPane.Clear();
+            PluginManager.Core.Docking.Show(buildLogPane);
+            PluginManager.Core.Docking.Activate(buildLogPane);
+            buildLogPane.Print($"-------------------- Prep started: {project.Name} -------------------\n");
             var compiler = PluginManager.Get<ICompiler>(project.Compiler);
-            if (compiler.Prep(project, buildView))
+            if (compiler.Prep(project, buildLogPane))
             {
-                buildView.Print($"================ Successfully prepped: {project.Name} ===============");
+                buildLogPane.Print($"================ Successfully prepped: {project.Name} ===============");
                 return true;
             }
             else
             {
-                buildView.Print($"=================== Failed to prep: {project.Name} ==================");
+                buildLogPane.Print($"=================== Failed to prep: {project.Name} ==================");
                 return false;
             }
         }
@@ -105,22 +105,22 @@ namespace SphereStudio.Core
                 return null;
             }
 
-            buildView.Clear();
-            PluginManager.Core.Docking.Show(buildView);
-            PluginManager.Core.Docking.Activate(buildView);
+            buildLogPane.Clear();
+            PluginManager.Core.Docking.Show(buildLogPane);
+            PluginManager.Core.Docking.Activate(buildLogPane);
 
-            buildView.Print($"------------------- Build started: {project.Name} -------------------\n");
+            buildLogPane.Print($"------------------- Build started: {project.Name} -------------------\n");
             var outPath = rebuilding
-                ? await compiler.Rebuild(project, debuggable, buildView)
-                : await compiler.Build(project, debuggable, buildView);
+                ? await compiler.Rebuild(project, debuggable, buildLogPane)
+                : await compiler.Build(project, debuggable, buildLogPane);
             if (outPath != null)
             {
-                buildView.Print($"================= Successfully built: {project.Name} ================");
+                buildLogPane.Print($"================= Successfully built: {project.Name} ================");
                 return outPath;
             }
             else
             {
-                buildView.Print($"================== Failed to build: {project.Name} ==================");
+                buildLogPane.Print($"================== Failed to build: {project.Name} ==================");
                 SystemSounds.Exclamation.Play();
                 return null;
             }
@@ -138,16 +138,16 @@ namespace SphereStudio.Core
             if (!CanPackage(project))
                 throw new NotSupportedException("The current compiler doesn't support packaging.");
 
-            buildView.Clear();
-            PluginManager.Core.Docking.Show(buildView);
-            buildView.Print($"----------------- Packaging started: {project.Name} -----------------\n");
+            buildLogPane.Clear();
+            PluginManager.Core.Docking.Show(buildLogPane);
+            buildLogPane.Print($"----------------- Packaging started: {project.Name} -----------------\n");
             var packager = PluginManager.Get<IPackager>(project.Compiler);
-            bool isOK = await packager.Package(project, fileName, debuggable, buildView);
+            bool isOK = await packager.Package(project, fileName, debuggable, buildLogPane);
             if (isOK)
-                buildView.Print($"=============== Successfully packaged: {project.Name} ===============");
+                buildLogPane.Print($"=============== Successfully packaged: {project.Name} ===============");
             else
             {
-                buildView.Print($"================= Failed to package: {project.Name} =================");
+                buildLogPane.Print($"================= Failed to package: {project.Name} =================");
                 SystemSounds.Exclamation.Play();
             }
             return isOK;
@@ -164,7 +164,7 @@ namespace SphereStudio.Core
             if (!CanDebug(project))
                 throw new NotSupportedException("The current engine starter doesn't support debugging.");
 
-            var starter = PluginManager.Get<IDebugStarter>(project.User.Engine);
+            var starter = PluginManager.Get<IDebugStarter>(project.UserSettings.Engine);
             string outPath = await Build(project, true, rebuilding);
             try
             {
@@ -189,7 +189,7 @@ namespace SphereStudio.Core
         /// <param name="rebuilding">Whether the project should be completely rebuilt first.</param>
         public static async Task Test(Project project, bool rebuilding = false)
         {
-            var starter = PluginManager.Get<IStarter>(project.User.Engine);
+            var starter = PluginManager.Get<IStarter>(project.UserSettings.Engine);
             if (starter != null)
             {
                 string outPath = await Build(project, false, rebuilding);

@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using ScintillaNET;
 
 using SphereStudio.Base;
 using SphereStudio.Plugins.Components;
 using SphereStudio.Plugins.Properties;
-using SphereStudio.UI;
+
+using ScintillaNET;
 
 namespace SphereStudio.Plugins
 {
@@ -117,12 +117,12 @@ namespace SphereStudio.Plugins
 
         private void codeBox_SavePointReached(object sender, EventArgs e)
         {
-            IsDirty = false;
+            Dirty = false;
         }
 
         private void codeBox_SavePointLeft(object sender, EventArgs e)
         {
-            IsDirty = true;
+            Dirty = true;
         }
 
         public override int ActiveLine
@@ -323,6 +323,11 @@ namespace SphereStudio.Plugins
         {
             if (_codeBox.CanPaste)
                 _codeBox.Paste();
+        }
+
+        public override void SelectAll()
+        {
+            _codeBox.SelectAll();
         }
 
         public override void Undo()

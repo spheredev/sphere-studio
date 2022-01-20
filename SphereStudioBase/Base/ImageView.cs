@@ -13,14 +13,17 @@ namespace SphereStudio.Base
         /// <summary>
         /// Gets or sets whether the image has been modified.
         /// </summary>
-        public override bool IsDirty
+        public override bool Dirty
         {
-            get { return base.IsDirty; }
+            get
+            {
+                return base.Dirty;
+            }
             protected set
             {
-                if (value && ImageChanged != null)
-                    ImageChanged(this, EventArgs.Empty);
-                base.IsDirty = value;
+                if (value)
+                    ImageChanged?.Invoke(this, EventArgs.Empty);
+                base.Dirty = value;
             }
         }
         

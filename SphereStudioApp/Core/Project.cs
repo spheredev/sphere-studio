@@ -12,19 +12,28 @@ using SphereStudio.IO;
 namespace SphereStudio.Core
 {
     /// <summary>
-    /// Represents a Sphere Studio project.
+    /// Represents a loaded Sphere Studio project.
     /// </summary>
     class Project : IProject
     {
         private Dictionary<string, HashSet<int>> breakpoints = new Dictionary<string, HashSet<int>>();
         private IniSettings settings;
 
+        private Project(string fileName)
+        {
+            fileName = Path.GetFullPath(fileName);
+            var userFilePath = Path.Combine(Path.GetDirectoryName(fileName), "sphereStudio.usr");
+            settings = new IniSettings(new IniFile(fileName, false), ".ssproj");
+            FileName = fileName;
+            UserSettings = new UserSettings(userFilePath);
+        }
+
         /// <summary>
         /// Creates a new, empty Sphere Studio project.
         /// </summary>
         /// <param name="rootPath">Path of the directory where the project will reside. Must be empty.</param>
         /// <param name="name">The name of the project to create.</param>
-        /// <returns>A Project object representing the new project.</returns>
+        /// <returns>A <c>Project</c> object that represents the newly created project.</returns>
         public static Project Create(string rootPath, string name)
         {
             DirectoryInfo dirInfo = new DirectoryInfo(rootPath);
@@ -39,25 +48,10 @@ namespace SphereStudio.Core
         }
 
         /// <summary>
-        /// Loads an existing project.
+        /// Loads a Sphere game manifest (<c>.sgm</c>) file as a Sphere Studio project.
         /// </summary>
-        /// <param name="rootPath">The full path of the directory containing the project.</param>
-        /// <returns>A Project object used to manage the loaded project.</returns>
-        public static Project Open(string fileName)
-        {
-            if (!File.Exists(fileName))
-                throw new FileNotFoundException();
-
-            return Path.GetFileName(fileName).ToUpperInvariant() == "GAME.SGM"
-                ? Project.FromSgm(fileName)
-                : new Project(fileName);
-        }
-
-        /// <summary>
-        /// Opens a Sphere game manifest (SGM) file as a Sphere Studio project.
-        /// </summary>
-        /// <param name="fileName">The fully qualified filename of the SGM file to import.</param>
-        /// <returns>A Project object representing the synthesized project.</returns>
+        /// <param name="fileName">The full path of the <c>.sgm</c> file to load.</param>
+        /// <returns>A <c>Project</c> object that represents the loaded project.</returns>
         public static Project FromSgm(string fileName)
         {
             if (!File.Exists(fileName))
@@ -79,7 +73,7 @@ namespace SphereStudio.Core
             var screenHeight = 240;
             var scriptPath = string.Empty;
             var saveId = string.Empty;
-            foreach (string line in sgmText)
+            foreach (var line in sgmText)
             {
                 try
                 {
@@ -148,34 +142,40 @@ namespace SphereStudio.Core
             return project;
         }
 
-        private Project(string fileName)
+        /// <summary>
+        /// Loads an existing project.
+        /// </summary>
+        /// <param name="fileName">The full path of a Sphere project file, either <c>.ssproj</c> or <c>.sgm</c>.</param>
+        /// <returns>A <c>Project</c> object that represents the loaded project.</returns>
+        public static Project Open(string fileName)
         {
-            fileName = Path.GetFullPath(fileName);
-            var userFilePath = Path.Combine(Path.GetDirectoryName(fileName), "sphereStudio.usr");
-            settings = new IniSettings(new IniFile(fileName, false), ".ssproj");
-            FileName = fileName;
-            User = new UserSettings(userFilePath);
+            if (!File.Exists(fileName))
+                throw new FileNotFoundException();
+
+            return Path.GetFileName(fileName).Equals("game.sgm", StringComparison.OrdinalIgnoreCase)
+                ? Project.FromSgm(fileName)
+                : new Project(fileName);
         }
 
-        public UserSettings User { get; private set; }
-
         /// <summary>
-        /// Gets the fully qualified filename of the .ssproj file.
+        /// Gets the full path of the project's <c>.ssproj</c> file.
         /// </summary>
         public string FileName { get; private set; }
-        
+
         /// <summary>
         /// Gets the full path of the project's root directory.
         /// </summary>
-        public string RootPath
-        {
-            get { return Path.GetDirectoryName(FileName); }
-        }
+        public string RootPath => Path.GetDirectoryName(FileName);
 
         /// <summary>
         /// Gets the <c>ISettings</c> object used to store settings for this project.
         /// </summary>
         public ISettings Settings => settings;
+
+        /// <summary>
+        /// Provides access to the project's local user settings.
+        /// </summary>
+        public UserSettings UserSettings { get; private set; }
 
         /// <summary>
         /// Gets or sets the registered name of the compiler to use when building
@@ -192,8 +192,8 @@ namespace SphereStudio.Core
         /// </summary>
         public string Name
         {
-            get { return settings.GetString("name", "Untitled"); }
-            set { settings.SetValue("name", value); }
+            get => settings.GetString("name", "Untitled");
+            set => settings.SetValue("name", value);
         }
 
         /// <summary>
@@ -201,8 +201,8 @@ namespace SphereStudio.Core
         /// </summary>
         public string Author
         {
-            get { return settings.GetString("author", ""); }
-            set { settings.SetValue("author", value); }
+            get => settings.GetString("author", "");
+            set => settings.SetValue("author", value);
         }
 
         /// <summary>
@@ -210,8 +210,8 @@ namespace SphereStudio.Core
         /// </summary>
         public string Summary
         {
-            get { return settings.GetString("description", ""); }
-            set { settings.SetValue("description", value); }
+            get => settings.GetString("description", "");
+            set => settings.SetValue("description", value);
         }
 
         /// <summary>
@@ -219,8 +219,8 @@ namespace SphereStudio.Core
         /// </summary>
         public int ScreenWidth
         {
-            get { return settings.GetInteger("screenWidth", 320); }
-            set { settings.SetValue("screenWidth", value); }
+            get => settings.GetInteger("screenWidth", 320);
+            set => settings.SetValue("screenWidth", value);
         }
 
         /// <summary>
@@ -228,8 +228,8 @@ namespace SphereStudio.Core
         /// </summary>
         public int ScreenHeight
         {
-            get { return settings.GetInteger("screenHeight", 240); }
-            set { settings.SetValue("screenHeight", value); }
+            get => settings.GetInteger("screenHeight", 240);
+            set => settings.SetValue("screenHeight", value);
         }
 
         /// <summary>
@@ -237,16 +237,16 @@ namespace SphereStudio.Core
         /// </summary>
         public bool GameOnly
         {
-            get { return settings.GetBoolean("backCompatible", false); }
-            set { settings.SetValue("backCompatible", value); }
+            get => settings.GetBoolean("backCompatible", false);
+            set => settings.SetValue("backCompatible", value);
         }
 
         public IReadOnlyDictionary<string, int[]> GetAllBreakpoints()
         {
-            Dictionary<string, int[]> retval = new Dictionary<string, int[]>();
-            foreach (string k in breakpoints.Keys)
+            var retval = new Dictionary<string, int[]>();
+            foreach (var key in breakpoints.Keys)
             {
-                retval.Add(k, breakpoints[k].ToArray());
+                retval.Add(key, breakpoints[key].ToArray());
             }
             return retval;
         }
@@ -266,7 +266,7 @@ namespace SphereStudio.Core
                 try
                 {
                     lines = Array.ConvertAll(
-                        User.GetString($"breakpointsSet:{hash:X8}", "").Split(','),
+                        UserSettings.GetString($"breakpointsSet:{hash:X8}", "").Split(','),
                         int.Parse);
                 }
                 catch (Exception)
@@ -283,8 +283,7 @@ namespace SphereStudio.Core
         /// </summary>
         public void Save()
         {
-            var userFileName = Path.Combine(RootPath, "sphereStudio.usr");
-            User.SaveAs(userFileName);
+            UserSettings.SaveAs(Path.Combine(RootPath, "sphereStudio.usr"));
             if (GameOnly)
             {
                 // Sphere 1.x-compatible project mode (treat .sgm as project file)
@@ -330,7 +329,7 @@ namespace SphereStudio.Core
             breakpoints[scriptPath] = new HashSet<int>(lineNumbers);
             foreach (var k in breakpoints.Keys)
             {
-                User.SetValue($"breakpointsSet:{k.GetHashCode():X8}",
+                UserSettings.SetValue($"breakpointsSet:{k.GetHashCode():X8}",
                     string.Join(",", breakpoints[k]));
             }
         }
@@ -353,60 +352,5 @@ namespace SphereStudio.Core
             string pattern = $@"([{invalidChars}]*\.+$)|([{invalidChars}]+)";
             return $"{Regex.Replace(name, pattern, "_")}.ssproj";
         }
-    }
-
-    class UserSettings : IniSettings
-    {
-        public UserSettings(string filePath) :
-            base(new IniFile(filePath, false), "sphereStudio.usr")
-        {
-        }
-
-        /// <summary>
-        /// Stores as a comma-separated list the opened files in the editor.
-        /// </summary>
-        public string[] Documents
-        {
-            get { return GetStringArray("openDocuments", new string[0]); }
-            set { SetValue("openDocuments", value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the filepath of the last opened document you viewed.
-        /// </summary>
-        public string ActiveDocument
-        {
-            get { return GetString("currentDocument", ""); }
-            set { SetValue("currentDocument", value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the registered name of the engine starter to use when
-        /// testing or debugging this project.
-        /// </summary>
-        public string Engine
-        {
-            get
-            {
-                string[] engines = PluginManager.GetNames<IStarter>();
-                string defaultEngine =
-                    engines.Contains(Session.Settings.Engine) ? Session.Settings.Engine
-                    : engines.Length > 0 ? engines[0]
-                    : "";
-                string value = GetString("engine", defaultEngine);
-                return engines.Contains(value) ? value : Session.Settings.Engine;
-            }
-            set { SetValue("engine", value); }
-        }
-
-        /// <summary>
-        /// Gets or sets if the Start Page is hidden for this user.
-        /// </summary>
-        public bool StartPageHidden
-        {
-            get { return GetBoolean("hideStartPage", false); }
-            set { SetValue("hideStartPage", value); }
-        }
-
     }
 }

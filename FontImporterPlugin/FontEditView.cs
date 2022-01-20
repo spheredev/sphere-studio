@@ -33,7 +33,7 @@ namespace SphereStudio.Plugins
         public override void Save(string filepath)
         {
             _fontLayout.SaveToFile(filepath);
-            IsDirty = false;
+            Dirty = false;
         }
 
         public override void Paste()
@@ -97,7 +97,7 @@ namespace SphereStudio.Plugins
         private void PreviewTextBox_TextChanged(object sender, EventArgs e)
         {
             CompilePreview();
-            IsDirty = true;
+            Dirty = true;
         }
 
         private void FontLayout_LayoutZoomed(object sender, EventArgs e)

@@ -73,11 +73,11 @@ namespace SphereStudio.Plugins
 
         public override void Save(string path)
         {
-            using (Image img = ImageEditor.GetImage())
+            using (var image = ImageEditor.GetImage())
             {
-                img.Save(path);
+                image.Save(path);
             }
-            IsDirty = false;
+            Dirty = false;
         }
 
         public override void Activate()
@@ -95,7 +95,7 @@ namespace SphereStudio.Plugins
             if (ImageEditor.CanUndo) ImageEditor.Undo();
             UndoButton.Enabled = ImageEditor.CanUndo;
             RedoButton.Enabled = ImageEditor.CanRedo;
-            IsDirty = true;
+            Dirty = true;
         }
 
         public override void Redo()
@@ -103,7 +103,7 @@ namespace SphereStudio.Plugins
             if (ImageEditor.CanRedo) ImageEditor.Redo();
             UndoButton.Enabled = ImageEditor.CanUndo;
             RedoButton.Enabled = ImageEditor.CanRedo;
-            IsDirty = true;
+            Dirty = true;
         }
 
         public void Rescale(int width, int height, InterpolationMode mode)
@@ -297,7 +297,7 @@ namespace SphereStudio.Plugins
         {
             UndoButton.Enabled = ImageEditor.CanUndo;
             RedoButton.Enabled = ImageEditor.CanRedo;
-            IsDirty = true;
+            Dirty = true;
         }
 
         private void ImageEditor_Paint(object sender, PaintEventArgs e)

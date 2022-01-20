@@ -55,7 +55,7 @@ namespace SphereStudio.Plugins
         public override void Save(string filepath)
         {
             _style.Save(filepath);
-            IsDirty = false;
+            Dirty = false;
         }
 
         public override void ZoomIn() => ZoomInItem_Click(null, EventArgs.Empty);
@@ -133,7 +133,7 @@ namespace SphereStudio.Plugins
             _style.Images[_style.Selected] = StyleDrawer.Content;
             _style.GeneratePreview(_windW, _windH);
             WindowPanel.Invalidate();
-            IsDirty = true;
+            Dirty = true;
         }
 
         private void WindowStyleEditor_Resize(object sender, EventArgs e)

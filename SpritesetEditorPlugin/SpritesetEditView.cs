@@ -171,20 +171,20 @@ namespace SphereStudio.Plugins
 
             DirectionHolder.Invalidate(true);
             SpriteDrawer.Content = _tilesetCtrl.Tileset.Tiles[tiles[0]].Graphic;
-            IsDirty = true;
+            Dirty = true;
         }
 
         void _tileset_ctrl_TileRemoved(short startindex, List<Tile> tiles)
         {
             _sprite.RemoveFrameReference(startindex);
             DirectionHolder.Invalidate(true);
-            IsDirty = true;
+            Dirty = true;
         }
 
         void _tileset_ctrl_TileAdded(short startindex, List<Tile> tiles)
         {
             foreach (Tile t in tiles) _sprite.Images.Add(t.Graphic);
-            IsDirty = true;
+            Dirty = true;
         }
 
         public override string[] FileExtensions => new[] { "rss" };
@@ -212,7 +212,7 @@ namespace SphereStudio.Plugins
         public override void Save(string filepath)
         {
             _sprite.Save(filepath);
-            IsDirty = false;
+            Dirty = false;
         }
 
         public override void Activate() => PluginMain.ShowMenus(true);
@@ -245,7 +245,7 @@ namespace SphereStudio.Plugins
                 }
                 SpriteDrawer.Content = (Bitmap)_sprite.GetImage(_selectedFrame.Index);
                 UpdateControls();
-                IsDirty = true;
+                Dirty = true;
             }
 
             // these method were made public to resize the contained image:
@@ -311,7 +311,7 @@ namespace SphereStudio.Plugins
             layout.Zoom = _zoom;
             DirectionHolder.Controls.Add(layout);
             layout.Location = new Point(2, DirectionHolder.Controls.Count - 1 * (layout.Height + 2) + 2);
-            IsDirty = true;
+            Dirty = true;
         }
 
         public void RemoveDirection(DirectionLayout layout)
@@ -319,7 +319,7 @@ namespace SphereStudio.Plugins
             _sprite.Directions.Remove(layout.Direction);
             DirectionHolder.Controls.Remove(layout);
             UpdateControls();
-            IsDirty = true;
+            Dirty = true;
         }
 
         private void SpriteDrawer_ImageChanged(object sender, EventArgs e)
@@ -336,6 +336,6 @@ namespace SphereStudio.Plugins
             Invalidate(true);
         }
 
-        private void Modified(object sender, EventArgs e) => IsDirty = true;
+        private void Modified(object sender, EventArgs e) => Dirty = true;
     }
 }

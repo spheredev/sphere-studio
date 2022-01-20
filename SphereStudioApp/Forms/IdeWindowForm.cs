@@ -19,9 +19,9 @@ namespace SphereStudio.Forms
 {
     partial class IdeWindowForm : Form, IStyleAware, ICore
     {
-        const string debuggerErrorStatusText = "An error occurred launching a debugging session.";
-        const string closedProjectStatusText = "No project is currently loaded.";
-        const string loadedProjectStatusText = "Project was loaded successfully.";
+        const string ClosedProjectStatusText = "No project is currently loaded.";
+        const string DebuggerErrorStatusText = "An error occurred launching a debugging session.";
+        const string LoadedProjectStatusText = "Project was loaded successfully.";
 
         private DocumentTab currentTab;
         private string defaultActiveFileName;
@@ -153,13 +153,13 @@ namespace SphereStudio.Forms
             if (string.IsNullOrEmpty(fileName))
                 return;
 
-            Project pj = Core.Project.Open(fileName);
-            IStarter starter = PluginManager.Get<IStarter>(pj.User.Engine);
-            ICompiler compiler = PluginManager.Get<ICompiler>(pj.Compiler);
+            var project = Core.Project.Open(fileName);
+            var starter = PluginManager.Get<IStarter>(project.UserSettings.Engine);
+            var compiler = PluginManager.Get<ICompiler>(project.Compiler);
             if (usePluginWarning && (starter == null || compiler == null))
             {
                 var answer = MessageBox.Show(
-                    $"One or more plugins required to work on '{pj.Name}' are either disabled or not installed.  Please open Configuration Manager and check your plugins.\n\nCompiler required:\n{pj.Compiler}\n\nIf you continue, data may be lost.  Open this project anyway?",
+                    $"One or more plugins required to work on '{project.Name}' are either disabled or not installed.  Please open Configuration Manager and check your plugins.\n\nCompiler required:\n{project.Compiler}\n\nIf you continue, data may be lost.  Open this project anyway?",
                     "Proceed with Caution",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (answer == DialogResult.No)
@@ -168,33 +168,39 @@ namespace SphereStudio.Forms
 
             if (!closeCurrentProject())
                 return;
-            Session.Project = pj;
+            Session.Project = project;
 
             refreshProject();
 
-            LoadProject?.Invoke(null, EventArgs.Empty);
+            LoadProject?.Invoke(this, EventArgs.Empty);
 
-            statusLabel.Text = loadedProjectStatusText;
+            statusLabel.Text = LoadedProjectStatusText;
 
             StartPageVisible = true;
 
-            string[] docs = Session.Project.User.Documents;
-            foreach (string s in docs)
+            var documentPaths = Session.Project.UserSettings.Documents;
+            foreach (var path in documentPaths)
             {
-                if (string.IsNullOrWhiteSpace(s))
+                if (string.IsNullOrWhiteSpace(path))
                     continue;
-                try { openFile(s, true); }
-                catch (Exception) { }
+                try
+                {
+                    openFile(path, true);
+                }
+                catch (Exception)
+                {
+                    // *MUNCH*
+                }
             }
 
             // if the form isn't visible, don't try to mess with the panels.
             // it will be done in OnLoad.
             if (Visible)
             {
-                if (Session.Project.User.StartPageHidden)
+                if (Session.Project.UserSettings.StartPageHidden)
                     StartPageVisible = false;
 
-                var tab = findDocumentTab(Session.Project.User.ActiveDocument);
+                var tab = findDocumentTab(Session.Project.UserSettings.ActiveDocument);
                 tab?.Activate();
             }
 
@@ -206,7 +212,7 @@ namespace SphereStudio.Forms
         {
             base.Refresh();
 
-            foreach (DocumentTab tab in tabs)
+            foreach (var tab in tabs)
                 tab.Restyle();
             dockManager.Refresh();
             refreshProject();
@@ -259,8 +265,8 @@ namespace SphereStudio.Forms
             // visibility before the form loads.
             if (Session.Settings.AutoOpenLastProject && Session.Project != null)
             {
-                StartPageVisible = !Session.Project.User.StartPageHidden;
-                var tab = findDocumentTab(Session.Project.User.ActiveDocument);
+                StartPageVisible = !Session.Project.UserSettings.StartPageHidden;
+                var tab = findDocumentTab(Session.Project.UserSettings.ActiveDocument);
                 if (tab != null)
                     tab.Activate();
             }
@@ -338,8 +344,8 @@ namespace SphereStudio.Forms
 
         private DocumentTab addDocument(DocumentView view, string fileName = null, bool restoreView = false)
         {
-            DocumentTab tab = new DocumentTab(this, view, fileName, restoreView);
-            tab.Closed += (sender, e) => tabs.Remove(tab);
+            var tab = new DocumentTab(this, view, fileName, restoreView);
+            tab.Closed += documentTab_Closed;
             tab.Activate();
             tabs.Add(tab);
             return tab;
@@ -370,14 +376,13 @@ namespace SphereStudio.Forms
                 return false;
             }
 
-            // user values will be lost if we don't record them now.
-            Session.Project.User.StartPageHidden = !StartPageVisible;
-            Session.Project.User.Documents = tabs
+            // save the current state of the IDE in the project's user settings
+            Session.Project.UserSettings.ActiveDocument = currentTab?.FileName ?? string.Empty;
+            Session.Project.UserSettings.Documents = tabs
                 .Where(it => it.FileName != null)
                 .Select(it => it.FileName)
                 .ToArray();
-            Session.Project.User.ActiveDocument = currentTab != null
-                ? currentTab.FileName : "";
+            Session.Project.UserSettings.StartPageHidden = !StartPageVisible;
 
             // close all open document tabs
             if (!closeAllDocuments(forceClose))
@@ -386,7 +391,7 @@ namespace SphereStudio.Forms
             // save and unload the project
             if (Session.Project != null)
             {
-                UnloadProject?.Invoke(null, EventArgs.Empty);
+                UnloadProject?.Invoke(this, EventArgs.Empty);
                 Session.Project.Save();
                 Session.Project = null;
             }
@@ -399,7 +404,7 @@ namespace SphereStudio.Forms
             refreshProject();
             refreshEngineList();
             refreshUI();
-            statusLabel.Text = closedProjectStatusText;
+            statusLabel.Text = ClosedProjectStatusText;
             return true;
         }
 
@@ -485,7 +490,7 @@ namespace SphereStudio.Forms
             {
                 engineToolComboBox.Items.AddRange(engineNames);
                 engineToolComboBox.Items.Add("Plugin Manager...");
-                engineToolComboBox.Text = Session.Project.User.Engine;
+                engineToolComboBox.Text = Session.Project.UserSettings.Engine;
                 engineToolComboBox.Enabled = true;
             }
             else
@@ -519,7 +524,7 @@ namespace SphereStudio.Forms
         private void refreshUI()
         {
             var starter = isProjectLoaded()
-                ? PluginManager.Get<IStarter>(Session.Project.User.Engine)
+                ? PluginManager.Get<IStarter>(Session.Project.UserSettings.Engine)
                 : null;
 
             var canBreak = Debugger?.Running ?? false;
@@ -586,8 +591,7 @@ namespace SphereStudio.Forms
             testGameMenuItem.Enabled = testGameToolButton.Enabled = false;
             buildRunMenuItem.Enabled = runGameToolButton.Enabled = false;
 
-            if (TestGame != null)
-                TestGame(null, EventArgs.Empty);
+            TestGame?.Invoke(this, EventArgs.Empty);
 
             if (wantDebugger && BuildEngine.CanDebug(Session.Project))
             {
@@ -613,7 +617,7 @@ namespace SphereStudio.Forms
                     else
                     {
                         SystemSounds.Hand.Play();
-                        statusLabel.Text = debuggerErrorStatusText;
+                        statusLabel.Text = DebuggerErrorStatusText;
                         Debugger = null;
                         refreshUI();
                     }
@@ -678,6 +682,11 @@ namespace SphereStudio.Forms
             refreshUI();
         }
 
+        private void documentTab_Closed(object sender, EventArgs e)
+        {
+            tabs.Remove((DocumentTab)sender);
+        }
+        
         private void mainDockPanel_ActiveDocumentChanged(object sender, EventArgs e)
         {
             if (mainDockPanel.ActiveDocument != null)
@@ -712,7 +721,7 @@ namespace SphereStudio.Forms
                 return;
             }
 
-            Session.Project.User.Engine = engineToolComboBox.Text;
+            Session.Project.UserSettings.Engine = engineToolComboBox.Text;
             refreshUI();
             refreshEngineList();
         }
@@ -905,6 +914,7 @@ namespace SphereStudio.Forms
 
         private void selectAllMenuItem_Click(object sender, EventArgs e)
         {
+            currentTab?.SelectAll();
         }
 
         private void undoMenuItem_Click(object sender, EventArgs e)
@@ -1129,7 +1139,7 @@ namespace SphereStudio.Forms
         private void settingsMenu_DropDownOpening(object sender, EventArgs e)
         {
             var starter = isProjectLoaded()
-               ? PluginManager.Get<IStarter>(Session.Project.User.Engine)
+               ? PluginManager.Get<IStarter>(Session.Project.UserSettings.Engine)
                : null;
 
             var canConfigureEngine = starter?.CanConfigure ?? false;
@@ -1139,7 +1149,7 @@ namespace SphereStudio.Forms
 
         private void configureEngineMenuItem_Click(object sender, EventArgs e)
         {
-            PluginManager.Get<IStarter>(Session.Project.User.Engine)
+            PluginManager.Get<IStarter>(Session.Project.UserSettings.Engine)
                 .Configure();
         }
 
