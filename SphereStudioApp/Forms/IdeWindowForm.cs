@@ -446,7 +446,7 @@ namespace SphereStudio.Forms
 
             // the IDE will look for a file opener explicitly declaring the file extension.
             // if that fails, then use the default opener (if any).
-            DocumentView view = null;
+            DocumentView documentView = null;
             try
             {
                 if (extension.StartsWith("."))  // remove dot from extension
@@ -455,11 +455,11 @@ namespace SphereStudio.Forms
                               let plugin = PluginManager.Get<IFileOpener>(name)
                               where plugin.FileExtensions.Any(it => extension.Equals(it, StringComparison.OrdinalIgnoreCase))
                               select plugin;
-                IFileOpener defaultOpener = PluginManager.Get<IFileOpener>(Session.Settings.FileOpener);
-                IFileOpener opener = plugins.FirstOrDefault() ?? defaultOpener;
-                if (opener != null)
+                var defaultFileOpener = PluginManager.Get<IFileOpener>(Session.Settings.FileOpener);
+                var fileOpener = plugins.FirstOrDefault() ?? defaultFileOpener;
+                if (fileOpener != null)
                 {
-                    view = opener.Open(fileName);
+                    documentView = fileOpener.Open(fileName);
                 }
                 else
                 {
@@ -471,12 +471,11 @@ namespace SphereStudio.Forms
             }
             catch (IOException)
             {
-                view = null;
+                documentView = null;
             }
-
-            if (view != null)
-                addDocument(view, fileName, restoreView);
-            return view;
+            if (documentView != null)
+                addDocument(documentView, fileName, restoreView);
+            return documentView;
         }
 
         private void refreshEngineList()
@@ -686,7 +685,7 @@ namespace SphereStudio.Forms
         {
             tabs.Remove((DocumentTab)sender);
         }
-        
+
         private void mainDockPanel_ActiveDocumentChanged(object sender, EventArgs e)
         {
             if (mainDockPanel.ActiveDocument != null)
@@ -1007,13 +1006,32 @@ namespace SphereStudio.Forms
         #region Project menu Click handlers
         private void projectMenu_DropDownOpening(object sender, EventArgs e)
         {
+            var engineNames = PluginManager.GetNames<IStarter>();
             var haveProject = isProjectLoaded();
 
             exploreProjectMenuItem.Enabled = haveProject;
+            preferredEngineMenuItem.Enabled = haveProject;
             projectPropertiesMenuItem.Enabled = haveProject;
             refreshProjectMenuItem.Enabled = haveProject;
+
+            preferredEngineMenuItem.DropDown.Items.Clear();
+            foreach (var engineName in engineNames)
+            {
+                preferredEngineMenuItem.DropDown.Items.Add(new ToolStripMenuItem(engineName, null, engineMenuItem_Click)
+                {
+                    Checked = Session.Project?.UserSettings.Engine == engineName,
+                    Tag = engineName,
+                });
+            }
         }
 
+        private void engineMenuItem_Click(object sender, EventArgs e)
+        {
+            var menuItem = (ToolStripMenuItem)sender;
+            Session.Project.UserSettings.Engine = (string)menuItem.Tag;
+            refreshEngineList();
+        }
+        
         private void exploreProjectMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start("explorer.exe", $@"/select,""{Session.Project.FileName}""");

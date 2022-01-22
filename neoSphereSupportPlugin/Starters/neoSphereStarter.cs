@@ -9,12 +9,12 @@ namespace SphereStudio.Starters
 {
     class neoSphereStarter : IDebugStarter
     {
-        private PluginMain plugin;
+        private PluginSettings settings;
         private bool useRetroMode;
 
-        public neoSphereStarter(PluginMain plugin, bool useRetroMode = false)
+        public neoSphereStarter(PluginSettings settings, bool useRetroMode = false)
         {
-            this.plugin = plugin;
+            this.settings = settings;
             this.useRetroMode = useRetroMode;
         }
 
@@ -30,26 +30,26 @@ namespace SphereStudio.Starters
             PluginManager.Core.Docking.Activate(Panes.Console);
             Panes.Console.ClearConsole();
             PluginManager.Core.Docking.Show(Panes.Inspector);
-            var enginePath = Path.Combine(plugin.Settings.EnginePath, "spherun.exe");
+            var enginePath = Path.Combine(settings.EnginePath, "spherun.exe");
             var options = string.Format(@"--verbose {0} --debug {1} ""{2}""",
-                plugin.Settings.Verbosity,
+                settings.Verbosity,
                 useRetroMode ? "--retro" : "",
                 gamePath);
             var engineProcess = Process.Start(enginePath, options);
-            return new SsjDebugger(plugin, enginePath, engineProcess, project);
+            return new SsjDebugger(settings, enginePath, engineProcess, project);
         }
 
         public void Start(string gamePath, bool isPackage)
         {
-            var wantConsole = plugin.Settings.AlwaysUseConsole;
-            var wantWindow = plugin.Settings.TestInWindow || wantConsole;
-            var enginePath = Path.Combine(plugin.Settings.EnginePath,
+            var wantConsole = settings.AlwaysUseConsole;
+            var wantWindow = settings.TestInWindow || wantConsole;
+            var enginePath = Path.Combine(settings.EnginePath,
                 wantConsole ? "spherun.exe" : "neoSphere.exe");
             var options = string.Format(@"{0} --verbose {1} {2} {3} ""{4}""",
                 wantWindow ? "--windowed" : string.Empty,
-                plugin.Settings.Verbosity,
+                settings.Verbosity,
                 wantConsole ? "--profile" : string.Empty,
-                useRetroMode || plugin.Settings.TestInRetroMode ? "--retro" : string.Empty,
+                useRetroMode || settings.TestInRetroMode ? "--retro" : string.Empty,
                 gamePath);
             Process.Start(enginePath, options);
         }

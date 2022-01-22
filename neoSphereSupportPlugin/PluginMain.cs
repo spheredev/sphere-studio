@@ -18,21 +18,20 @@ namespace SphereStudio
         public string Version => Versioning.Version;
         public string Author => Versioning.Author;
 
-        internal PluginSettings Settings { get; private set; }
-
+        private PluginSettings settings;
         private ToolStripMenuItem sphereApiRefCommand;
         private ToolStripMenuItem cellApiRefCommand;
         private ToolStripMenuItem runtimeApiRefCommand;
 
         public void Initialize(ISettings settings)
         {
-            Settings = new PluginSettings(settings);
+            this.settings = new PluginSettings(settings);
 
-            PluginManager.Register(this, new neoSphereStarter(this), "neoSphere");
-            PluginManager.Register(this, new neoSphereStarter(this, true), "neoSphere R");
-            PluginManager.Register(this, new CellCompiler(this), "Cell");
-            PluginManager.Register(this, new neoSphereSettingsPage(Settings), "neoSphere");
-            PluginManager.Register(this, new CellSettingsPage(Settings), "Cell");
+            PluginManager.Register(this, new neoSphereStarter(this.settings), "neoSphere");
+            PluginManager.Register(this, new neoSphereStarter(this.settings, true), "neoSphere R");
+            PluginManager.Register(this, new CellCompiler(this.settings), "Cell");
+            PluginManager.Register(this, new neoSphereSettingsPage(this.settings), "neoSphere");
+            PluginManager.Register(this, new CellSettingsPage(this.settings), "Cell");
 
             Panes.Initialize(this);
 
@@ -66,29 +65,29 @@ namespace SphereStudio
 
         private void sphereApiRefCommand_Click(object sender, EventArgs e)
         {
-            string filePath = Path.Combine(Settings.EnginePath, "documentation", "sphere2-core-api.txt");
+            var filePath = Path.Combine(settings.EnginePath, "documentation", "sphere2-core-api.txt");
             PluginManager.Core.OpenFile(filePath);
         }
 
         private void miniRTApiRefCommand_Click(object sender, EventArgs e)
         {
-            string filePath = Path.Combine(Settings.EnginePath, "documentation", "sphere2-hl-api.txt");
+            var filePath = Path.Combine(settings.EnginePath, "documentation", "sphere2-hl-api.txt");
             PluginManager.Core.OpenFile(filePath);
         }
 
         private void cellApiRefCommand_Click(object sender, EventArgs e)
         {
-            string filePath = Path.Combine(Settings.EnginePath, "documentation", "cellscript-api.txt");
+            var filePath = Path.Combine(settings.EnginePath, "documentation", "cellscript-api.txt");
             PluginManager.Core.OpenFile(filePath);
         }
     }
 
     static class Panes
     {
-        public static void Initialize(PluginMain main)
+        public static void Initialize(PluginMain plugin)
         {
-            PluginManager.Register(main, Inspector = new InspectorPane(), "Inspector");
-            PluginManager.Register(main, Console = new ConsolePane(), "Debug Log");
+            PluginManager.Register(plugin, Inspector = new InspectorPane(), "Inspector");
+            PluginManager.Register(plugin, Console = new ConsolePane(), "Debug Log");
         }
 
         public static ConsolePane Console { get; private set; }

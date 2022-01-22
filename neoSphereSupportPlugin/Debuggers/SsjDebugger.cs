@@ -22,15 +22,15 @@ namespace SphereStudio.Debuggers
         private bool m_expectDetach = false;
         private Timer m_focusTimer;
         private bool m_haveError = false;
-        private PluginMain m_plugin;
         private string m_scriptPath;
         private SourceMapper m_sourceMap = new SourceMapper();
         private string m_sourcePath;
         private Timer m_updateTimer;
+        private PluginSettings settings;
 
-        public SsjDebugger(PluginMain plugin, string enginePath, Process engine, IProject project)
+        public SsjDebugger(PluginSettings settings, string enginePath, Process engine, IProject project)
         {
-            m_plugin = plugin;
+            this.settings = settings;
             m_sourcePath = project.RootPath;
             m_scriptPath = project.RootPath;
             m_engineProcess = engine;
@@ -170,7 +170,7 @@ namespace SphereStudio.Debuggers
         {
             PluginManager.Core.Invoke(new Action(() =>
             {
-                if (e.Text.StartsWith("trace: ") && !m_plugin.Settings.ShowTraceLogs)
+                if (e.Text.StartsWith("trace: ") && !settings.ShowTraceLogs)
                     return;
                 Panes.Console.Print(e.Text);
             }), null);

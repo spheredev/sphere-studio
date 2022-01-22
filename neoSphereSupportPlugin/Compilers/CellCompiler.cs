@@ -11,11 +11,11 @@ namespace SphereStudio.Compilers
 {
     class CellCompiler : IPackager
     {
-        private PluginMain plugin;
+        private PluginSettings settings;
 
-        public CellCompiler(PluginMain plugin)
+        public CellCompiler(PluginSettings settings)
         {
-            this.plugin = plugin;
+            this.settings = settings;
         }
 
         public string SaveFileFilters => "Sphere Game Package|*.spk";
@@ -36,7 +36,7 @@ namespace SphereStudio.Compilers
             var inPath = project.RootPath.Replace(Path.DirectorySeparatorChar, '/');
             var outPath = Path.Combine(inPath, "dist");
             var packagePath = fileName.Replace(Path.DirectorySeparatorChar, '/');
-            var options = plugin.Settings.MakeDebugPackages ? "--debug" : "--release";
+            var options = settings.MakeDebugPackages ? "--debug" : "--release";
             return await runCell(
                 $@"pack --in-dir ""{inPath}"" --out-dir ""{outPath}"" {options} ""{packagePath}""",
                 console);
@@ -44,7 +44,7 @@ namespace SphereStudio.Compilers
 
         public bool Prep(IProject project, IConsole console)
         {
-            var templatePath = Path.Combine(plugin.Settings.EnginePath, "system", "template");
+            var templatePath = Path.Combine(settings.EnginePath, "system", "template");
             if (!Directory.Exists(templatePath))
             {
                 MessageBox.Show(
@@ -138,7 +138,7 @@ namespace SphereStudio.Compilers
 
         private async Task<bool> runCell(string options, IConsole console)
         {
-            string cellPath = Path.Combine(plugin.Settings.EnginePath, "cell.exe");
+            string cellPath = Path.Combine(settings.EnginePath, "cell.exe");
             if (!File.Exists(cellPath))
             {
                 console.Print("ERROR: unable to build the project as the Cell compiler was not found.\n");

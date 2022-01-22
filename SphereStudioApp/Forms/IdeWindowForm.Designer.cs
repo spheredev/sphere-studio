@@ -86,9 +86,11 @@
             this.zoomInMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomOutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projectMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.preferredEngineMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
             this.exploreProjectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshProjectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.Separator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
             this.projectPropertiesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.startPageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -678,21 +680,34 @@
             // projectMenu
             // 
             this.projectMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.preferredEngineMenuItem,
+            this.toolStripSeparator13,
             this.exploreProjectMenuItem,
             this.refreshProjectMenuItem,
-            this.Separator7,
+            this.toolStripSeparator12,
             this.projectPropertiesMenuItem});
             this.projectMenu.Name = "projectMenu";
             this.projectMenu.Size = new System.Drawing.Size(56, 20);
             this.projectMenu.Text = "&Project";
             this.projectMenu.DropDownOpening += new System.EventHandler(this.projectMenu_DropDownOpening);
             // 
+            // preferredEngineMenuItem
+            // 
+            this.preferredEngineMenuItem.Name = "preferredEngineMenuItem";
+            this.preferredEngineMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.preferredEngineMenuItem.Text = "Preferred &Engine";
+            // 
+            // toolStripSeparator13
+            // 
+            this.toolStripSeparator13.Name = "toolStripSeparator13";
+            this.toolStripSeparator13.Size = new System.Drawing.Size(177, 6);
+            // 
             // exploreProjectMenuItem
             // 
             this.exploreProjectMenuItem.Enabled = false;
             this.exploreProjectMenuItem.Image = global::SphereStudio.Properties.Resources.folder_closed;
             this.exploreProjectMenuItem.Name = "exploreProjectMenuItem";
-            this.exploreProjectMenuItem.Size = new System.Drawing.Size(201, 22);
+            this.exploreProjectMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exploreProjectMenuItem.Text = "Show in &Explorer";
             this.exploreProjectMenuItem.Click += new System.EventHandler(this.exploreProjectMenuItem_Click);
             // 
@@ -702,21 +717,21 @@
             this.refreshProjectMenuItem.Image = global::SphereStudio.Properties.Resources.arrow_refresh;
             this.refreshProjectMenuItem.Name = "refreshProjectMenuItem";
             this.refreshProjectMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F5)));
-            this.refreshProjectMenuItem.Size = new System.Drawing.Size(201, 22);
-            this.refreshProjectMenuItem.Text = "&Refresh File List";
+            this.refreshProjectMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.refreshProjectMenuItem.Text = "&Refresh";
             this.refreshProjectMenuItem.Click += new System.EventHandler(this.refreshProjectMenuItem_Click);
             // 
-            // Separator7
+            // toolStripSeparator12
             // 
-            this.Separator7.Name = "Separator7";
-            this.Separator7.Size = new System.Drawing.Size(198, 6);
+            this.toolStripSeparator12.Name = "toolStripSeparator12";
+            this.toolStripSeparator12.Size = new System.Drawing.Size(177, 6);
             // 
             // projectPropertiesMenuItem
             // 
             this.projectPropertiesMenuItem.Enabled = false;
             this.projectPropertiesMenuItem.Image = global::SphereStudio.Properties.Resources.SphereEditor;
             this.projectPropertiesMenuItem.Name = "projectPropertiesMenuItem";
-            this.projectPropertiesMenuItem.Size = new System.Drawing.Size(201, 22);
+            this.projectPropertiesMenuItem.Size = new System.Drawing.Size(180, 22);
             this.projectPropertiesMenuItem.Text = "Project P&roperties...";
             this.projectPropertiesMenuItem.Click += new System.EventHandler(this.projectPropertiesMenuItem_Click);
             // 
@@ -934,20 +949,20 @@
             this.configureEngineMenuItem.Enabled = false;
             this.configureEngineMenuItem.Image = global::SphereStudio.Properties.Resources.cog;
             this.configureEngineMenuItem.Name = "configureEngineMenuItem";
-            this.configureEngineMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.configureEngineMenuItem.Size = new System.Drawing.Size(166, 22);
             this.configureEngineMenuItem.Text = "Configure &Engine";
             this.configureEngineMenuItem.Click += new System.EventHandler(this.configureEngineMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(163, 6);
             // 
             // preferencesMenuItem
             // 
             this.preferencesMenuItem.Image = global::SphereStudio.Properties.Resources.application_view_list;
             this.preferencesMenuItem.Name = "preferencesMenuItem";
-            this.preferencesMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.preferencesMenuItem.Size = new System.Drawing.Size(166, 22);
             this.preferencesMenuItem.Text = "P&references...";
             this.preferencesMenuItem.Click += new System.EventHandler(this.preferencesMenuItem_Click);
             // 
@@ -1021,7 +1036,6 @@
         private System.Windows.Forms.ToolStripMenuItem projectMenu;
         private System.Windows.Forms.ToolStripMenuItem projectPropertiesMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exploreProjectMenuItem;
-        private System.Windows.Forms.ToolStripSeparator Separator7;
         private System.Windows.Forms.ToolStripMenuItem refreshProjectMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewMenu;
         private System.Windows.Forms.ToolStripMenuItem startPageMenuItem;
@@ -1071,6 +1085,9 @@
         private System.Windows.Forms.ToolStripStatusLabel projectStatusLabel;
         private System.Windows.Forms.ToolStripMenuItem closeMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem preferredEngineMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
     }
 }
 

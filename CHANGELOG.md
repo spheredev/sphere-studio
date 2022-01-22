@@ -1,15 +1,21 @@
 Sphere Studio Changelog
 =======================
 
-v2.2.3 - TBD
+v2.3.0 - TBD
 ------------
 
+* Adds a new "Find Engine" button to the neoSphere settings page as an escape
+  hatch in case an installed copy of the engine can't be found.
+* Adds a new "Preferred Engine" submenu to the Project menu.
 * Improves the organization of the menu commands.
 * Fixes an issue where renaming a file from the file tree would allow existing
   files to be overwritten by the rename.
+* Fixes a bug where creating a new Cell-based project with the neoSphere path
+  set incorrectly crashes the IDE.
 * Fixes a bug where the "Copy Full Path" command doesn't copy the correct path.
 * Fixes a bug where closing a project didn't disable the corresponding menu
   commands.
+
 
 v2.2.2 - December 23, 2021
 --------------------------
