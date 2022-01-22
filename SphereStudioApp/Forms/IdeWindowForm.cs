@@ -8,12 +8,12 @@ using System.Media;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using WeifenLuo.WinFormsUI.Docking;
-
 using SphereStudio.Base;
 using SphereStudio.Core;
 using SphereStudio.DockPanes;
 using SphereStudio.DocumentViews;
+
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace SphereStudio.Forms
 {
@@ -797,7 +797,7 @@ namespace SphereStudio.Forms
             string rootPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 "Sphere Projects");
-            NewProjectForm npf = new NewProjectForm(rootPath);
+            var dialog = new NewProjectForm(rootPath);
 
             var starter = PluginManager.Get<IStarter>(Session.Settings.Engine);
             var compiler = PluginManager.Get<ICompiler>(Session.Settings.Compiler);
@@ -809,19 +809,19 @@ namespace SphereStudio.Forms
                 return;
             }
 
-            if (npf.ShowDialog() == DialogResult.OK)
+            if (dialog.ShowDialog() == DialogResult.OK)
             {
                 if (!closeCurrentProject())
                     return;
-                if (BuildEngine.Prep(npf.NewProject))
+                if (BuildEngine.Prep(dialog.Project))
                 {
-                    npf.NewProject.Save();
-                    OpenProject(npf.NewProject.FileName, false);
+                    dialog.Project.Save();
+                    OpenProject(dialog.Project.FileName, false);
                     startPageView.Refresh();
                 }
                 else
                 {
-                    Directory.Delete(npf.NewProject.RootPath, true);
+                    Directory.Delete(dialog.Project.RootPath, true);
                 }
             }
         }

@@ -45,7 +45,7 @@ namespace SphereStudio.Forms
         {
             var pages = from name in PluginManager.GetNames<ISettingsPage>()
                         let plugin = PluginManager.Get<ISettingsPage>(name)
-                        orderby plugin.Type, name
+                        orderby plugin.Category, name
                         select (Name: name, Plugin: plugin);
             pagesTreeView.BeginUpdate();
             var engineNode = new TreeNode("Engines", 1, 1);
@@ -53,17 +53,17 @@ namespace SphereStudio.Forms
             foreach (var page in pages)
             {
                 TreeNode node = null;
-                switch (page.Plugin.Type)
+                switch (page.Plugin.Category)
                 {
-                    case SettingsPageType.TopLevel:
+                    case SettingsCategory.TopLevel:
                         node = new TreeNode(page.Name, 0, 0) { Tag = page.Plugin };
                         pagesTreeView.Nodes.Add(node);
                         break;
-                    case SettingsPageType.Engine:
+                    case SettingsCategory.Engine:
                         node = new TreeNode(page.Name, 2, 2) { Tag = page.Plugin };
                         engineNode.Nodes.Add(node);
                         break;
-                    case SettingsPageType.Compiler:
+                    case SettingsCategory.Compiler:
                         node = new TreeNode(page.Name, 3, 3) { Tag = page.Plugin };
                         compilerNode.Nodes.Add(node);
                         break;

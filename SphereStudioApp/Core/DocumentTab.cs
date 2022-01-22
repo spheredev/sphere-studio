@@ -24,7 +24,7 @@ namespace SphereStudio.Core
         /// Creates a new Sphere Studio document tab.
         /// </summary>
         /// <param name="ideWindow">The IDE form that the tab will be created in.</param>
-        /// <param name="view">The <c>DocumentView</c> to host in the new tab.</param>
+        /// <param name="view">The <c>DocumentView</c> that will be hosted in the new tab.</param>
         /// <param name="fileName">The fully-qualified filename of the document, or <c>null</c> if untitled.</param>
         /// <param name="restoreView">A boolean value specifying whether to restore the last saved view state. Has no effect on untitled tabs.</param>
         public DocumentTab(IdeWindowForm ideWindow, DocumentView view, string fileName = null, bool restoreView = false)
@@ -50,11 +50,10 @@ namespace SphereStudio.Core
 
             refreshTabText();
 
-            if (View is TextView)
+            if (View is TextView textView)
             {
-                var scriptView = (TextView)View;
-                scriptView.Breakpoints = Session.Project.GetBreakpoints(FileName);
-                scriptView.BreakpointChanged += scriptView_BreakpointSet;
+                textView.Breakpoints = Session.Project.GetBreakpoints(FileName);
+                textView.BreakpointChanged += textView_BreakpointSet;
             }
 
             if (restoreView && FileName != null)
@@ -195,6 +194,16 @@ namespace SphereStudio.Core
         }
 
         /// <summary>
+        /// Makes the tab active and notifies the underlying document that it has
+        /// received focus.
+        /// </summary>
+        public void Activate()
+        {
+            dockContent.DockHandler.Activate();
+            View.Activate();
+        }
+
+        /// <summary>
         /// Closes the tab.
         /// </summary>
         /// <param name="forceClose">Whether to bypass the Unsaved Changes prompt.</param>
@@ -205,7 +214,7 @@ namespace SphereStudio.Core
             {
                 // unsubscribe FormClosing event to prevent duplicate prompt
                 dockContent.FormClosing -= dockContent_FormClosing;
-                
+
                 // save the current view state and close the tab
                 saveViewState();
                 dockContent.Close();
@@ -218,25 +227,7 @@ namespace SphereStudio.Core
         }
 
         /// <summary>
-        /// Notifies the document that a styling option changed.
-        /// </summary>
-        public void Restyle()
-        {
-            View.Restyle();
-        }
-
-        /// <summary>
-        /// Makes the tab active and notifies the underlying document that it has
-        /// received focus.
-        /// </summary>
-        public void Activate()
-        {
-            dockContent.DockHandler.Activate();
-            View.Activate();
-        }
-
-        /// <summary>
-        /// Sends a Copy command to the document view.
+        /// Sends a Copy command to the document.
         /// </summary>
         public void Copy()
         {
@@ -260,7 +251,7 @@ namespace SphereStudio.Core
         }
 
         /// <summary>
-        /// Sends a Paste command to the document view.
+        /// Sends a Paste command to the document.
         /// </summary>
         public void Paste()
         {
@@ -268,7 +259,31 @@ namespace SphereStudio.Core
         }
 
         /// <summary>
-        /// Sends an Undo command to the document view.
+        /// Sends a Redo command to the document.
+        /// </summary>
+        public void Redo()
+        {
+            View.Redo();
+        }
+
+        /// <summary>
+        /// Notifies the document that a styling option changed.
+        /// </summary>
+        public void Restyle()
+        {
+            View.Restyle();
+        }
+
+        /// <summary>
+        /// Sends a Select All command to the document.
+        /// </summary>
+        public void SelectAll()
+        {
+            View.SelectAll();
+        }
+
+        /// <summary>
+        /// Sends an Undo command to the document.
         /// </summary>
         public void Undo()
         {
@@ -276,20 +291,7 @@ namespace SphereStudio.Core
         }
 
         /// <summary>
-        /// Sends a Redo command to the document view.
-        /// </summary>
-        public void Redo()
-        {
-            View.Redo();
-        }
-
-        public void SelectAll()
-        {
-            View.SelectAll();
-        }
-
-        /// <summary>
-        /// Sends a Zoom In command to the document view.
+        /// Sends a Zoom In command to the document.
         /// </summary>
         public void ZoomIn()
         {
@@ -345,13 +347,14 @@ namespace SphereStudio.Core
             refreshTabText();
         }
 
-        private async void scriptView_BreakpointSet(object sender, BreakpointChangedEventArgs e)
+        private async void textView_BreakpointSet(object sender, BreakpointChangedEventArgs e)
         {
-            if (FileName == null) return;
-            TextView view = View as TextView;
-            Session.Project.SetBreakpoints(FileName, view.Breakpoints);
+            if (FileName == null)
+                return;
+            var textView = (TextView)sender;
+            Session.Project.SetBreakpoints(FileName, textView.Breakpoints);
             var debugger = ideWindow.Debugger;
-            if (ideWindow.Debugger != null)
+            if (debugger != null)
             {
                 if (e.Active)
                     await debugger.SetBreakpoint(FileName, e.LineNumber);

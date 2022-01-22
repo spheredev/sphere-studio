@@ -17,8 +17,9 @@ namespace SphereStudio.SettingsPages
             StyleManager.AutoStyle(this);
         }
 
+        public SettingsCategory Category => SettingsCategory.TopLevel;
+
         public Control Control => this;
-        public SettingsPageType Type => SettingsPageType.TopLevel;
 
         public void ApplyStyle(UIStyle style)
         {
@@ -50,8 +51,8 @@ namespace SphereStudio.SettingsPages
                              from style in plugin.Styles
                              orderby pluginName
                              select pluginName + ": " + style.Name;
-            foreach (var name in styleNames)
-                styleDropDown.Items.Add(name);
+            foreach (var styleName in styleNames)
+                styleDropDown.Items.Add(styleName);
             styleDropDown.SelectedIndex = 0;
 
             // fill in current settings

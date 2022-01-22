@@ -18,40 +18,39 @@ namespace SphereStudio.IO
         /// Constructs an IniFile object referencing the specified INI format file.
         /// </summary>
         /// <param name="fileName">The fully qualified INI file path.</param>
-        /// <param name="autoSave">
-        /// Whether to save the file automatically after a value is written. If this is false,
-        /// Save() must be called to persist the changes.
-        /// </param>
+        /// <param name="autoSave">Whether to save the file automatically after a value is written.</param>
         public IniFile(string fileName, bool autoSave = true)
         {
             this.fileName = fileName;
             AutoSave = autoSave;
 
-            sections = new Dictionary<string, Dictionary<string, string>>();
-            sections.Add(string.Empty, new Dictionary<string, string>());
-            Dictionary<string, string> section = sections[string.Empty];
+            sections = new Dictionary<string, Dictionary<string, string>>
+            {
+                { string.Empty, new Dictionary<string, string>() }
+            };
             if (File.Exists(this.fileName))
             {
                 using (StreamReader file = File.OpenText(this.fileName))
                 {
-                    Regex sectionRegex = new Regex(@"^\[(.*)\]$");
-                    Regex itemRegex = new Regex(@"^(.*)=(.*)$");
+                    var sectionRegex = new Regex(@"^\[(.*)\]$");
+                    var itemRegex = new Regex(@"^(.*)=(.*)$");
+                    var section = sections[string.Empty];
                     while (!file.EndOfStream)
                     {
-                        string line = file.ReadLine().Trim();
+                        var line = file.ReadLine().Trim();
                         var isSection = sectionRegex.Match(line);
                         var isItem = itemRegex.Match(line);
                         if (isSection.Success)
                         {
-                            string name = isSection.Groups[1].Value;
+                            var name = isSection.Groups[1].Value;
                             if (!(sections.ContainsKey(name)))
                                 sections.Add(name, new Dictionary<string, string>());
                             section = sections[name];
                         }
                         else if (isItem.Success)
                         {
-                            string name = isItem.Groups[1].Value;
-                            string value = isItem.Groups[2].Value;
+                            var name = isItem.Groups[1].Value;
+                            var value = isItem.Groups[2].Value;
                             section.Add(name, value);
                         }
                     }
@@ -60,7 +59,7 @@ namespace SphereStudio.IO
         }
 
         /// <summary>
-        /// Releases any resources held by the INI object.
+        /// Releases any resources held by the <c>IniFile</c> object.
         /// </summary>
         public void Dispose()
         {
@@ -139,19 +138,19 @@ namespace SphereStudio.IO
                                    where section.Value.Count > 0
                                    select section.Key;
                     bool closingSection = false;
-                    foreach (string name in sections)
+                    foreach (var name in sections)
                     {
                         if (closingSection)
                         {
                             file.WriteLine();
                             closingSection = false;
                         }
-                        if (name != String.Empty)
+                        if (name != string.Empty)
                             file.WriteLine($"[{name}]");
                         var keys = from key in this.sections[name].Keys
                                    orderby key ascending
                                    select key;
-                        foreach (string key in keys)
+                        foreach (var key in keys)
                         {
                             var value = this.sections[name][key];
                             file.WriteLine($"{key}={value}");

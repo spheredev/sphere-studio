@@ -12,99 +12,100 @@ namespace SphereStudio.DockPanes
 {
     partial class ConsolePane : UserControl, IDockPane, IStyleAware
     {
-        PluginConf m_config;
-        List<string> m_lines = new List<string>();
+        private List<string> logLines = new List<string>();
 
-        public ConsolePane(PluginConf config)
+        public ConsolePane()
         {
             InitializeComponent();
             StyleManager.AutoStyle(this);
-
-            m_config = config;
         }
 
         public Control Control => this;
+
         public DockHint DockHint => DockHint.Bottom;
+
         public Bitmap DockIcon => Resources.ConsoleIcon;
+
         public bool ShowInViewMenu => true;
 
         public SsjDebugger Ssj { get; set; }
 
         public void AddError(string value, bool isFatal, string filename, int line)
         {
-            if (m_errorListView.Items.Count > 0) {
-                m_errorListView.Items[0].BackColor = m_errorListView.BackColor;
-                m_errorListView.Items[0].ForeColor = m_errorListView.ForeColor;
+            if (errorListView.Items.Count > 0) {
+                errorListView.Items[0].BackColor = errorListView.BackColor;
+                errorListView.Items[0].ForeColor = errorListView.ForeColor;
             }
-            ListViewItem item = m_errorListView.Items.Insert(0, value, isFatal ? 1 : 0);
-            item.SubItems.Add(filename);
-            item.SubItems.Add(line.ToString());
+            var listViewItem = errorListView.Items.Insert(0, value, isFatal ? 1 : 0);
+            listViewItem.SubItems.Add(filename);
+            listViewItem.SubItems.Add(line.ToString());
             if (isFatal) {
-                item.BackColor = Color.DarkRed;
-                item.ForeColor = Color.Yellow;
+                listViewItem.BackColor = Color.DarkRed;
+                listViewItem.ForeColor = Color.Yellow;
             }
         }
 
         public void ApplyStyle(UIStyle style)
         {
-            style.AsCodeView(m_textBox);
-            style.AsTextView(m_errorListView);
+            style.AsCodeView(logTextBox);
+            style.AsTextView(errorListView);
         }
 
         public void ClearConsole()
         {
-            m_lines.Clear();
-            m_timer.Start();
-        }
-
-        public void ClearErrors()
-        {
-            m_errorListView.Items.Clear();
+            logLines.Clear();
+            uiTimer.Start();
         }
 
         public void ClearErrorHighlight()
         {
-            if (m_errorListView.Items.Count > 0) {
-                m_errorListView.Items[0].BackColor = m_errorListView.BackColor;
-                m_errorListView.Items[0].ForeColor = m_errorListView.ForeColor;
+            if (errorListView.Items.Count > 0)
+            {
+                errorListView.Items[0].BackColor = errorListView.BackColor;
+                errorListView.Items[0].ForeColor = errorListView.ForeColor;
             }
+        }
+
+        public void ClearErrors()
+        {
+            errorListView.Items.Clear();
         }
 
         public void HideIfClean()
         {
             ClearErrorHighlight();
-            if (m_errorListView.Items.Count == 0) {
+            if (errorListView.Items.Count == 0) {
                 PluginManager.Core.Docking.Hide(this);
             }
         }
 
         public void Print(string text)
         {
-            m_lines.AddRange(text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None));
-            m_timer.Start();
+            logLines.AddRange(text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None));
+            uiTimer.Start();
         }
 
         private void errorListView_DoubleClick(object sender, EventArgs e)
         {
-            if (m_errorListView.SelectedItems.Count > 0) {
-                ListViewItem item = m_errorListView.SelectedItems[0];
-                string filename = Ssj.ResolvePath(item.SubItems[1].Text);
-                int lineNumber = int.Parse(item.SubItems[2].Text);
-                TextView view = PluginManager.Core.OpenFile(filename) as TextView;
-                if (view == null)
+            if (errorListView.SelectedItems.Count > 0) {
+                ListViewItem item = errorListView.SelectedItems[0];
+                var filename = Ssj.ResolvePath(item.SubItems[1].Text);
+                var lineNumber = int.Parse(item.SubItems[2].Text);
+                var textView = PluginManager.Core.OpenFile(filename) as TextView;
+                if (textView == null)
                     SystemSounds.Asterisk.Play();
                 else
-                    view.GoToLine(lineNumber);
+                    textView.GoToLine(lineNumber);
             }
         }
 
-        private void timer_Tick(object sender, EventArgs e)
+        private void uiTimer_Tick(object sender, EventArgs e)
         {
-            m_timer.Stop();
-            m_textBox.Text = string.Join("\r\n", m_lines) + "\r\n";
-            m_textBox.SelectionStart = m_textBox.Text.Length;
-            m_textBox.SelectionLength = 0;
-            m_textBox.ScrollToCaret();
+            uiTimer.Stop();
+            logTextBox.Text = $"{string.Join("\r\n", logLines)}\r\n";
+            logTextBox.SelectionStart = logTextBox.Text.Length;
+            logTextBox.SelectionLength = 0;
+            logTextBox.ScrollToCaret();
         }
     }
 }

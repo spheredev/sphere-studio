@@ -87,12 +87,11 @@ namespace SphereStudio.Core
 
         public void SetValue(string key, object value)
         {
-            value = value ?? "";
-
-            string valuestr = value is IEnumerable<string>
-                ? string.Join("|", value as IEnumerable<string>)
+            value = value ?? string.Empty;
+            var valueString = value is IEnumerable<string> valueList
+                ? string.Join("|", valueList)
                 : value.ToString();
-            iniFile.SetValue(section, key, valuestr);
+            iniFile.SetValue(section, key, valueString);
         }
     }
 }

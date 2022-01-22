@@ -934,20 +934,20 @@
             this.configureEngineMenuItem.Enabled = false;
             this.configureEngineMenuItem.Image = global::SphereStudio.Properties.Resources.cog;
             this.configureEngineMenuItem.Name = "configureEngineMenuItem";
-            this.configureEngineMenuItem.Size = new System.Drawing.Size(186, 22);
-            this.configureEngineMenuItem.Text = "Configure the &Engine";
+            this.configureEngineMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.configureEngineMenuItem.Text = "Configure &Engine";
             this.configureEngineMenuItem.Click += new System.EventHandler(this.configureEngineMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(183, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(177, 6);
             // 
             // preferencesMenuItem
             // 
             this.preferencesMenuItem.Image = global::SphereStudio.Properties.Resources.application_view_list;
             this.preferencesMenuItem.Name = "preferencesMenuItem";
-            this.preferencesMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.preferencesMenuItem.Size = new System.Drawing.Size(180, 22);
             this.preferencesMenuItem.Text = "P&references...";
             this.preferencesMenuItem.Click += new System.EventHandler(this.preferencesMenuItem_Click);
             // 

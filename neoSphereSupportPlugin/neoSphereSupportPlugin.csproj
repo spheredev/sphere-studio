@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PluginSettings.cs" />
     <Compile Include="SettingsPages\CellSettingsPage.cs">
       <SubType>UserControl</SubType>
     </Compile>

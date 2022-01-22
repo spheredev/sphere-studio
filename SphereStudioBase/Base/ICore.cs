@@ -86,7 +86,7 @@ namespace SphereStudio.Base
     }
 
     /// <summary>
-    /// Specifies the interface for ICore.Settings.
+    /// Specifies the interface for <c>ICore.Settings</c>.
     /// </summary>
     public interface ICoreSettings
     {

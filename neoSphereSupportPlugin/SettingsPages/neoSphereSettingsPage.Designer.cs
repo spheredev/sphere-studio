@@ -114,7 +114,7 @@
             this.browseDirButton.Text = "Browse...";
             this.browseDirButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.browseDirButton.UseVisualStyleBackColor = true;
-            this.browseDirButton.Click += new System.EventHandler(this.BrowseButton_Click);
+            this.browseDirButton.Click += new System.EventHandler(this.browseDirButton_Click);
             // 
             // enginePathTextBox
             // 

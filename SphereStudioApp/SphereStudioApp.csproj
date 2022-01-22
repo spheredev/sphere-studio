@@ -111,6 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compilers\SphereCompiler.cs" />
+    <Compile Include="Core\CoreSettings.cs" />
     <Compile Include="Core\PluginShim.cs" />
     <Compile Include="Core\UserSettings.cs" />
     <Compile Include="Forms\PreferencesForm.cs">

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 using SphereStudio.Base;
 
@@ -10,22 +11,50 @@ namespace SphereStudio.Compilers
 {
     class CellCompiler : IPackager
     {
-        private PluginMain main;
+        private PluginMain plugin;
 
-        public CellCompiler(PluginMain main)
+        public CellCompiler(PluginMain plugin)
         {
-            this.main = main;
+            this.plugin = plugin;
         }
 
-        public string SaveFileFilters
+        public string SaveFileFilters => "Sphere Game Package|*.spk";
+
+        public async Task<string> Build(IProject project, bool debuggable, IConsole console)
         {
-            get { return "Sphere Game Package|*.spk"; }
+            var inPath = project.RootPath.Replace(Path.DirectorySeparatorChar, '/');
+            var outPath = $"{inPath}/dist";
+            var options = debuggable ? "--debug" : "--release";
+            var succeeded = await runCell(
+                $@"--in-dir ""{inPath}"" --out-dir ""{outPath}"" {options}",
+                console);
+            return succeeded ? outPath : null;
+        }
+
+        public async Task<bool> Package(IProject project, string fileName, bool debuggable, IConsole console)
+        {
+            var inPath = project.RootPath.Replace(Path.DirectorySeparatorChar, '/');
+            var outPath = Path.Combine(inPath, "dist");
+            var packagePath = fileName.Replace(Path.DirectorySeparatorChar, '/');
+            var options = plugin.Settings.MakeDebugPackages ? "--debug" : "--release";
+            return await runCell(
+                $@"pack --in-dir ""{inPath}"" --out-dir ""{outPath}"" {options} ""{packagePath}""",
+                console);
         }
 
         public bool Prep(IProject project, IConsole console)
         {
+            var templatePath = Path.Combine(plugin.Settings.EnginePath, "system", "template");
+            if (!Directory.Exists(templatePath))
+            {
+                MessageBox.Show(
+                    "The Cell project template couldn't be found. Check that you have neoSphere installed and that the neoSphere path is set correctly in Preferences.",
+                    "Unable to Prep Cell Project", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
             console.Print("Installing project template... ");
-            CopyDirectory(Path.Combine(main.Conf.EnginePath, "system", "template"), project.RootPath);
+            copyDirectory(templatePath, project.RootPath);
             console.Print("OK.\n");
 
             var cellTemplatePath = Path.Combine(project.RootPath, "Cellscript.js.tmpl");
@@ -38,8 +67,9 @@ namespace SphereStudio.Compilers
                 var template = File.ReadAllText(cellTemplatePath);
                 var resolution = project.Settings.GetSize("resolution", new Size(320, 240));
                 var script = string.Format(template,
-                    JSifyString(project.Name, '"'), JSifyString(project.Author, '"'),
-                    JSifyString(project.Summary, '"'),
+                    jsifyString(project.Name, '"'),
+                    jsifyString(project.Author, '"'),
+                    jsifyString(project.Summary, '"'),
                     $"{resolution.Width}x{resolution.Height}");
                 File.WriteAllText(cellscriptPath, script);
                 File.Delete(cellTemplatePath);
@@ -47,16 +77,17 @@ namespace SphereStudio.Compilers
                 console.Print("Generating main module... ");
                 template = File.ReadAllText(scriptTemplatePath);
                 script = string.Format(template,
-                    JSifyString(project.Name, '"'), JSifyString(project.Author, '"'),
-                    JSifyString(project.Summary, '"'),
+                    jsifyString(project.Name, '"'),
+                    jsifyString(project.Author, '"'),
+                    jsifyString(project.Summary, '"'),
                     $"{resolution.Width}x{resolution.Height}");
                 File.WriteAllText(mainScriptPath, script);
                 File.Delete(scriptTemplatePath);
                 console.Print("OK.\n");
             }
-            catch (Exception exc)
+            catch (Exception error)
             {
-                console.Print($"\n[error] {exc.Message}\n");
+                console.Print($"\n[error] {error.Message}\n");
                 return false;
             }
 
@@ -64,40 +95,18 @@ namespace SphereStudio.Compilers
             return true;
         }
 
-        public async Task<string> Build(IProject project, bool debuggable, IConsole console)
-        {
-            var inPath = project.RootPath.Replace(Path.DirectorySeparatorChar, '/');
-            var outPath = $"{inPath}/dist";
-            var options = debuggable ? "--debug" : "--release";
-            var succeeded = await RunCell(
-                $@"--in-dir ""{inPath}"" --out-dir ""{outPath}"" {options}",
-                console);
-            return succeeded ? outPath : null;
-        }
-
         public async Task<string> Rebuild(IProject project, bool debuggable, IConsole console)
         {
             var inPath = project.RootPath.Replace(Path.DirectorySeparatorChar, '/');
             var outPath = $"{inPath}/dist";
             var options = debuggable ? "--debug" : "--release";
-            var succeeded = await RunCell(
+            var succeeded = await runCell(
                 $@"--rebuild --in-dir ""{inPath}"" --out-dir ""{outPath}"" {options}",
                 console);
             return succeeded ? outPath : null;
         }
 
-        public async Task<bool> Package(IProject project, string fileName, bool debuggable, IConsole console)
-        {
-            var inPath = project.RootPath.Replace(Path.DirectorySeparatorChar, '/');
-            var outPath = Path.Combine(inPath, "dist");
-            var packagePath = fileName.Replace(Path.DirectorySeparatorChar, '/');
-            var options = main.Conf.MakeDebugPackages ? "--debug" : "--release";
-            return await RunCell(
-                $@"pack --in-dir ""{inPath}"" --out-dir ""{outPath}"" {options} ""{packagePath}""",
-                console);
-        }
-
-        private void CopyDirectory(string sourcePath, string destPath)
+        private void copyDirectory(string sourcePath, string destPath)
         {
             var source = new DirectoryInfo(sourcePath);
             var target = new DirectoryInfo(destPath);
@@ -110,11 +119,11 @@ namespace SphereStudio.Compilers
             foreach (var dirInfo in source.GetDirectories())
             {
                 var destFileName = Path.Combine(target.FullName, dirInfo.Name);
-                CopyDirectory(dirInfo.FullName, destFileName);
+                copyDirectory(dirInfo.FullName, destFileName);
             }
         }
 
-        private string JSifyString(string str, char quoteChar)
+        private string jsifyString(string str, char quoteChar)
         {
             str = str
                 .Replace("\n", @"\n").Replace("\r", @"\r")
@@ -127,13 +136,14 @@ namespace SphereStudio.Compilers
                 return str;
         }
 
-        private async Task<bool> RunCell(string options, IConsole console)
+        private async Task<bool> runCell(string options, IConsole console)
         {
-            string cellPath = Path.Combine(main.Conf.EnginePath, "cell.exe");
+            string cellPath = Path.Combine(plugin.Settings.EnginePath, "cell.exe");
             if (!File.Exists(cellPath))
             {
-                console.Print("ERROR: unable to build - the Cell compiler was not found.\n");
-                console.Print("       please check neoSphere settings in Preferences.\n");
+                console.Print("ERROR: unable to build the project as the Cell compiler was not found.\n");
+                console.Print("       check that you have neoSphere installed and that the neoSphere path is\n");
+                console.Print("       set correctly in Preferences.\n");
                 return false;
             }
 

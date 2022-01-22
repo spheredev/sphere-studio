@@ -42,7 +42,7 @@ namespace SphereStudio.Forms
             resoDropDown.SelectedIndex = 1;
         }
 
-        public Project NewProject { get; private set; }
+        public Project Project { get; private set; }
 
         public void ApplyStyle(UIStyle style)
         {
@@ -71,13 +71,13 @@ namespace SphereStudio.Forms
 
         private void okButton_Click(object sender, EventArgs e)
         {
-            NewProject = Project.Create(directoryTextBox.Text, nameTextBox.Text);
-            NewProject.Name = titleTextBox.Text;
-            NewProject.Author = authorTextBox.Text;
-            NewProject.Summary = summaryTextBox.Text;
-            NewProject.Compiler = typeDropDown.Text;
-            NewProject.Settings.SetValue("mainScript", "scripts/main.js");
-            NewProject.Settings.SetSize("resolution",
+            Project = Project.Create(directoryTextBox.Text, nameTextBox.Text);
+            Project.Name = titleTextBox.Text;
+            Project.Author = authorTextBox.Text;
+            Project.Summary = summaryTextBox.Text;
+            Project.Compiler = typeDropDown.Text;
+            Project.Settings.SetValue("mainScript", "scripts/main.js");
+            Project.Settings.SetSize("resolution",
                 new Size((int)widthEditBox.Value, (int)heightEditBox.Value));
         }
 

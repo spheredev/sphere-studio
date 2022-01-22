@@ -25,6 +25,20 @@ namespace SphereStudio.Starters
             }
         }
 
+        public void Configure()
+        {
+            if (!CanConfigure)
+                throw new NotSupportedException("Engine doesn't support configuration.");
+
+            var enginePath = settings.GetString("enginePath", "");
+            Process.Start(new ProcessStartInfo()
+            {
+                FileName = Path.Combine(enginePath, "config.exe"),
+                UseShellExecute = false,
+                WorkingDirectory = enginePath,
+            });
+        }
+
         public void Start(string gamePath, bool isPackage)
         {
             var enginePath = Path.Combine(settings.GetString("enginePath", ""), "engine.exe");
@@ -37,21 +51,6 @@ namespace SphereStudio.Starters
                     "Sphere 1.x or compatible engine was not found.  Please check your Sphere installation path under Preferences -> Sphere 1.x.",
                     "Unable to Start Engine", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        public void Configure()
-        {
-            if (!CanConfigure)
-                throw new NotSupportedException("Engine doesn't support configuration.");
-
-            var enginePath = settings.GetString("enginePath", "");
-            ProcessStartInfo psi = new ProcessStartInfo()
-            {
-                FileName = Path.Combine(enginePath, "config.exe"),
-                UseShellExecute = false,
-                WorkingDirectory = enginePath,
-            };
-            Process.Start(psi);
         }
     }
 }

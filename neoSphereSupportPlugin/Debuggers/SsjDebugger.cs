@@ -17,7 +17,6 @@ namespace SphereStudio.Debuggers
 {
     class SsjDebugger : IDebugger, IDisposable
     {
-        private string m_gamePath;
         private Process m_engineProcess;
         private string m_enginePath;
         private bool m_expectDetach = false;
@@ -29,10 +28,9 @@ namespace SphereStudio.Debuggers
         private string m_sourcePath;
         private Timer m_updateTimer;
 
-        public SsjDebugger(PluginMain main, string gamePath, string enginePath, Process engine, IProject project)
+        public SsjDebugger(PluginMain plugin, string enginePath, Process engine, IProject project)
         {
-            m_plugin = main;
-            m_gamePath = gamePath;
+            m_plugin = plugin;
             m_sourcePath = project.RootPath;
             m_scriptPath = project.RootPath;
             m_engineProcess = engine;
@@ -172,7 +170,7 @@ namespace SphereStudio.Debuggers
         {
             PluginManager.Core.Invoke(new Action(() =>
             {
-                if (e.Text.StartsWith("trace: ") && !m_plugin.Conf.ShowTraceInfo)
+                if (e.Text.StartsWith("trace: ") && !m_plugin.Settings.ShowTraceLogs)
                     return;
                 Panes.Console.Print(e.Text);
             }), null);

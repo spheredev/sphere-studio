@@ -22,6 +22,7 @@ namespace SphereStudio.ProjectPages
         }
 
         public string Compiler => Defaults.Compiler;
+
         public Control Control => this;
 
         public void ApplyStyle(UIStyle style)

@@ -36,7 +36,7 @@ namespace SphereStudio.Core
         /// <returns>A <c>Project</c> object that represents the newly created project.</returns>
         public static Project Create(string rootPath, string name)
         {
-            DirectoryInfo dirInfo = new DirectoryInfo(rootPath);
+            var dirInfo = new DirectoryInfo(rootPath);
             if (dirInfo.Exists && dirInfo.GetFileSystemInfos().Length > 0)
                 throw new ArgumentException("Root directory for a new project must be empty.");
             dirInfo.Create();
@@ -57,7 +57,7 @@ namespace SphereStudio.Core
             if (!File.Exists(fileName))
                 throw new FileNotFoundException();
 
-            Project project = new Project(fileName)
+            var project = new Project(fileName)
             {
                 GameOnly = true,
                 Name = "Untitled",
@@ -77,7 +77,7 @@ namespace SphereStudio.Core
             {
                 try
                 {
-                    Match match = new Regex("(.+)=(.*)").Match(line);
+                    var match = new Regex("(.+)=(.*)").Match(line);
                     if (match.Success)
                     {
                         string key = match.Groups[1].Value;
@@ -255,14 +255,14 @@ namespace SphereStudio.Core
         {
             if (scriptPath == null)
                 return new int[0];
-            int hash = scriptPath.GetHashCode();
+            var hash = scriptPath.GetHashCode();
             if (breakpoints.ContainsKey(scriptPath))
             {
                 return breakpoints[scriptPath].ToArray();
             }
             else
             {
-                int[] lines = new int[0];
+                var lines = new int[0];
                 try
                 {
                     lines = Array.ConvertAll(
@@ -271,7 +271,7 @@ namespace SphereStudio.Core
                 }
                 catch (Exception)
                 {
-                    // *munch*
+                    // *MUNCH*
                 }
                 breakpoints.Add(scriptPath, new HashSet<int>(lines));
                 return lines;
@@ -348,8 +348,8 @@ namespace SphereStudio.Core
 
         private static string makeFileName(string name)
         {
-            string invalidChars = Regex.Escape(new string(Path.GetInvalidFileNameChars()));
-            string pattern = $@"([{invalidChars}]*\.+$)|([{invalidChars}]+)";
+            var invalidChars = Regex.Escape(new string(Path.GetInvalidFileNameChars()));
+            var pattern = $@"([{invalidChars}]*\.+$)|([{invalidChars}]+)";
             return $"{Regex.Replace(name, pattern, "_")}.ssproj";
         }
     }

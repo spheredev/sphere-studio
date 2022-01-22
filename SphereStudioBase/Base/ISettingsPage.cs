@@ -2,7 +2,7 @@
 
 namespace SphereStudio.Base
 {
-    public enum SettingsPageType
+    public enum SettingsCategory
     {
         TopLevel,
         Engine,
@@ -15,14 +15,14 @@ namespace SphereStudio.Base
     public interface ISettingsPage : IPlugin
     {
         /// <summary>
-        /// Gets the physical UserControl for this settings page.
-        /// </summary>
-        Control Control { get; }
-
-        /// <summary>
         /// Specifies which category the settings page is listed under.
         /// </summary>
-        SettingsPageType Type { get; }
+        SettingsCategory Category { get; }
+
+        /// <summary>
+        /// Gets the physical <c>UserControl</c> for this settings page.
+        /// </summary>
+        Control Control { get; }
 
         /// <summary>
         /// Populates the settings page with the current settings.

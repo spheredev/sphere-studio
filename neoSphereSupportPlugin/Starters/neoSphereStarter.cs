@@ -9,31 +9,16 @@ namespace SphereStudio.Starters
 {
     class neoSphereStarter : IDebugStarter
     {
-        private PluginMain main;
+        private PluginMain plugin;
         private bool useRetroMode;
 
-        public neoSphereStarter(PluginMain main, bool useRetroMode = false)
+        public neoSphereStarter(PluginMain plugin, bool useRetroMode = false)
         {
-            this.main = main;
+            this.plugin = plugin;
             this.useRetroMode = useRetroMode;
         }
 
         public bool CanConfigure => false;
-
-        public void Start(string gamePath, bool isPackage)
-        {
-            var gdkPath = main.Conf.EnginePath;
-            var wantConsole = main.Conf.AlwaysUseConsole;
-            var wantWindow = main.Conf.TestInWindow || wantConsole;
-            var enginePath = Path.Combine(gdkPath, wantConsole ? "spherun.exe" : "neoSphere.exe");
-            var options = string.Format(@"{0} --verbose {1} {2} {3} ""{4}""",
-                wantWindow ? "--windowed" : "",
-                main.Conf.Verbosity,
-                wantConsole ? "--profile" : "",
-                useRetroMode || main.Conf.TestInRetroMode ? "--retro" : "",
-                gamePath);
-            Process.Start(enginePath, options);
-        }
 
         public void Configure()
         {
@@ -42,18 +27,31 @@ namespace SphereStudio.Starters
 
         public IDebugger Debug(string gamePath, bool isPackage, IProject project)
         {
-            string gdkPath = main.Conf.EnginePath;
-
             PluginManager.Core.Docking.Activate(Panes.Console);
             Panes.Console.ClearConsole();
             PluginManager.Core.Docking.Show(Panes.Inspector);
-            var enginePath = Path.Combine(gdkPath, "spherun.exe");
+            var enginePath = Path.Combine(plugin.Settings.EnginePath, "spherun.exe");
             var options = string.Format(@"--verbose {0} --debug {1} ""{2}""",
-                main.Conf.Verbosity,
+                plugin.Settings.Verbosity,
                 useRetroMode ? "--retro" : "",
                 gamePath);
-            Process engineProcess = Process.Start(enginePath, options);
-            return new SsjDebugger(main, gamePath, enginePath, engineProcess, project);
+            var engineProcess = Process.Start(enginePath, options);
+            return new SsjDebugger(plugin, enginePath, engineProcess, project);
+        }
+
+        public void Start(string gamePath, bool isPackage)
+        {
+            var wantConsole = plugin.Settings.AlwaysUseConsole;
+            var wantWindow = plugin.Settings.TestInWindow || wantConsole;
+            var enginePath = Path.Combine(plugin.Settings.EnginePath,
+                wantConsole ? "spherun.exe" : "neoSphere.exe");
+            var options = string.Format(@"{0} --verbose {1} {2} {3} ""{4}""",
+                wantWindow ? "--windowed" : string.Empty,
+                plugin.Settings.Verbosity,
+                wantConsole ? "--profile" : string.Empty,
+                useRetroMode || plugin.Settings.TestInRetroMode ? "--retro" : string.Empty,
+                gamePath);
+            Process.Start(enginePath, options);
         }
     }
 }

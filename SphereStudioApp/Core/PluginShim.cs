@@ -7,7 +7,7 @@ namespace SphereStudio.Core
 {
     class PluginShim
     {
-        private bool m_isEnabled = false;
+        private bool enabled = false;
 
         public PluginShim(string fileName, string handle)
         {
@@ -29,23 +29,33 @@ namespace SphereStudio.Core
             Main = main;
         }
 
-        public IPluginMain Main { get; private set; }
-        public string Handle { get; private set; }
-
         public bool Enabled
         {
-            get { return m_isEnabled; }
-            set { if (value) Activate(); else Deactivate(); }
+            get
+            {
+                return enabled;
+            }
+            set
+            {
+                if (value)
+                    Activate();
+                else
+                    Deactivate();
+            }
         }
+
+        public string Handle { get; private set; }
+
+        public IPluginMain Main { get; private set; }
 
         public void Activate()
         {
-            if (!m_isEnabled)
+            if (!enabled)
             {
                 ISettings conf = new IniSettings(Session.MainIniFile, Handle);
                 try {
                     Main.Initialize(conf);
-                    m_isEnabled = true;
+                    enabled = true;
                 }
                 catch { }
             }
@@ -53,9 +63,9 @@ namespace SphereStudio.Core
 
         public void Deactivate()
         {
-            if (m_isEnabled)
+            if (enabled)
             {
-                m_isEnabled = false;
+                enabled = false;
                 Main.ShutDown();
                 PluginManager.UnregisterAll(Main);
             }

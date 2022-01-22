@@ -7,22 +7,22 @@
     public interface IStarter : IPlugin
     {
         /// <summary>
-        /// 'true' if this engine supports configuration.
+        /// Gets a value indicating whether this engine supports configuration.
         /// </summary>
         bool CanConfigure { get; }
-        
+
+        /// <summary>
+        /// Launches this engine's configuration program. If the engine doesn't support configuration,
+        /// this throws an error.
+        /// </summary>
+        void Configure();
+
         /// <summary>
         /// Starts the engine.
         /// </summary>
         /// <param name="gamePath">The pathname of the game or package to launch.</param>
         /// <param name="isPackage">Pass 'true' if gamePath specifies a package.</param>
         void Start(string gamePath, bool isPackage);
-
-        /// <summary>
-        /// Launches the engine's configuration program. Throws an error if the
-        /// engine doesn't support this.
-        /// </summary>
-        void Configure();
     }
 
     /// <summary>

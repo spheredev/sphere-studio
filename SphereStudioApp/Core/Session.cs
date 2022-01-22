@@ -23,25 +23,25 @@ namespace SphereStudio.Core
 
             // load plugin modules (user-installed plugins first)
             Plugins = new Dictionary<string, PluginShim>();
-            string[] searchPaths = {
+            var searchPaths = new []
+            {
                 Path.Combine(appDataPath, "Plugins"),
                 Path.Combine(Application.StartupPath, "Plugins"),
             };
-            foreach (string path in
-                from path in searchPaths
-                where Directory.Exists(path)
-                select path)
+            foreach (var path in searchPaths)
             {
-                DirectoryInfo dir = new DirectoryInfo(path);
-                foreach (FileInfo file in dir.GetFiles("*.dll")) {
-                    string handle = Path.GetFileNameWithoutExtension(file.Name);
+                var dirInfo = new DirectoryInfo(path);
+                if (!dirInfo.Exists)
+                    continue;
+                foreach (var fileInfo in dirInfo.GetFiles("*.dll")) {
+                    var handle = Path.GetFileNameWithoutExtension(fileInfo.Name);
                     if (!Plugins.Keys.Contains(handle))  // only the first by that name is used
                         try {
-                            Plugins[handle] = new PluginShim(file.FullName, handle);
+                            Plugins[handle] = new PluginShim(fileInfo.FullName, handle);
                         }
-                        catch (Exception e) {
+                        catch (Exception error) {
                             MessageBox.Show(
-                                $"Sphere Studio was unable to load the plugin file {file.FullName}.\n\nThe error encountered was:\n{e.Message}",
+                                $"Sphere Studio was unable to load the plugin file {fileInfo.FullName}.\n\nThe error encountered was:\n{error.Message}",
                                 "Couldn't Load Plugin Module", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                 }
@@ -49,7 +49,7 @@ namespace SphereStudio.Core
         }
 
         /// <summary>
-        /// Grants access to the main .ini file (Sphere Studio.ini).
+        /// Provides access to the INI file used for global settings (<c>coreSettings.ini</c>).
         /// </summary>
         public static IniFile MainIniFile { get; private set; }
 
@@ -59,211 +59,30 @@ namespace SphereStudio.Core
         public static Project Project { get; set; }
 
         /// <summary>
-        /// Grants access to the Sphere Studio core configuration.
-        /// </summary>
-        public static CoreSettings Settings { get; private set; }
-
-        /// <summary>
         /// Gets the list of loaded plugins.
         /// </summary>
         public static Dictionary<string, PluginShim> Plugins { get; private set; }
 
         /// <summary>
-        /// Gets the registered name of the IFileOpener handling a specified filename.
+        /// Provides access to the global IDE settings.
+        /// </summary>
+        public static CoreSettings Settings { get; private set; }
+
+        /// <summary>
+        /// Gets the registered name of the file opener plugin handling a specified filename.
         /// </summary>
         /// <param name="fileName">The filename to find a file opener for.</param>
-        /// <returns>The registered name of the correct file opener, or null if none was found.</returns>
+        /// <returns>The registered name of the correct file opener, or <c>null</c> if none was found.</returns>
         public static string GetFileOpenerName(string fileName)
         {
-            string fileExtension = Path.GetExtension(fileName);
+            var fileExtension = Path.GetExtension(fileName);
             if (fileExtension.StartsWith("."))  // remove dot from extension
                 fileExtension = fileExtension.Substring(1);
-
             var names = from name in PluginManager.GetNames<IFileOpener>()
                         let plugin = PluginManager.Get<IFileOpener>(name)
-                        where plugin.FileExtensions.Any(it => it.ToUpperInvariant() == fileExtension.ToUpperInvariant())
+                        where plugin.FileExtensions.Any(it => it.Equals(fileExtension, StringComparison.OrdinalIgnoreCase))
                         select name;
             return names.FirstOrDefault();
-        }
-    }
-
-    class CoreSettings : IniSettings, ICoreSettings
-    {
-        public CoreSettings(IniFile ini) :
-            base(ini, "Sphere Studio")
-        {
-            Preset = GetString("preset", "");
-        }
-
-        public bool AutoHideBuild
-        {
-            get { return GetBoolean("autoHideBuild", false); }
-            set { SetValue("autoHideBuild", value); }
-        }
-
-        public string[] HiddenPanes
-        {
-            get { return GetStringArray("hiddenPanes", new string[0]); }
-            set { SetValue("hiddenPanes", value); }
-        }
-
-        public string[] AutoHidePanes
-        {
-            get { return GetStringArray("autoHidePanes", new string[0]); }
-            set { SetValue("autoHidePanes", value); }
-        }
-
-        public bool AutoOpenLastProject
-        {
-            get { return GetBoolean("autoOpenProject", false); }
-            set { SetValue("autoOpenProject", value); }
-        }
-
-        public bool UseScriptHeaders
-        {
-            get { return GetBoolean("useScriptHeaders", false); }
-            set { SetValue("useScriptHeaders", value); }
-        }
-
-        public bool UseStartPage
-        {
-            get { return GetBoolean("autoStartPage", true); }
-            set { SetValue("autoStartPage", value); }
-        }
-
-        public string Engine
-        {
-            get { return GetString("defaultEngine", ""); }
-            set { Preset = null; SetValue("defaultEngine", value); }
-        }
-
-        public string Compiler
-        {
-            get { return GetString("defaultCompiler", ""); }
-            set { Preset = null; SetValue("defaultCompiler", value); }
-        }
-
-        public string FileOpener
-        {
-            get { return GetString("defaultFileOpener", ""); }
-            set { Preset = null; SetValue("defaultFileOpener", value); }
-        }
-
-        public string ImageEditor
-        {
-            get { return GetString("imageEditor", ""); }
-            set { Preset = null; SetValue("imageEditor", value); }
-        }
-
-        public string TextEditor
-        {
-            get { return GetString("textEditor", ""); }
-            set { Preset = null; SetValue("textEditor", value); }
-        }
-
-        public string LastProjectFileName
-        {
-            get { return GetString("lastProject", ""); }
-            set { SetValue("lastProject", value); }
-        }
-
-        public string[] DisabledPlugins
-        {
-            get { return GetStringArray("disabledPlugins", new string[0]); }
-            set { Preset = ""; SetValue("disabledPlugins", value); }
-        }
-
-        public string Preset
-        {
-            get
-            {
-                string value = GetString("preset", "");
-                return string.IsNullOrWhiteSpace(value) ? null : value;
-            }
-            set
-            {
-                string sphereDir = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                    "Sphere Projects");
-                string path = Path.Combine(sphereDir, "Presets", $"{value}.preset");
-                if (!string.IsNullOrWhiteSpace(value) && File.Exists(path)) {
-                    using (IniFile preset = new IniFile(path, false)) {
-                        Compiler = preset.GetValue("Preset", "compiler", "");
-                        Engine = preset.GetValue("Preset", "engine", "");
-                        FileOpener = preset.GetValue("Preset", "defaultFileOpener", "");
-                        ImageEditor = preset.GetValue("Preset", "imageEditor", "");
-                        TextEditor = preset.GetValue("Preset", "textEditor", "");
-                        DisabledPlugins = preset.GetValue("Preset", "disabledPlugins", "").Split('|');
-                    }
-                    SetValue("preset", value);
-                }
-                else {
-                    SetValue("preset", "");
-                }
-            }
-        }
-
-        public string[] ProjectPaths
-        {
-            get
-            {
-                return GetStringArray("gamePaths", new string[0]);
-            }
-            set { SetValue("gamePaths", value); }
-        }
-
-        public View StartPageView
-        {
-            get
-            {
-                string val = GetString("startView", "Details");
-                return (View)Enum.Parse(typeof(View), val);
-            }
-            set
-            {
-                SetValue("startView", value);
-            }
-        }
-
-        public string StyleName
-        {
-            get => GetString("uiStyle", Defaults.Style);
-            set => SetValue("uiStyle", value);
-        }
-
-        public UIStyle UIStyle
-        {
-            get
-            {
-                var styles = from name in PluginManager.GetNames<IStyleProvider>()
-                             let plugin = PluginManager.Get<IStyleProvider>(name)
-                             from style in plugin.Styles
-                             select new {
-                                 Name = $"{name}: {style.Name}",
-                                 Style = style
-                             };
-                var uiStyle = styles
-                    .Where(it => it.Name == StyleName)
-                    .Select(it => it.Style)
-                    .FirstOrDefault();
-                if (uiStyle == null)
-                {
-                    uiStyle = styles
-                        .Where(it => it.Name == Defaults.Style)
-                        .Select(it => it.Style)
-                        .FirstOrDefault();
-                }
-                return uiStyle;
-            }
-        }
-
-        public void Apply()
-        {
-            foreach (var plugin in Session.Plugins)
-                plugin.Value.Enabled = !DisabledPlugins.Contains(plugin.Key);
-            PluginManager.Core.Docking.Refresh();
-            if (UIStyle != null && StyleManager.Style != UIStyle)
-                StyleManager.Style = UIStyle;
         }
     }
 }

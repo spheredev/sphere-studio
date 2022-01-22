@@ -17,7 +17,7 @@ namespace SphereStudio.Core
         private static BuildLogPane buildLogPane;
 
         /// <summary>
-        /// Initializes the build system.
+        /// Initializes the build engine.
         /// </summary>
         public static void Initialize()
         {
@@ -63,28 +63,9 @@ namespace SphereStudio.Core
         public static string GetSaveFileFilters(Project project)
         {
             if (!CanPackage(project))
-                throw new NotSupportedException("The active compiler doesn't support packaging.");
+                throw new NotSupportedException($"The compiler '{project.Compiler}' doesn't support packaging.");
             var packager = PluginManager.Get<IPackager>(project.Compiler);
             return packager.SaveFileFilters;
-        }
-
-        public static bool Prep(Project project)
-        {
-            buildLogPane.Clear();
-            PluginManager.Core.Docking.Show(buildLogPane);
-            PluginManager.Core.Docking.Activate(buildLogPane);
-            buildLogPane.Print($"-------------------- Prep started: {project.Name} -------------------\n");
-            var compiler = PluginManager.Get<ICompiler>(project.Compiler);
-            if (compiler.Prep(project, buildLogPane))
-            {
-                buildLogPane.Print($"================ Successfully prepped: {project.Name} ===============");
-                return true;
-            }
-            else
-            {
-                buildLogPane.Print($"=================== Failed to prep: {project.Name} ==================");
-                return false;
-            }
         }
 
         /// <summary>
@@ -127,6 +108,35 @@ namespace SphereStudio.Core
         }
 
         /// <summary>
+        /// Starts single-step debugging a project using the current engine.
+        /// </summary>
+        /// <param name="project">The project to debug.</param>
+        /// <param name="rebuilding">Whether the project should be completely rebuilt first.</param>
+        /// <returns>An IDebugger used to manage the debugging session.</returns>
+        public static async Task<IDebugger> Debug(Project project, bool rebuilding = false)
+        {
+            if (!CanDebug(project))
+                throw new NotSupportedException($"The engine '{project.UserSettings.Engine}' doesn't support debugging.");
+
+            var starter = PluginManager.Get<IDebugStarter>(project.UserSettings.Engine);
+            var outPath = await Build(project, true, rebuilding);
+            try
+            {
+                if (outPath != null)
+                    return starter.Debug(outPath, false, project);
+                else
+                    return null;
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(
+                    $"An error occurred while starting '{project.Name}'.\n\nexception: \"{error.Message}\"\n{error.StackTrace}",
+                    "Operation Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Builds a game package from a project using the current compiler.
         /// </summary>
         /// <param name="project">The project to build.</param>
@@ -153,32 +163,22 @@ namespace SphereStudio.Core
             return isOK;
         }
 
-        /// <summary>
-        /// Starts single-step debugging a project using the current engine.
-        /// </summary>
-        /// <param name="project">The project to debug.</param>
-        /// <param name="rebuilding">Whether the project should be completely rebuilt first.</param>
-        /// <returns>An IDebugger used to manage the debugging session.</returns>
-        public static async Task<IDebugger> Debug(Project project, bool rebuilding = false)
+        public static bool Prep(Project project)
         {
-            if (!CanDebug(project))
-                throw new NotSupportedException("The current engine starter doesn't support debugging.");
-
-            var starter = PluginManager.Get<IDebugStarter>(project.UserSettings.Engine);
-            string outPath = await Build(project, true, rebuilding);
-            try
+            buildLogPane.Clear();
+            PluginManager.Core.Docking.Show(buildLogPane);
+            PluginManager.Core.Docking.Activate(buildLogPane);
+            buildLogPane.Print($"-------------------- Prep started: {project.Name} -------------------\n");
+            var compiler = PluginManager.Get<ICompiler>(project.Compiler);
+            if (compiler.Prep(project, buildLogPane))
             {
-                if (outPath != null)
-                    return starter.Debug(outPath, false, project);
-                else
-                    return null;
+                buildLogPane.Print($"================ Successfully prepped: {project.Name} ===============");
+                return true;
             }
-            catch (Exception exc)
+            else
             {
-                MessageBox.Show(
-                    $"An error occurred while starting '{project.Name}'.\n\nexception: \"{exc.Message}\"\n{exc.StackTrace}",
-                    "Operation Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return null;
+                buildLogPane.Print($"=================== Failed to prep: {project.Name} ==================");
+                return false;
             }
         }
 
@@ -199,10 +199,10 @@ namespace SphereStudio.Core
                     {
                         starter.Start(outPath, false);
                     }
-                    catch (Exception exc)
+                    catch (Exception error)
                     {
                         MessageBox.Show(
-                            $"An error occurred while starting '{project.Name}'.\n\nexception: \"{exc.Message}\"\n{exc.StackTrace}",
+                            $"An error occurred while starting '{project.Name}'.\n\nexception: \"{error.Message}\"\n{error.StackTrace}",
                             "Operation Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }

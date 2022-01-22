@@ -7,18 +7,19 @@ namespace SphereStudio.SettingsPages
 {
     partial class neoSphereSettingsPage : UserControl, ISettingsPage, IStyleAware
     {
-        private PluginMain main;
+        private PluginSettings settings;
 
-        public neoSphereSettingsPage(PluginMain main)
+        public neoSphereSettingsPage(PluginSettings settings)
         {
             InitializeComponent();
             StyleManager.AutoStyle(this);
 
-            this.main = main;
+            this.settings = settings;
         }
 
+        public SettingsCategory Category => SettingsCategory.Engine;
+
         public Control Control => this;
-        public SettingsPageType Type => SettingsPageType.Engine;
 
         public void ApplyStyle(UIStyle style)
         {
@@ -44,22 +45,22 @@ namespace SphereStudio.SettingsPages
 
         public void Populate()
         {
-            enginePathTextBox.Text = main.Conf.EnginePath;
-            showTracesButton.Checked = main.Conf.ShowTraceInfo;
-            testWithConsoleButton.Checked = main.Conf.AlwaysUseConsole;
-            testInWindowButton.Checked = main.Conf.TestInWindow;
-            logLevelDropDown.SelectedIndex = main.Conf.Verbosity;
-            retroModeCheckBox.Checked = main.Conf.TestInRetroMode;
+            enginePathTextBox.Text = settings.EnginePath;
+            showTracesButton.Checked = settings.ShowTraceLogs;
+            testWithConsoleButton.Checked = settings.AlwaysUseConsole;
+            testInWindowButton.Checked = settings.TestInWindow;
+            logLevelDropDown.SelectedIndex = settings.Verbosity;
+            retroModeCheckBox.Checked = settings.TestInRetroMode;
         }
 
         public void Save()
         {
-            main.Conf.EnginePath = enginePathTextBox.Text;
-            main.Conf.AlwaysUseConsole = testWithConsoleButton.Checked;
-            main.Conf.ShowTraceInfo = showTracesButton.Checked;
-            main.Conf.TestInWindow = testInWindowButton.Checked;
-            main.Conf.Verbosity = logLevelDropDown.SelectedIndex;
-            main.Conf.TestInRetroMode = retroModeCheckBox.Checked;
+            settings.EnginePath = enginePathTextBox.Text;
+            settings.AlwaysUseConsole = testWithConsoleButton.Checked;
+            settings.ShowTraceLogs = showTracesButton.Checked;
+            settings.TestInWindow = testInWindowButton.Checked;
+            settings.Verbosity = logLevelDropDown.SelectedIndex;
+            settings.TestInRetroMode = retroModeCheckBox.Checked;
         }
 
         public bool Verify()
@@ -67,7 +68,7 @@ namespace SphereStudio.SettingsPages
             return true;
         }
 
-        private void BrowseButton_Click(object sender, EventArgs e)
+        private void browseDirButton_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog fb = new FolderBrowserDialog();
             fb.Description = "Select the directory where neoSphere is installed.";

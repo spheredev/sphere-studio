@@ -22,8 +22,9 @@ namespace SphereStudio.SettingsPages
             StyleManager.AutoStyle(this);
         }
 
+        public SettingsCategory Category => SettingsCategory.TopLevel;
+
         public Control Control => this;
-        public SettingsPageType Type => SettingsPageType.TopLevel;
 
         public void ApplyStyle(UIStyle style)
         {
@@ -103,7 +104,7 @@ namespace SphereStudio.SettingsPages
         {
             comboBox.Items.Clear();
             comboBox.Items.Add("(no handler selected)");
-            foreach (string name in PluginManager.GetNames<T>())
+            foreach (var name in PluginManager.GetNames<T>())
                 comboBox.Items.Add(name);
             if (comboBox.Items.Contains(currentName))
                 comboBox.Text = currentName;
@@ -138,14 +139,14 @@ namespace SphereStudio.SettingsPages
             pluginsListView.Items.Clear();
             foreach (var pair in Session.Plugins)
             {
-                ListViewItem item = new ListViewItem();
-                item.Text = pair.Value.Main.Name;
-                item.SubItems.Add(pair.Value.Main.Version);
-                item.SubItems.Add(pair.Value.Main.Author);
-                item.ToolTipText = pair.Value.Main.Description;
-                item.Tag = pair.Key;
-                item.Checked = !Session.Settings.DisabledPlugins.Contains(pair.Value.Handle);
-                pluginsListView.Items.Add(item);
+                var listViewItem = new ListViewItem();
+                listViewItem.Text = pair.Value.Main.Name;
+                listViewItem.SubItems.Add(pair.Value.Main.Version);
+                listViewItem.SubItems.Add(pair.Value.Main.Author);
+                listViewItem.ToolTipText = pair.Value.Main.Description;
+                listViewItem.Tag = pair.Key;
+                listViewItem.Checked = !Session.Settings.DisabledPlugins.Contains(pair.Value.Handle);
+                pluginsListView.Items.Add(listViewItem);
             }
 
             updatingPlugins = false;
@@ -200,12 +201,12 @@ namespace SphereStudio.SettingsPages
 
         private void deletePresetButton_Click(object sender, EventArgs e)
         {
-            string filename = $"{presetDropDown.Text}.preset";
-            string path = Path.Combine(
+            var fileName = $"{presetDropDown.Text}.preset";
+            var path = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "Sphere Studio", "pluginPresets", filename);
-            DialogResult result = MessageBox.Show(
-                $"Are you sure you want to delete the preset file \"{filename}\"?",
+                "Sphere Studio", "pluginPresets", fileName);
+            var result = MessageBox.Show(
+                $"Are you sure you want to delete the preset file \"{fileName}\"?",
                 "Delete Preset", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
@@ -216,11 +217,11 @@ namespace SphereStudio.SettingsPages
 
         private void savePresetButton_Click(object sender, EventArgs e)
         {
-            using (var diag = new SavePresetForm())
+            using (var dialog = new SavePresetForm())
             {
-                if (diag.ShowDialog() != DialogResult.OK)
+                if (dialog.ShowDialog() != DialogResult.OK)
                     return;
-                string fileName = diag.PresetName + ".preset";
+                string fileName = $"{dialog.PresetName}.preset";
                 string path = Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                     "Sphere Studio", "pluginPresets", fileName);
@@ -235,7 +236,7 @@ namespace SphereStudio.SettingsPages
                     preset.SetValue("Preset", "disabledPlugins", string.Join("|", Session.Settings.DisabledPlugins));
                     preset.Save();
                 }
-                Session.Settings.Preset = Path.GetFileNameWithoutExtension(fileName);
+                Session.Settings.Preset = dialog.PresetName;
                 Session.Settings.Apply();
                 updatePresets();
             }

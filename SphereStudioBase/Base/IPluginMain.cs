@@ -28,8 +28,8 @@
         /// <summary>
         /// Initializes the module. Called by the plugin manager when the plugin is loaded.
         /// </summary>
-        /// <param name="conf">Allows access to the plugin's user configuration.</param>
-        void Initialize(ISettings conf);
+        /// <param name="settings">Provides access to the plugin's settings.</param>
+        void Initialize(ISettings settings);
         
         /// <summary>
         /// Shuts down the module. Called by the plugin manager when the plugin is unloaded.
