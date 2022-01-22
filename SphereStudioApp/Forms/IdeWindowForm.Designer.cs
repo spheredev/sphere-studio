@@ -708,7 +708,7 @@
             this.exploreProjectMenuItem.Image = global::SphereStudio.Properties.Resources.folder_closed;
             this.exploreProjectMenuItem.Name = "exploreProjectMenuItem";
             this.exploreProjectMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.exploreProjectMenuItem.Text = "Show in &Explorer";
+            this.exploreProjectMenuItem.Text = "Show in E&xplorer";
             this.exploreProjectMenuItem.Click += new System.EventHandler(this.exploreProjectMenuItem_Click);
             // 
             // refreshProjectMenuItem
@@ -732,7 +732,7 @@
             this.projectPropertiesMenuItem.Image = global::SphereStudio.Properties.Resources.SphereEditor;
             this.projectPropertiesMenuItem.Name = "projectPropertiesMenuItem";
             this.projectPropertiesMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.projectPropertiesMenuItem.Text = "Project P&roperties...";
+            this.projectPropertiesMenuItem.Text = "Project &Properties...";
             this.projectPropertiesMenuItem.Click += new System.EventHandler(this.projectPropertiesMenuItem_Click);
             // 
             // viewMenu

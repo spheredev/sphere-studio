@@ -83,7 +83,7 @@
             this.exploreMenuItem,
             this.projectPropertiesMenuItem});
             this.contextMenu.Name = "ProjectFileContextMenu";
-            this.contextMenu.Size = new System.Drawing.Size(199, 202);
+            this.contextMenu.Size = new System.Drawing.Size(199, 224);
             // 
             // newMenuItem
             // 
@@ -147,7 +147,7 @@
             this.exploreMenuItem.Image = global::SphereStudio.Properties.Resources.open;
             this.exploreMenuItem.Name = "exploreMenuItem";
             this.exploreMenuItem.Size = new System.Drawing.Size(198, 22);
-            this.exploreMenuItem.Text = "Show in &Explorer";
+            this.exploreMenuItem.Text = "Show in E&xplorer";
             this.exploreMenuItem.Click += new System.EventHandler(this.exploreMenuItem_Click);
             // 
             // projectPropertiesMenuItem
@@ -155,7 +155,7 @@
             this.projectPropertiesMenuItem.Image = global::SphereStudio.Properties.Resources.SphereEditor;
             this.projectPropertiesMenuItem.Name = "projectPropertiesMenuItem";
             this.projectPropertiesMenuItem.Size = new System.Drawing.Size(198, 22);
-            this.projectPropertiesMenuItem.Text = "Project P&roperties...";
+            this.projectPropertiesMenuItem.Text = "Project &Properties...";
             this.projectPropertiesMenuItem.Click += new System.EventHandler(this.projectPropertiesMenuItem_Click);
             // 
             // fileWatcher

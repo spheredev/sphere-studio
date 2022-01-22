@@ -2,10 +2,10 @@
 using System.IO;
 using System.Windows.Forms;
 
-using WeifenLuo.WinFormsUI.Docking;
-
 using SphereStudio.Base;
 using SphereStudio.Forms;
+
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace SphereStudio.Core
 {

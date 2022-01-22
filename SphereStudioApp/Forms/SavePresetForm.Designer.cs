@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.presetDropDown = new System.Windows.Forms.ComboBox();
+            this.presetComboBox = new System.Windows.Forms.ComboBox();
             this.nameLabel = new System.Windows.Forms.Label();
             this.nameTextBox = new System.Windows.Forms.TextBox();
             this.okButton = new System.Windows.Forms.Button();
@@ -41,18 +41,18 @@
             this.namePanel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // presetDropDown
+            // presetComboBox
             // 
-            this.presetDropDown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.presetComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.presetDropDown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.presetDropDown.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.presetDropDown.FormattingEnabled = true;
-            this.presetDropDown.Location = new System.Drawing.Point(57, 32);
-            this.presetDropDown.Name = "presetDropDown";
-            this.presetDropDown.Size = new System.Drawing.Size(385, 21);
-            this.presetDropDown.TabIndex = 3;
-            this.presetDropDown.SelectedIndexChanged += new System.EventHandler(this.presetBox_SelectedIndexChanged);
+            this.presetComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.presetComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.presetComboBox.FormattingEnabled = true;
+            this.presetComboBox.Location = new System.Drawing.Point(57, 32);
+            this.presetComboBox.Name = "presetComboBox";
+            this.presetComboBox.Size = new System.Drawing.Size(385, 21);
+            this.presetComboBox.TabIndex = 3;
+            this.presetComboBox.SelectedIndexChanged += new System.EventHandler(this.presetComboBox_SelectedIndexChanged);
             // 
             // nameLabel
             // 
@@ -71,7 +71,7 @@
             this.nameTextBox.Name = "nameTextBox";
             this.nameTextBox.Size = new System.Drawing.Size(385, 22);
             this.nameTextBox.TabIndex = 2;
-            this.nameTextBox.TextChanged += new System.EventHandler(this.customNameBox_TextChanged);
+            this.nameTextBox.TextChanged += new System.EventHandler(this.nameTextBox_TextChanged);
             // 
             // okButton
             // 
@@ -122,7 +122,7 @@
             this.namePanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.namePanel.Controls.Add(this.nameHeading);
             this.namePanel.Controls.Add(this.nameLabel);
-            this.namePanel.Controls.Add(this.presetDropDown);
+            this.namePanel.Controls.Add(this.presetComboBox);
             this.namePanel.Controls.Add(this.nameTextBox);
             this.namePanel.Location = new System.Drawing.Point(12, 35);
             this.namePanel.Name = "namePanel";
@@ -166,7 +166,7 @@
 
         #endregion
 
-        private System.Windows.Forms.ComboBox presetDropDown;
+        private System.Windows.Forms.ComboBox presetComboBox;
         private System.Windows.Forms.Label nameLabel;
         private System.Windows.Forms.TextBox nameTextBox;
         private System.Windows.Forms.Button okButton;

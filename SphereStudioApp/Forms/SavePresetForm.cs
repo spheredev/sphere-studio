@@ -15,9 +15,11 @@ namespace SphereStudio.Forms
             InitializeComponent();
             StyleManager.AutoStyle(this);
             
-            UpdatePresetBox();
-            presetDropDown.SelectedIndex = 0;
+            refreshPresetBox();
+            presetComboBox.SelectedIndex = 0;
         }
+
+        public string PresetName { get; private set; }
 
         public void ApplyStyle(UIStyle style)
         {
@@ -29,48 +31,51 @@ namespace SphereStudio.Forms
 
             style.AsHeading(nameHeading);
             style.AsAccent(namePanel);
-            style.AsTextView(presetDropDown);
+            style.AsTextView(presetComboBox);
             style.AsTextView(nameTextBox);
         }
 
-        public string PresetName { get; private set; }
-
-        private void MakeDefaultName()
+        private void enterDefaultName()
         {
-            const string defaultName = "Untitled Preset";
-            
-            string path = Path.Combine(
+            var presetDirPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 "Sphere Studio", "pluginPresets");
-            string name = defaultName;
-            int ordinal = 1;
-            while (File.Exists(Path.Combine(path, name + ".preset")))
+            var defaultName = "Untitled Preset";
+            var ordinal = 1;
+            var name = $"{defaultName} {ordinal}";
+            while (File.Exists(Path.Combine(presetDirPath, $"{name}.preset")))
                 name = $"{defaultName} {++ordinal}";
             nameTextBox.Text = name;
         }
         
-        private void UpdatePresetBox()
+        private void refreshPresetBox()
         {
-            presetDropDown.Items.Clear();
-            presetDropDown.Items.Add("new preset (enter name below)");
-            string path = Path.Combine(
+            presetComboBox.Items.Clear();
+            presetComboBox.Items.Add("new preset (enter name below)");
+            var presetDirPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 "Sphere Studio", "pluginPresets");
-            if (Directory.Exists(path))
+            if (Directory.Exists(presetDirPath))
             {
-                var presets = from filename in Directory.GetFiles(path, "*.preset")
-                            orderby filename ascending
-                            select Path.GetFileNameWithoutExtension(filename);
-                foreach (string name in presets)
-                    presetDropDown.Items.Add(name);
+                var presetNames = from filename in Directory.GetFiles(presetDirPath, "*.preset")
+                                  orderby filename ascending
+                                  select Path.GetFileNameWithoutExtension(filename);
+                foreach (var presetName in presetNames)
+                    presetComboBox.Items.Add(presetName);
             }
         }
 
-        private void presetBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void nameTextBox_TextChanged(object sender, EventArgs e)
         {
-            if (presetDropDown.SelectedIndex == 0)
+            var regex = new Regex($"[{Regex.Escape(new string(Path.GetInvalidFileNameChars()))}]");
+            okButton.Enabled = !regex.IsMatch(nameTextBox.Text);
+        }
+
+        private void presetComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (presetComboBox.SelectedIndex == 0)
             {
-                MakeDefaultName();
+                enterDefaultName();
                 nameTextBox.Enabled = true;
                 nameTextBox.SelectAll();
                 nameTextBox.Select();
@@ -78,35 +83,28 @@ namespace SphereStudio.Forms
             else
             {
                 nameTextBox.Enabled = false;
-                nameTextBox.Text = presetDropDown.Text;
+                nameTextBox.Text = presetComboBox.Text;
             }
         }
 
         private void okButton_Click(object sender, EventArgs e)
         {
-            string filename = nameTextBox.Text + ".preset";
-            string path = Path.Combine(
+            var presetFilePath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "Sphere Studio", "pluginPresets", filename);
-            bool isSaveAllowed = true;
-            if (File.Exists(path))
+                "Sphere Studio", "pluginPresets", $"{nameTextBox.Text}.preset");
+            var isSaveAllowed = true;
+            if (File.Exists(presetFilePath))
             {
-                DialogResult result = MessageBox.Show(
-                    $@"A configuration preset named ""{nameTextBox.Text}"" already exists. Do you want to overwrite it?",
+                var answer = MessageBox.Show(
+                    $@"A configuration preset named ""{nameTextBox.Text}"" already exists. Do you want to overwrite the existing preset?",
                     "Preset Already Exists", MessageBoxButtons.YesNo);
-                isSaveAllowed = result == DialogResult.Yes;
+                isSaveAllowed = answer == DialogResult.Yes;
             }
             if (isSaveAllowed)
             {
                 PresetName = nameTextBox.Text;
                 DialogResult = DialogResult.OK;
             }
-        }
-
-        private void customNameBox_TextChanged(object sender, EventArgs e)
-        {
-            Regex regex = new Regex("[" + Regex.Escape(new string(Path.GetInvalidFileNameChars())) + "]");
-            okButton.Enabled = !regex.IsMatch(nameTextBox.Text);
         }
     }
 }
