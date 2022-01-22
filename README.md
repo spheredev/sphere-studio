@@ -20,13 +20,13 @@ which allows new features to be added by writing a plugin in C# or VB.NET.
 Download
 ========
 
-**Sphere Studio 2.2.2** was released on Thursday, December 23, 2021 and can be
-downloaded from the releases page on GitHub:
+**Sphere Studio 2.3.0** was released on January 22, 2022 and can be downloaded
+from the releases page on GitHub here:
 
-- https://github.com/spheredev/sphere-studio/releases/tag/v2.2.2
+- https://github.com/spheredev/sphere-studio/releases
 
-.NET 4.8 or later is required to run Sphere Studio.  The latest .NET Framework
-can be downloaded from Microsoft's website
+Note that .NET Framework 4.8 or later is required to run Sphere Studio.  The
+latest .NET Framework can be downloaded from Microsoft
 [here](https://www.microsoft.com/en-us/download/details.aspx?id=49981).
 
 

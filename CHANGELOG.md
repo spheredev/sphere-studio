@@ -1,8 +1,8 @@
 Sphere Studio Changelog
 =======================
 
-v2.3.0 - TBD
-------------
+v2.3.0 - January 22, 2022
+-------------------------
 
 * Adds a new "Find Engine" button to the neoSphere settings page as an escape
   hatch in case an installed copy of the engine can't be found.
