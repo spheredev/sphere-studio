@@ -27,7 +27,7 @@ namespace SphereStudio
                 var installInfoKey = Registry.LocalMachine
                     .OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{10C19C9F-1E29-45D8-A534-8FEF98C7C2FF}_is1");
                 var defaultPath = installInfoKey != null
-                    ? (string)installInfoKey.GetValue("InstallLocation") ?? ""
+                    ? (string)installInfoKey.GetValue("InstallLocation") ?? string.Empty
                     : string.Empty;
                 return settings.GetString("enginePath", defaultPath);
             }

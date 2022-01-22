@@ -103,7 +103,7 @@ namespace SphereStudio.Forms
         {
             if (string.IsNullOrEmpty(before))
                 mainMenuStrip.Items.Add(menuItem);
-            int position = -1;
+            var position = -1;
             foreach (ToolStripItem item in mainMenuStrip.Items)
             {
                 if (item.Text.Replace("&", "") == before)
@@ -317,10 +317,10 @@ namespace SphereStudio.Forms
                               orderby plugin.FileTypeName ascending
                               select plugin;
                 var filterString = string.Empty;
-                foreach (IFileOpener plugin in plugins)
+                foreach (var plugin in plugins)
                 {
                     var extensions = string.Empty;
-                    foreach (string extension in plugin.FileExtensions)
+                    foreach (var extension in plugin.FileExtensions)
                     {
                         if (extensions.Length > 0)
                             extensions += ";";
@@ -417,7 +417,7 @@ namespace SphereStudio.Forms
         {
             return collection
                 .OfType<ToolStripMenuItem>()
-                .FirstOrDefault(it => name == it.Text.Replace("&", ""));
+                .FirstOrDefault(it => name == it.Text.Replace("&", string.Empty));
         }
 
         private bool isProjectLoaded()
@@ -657,12 +657,12 @@ namespace SphereStudio.Forms
                 return;
             }
 
-            var view = OpenFile(Debugger.FileName) as TextView;
-            if (view != null)
+            var textView = OpenFile(Debugger.FileName) as TextView;
+            if (textView != null)
             {
-                view.ActiveLine = Debugger.LineNumber;
+                textView.ActiveLine = Debugger.LineNumber;
                 if (e.Reason == PauseReason.Exception)
-                    view.ErrorLine = Debugger.LineNumber;
+                    textView.ErrorLine = Debugger.LineNumber;
             }
             if (!Debugger.Running)
                 Activate();
