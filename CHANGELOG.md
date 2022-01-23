@@ -1,6 +1,12 @@
 Sphere Studio Changelog
 =======================
 
+v2.3.1 - TBD
+------------
+
+* Fixes a bug where pressing F5 to start debugging after a previous debugging
+  session sometimes wouldn't work.
+
 v2.3.0 - January 22, 2022
 -------------------------
 

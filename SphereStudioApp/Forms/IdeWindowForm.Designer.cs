@@ -548,7 +548,7 @@
             // closeMenuItem
             // 
             this.closeMenuItem.Name = "closeMenuItem";
-            this.closeMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F4)));
+            this.closeMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
             this.closeMenuItem.Size = new System.Drawing.Size(227, 22);
             this.closeMenuItem.Text = "&Close";
             this.closeMenuItem.Click += new System.EventHandler(this.closeMenuItem_Click);
@@ -694,20 +694,20 @@
             // preferredEngineMenuItem
             // 
             this.preferredEngineMenuItem.Name = "preferredEngineMenuItem";
-            this.preferredEngineMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.preferredEngineMenuItem.Size = new System.Drawing.Size(176, 22);
             this.preferredEngineMenuItem.Text = "Preferred &Engine";
             // 
             // toolStripSeparator13
             // 
             this.toolStripSeparator13.Name = "toolStripSeparator13";
-            this.toolStripSeparator13.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator13.Size = new System.Drawing.Size(173, 6);
             // 
             // exploreProjectMenuItem
             // 
             this.exploreProjectMenuItem.Enabled = false;
             this.exploreProjectMenuItem.Image = global::SphereStudio.Properties.Resources.folder_closed;
             this.exploreProjectMenuItem.Name = "exploreProjectMenuItem";
-            this.exploreProjectMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exploreProjectMenuItem.Size = new System.Drawing.Size(176, 22);
             this.exploreProjectMenuItem.Text = "Show in E&xplorer";
             this.exploreProjectMenuItem.Click += new System.EventHandler(this.exploreProjectMenuItem_Click);
             // 
@@ -717,21 +717,21 @@
             this.refreshProjectMenuItem.Image = global::SphereStudio.Properties.Resources.arrow_refresh;
             this.refreshProjectMenuItem.Name = "refreshProjectMenuItem";
             this.refreshProjectMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F5)));
-            this.refreshProjectMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.refreshProjectMenuItem.Size = new System.Drawing.Size(176, 22);
             this.refreshProjectMenuItem.Text = "&Refresh";
             this.refreshProjectMenuItem.Click += new System.EventHandler(this.refreshProjectMenuItem_Click);
             // 
             // toolStripSeparator12
             // 
             this.toolStripSeparator12.Name = "toolStripSeparator12";
-            this.toolStripSeparator12.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator12.Size = new System.Drawing.Size(173, 6);
             // 
             // projectPropertiesMenuItem
             // 
             this.projectPropertiesMenuItem.Enabled = false;
             this.projectPropertiesMenuItem.Image = global::SphereStudio.Properties.Resources.SphereEditor;
             this.projectPropertiesMenuItem.Name = "projectPropertiesMenuItem";
-            this.projectPropertiesMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.projectPropertiesMenuItem.Size = new System.Drawing.Size(176, 22);
             this.projectPropertiesMenuItem.Text = "Project &Properties...";
             this.projectPropertiesMenuItem.Click += new System.EventHandler(this.projectPropertiesMenuItem_Click);
             // 
@@ -949,20 +949,20 @@
             this.configureEngineMenuItem.Enabled = false;
             this.configureEngineMenuItem.Image = global::SphereStudio.Properties.Resources.cog;
             this.configureEngineMenuItem.Name = "configureEngineMenuItem";
-            this.configureEngineMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.configureEngineMenuItem.Size = new System.Drawing.Size(180, 22);
             this.configureEngineMenuItem.Text = "Configure &Engine";
             this.configureEngineMenuItem.Click += new System.EventHandler(this.configureEngineMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(163, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(177, 6);
             // 
             // preferencesMenuItem
             // 
             this.preferencesMenuItem.Image = global::SphereStudio.Properties.Resources.application_view_list;
             this.preferencesMenuItem.Name = "preferencesMenuItem";
-            this.preferencesMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.preferencesMenuItem.Size = new System.Drawing.Size(180, 22);
             this.preferencesMenuItem.Text = "P&references...";
             this.preferencesMenuItem.Click += new System.EventHandler(this.preferencesMenuItem_Click);
             // 

@@ -123,7 +123,7 @@ namespace SphereStudio.Forms
             }
             for (int i = 1; i < hops.Length; ++i)
             {
-                ToolStripMenuItem subItem = getMenuItem(item.DropDownItems, hops[i]);
+                var subItem = getMenuItem(item.DropDownItems, hops[i]);
                 if (subItem == null)
                 {
                     subItem = new ToolStripMenuItem(hops[i]);
@@ -530,6 +530,7 @@ namespace SphereStudio.Forms
             var canConfigureEngine = starter?.CanConfigure ?? false;
             var canCopyPaste = currentTab != null && currentTab != startPageTab;
             var canLaunch = isProjectLoaded() && Debugger == null;
+            var canClose = currentTab != null;
             var canSave = currentTab?.View.CanSave ?? false;
             var canStep = Debugger != null && !Debugger.Running;
             var canTestGame = BuildEngine.CanTest(Session.Project) && Debugger == null;
@@ -547,6 +548,15 @@ namespace SphereStudio.Forms
 
             buildRunToolMenuItem.Enabled = canLaunch || canStep;
             rebuildRunToolMenuItem.Enabled = canLaunch;
+
+            buildRunMenuItem.Enabled = canLaunch || canStep;
+            closeMenuItem.Enabled = canClose;
+            saveMenuItem.Enabled = canSave;
+            saveAsMenuItem.Enabled = canSave;
+            stepIntoMenuItem.Enabled = canStep;
+            stepOutMenuItem.Enabled = canStep;
+            stepOverMenuItem.Enabled = canStep;
+            testGameMenuItem.Enabled = canTestGame;
 
             dockManager?.Refresh();
         }
@@ -580,15 +590,14 @@ namespace SphereStudio.Forms
 
         private async Task startEngine(bool wantDebugger, bool rebuilding = false)
         {
-            foreach (DocumentTab tab in
-                from tab in tabs
-                where tab.FileName != null
-                select tab)
-            {
+            foreach (var tab in tabs.Where(it => it.FileName != null))
                 tab.SaveIfDirty();
-            }
-            testGameMenuItem.Enabled = testGameToolButton.Enabled = false;
-            buildRunMenuItem.Enabled = runGameToolButton.Enabled = false;
+
+            buildRunMenuItem.Enabled = false;
+            testGameMenuItem.Enabled = false;
+
+            runGameToolButton.Enabled = false;
+            testGameToolButton.Enabled = false;
 
             TestGame?.Invoke(this, EventArgs.Empty);
 
