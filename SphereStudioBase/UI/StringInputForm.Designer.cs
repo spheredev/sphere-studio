@@ -45,16 +45,16 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox.Location = new System.Drawing.Point(9, 32);
             this.textBox.Name = "textBox";
-            this.textBox.Size = new System.Drawing.Size(277, 20);
+            this.textBox.Size = new System.Drawing.Size(345, 20);
             this.textBox.TabIndex = 1;
-            this.textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.StringTextBox_KeyPress);
+            this.textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_KeyPress);
             // 
             // okButton
             // 
             this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.okButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.okButton.Location = new System.Drawing.Point(143, 13);
+            this.okButton.Location = new System.Drawing.Point(211, 13);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(80, 25);
             this.okButton.TabIndex = 2;
@@ -66,7 +66,7 @@
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cancelButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cancelButton.Location = new System.Drawing.Point(229, 13);
+            this.cancelButton.Location = new System.Drawing.Point(297, 13);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(80, 25);
             this.cancelButton.TabIndex = 3;
@@ -78,7 +78,7 @@
             this.header.Dock = System.Windows.Forms.DockStyle.Top;
             this.header.Location = new System.Drawing.Point(0, 0);
             this.header.Name = "header";
-            this.header.Size = new System.Drawing.Size(321, 23);
+            this.header.Size = new System.Drawing.Size(389, 23);
             this.header.TabIndex = 4;
             this.header.Text = "enter a value";
             this.header.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -90,7 +90,7 @@
             this.footer.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.footer.Location = new System.Drawing.Point(0, 112);
             this.footer.Name = "footer";
-            this.footer.Size = new System.Drawing.Size(321, 50);
+            this.footer.Size = new System.Drawing.Size(389, 50);
             this.footer.TabIndex = 5;
             // 
             // textPanel
@@ -102,7 +102,7 @@
             this.textPanel.Controls.Add(this.textBox);
             this.textPanel.Location = new System.Drawing.Point(12, 35);
             this.textPanel.Name = "textPanel";
-            this.textPanel.Size = new System.Drawing.Size(297, 63);
+            this.textPanel.Size = new System.Drawing.Size(365, 63);
             this.textPanel.TabIndex = 6;
             // 
             // textHeading
@@ -110,7 +110,7 @@
             this.textHeading.Dock = System.Windows.Forms.DockStyle.Top;
             this.textHeading.Location = new System.Drawing.Point(0, 0);
             this.textHeading.Name = "textHeading";
-            this.textHeading.Size = new System.Drawing.Size(295, 23);
+            this.textHeading.Size = new System.Drawing.Size(363, 23);
             this.textHeading.TabIndex = 2;
             this.textHeading.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -120,7 +120,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(321, 162);
+            this.ClientSize = new System.Drawing.Size(389, 162);
             this.Controls.Add(this.textPanel);
             this.Controls.Add(this.footer);
             this.Controls.Add(this.header);

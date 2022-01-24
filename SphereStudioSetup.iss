@@ -3,8 +3,8 @@
 
 #define AppName "Sphere Studio"
 #define AppPublisher "Spherical"
-#define AppVersion3 "2.3.0"
-#define AppVersion4 "2.3.0.652"
+#define AppVersion3 "2.3.1"
+#define AppVersion4 "2.3.1.654"
 
 [Setup]
 OutputBaseFilename=SphereStudioSetup-{#AppVersion3}-msw
@@ -39,7 +39,6 @@ Source: "SphereStudioApp\bin\Release\SphereStudioApp.exe"; DestDir: "{app}"; Fla
 Source: "SphereStudioApp\bin\Release\SphereStudioBase.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "SphereStudioApp\bin\Release\*.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "SphereStudioApp\bin\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "SphereStudioApp\bin\Release\*.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "SphereStudioApp\bin\Release\Dictionary\*"; DestDir: "{app}\Dictionary"; Flags: ignoreversion
 Source: "SphereStudioApp\bin\Release\Plugins\*.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion
 

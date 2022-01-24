@@ -6,28 +6,61 @@ using SphereStudio.Base;
 namespace SphereStudio.UI
 {
     /// <summary>
-    /// Represents a form that allows the user to enter a line of text.
+    /// Represents a dialog box that allows the user to enter a text string.
     /// </summary>
     public partial class StringInputForm : Form, IStyleAware
     {
-        private bool acceptNumbersOnly;
-
         /// <summary>
-        /// Initializes the string input form.
+        /// Initializes the <c>StringInputForm</c>.
         /// </summary>
-        public StringInputForm(string caption, string labelText = null)
+        /// <param name="title">The text to put in the title bar of the dialog box.</param>
+        /// <param name="labelText">A short description of the text-entry field.</param>
+        public StringInputForm(string title, string labelText = null)
         {
             InitializeComponent();
+            StyleManager.AutoStyle(this);
 
-            if (caption != null)
-                Text = caption;
+            if (title != null)
+                Text = title;
             if (labelText != null)
                 header.Text = labelText;
             NumbersOnly = false;
-
-            StyleManager.AutoStyle(this);
         }
 
+        /// <summary>
+        /// The string inputted into the form.
+        /// </summary>
+        public string Input
+        {
+            get
+            {
+                return textBox.Text;
+            }
+            set
+            {
+                textBox.Text = value;
+                textBox.Select();
+            }
+        }
+
+        /// <summary>
+        /// Specifies the maximum length of the string that can be entered.
+        /// </summary>
+        public int MaxLength
+        {
+            get => textBox.MaxLength;
+            set => textBox.MaxLength = value;
+        }
+
+        /// <summary>
+        /// Specifies if the text entry field should only accept numbers.
+        /// </summary>
+        public bool NumbersOnly { get; set; }
+
+        /// <summary>
+        /// Called automatically by the style manager to apply a UI style to this form.
+        /// </summary>
+        /// <param name="style">The UI style to apply.</param>
         public void ApplyStyle(UIStyle style)
         {
             style.AsUIElement(this);
@@ -41,36 +74,9 @@ namespace SphereStudio.UI
             style.AsTextView(textBox);
         }
 
-        /// <summary>
-        /// Set this to use numbers only or not.
-        /// </summary>
-        public bool NumbersOnly
+        private void textBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            get { return acceptNumbersOnly; }
-            set { acceptNumbersOnly = value; }
-        }
-
-        /// <summary>
-        /// The string inputted into the form.
-        /// </summary>
-        public string Input
-        {
-            get { return textBox.Text; }
-            set { textBox.Text = value; textBox.Select(); }
-        }
-
-        /// <summary>
-        /// Use this to limit the number of characters one can input.
-        /// </summary>
-        public int MaxLength
-        {
-            get { return textBox.MaxLength; }
-            set { textBox.MaxLength = value; }
-        }
-
-        private void StringTextBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            e.Handled = (acceptNumbersOnly && !Char.IsDigit(e.KeyChar) && e.KeyChar != (char)8);
+            e.Handled = NumbersOnly && !char.IsDigit(e.KeyChar) && e.KeyChar != 8;
         }
     }
 }

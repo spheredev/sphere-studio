@@ -73,9 +73,9 @@ namespace SphereStudio.DocumentViews
             {
                 if (string.IsNullOrWhiteSpace(path) || !Directory.Exists(path))
                     continue;
-                var baseDir = new DirectoryInfo(path);
-                var ssprojFileInfos = baseDir.GetFiles("*.ssproj", SearchOption.AllDirectories);
-                var ssprojDirs = ssprojFileInfos.Select(fi => $@"{fi.DirectoryName}\");
+                var baseDirInfo = new DirectoryInfo(path);
+                var ssprojFileInfos = baseDirInfo.GetFiles("*.ssproj", SearchOption.AllDirectories);
+                var ssprojDirPaths = ssprojFileInfos.Select(it => $@"{it.DirectoryName}\");
                 foreach (var fileInfo in ssprojFileInfos)
                 {
                     var projectRoot = Path.GetDirectoryName(fileInfo.FullName);
@@ -87,17 +87,17 @@ namespace SphereStudio.DocumentViews
                     item.SubItems.Add(fileInfo.FullName);
                     projectListView.Items.Add(item);
                 }
-                var sgmFileInfos = from fi in baseDir.GetFiles("game.sgm", SearchOption.AllDirectories)
-                                   where !ssprojDirs.Any(x => fi.FullName.StartsWith(x))
-                                   select fi;
+                var sgmFileInfos = from fileInfo in baseDirInfo.GetFiles("game.sgm", SearchOption.AllDirectories)
+                                   where !ssprojDirPaths.Any(it => fileInfo.FullName.StartsWith(it))
+                                   select fileInfo;
                 foreach (var fileInfo in sgmFileInfos)
                 {
                     var projectRoot = Path.GetDirectoryName(fileInfo.FullName);
                     var imageIndex = getImageIndex(projectRoot);
-                    var proj = Project.Open(fileInfo.FullName);
-                    var item = new ListViewItem(proj.Name, imageIndex) { Tag = fileInfo.FullName };
+                    var project = Project.Open(fileInfo.FullName);
+                    var item = new ListViewItem(project.Name, imageIndex) { Tag = fileInfo.FullName };
                     item.SubItems.Add("Sphere Game");
-                    item.SubItems.Add(proj.Author);
+                    item.SubItems.Add(project.Author);
                     item.SubItems.Add(fileInfo.FullName);
                     projectListView.Items.Add(item);
                 }

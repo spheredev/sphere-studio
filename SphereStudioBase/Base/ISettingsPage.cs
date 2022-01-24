@@ -2,10 +2,24 @@
 
 namespace SphereStudio.Base
 {
+    /// <summary>
+    /// Specifies which category a settings page belongs to.
+    /// </summary>
     public enum SettingsCategory
     {
+        /// <summary>
+        /// A top-level settings page, which is uncategorized.
+        /// </summary>
         TopLevel,
+
+        /// <summary>
+        /// A settings page pertaining to engine support.
+        /// </summary>
         Engine,
+
+        /// <summary>
+        /// A settings page for a compiler plugin.
+        /// </summary>
         Compiler,
     }
     

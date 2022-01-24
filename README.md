@@ -20,7 +20,7 @@ which allows new features to be added by writing a plugin in C# or VB.NET.
 Download
 ========
 
-**Sphere Studio 2.3.0** was released on January 22, 2022 and can be downloaded
+**Sphere Studio 2.3.1** was released on January 23, 2022 and can be downloaded
 from the releases page on GitHub here:
 
 - https://github.com/spheredev/sphere-studio/releases
