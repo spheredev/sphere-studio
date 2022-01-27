@@ -87,9 +87,10 @@ namespace SphereStudio.SettingsPages
                 : string.Empty;
             if (!string.IsNullOrEmpty(enginePath))
             {
+                var engineName = (string)installInfoKey.GetValue("DisplayName") ?? "neoSphere";
                 var version = (string)installInfoKey.GetValue("DisplayVersion") ?? string.Empty;
                 var response = MessageBox.Show(
-                    $"A system-wide installation of neoSphere {version} was found at {enginePath}. Do you want to use this version?",
+                    $"A system-wide installation of {engineName} {version} was found at {enginePath}. Do you want to use this version?",
                     "Found neoSphere Installation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (response == DialogResult.Yes)
                     enginePathTextBox.Text = enginePath;

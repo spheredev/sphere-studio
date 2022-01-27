@@ -111,7 +111,7 @@ namespace SphereStudio.SsjKi
         public event EventHandler Detached;
 
         /// <summary>
-        /// Fires when a script calls print().
+        /// Fires when a script calls a logging function.
         /// </summary>
         public event EventHandler<TraceEventArgs> Print;
 

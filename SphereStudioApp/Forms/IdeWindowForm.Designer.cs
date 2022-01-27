@@ -283,7 +283,7 @@
             this.testGameToolButton.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             this.testGameToolButton.Size = new System.Drawing.Size(23, 22);
             this.testGameToolButton.Text = "Test Game";
-            this.testGameToolButton.ToolTipText = "Test without Debugger";
+            this.testGameToolButton.ToolTipText = "Test for Distribution";
             this.testGameToolButton.Click += new System.EventHandler(this.testGameMenuItem_Click);
             // 
             // toolStripSeparator2
@@ -807,27 +807,27 @@
             // buildMenuItem
             // 
             this.buildMenuItem.Name = "buildMenuItem";
-            this.buildMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.buildMenuItem.Size = new System.Drawing.Size(210, 22);
             this.buildMenuItem.Text = "&Build Project";
             this.buildMenuItem.Click += new System.EventHandler(this.buildMenuItem_Click);
             // 
             // rebuildMenuItem
             // 
             this.rebuildMenuItem.Name = "rebuildMenuItem";
-            this.rebuildMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.rebuildMenuItem.Size = new System.Drawing.Size(210, 22);
             this.rebuildMenuItem.Text = "&Rebuild Project";
             this.rebuildMenuItem.Click += new System.EventHandler(this.rebuildMenuItem_Click);
             // 
             // toolStripSeparator10
             // 
             this.toolStripSeparator10.Name = "toolStripSeparator10";
-            this.toolStripSeparator10.Size = new System.Drawing.Size(158, 6);
+            this.toolStripSeparator10.Size = new System.Drawing.Size(207, 6);
             // 
             // packageGameMenuItem
             // 
             this.packageGameMenuItem.Name = "packageGameMenuItem";
-            this.packageGameMenuItem.Size = new System.Drawing.Size(161, 22);
-            this.packageGameMenuItem.Text = "&Package Game...";
+            this.packageGameMenuItem.Size = new System.Drawing.Size(210, 22);
+            this.packageGameMenuItem.Text = "&Package for Distribution...";
             this.packageGameMenuItem.Click += new System.EventHandler(this.packageGameMenuItem_Click);
             // 
             // runMenu
@@ -854,7 +854,7 @@
             this.buildRunMenuItem.Image = global::SphereStudio.Properties.Resources.play;
             this.buildRunMenuItem.Name = "buildRunMenuItem";
             this.buildRunMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.buildRunMenuItem.Size = new System.Drawing.Size(239, 22);
+            this.buildRunMenuItem.Size = new System.Drawing.Size(223, 22);
             this.buildRunMenuItem.Text = "Build && &Run";
             this.buildRunMenuItem.Click += new System.EventHandler(this.buildRunMenuItem_Click);
             // 
@@ -862,7 +862,7 @@
             // 
             this.breakNowMenuItem.Image = global::SphereStudio.Properties.Resources.pause;
             this.breakNowMenuItem.Name = "breakNowMenuItem";
-            this.breakNowMenuItem.Size = new System.Drawing.Size(239, 22);
+            this.breakNowMenuItem.Size = new System.Drawing.Size(223, 22);
             this.breakNowMenuItem.Text = "&Break into Debugger";
             this.breakNowMenuItem.Click += new System.EventHandler(this.breakNowMenuItem_Click);
             // 
@@ -871,33 +871,33 @@
             this.stopDebuggingMenuItem.Enabled = false;
             this.stopDebuggingMenuItem.Image = global::SphereStudio.Properties.Resources.stop;
             this.stopDebuggingMenuItem.Name = "stopDebuggingMenuItem";
-            this.stopDebuggingMenuItem.Size = new System.Drawing.Size(239, 22);
+            this.stopDebuggingMenuItem.Size = new System.Drawing.Size(223, 22);
             this.stopDebuggingMenuItem.Text = "S&top Debugging";
             this.stopDebuggingMenuItem.Click += new System.EventHandler(this.stopDebuggingMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(236, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(220, 6);
             // 
             // rebuildRunMenuItem
             // 
             this.rebuildRunMenuItem.Name = "rebuildRunMenuItem";
-            this.rebuildRunMenuItem.Size = new System.Drawing.Size(239, 22);
+            this.rebuildRunMenuItem.Size = new System.Drawing.Size(223, 22);
             this.rebuildRunMenuItem.Text = "R&ebuild && Run";
             this.rebuildRunMenuItem.Click += new System.EventHandler(this.rebuildRunMenuItem_Click);
             // 
             // toolStripSeparator11
             // 
             this.toolStripSeparator11.Name = "toolStripSeparator11";
-            this.toolStripSeparator11.Size = new System.Drawing.Size(236, 6);
+            this.toolStripSeparator11.Size = new System.Drawing.Size(220, 6);
             // 
             // stepIntoMenuItem
             // 
             this.stepIntoMenuItem.Enabled = false;
             this.stepIntoMenuItem.Name = "stepIntoMenuItem";
             this.stepIntoMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F11;
-            this.stepIntoMenuItem.Size = new System.Drawing.Size(239, 22);
+            this.stepIntoMenuItem.Size = new System.Drawing.Size(223, 22);
             this.stepIntoMenuItem.Text = "Step &Into";
             this.stepIntoMenuItem.Click += new System.EventHandler(this.stepIntoMenuItem_Click);
             // 
@@ -906,7 +906,7 @@
             this.stepOverMenuItem.Enabled = false;
             this.stepOverMenuItem.Name = "stepOverMenuItem";
             this.stepOverMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F10;
-            this.stepOverMenuItem.Size = new System.Drawing.Size(239, 22);
+            this.stepOverMenuItem.Size = new System.Drawing.Size(223, 22);
             this.stepOverMenuItem.Text = "&Step Over";
             this.stepOverMenuItem.Click += new System.EventHandler(this.stepOverMenuItem_Click);
             // 
@@ -914,14 +914,14 @@
             // 
             this.stepOutMenuItem.Enabled = false;
             this.stepOutMenuItem.Name = "stepOutMenuItem";
-            this.stepOutMenuItem.Size = new System.Drawing.Size(239, 22);
+            this.stepOutMenuItem.Size = new System.Drawing.Size(223, 22);
             this.stepOutMenuItem.Text = "Step &Out";
             this.stepOutMenuItem.Click += new System.EventHandler(this.stepOutMenuItem_Click);
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(236, 6);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(220, 6);
             // 
             // testGameMenuItem
             // 
@@ -929,8 +929,8 @@
             this.testGameMenuItem.Image = global::SphereStudio.Properties.Resources.lightning;
             this.testGameMenuItem.Name = "testGameMenuItem";
             this.testGameMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F5)));
-            this.testGameMenuItem.Size = new System.Drawing.Size(239, 22);
-            this.testGameMenuItem.Text = "&Test without Debugger";
+            this.testGameMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.testGameMenuItem.Text = "&Test for Distribution";
             this.testGameMenuItem.Click += new System.EventHandler(this.testGameMenuItem_Click);
             // 
             // settingsMenu
@@ -950,7 +950,7 @@
             this.configureEngineMenuItem.Image = global::SphereStudio.Properties.Resources.cog;
             this.configureEngineMenuItem.Name = "configureEngineMenuItem";
             this.configureEngineMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.configureEngineMenuItem.Text = "Configure &Engine";
+            this.configureEngineMenuItem.Text = "&Configure Engine";
             this.configureEngineMenuItem.Click += new System.EventHandler(this.configureEngineMenuItem_Click);
             // 
             // toolStripSeparator5
@@ -963,7 +963,7 @@
             this.preferencesMenuItem.Image = global::SphereStudio.Properties.Resources.application_view_list;
             this.preferencesMenuItem.Name = "preferencesMenuItem";
             this.preferencesMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.preferencesMenuItem.Text = "P&references...";
+            this.preferencesMenuItem.Text = "&Preferences...";
             this.preferencesMenuItem.Click += new System.EventHandler(this.preferencesMenuItem_Click);
             // 
             // IdeWindowForm

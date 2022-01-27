@@ -58,7 +58,7 @@ namespace SphereStudio.Core
         {
             get
             {
-                return GetString("defaultEngine", "");
+                return GetString("defaultEngine", string.Empty);
             }
             set
             {

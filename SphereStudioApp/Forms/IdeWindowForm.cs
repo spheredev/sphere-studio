@@ -309,30 +309,32 @@ namespace SphereStudio.Forms
 
         internal string[] getFilesToOpen(bool multiSelect)
         {
-            using (OpenFileDialog dialog = new OpenFileDialog())
+            var plugins = from name in PluginManager.GetNames<IFileOpener>()
+                          let plugin = PluginManager.Get<IFileOpener>(name)
+                          where plugin.FileExtensions != null
+                          orderby plugin.FileTypeName ascending
+                          select plugin;
+            var filterString = string.Empty;
+            foreach (var plugin in plugins)
             {
-                var plugins = from name in PluginManager.GetNames<IFileOpener>()
-                              let plugin = PluginManager.Get<IFileOpener>(name)
-                              where plugin.FileExtensions != null
-                              orderby plugin.FileTypeName ascending
-                              select plugin;
-                var filterString = string.Empty;
-                foreach (var plugin in plugins)
+                var extensions = string.Empty;
+                foreach (var extension in plugin.FileExtensions)
                 {
-                    var extensions = string.Empty;
-                    foreach (var extension in plugin.FileExtensions)
-                    {
-                        if (extensions.Length > 0)
-                            extensions += ";";
-                        extensions += $"*.{extension}";
-                    }
-                    filterString += $"{plugin.FileTypeName}|{extensions}|";
+                    if (extensions.Length > 0)
+                        extensions += ";";
+                    extensions += $"*.{extension}";
                 }
-                filterString += "All Files|*.*";
-                dialog.Filter = filterString;
-                dialog.FilterIndex = plugins.Count() + 1;
-                dialog.InitialDirectory = Session.Project.RootPath;
-                dialog.Multiselect = multiSelect;
+                filterString += $"{plugin.FileTypeName}|{extensions}|";
+            }
+            filterString += "All Files|*.*";
+            using (var dialog = new OpenFileDialog()
+            {
+                Filter = filterString,
+                FilterIndex = plugins.Count() + 1,
+                InitialDirectory = Session.Project.RootPath,
+                Multiselect = multiSelect,
+            })
+            {
                 return dialog.ShowDialog() == DialogResult.OK ? dialog.FileNames : null;
             }
         }
@@ -480,11 +482,11 @@ namespace SphereStudio.Forms
 
         private void refreshEngineList()
         {
-            bool wasRefreshingEngines = refreshingEngines;
+            var wasRefreshingEngines = refreshingEngines;
             refreshingEngines = true;
 
-            engineToolComboBox.Items.Clear();
             var engineNames = PluginManager.GetNames<IStarter>();
+            engineToolComboBox.Items.Clear();
             if (isProjectLoaded() && engineNames.Length > 0)
             {
                 engineToolComboBox.Items.AddRange(engineNames);
@@ -590,7 +592,7 @@ namespace SphereStudio.Forms
 
         private async Task startEngine(bool wantDebugger, bool rebuilding = false)
         {
-            foreach (var tab in tabs.Where(it => it.FileName != null))
+            foreach (var tab in tabs)
                 tab.SaveIfDirty();
 
             buildRunMenuItem.Enabled = false;
@@ -641,13 +643,12 @@ namespace SphereStudio.Forms
 
         private void debugger_Detached(object sender, EventArgs e)
         {
-            var scriptViews = from tab in tabs
-                              where tab.View is TextView
-                              select (TextView)tab.View;
-            foreach (var view in scriptViews)
+            foreach (var textView in from tab in tabs
+                where tab.View is TextView
+                select (TextView)tab.View)
             {
-                view.ActiveLine = 0;
-                view.ErrorLine = 0;
+                textView.ActiveLine = 0;
+                textView.ErrorLine = 0;
             }
             Debugger = null;
             buildRunMenuItem.Text = "Build && &Run";
@@ -679,13 +680,12 @@ namespace SphereStudio.Forms
 
         private void debugger_Resumed(object sender, EventArgs e)
         {
-            var scriptViews = from tab in tabs
-                              where tab.View is TextView
-                              select (TextView)tab.View;
-            foreach (var view in scriptViews)
+            foreach (var textView in from tab in tabs
+                where tab.View is TextView
+                select (TextView)tab.View)
             {
-                view.ActiveLine = 0;
-                view.ErrorLine = 0;
+                textView.ActiveLine = 0;
+                textView.ErrorLine = 0;
             }
             refreshUI();
         }
@@ -755,34 +755,32 @@ namespace SphereStudio.Forms
 
         internal void newMenuItem_DropDownOpening(object sender, EventArgs e)
         {
-            ToolStripDropDown dropDown = ((ToolStripDropDownItem)sender).DropDown;
-
+            var dropDownMenu = ((ToolStripDropDownItem)sender).DropDown;
             var pluginNames = PluginManager.GetNames<INewFileOpener>();
             if (pluginNames.Length > 0)
-                dropDown.Items.Add(new ToolStripSeparator() { Name = "8:12" });
-            var plugins = from name in pluginNames
-                          let plugin = PluginManager.Get<INewFileOpener>(name)
-                          orderby plugin.FileTypeName ascending
-                          select plugin;
-            foreach (var plugin in plugins)
+                dropDownMenu.Items.Add(new ToolStripSeparator() { Name = "8:12" });
+            foreach (var plugin in from pluginName in pluginNames
+                let plugin = PluginManager.Get<INewFileOpener>(pluginName)
+                orderby plugin.FileTypeName ascending
+                select plugin)
             {
-                ToolStripMenuItem item = new ToolStripMenuItem(plugin.FileTypeName) { Name = "8:12" };
-                item.Image = plugin.FileIcon;
-                item.Click += (s, ea) =>
+                var menuItem = new ToolStripMenuItem(plugin.FileTypeName) { Name = "8:12" };
+                menuItem.Image = plugin.FileIcon;
+                menuItem.Click += (s, ea) =>
                 {
                     var view = plugin.New();
                     if (view != null)
                         addDocument(view);
                 };
-                dropDown.Items.Add(item);
+                dropDownMenu.Items.Add(menuItem);
             }
         }
 
         internal void newMenuItem_DropDownClosed(object sender, EventArgs e)
         {
-            var dropDown = ((ToolStripDropDownItem)sender).DropDown;
-            while (dropDown.Items.ContainsKey("8:12"))
-                dropDown.Items.RemoveByKey("8:12");
+            var dropDownMenu = ((ToolStripDropDownItem)sender).DropDown;
+            while (dropDownMenu.Items.ContainsKey("8:12"))
+                dropDownMenu.Items.RemoveByKey("8:12");
         }
 
         private void closeMenuItem_Click(object sender, EventArgs e)
@@ -802,11 +800,6 @@ namespace SphereStudio.Forms
 
         private void newProjectMenuItem_Click(object sender, EventArgs e)
         {
-            string rootPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                "Sphere Projects");
-            var dialog = new NewProjectForm(rootPath);
-
             var starter = PluginManager.Get<IStarter>(Session.Settings.Engine);
             var compiler = PluginManager.Get<ICompiler>(Session.Settings.Compiler);
             if (starter == null || compiler == null)
@@ -817,6 +810,10 @@ namespace SphereStudio.Forms
                 return;
             }
 
+            var projectDirPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                "Sphere Projects");
+            var dialog = new NewProjectForm(projectDirPath);
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 if (!closeCurrentProject())
@@ -836,9 +833,9 @@ namespace SphereStudio.Forms
 
         private void openMenuItem_Click(object sender, EventArgs e)
         {
-            string[] fileNames = getFilesToOpen(false);
-            if (fileNames == null) return;
-            OpenFile(fileNames[0]);
+            var fileNames = getFilesToOpen(false);
+            if (fileNames != null && fileNames.Length > 0)
+                OpenFile(fileNames[0]);
         }
 
         private void openLastProjectMenuItem_Click(object sender, EventArgs e)
@@ -1068,6 +1065,7 @@ namespace SphereStudio.Forms
         {
             var canBuild = isProjectLoaded() && Debugger == null;
             var canPackageGame = BuildEngine.CanPackage(Session.Project) && Debugger == null;
+            
             buildMenuItem.Enabled = canBuild;
             packageGameMenuItem.Enabled = canPackageGame;
             rebuildMenuItem.Enabled = canBuild;
@@ -1080,18 +1078,16 @@ namespace SphereStudio.Forms
 
         private async void packageGameMenuItem_Click(object sender, EventArgs e)
         {
-            SaveFileDialog sfd = new SaveFileDialog()
+            var saveDialog = new SaveFileDialog()
             {
-                Title = "Build Game Package",
+                Title = $"Package {Project.Name}",
                 InitialDirectory = Session.Project.RootPath,
                 Filter = BuildEngine.GetSaveFileFilters(Session.Project),
                 DefaultExt = "spk",
                 AddExtension = true,
             };
-            if (sfd.ShowDialog() == DialogResult.OK)
-            {
-                await BuildEngine.Package(Session.Project, sfd.FileName, false);
-            }
+            if (saveDialog.ShowDialog() == DialogResult.OK)
+                await BuildEngine.Package(Session.Project, saveDialog.FileName, false);
         }
 
         private async void rebuildMenuItem_Click(object sender, EventArgs e)
@@ -1172,6 +1168,10 @@ namespace SphereStudio.Forms
             var canConfigureEngine = starter?.CanConfigure ?? false;
 
             configureEngineMenuItem.Enabled = canConfigureEngine;
+
+            configureEngineMenuItem.Text = isProjectLoaded()
+                ? $"&Configure {Session.Project.UserSettings.Engine}"
+                : "&Configure Engine";
         }
 
         private void configureEngineMenuItem_Click(object sender, EventArgs e)
