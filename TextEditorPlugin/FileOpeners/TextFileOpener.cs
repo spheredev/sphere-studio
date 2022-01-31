@@ -6,11 +6,11 @@ using SphereStudio.Properties;
 
 namespace SphereStudio.FileOpeners
 {
-    class ScriptFileOpener : INewFileOpener
+    class TextFileOpener : INewFileOpener
     {
         private PluginMain plugin;
         
-        public ScriptFileOpener(PluginMain plugin)
+        public TextFileOpener(PluginMain plugin)
         {
             this.plugin = plugin;
         }
@@ -23,13 +23,13 @@ namespace SphereStudio.FileOpeners
 
         public DocumentView New()
         {
-            var scriptView = new ScriptTextView(plugin);
+            var scriptView = new SphereTextView(plugin);
             return scriptView.NewDocument() ? scriptView : null;
         }
 
         public DocumentView Open(string fileName)
         {
-            var scriptView = new ScriptTextView(plugin);
+            var scriptView = new SphereTextView(plugin);
             scriptView.Load(fileName);
             return scriptView;
         }

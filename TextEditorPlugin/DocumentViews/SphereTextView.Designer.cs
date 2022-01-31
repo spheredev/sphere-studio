@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.DocumentViews
 {
-    partial class ScriptTextView
+    partial class SphereTextView
     {
         /// <summary> 
         /// Required designer variable.

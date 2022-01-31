@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SphereStudio</RootNamespace>
-    <AssemblyName>ScriptEditorPlugin</AssemblyName>
+    <AssemblyName>TextEditorPlugin</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
@@ -52,8 +52,8 @@
     <Compile Include="Components\QuickFinder.Designer.cs">
       <DependentUpon>QuickFinder.cs</DependentUpon>
     </Compile>
-    <Compile Include="Editors\ScriptEditor.cs" />
-    <Compile Include="FileOpeners\ScriptFileOpener.cs" />
+    <Compile Include="Editors\SphereTextEditor.cs" />
+    <Compile Include="FileOpeners\TextFileOpener.cs" />
     <Compile Include="PluginSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -61,11 +61,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="DocumentViews\ScriptTextView.cs">
+    <Compile Include="DocumentViews\SphereTextView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="DocumentViews\ScriptTextView.Designer.cs">
-      <DependentUpon>ScriptTextView.cs</DependentUpon>
+    <Compile Include="DocumentViews\SphereTextView.Designer.cs">
+      <DependentUpon>SphereTextView.cs</DependentUpon>
     </Compile>
     <Compile Include="PluginMain.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
@@ -84,8 +84,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="DocumentViews\ScriptTextView.resx">
-      <DependentUpon>ScriptTextView.cs</DependentUpon>
+    <EmbeddedResource Include="DocumentViews\SphereTextView.resx">
+      <DependentUpon>SphereTextView.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

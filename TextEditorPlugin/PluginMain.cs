@@ -12,8 +12,8 @@ namespace SphereStudio
 {
     public class PluginMain : IPluginMain
     {
-        public string Name => "Sphere Script Editor";
-        public string Description => "Script and text editor optimized for Sphere";
+        public string Name => "Sphere Text Editor";
+        public string Description => "Code and text editor optimized for Sphere";
         public string Version => Versioning.Version;
         public string Author => Versioning.Author;
 
@@ -37,8 +37,8 @@ namespace SphereStudio
             initializeMenuItems();
             Settings = new PluginSettings(settings);
 
-            PluginManager.Register(this, new ScriptEditor(this), Name);
-            PluginManager.Register(this, new ScriptFileOpener(this), Name);
+            PluginManager.Register(this, new SphereTextEditor(this), Name);
+            PluginManager.Register(this, new TextFileOpener(this), Name);
             PluginManager.Core.AddMenuItem(scriptMenu, "Project");
 
             var indentWidth = Settings.IndentWidth;
@@ -81,12 +81,12 @@ namespace SphereStudio
         {
             autoCompleteMenuItem = new ToolStripMenuItem("&Automatic Completion", null, autoCompleteMenuItem_Click) { CheckOnClick = true };
             enableCodeFoldingMenuItem = new ToolStripMenuItem("Enable Code &Folding", null, enableCodeFoldingMenuItem_Click) { CheckOnClick = true };
-            highlightBracesMenuItem = new ToolStripMenuItem("Highlight Braces", null, highlightBracesMenuItem_Click) { CheckOnClick = true };
+            highlightBracesMenuItem = new ToolStripMenuItem("Highlight &Braces", null, highlightBracesMenuItem_Click) { CheckOnClick = true };
             highlightCurrentLineMenuItem = new ToolStripMenuItem("Highlight Current &Line", null, highlightCurrentLineMenuItem_Click) { CheckOnClick = true };
             indentBy2MenuItem = new ToolStripMenuItem("Indent &2 Spaces", null, indentBy2MenuItem_Click);
             indentBy4MenuItem = new ToolStripMenuItem("Indent &4 Spaces", null, indentBy4MenuItem_Click);
             indentBy8MenuItem = new ToolStripMenuItem("Indent &8 Spaces", null, indentBy8MenuItem_Click);
-            preferTabsMenuItem = new ToolStripMenuItem("Prefer Tabs over Spaces", null, preferTabsMenuItem_Click) { CheckOnClick = true };
+            preferTabsMenuItem = new ToolStripMenuItem("Prefer &Tabs over Spaces", null, preferTabsMenuItem_Click) { CheckOnClick = true };
             scriptMenu = new ToolStripMenuItem("&Script") { Visible = false };
             scriptMenu.DropDownItems.Add(autoCompleteMenuItem);
             scriptMenu.DropDownItems.Add(enableCodeFoldingMenuItem);

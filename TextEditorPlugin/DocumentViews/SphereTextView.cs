@@ -20,7 +20,7 @@ namespace SphereStudio.DocumentViews
         Cellscript,
     }
 
-    public partial class ScriptTextView : TextView, IStyleAware
+    partial class SphereTextView : TextView, IStyleAware
     {
         private int activeLine = 0;
         private int errorLine = 0;
@@ -33,7 +33,7 @@ namespace SphereStudio.DocumentViews
         private Scintilla scintilla = new Scintilla();
         private bool useAutoComplete;
 
-        public ScriptTextView(PluginMain plugin, bool highlight = false)
+        public SphereTextView(PluginMain plugin, bool highlight = false)
         {
             InitializeComponent();
 

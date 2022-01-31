@@ -3,18 +3,18 @@ using SphereStudio.DocumentViews;
 
 namespace SphereStudio.Editors
 {
-    class ScriptEditor : IEditor<TextView>
+    class SphereTextEditor : IEditor<TextView>
     {
         private PluginMain plugin;
 
-        public ScriptEditor(PluginMain plugin)
+        public SphereTextEditor(PluginMain plugin)
         {
             this.plugin = plugin;
         }
 
         public TextView CreateEditView()
         {
-            return new ScriptTextView(plugin, true);
+            return new SphereTextView(plugin, true);
         }
     }
 }

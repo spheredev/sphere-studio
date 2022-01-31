@@ -317,9 +317,9 @@
       <Project>{d242f8ef-7d85-4b6b-9446-6758b68a7f54}</Project>
       <Name>neoSphereSupportPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ScriptEditorPlugin\ScriptEditorPlugin.csproj">
+    <ProjectReference Include="..\TextEditorPlugin\TextEditorPlugin.csproj">
       <Project>{2da2a233-7da5-44c6-82ce-045b310a19f8}</Project>
-      <Name>ScriptEditorPlugin</Name>
+      <Name>TextEditorPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\AudioPlayerPlugin\AudioPlayerPlugin.csproj">
       <Project>{f1b89568-607d-4cec-9c11-6c516d98e2ec}</Project>
