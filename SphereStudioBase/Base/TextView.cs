@@ -4,7 +4,7 @@ using System.ComponentModel;
 namespace SphereStudio.Base
 {
     /// <summary>
-    /// Provides a base class for a script editing component.
+    /// Provides a base class for a text editing component.
     /// </summary>
     [ToolboxItem(false)]
     public class TextView : DocumentView
@@ -19,28 +19,26 @@ namespace SphereStudio.Base
         /// </summary>
         public virtual int ActiveLine
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Gets or sets  the error line, used to point out script errors
-        /// during debugging.
+        /// Gets the line numbers of all breakpoints set in this script view.
         /// </summary>
-        public virtual int ErrorLine
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        /// <summary>
-        /// Gets a list of the line numbers of all breakpoints
-        /// set in this script view.
-        /// </summary>
-        public virtual int[] Breakpoints
+        public virtual int[] BreakpointLines
         {
             get { return new int[0]; }
             set { }
+        }
+
+        /// <summary>
+        /// Gets or sets the error line, used to highlight exceptions during debugging.
+        /// </summary>
+        public virtual int ErrorLine
+        {
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
         }
 
         /// <summary>
@@ -48,8 +46,8 @@ namespace SphereStudio.Base
         /// </summary>
         public override string Text
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
         }
 
         /// <summary>
@@ -67,7 +65,7 @@ namespace SphereStudio.Base
         /// <param name="e"></param>
         protected void OnBreakpointChanged(BreakpointChangedEventArgs e)
         {
-            if (BreakpointChanged != null) BreakpointChanged(this, e);
+            BreakpointChanged?.Invoke(this, e);
         }
     }
 
@@ -77,10 +75,10 @@ namespace SphereStudio.Base
     public class BreakpointChangedEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes data for a BreakpointSet event.
+        /// Initializes data for a BreakpointChanged event.
         /// </summary>
-        /// <param name="lineNumber"></param>
-        /// <param name="isActive"></param>
+        /// <param name="lineNumber">The line number of the breakpoint being modified.</param>
+        /// <param name="isActive">Whether the breakpoint is enabled or disabled.</param>
         public BreakpointChangedEventArgs(int lineNumber, bool isActive)
         {
             LineNumber = lineNumber;
@@ -88,7 +86,7 @@ namespace SphereStudio.Base
         }
 
         /// <summary>
-        /// If Active is true, the breakpoint is set. Otherwise it is cleared.
+        /// Whether the breakpoint is enabled or disabled.
         /// </summary>
         public bool Active { get; private set; }
 

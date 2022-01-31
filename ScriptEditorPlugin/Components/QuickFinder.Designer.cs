@@ -1,6 +1,6 @@
-﻿namespace SphereStudio.Plugins.Components
+﻿namespace SphereStudio.Components
 {
-    partial class QuickFind
+    partial class QuickFinder
     {
         /// <summary> 
         /// Required designer variable.

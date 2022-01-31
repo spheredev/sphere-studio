@@ -40,7 +40,7 @@ namespace SphereStudio
                     ideWindow.OpenFile(fileName);
             }
             if (args.Length > 0 && File.Exists(args[args.Length - 1]))
-                ideWindow.setDefaultActiveFile(args[args.Length - 1]);
+                ideWindow.SetDefaultActiveFile(args[args.Length - 1]);
             Application.Run(ideWindow);
         }
     }

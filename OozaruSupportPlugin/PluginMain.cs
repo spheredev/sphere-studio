@@ -6,7 +6,7 @@ namespace SphereStudio
 {
     public class PluginMain : IPluginMain
     {
-        public string Name => "Oozaru Support";
+        public string Name => "Oozaru Engine Support";
         public string Description => "Provides support for the Oozaru Web-based engine.";
         public string Version => Versioning.Version;
         public string Author => Versioning.Author;

@@ -12,7 +12,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskListPlugin", "TaskListP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SphereStudioBase", "SphereStudioBase\SphereStudioBase.csproj", "{F58A8DB0-1879-41D2-A349-4FB8991AF3D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DefaultTextEditorPlugin", "DefaultTextEditorPlugin\DefaultTextEditorPlugin.csproj", "{2DA2A233-7DA5-44C6-82CE-045B310A19F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptEditorPlugin", "ScriptEditorPlugin\ScriptEditorPlugin.csproj", "{2DA2A233-7DA5-44C6-82CE-045B310A19F8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FontImporterPlugin", "FontImporterPlugin\FontImporterPlugin.csproj", "{DD4965DE-8289-4E3F-839E-B008A06B3A97}"
 EndProject
@@ -20,7 +20,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioPlayerPlugin", "AudioP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapEditorPlugin", "MapEditorPlugin\MapEditorPlugin.csproj", "{E17C35BE-A26F-411D-B814-979017F290DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DefaultImageEditorPlugin", "DefaultImageEditorPlugin\DefaultImageEditorPlugin.csproj", "{83D6D166-7F7D-46CA-81BF-9BAF8E35F6BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitmapImageEditorPlugin", "BitmapImageEditorPlugin\BitmapImageEditorPlugin.csproj", "{83D6D166-7F7D-46CA-81BF-9BAF8E35F6BC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowstyleEditorPlugin", "WindowstyleEditorPlugin\WindowstyleEditorPlugin.csproj", "{65BCDEEF-C718-492A-8C82-7886A3AF8B7B}"
 EndProject

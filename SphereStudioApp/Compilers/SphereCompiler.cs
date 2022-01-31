@@ -13,35 +13,6 @@ namespace SphereStudio.Compilers
 {
     class SphereCompiler : ICompiler
     {
-        public bool Prep(IProject project, IConsole console)
-        {
-            console.Print("preparing Sphere Classic project... ");
-            var scriptPath = Path.Combine(project.RootPath, "scripts", "main.js");
-            Directory.CreateDirectory(Path.GetDirectoryName(scriptPath));
-            var code = string.Join(Environment.NewLine,
-                $"// {project.Name} by {project.Author}",
-                $"// {project.Summary}",
-                "",
-                "export default",
-                "function main()",
-                "{",
-                "\t// your game code here",
-                "\t",
-                "}",
-            "");
-            File.WriteAllText(scriptPath, code);
-            console.Print("OK.\n");
-
-            project.Settings.SetInteger("apiVersion", 2);
-            project.Settings.SetInteger("apiLevel", 1);
-            project.Settings.SetSize("resolution", new Size(320, 240));
-            project.Settings.SetString("mainScript", "scripts/main.js");
-            project.Settings.SetValue("manageGameJson", true);
-
-            console.Print("Success!\n");
-            return true;
-        }
-
         public async Task<string> Build(IProject project, bool debuggable, IConsole console)
         {
             console.Print($"Sphere Studio {Versioning.Version} Sphere manifest compiler\n");
@@ -113,6 +84,35 @@ namespace SphereStudio.Compilers
 
             console.Print("Sphere Classic build succeeded.\n");
             return project.RootPath;
+        }
+
+        public bool Prep(IProject project, IConsole console)
+        {
+            console.Print("preparing Sphere Classic project... ");
+            var scriptPath = Path.Combine(project.RootPath, "scripts", "main.js");
+            Directory.CreateDirectory(Path.GetDirectoryName(scriptPath));
+            var code = string.Join(Environment.NewLine,
+                $"// {project.Name} by {project.Author}",
+                $"// {project.Summary}",
+                "",
+                "export default",
+                "function main()",
+                "{",
+                "\t// your game code here",
+                "\t",
+                "}",
+            "");
+            File.WriteAllText(scriptPath, code);
+            console.Print("OK.\n");
+
+            project.Settings.SetInteger("apiVersion", 2);
+            project.Settings.SetInteger("apiLevel", 1);
+            project.Settings.SetSize("resolution", new Size(320, 240));
+            project.Settings.SetString("mainScript", "scripts/main.js");
+            project.Settings.SetValue("manageGameJson", true);
+
+            console.Print("Success!\n");
+            return true;
         }
 
         public async Task<string> Rebuild(IProject project, bool debuggable, IConsole console)

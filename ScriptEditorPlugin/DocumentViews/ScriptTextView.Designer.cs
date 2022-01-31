@@ -1,6 +1,6 @@
-﻿namespace SphereStudio.Plugins
+﻿namespace SphereStudio.DocumentViews
 {
-    partial class ScriptEditView
+    partial class ScriptTextView
     {
         /// <summary> 
         /// Required designer variable.
@@ -34,7 +34,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Breakpoints = new int[0];
+            this.BreakpointLines = new int[0];
             this.Name = "ScriptEditView";
             this.Size = new System.Drawing.Size(406, 299);
             this.ResumeLayout(false);

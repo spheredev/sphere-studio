@@ -7,7 +7,7 @@ namespace SphereStudio.Plugins
 {
     public class PluginMain : IPluginMain
     {
-        public string Name => "Audio Player";
+        public string Name => "Audio Player Sidebar";
         public string Description => "Listen to sounds from your game while you work!";
         public string Version => Versioning.Version;
         public string Author => Versioning.Author;

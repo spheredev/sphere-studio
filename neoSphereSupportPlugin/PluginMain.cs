@@ -13,7 +13,7 @@ namespace SphereStudio
 {
     public class PluginMain : IPluginMain
     {
-        public string Name => "neoSphere Support";
+        public string Name => "neoSphere GDK Support";
         public string Description => "Provides support for the neoSphere platform.";
         public string Version => Versioning.Version;
         public string Author => Versioning.Author;

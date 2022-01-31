@@ -52,8 +52,8 @@ namespace SphereStudio.Core
 
             if (View is TextView textView)
             {
-                textView.Breakpoints = Session.Project.GetBreakpoints(FileName);
-                textView.BreakpointChanged += textView_BreakpointSet;
+                textView.BreakpointLines = Session.Project.GetBreakpoints(FileName);
+                textView.BreakpointChanged += textView_BreakpointChanged;
             }
 
             if (restoreView && FileName != null)
@@ -161,26 +161,26 @@ namespace SphereStudio.Core
         /// <returns>A boolean value indicating whether the Save As operation succeeded.</returns>
         public bool SaveAs(string savePath = null)
         {
-            using (var diag = new SaveFileDialog())
+            using (var dialog = new SaveFileDialog())
             {
                 // set up the dialog parameters
                 var filterString = "";
-                foreach (string ext in View.FileExtensions)
+                foreach (var extension in View.FileExtensions)
                 {
                     if (filterString != string.Empty)
                         filterString += "|";
-                    filterString += $".{ext} File|*.{ext}";
+                    filterString += $".{extension} File|*.{extension}";
                 }
-                diag.Title = "Save As";
-                diag.InitialDirectory = savePath;
-                diag.FileName = tabText;
-                diag.Filter = filterString;
-                diag.DefaultExt = View.FileExtensions[0];
+                dialog.Title = "Save As";
+                dialog.InitialDirectory = savePath;
+                dialog.FileName = tabText;
+                dialog.Filter = filterString;
+                dialog.DefaultExt = View.FileExtensions[0];
 
                 // show the Save As dialog
-                if (diag.ShowDialog() == DialogResult.OK)
+                if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    FileName = diag.FileName;
+                    FileName = dialog.FileName;
                     tabText = Path.GetFileName(FileName);
                     refreshTabText();
                     Save(savePath);
@@ -321,7 +321,7 @@ namespace SphereStudio.Core
 
             // record breakpoints if this is a text tab
             if (View is TextView textView)
-                Session.Project.SetBreakpoints(FileName, textView.Breakpoints);
+                Session.Project.SetBreakpoints(FileName, textView.BreakpointLines);
 
             // save view (cursor position, etc.)
             Session.Project.UserSettings.SetValue(
@@ -347,12 +347,12 @@ namespace SphereStudio.Core
             refreshTabText();
         }
 
-        private async void textView_BreakpointSet(object sender, BreakpointChangedEventArgs e)
+        private async void textView_BreakpointChanged(object sender, BreakpointChangedEventArgs e)
         {
             if (FileName == null)
                 return;
             var textView = (TextView)sender;
-            Session.Project.SetBreakpoints(FileName, textView.Breakpoints);
+            Session.Project.SetBreakpoints(FileName, textView.BreakpointLines);
             var debugger = ideWindow.Debugger;
             if (debugger != null)
             {

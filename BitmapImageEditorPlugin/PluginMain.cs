@@ -9,8 +9,8 @@ namespace SphereStudio.Plugins
 {
     public class PluginMain : IPluginMain, INewFileOpener, IEditor<ImageView>
     {
-        public string Name => "Default Image Editor";
-        public string Description => "Sphere Studio default image editor";
+        public string Name => "Bitmap Image Editor";
+        public string Description => "Sphere Studio basic bitmap image editor";
         public string Version => Versioning.Version;
         public string Author => Versioning.Author;
 

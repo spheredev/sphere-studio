@@ -58,14 +58,21 @@ namespace SphereStudio.Forms
         }
 
         public event EventHandler LoadProject;
+
         public event EventHandler TestGame;
+
         public event EventHandler UnloadProject;
 
         public DocumentView ActiveDocument => currentTab.View;
+
         public IDebugger Debugger { get; private set; }
+
         public IDock Docking => dockManager;
+
         public IProject Project => Session.Project;
+
         public ICoreSettings Settings => Session.Settings;
+
         public UIStyle Style => StyleManager.Style;
 
         protected bool StartPageVisible
@@ -143,6 +150,38 @@ namespace SphereStudio.Forms
             style.AsHeading(mainStatusStrip);
         }
 
+        public string[] GetFilesToOpen(bool multiSelect)
+        {
+            var plugins = from name in PluginManager.GetNames<IFileOpener>()
+                          let plugin = PluginManager.Get<IFileOpener>(name)
+                          where plugin.FileExtensions != null
+                          orderby plugin.FileTypeName ascending
+                          select plugin;
+            var filterString = string.Empty;
+            foreach (var plugin in plugins)
+            {
+                var extensions = string.Empty;
+                foreach (var extension in plugin.FileExtensions)
+                {
+                    if (extensions.Length > 0)
+                        extensions += ";";
+                    extensions += $"*.{extension}";
+                }
+                filterString += $"{plugin.FileTypeName}|{extensions}|";
+            }
+            filterString += "All Files|*.*";
+            using (var dialog = new OpenFileDialog()
+            {
+                Filter = filterString,
+                FilterIndex = plugins.Count() + 1,
+                InitialDirectory = Session.Project.RootPath,
+                Multiselect = multiSelect,
+            })
+            {
+                return dialog.ShowDialog() == DialogResult.OK ? dialog.FileNames : null;
+            }
+        }
+
         public DocumentView OpenFile(string filePath)
         {
             return openFile(filePath, false);
@@ -158,11 +197,11 @@ namespace SphereStudio.Forms
             var compiler = PluginManager.Get<ICompiler>(project.Compiler);
             if (usePluginWarning && (starter == null || compiler == null))
             {
-                var answer = MessageBox.Show(
+                var dialogResult = MessageBox.Show(
                     $"One or more plugins required to work on '{project.Name}' are either disabled or not installed.  Please open Configuration Manager and check your plugins.\n\nCompiler required:\n{project.Compiler}\n\nIf you continue, data may be lost.  Open this project anyway?",
                     "Proceed with Caution",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                if (answer == DialogResult.No)
+                if (dialogResult == DialogResult.No)
                     return;
             }
 
@@ -232,6 +271,11 @@ namespace SphereStudio.Forms
             item?.Dispose();
         }
 
+        public void SetDefaultActiveFile(string fileName)
+        {
+            defaultActiveFileName = fileName;
+        }
+
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             Rectangle savedBounds = WindowState != FormWindowState.Normal ? RestoreBounds : Bounds;
@@ -283,11 +327,11 @@ namespace SphereStudio.Forms
             bool isFirstRun = !Session.Settings.GetBoolean("setupComplete", false);
             if (isFirstRun)
             {
-                var selection = MessageBox.Show(
+                var dialogResult = MessageBox.Show(
                     "Welcome to Sphere Studio, the fully integrated development environment for the Sphere game platform!\r\n\r\n" +
                         "Since it looks like this is your first time using the IDE, you'll need to set a few things up.  Do you want to do that now?",
                     "Welcome to Sphere Studio", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
-                if (selection == DialogResult.Yes)
+                if (dialogResult == DialogResult.Yes)
                 {
                     showPluginManager();
                     Session.Settings.SetValue("setupComplete", true);
@@ -305,43 +349,6 @@ namespace SphereStudio.Forms
             }
 
             base.OnShown(e);
-        }
-
-        internal string[] getFilesToOpen(bool multiSelect)
-        {
-            var plugins = from name in PluginManager.GetNames<IFileOpener>()
-                          let plugin = PluginManager.Get<IFileOpener>(name)
-                          where plugin.FileExtensions != null
-                          orderby plugin.FileTypeName ascending
-                          select plugin;
-            var filterString = string.Empty;
-            foreach (var plugin in plugins)
-            {
-                var extensions = string.Empty;
-                foreach (var extension in plugin.FileExtensions)
-                {
-                    if (extensions.Length > 0)
-                        extensions += ";";
-                    extensions += $"*.{extension}";
-                }
-                filterString += $"{plugin.FileTypeName}|{extensions}|";
-            }
-            filterString += "All Files|*.*";
-            using (var dialog = new OpenFileDialog()
-            {
-                Filter = filterString,
-                FilterIndex = plugins.Count() + 1,
-                InitialDirectory = Session.Project.RootPath,
-                Multiselect = multiSelect,
-            })
-            {
-                return dialog.ShowDialog() == DialogResult.OK ? dialog.FileNames : null;
-            }
-        }
-
-        internal void setDefaultActiveFile(string fileName)
-        {
-            defaultActiveFileName = fileName;
         }
 
         private DocumentTab addDocument(DocumentView view, string fileName = null, bool restoreView = false)
@@ -751,6 +758,7 @@ namespace SphereStudio.Forms
 
             closeMenuItem.Text = canClose ? $"&Close {currentTab.Title}" : "&Close";
             saveMenuItem.Text = canSave ? $"&Save {currentTab.Title}" : "&Save";
+            saveAsMenuItem.Text = canSave ? $"Save {currentTab.Title} &As..." : "Save &As...";
         }
 
         internal void newMenuItem_DropDownOpening(object sender, EventArgs e)
@@ -833,7 +841,7 @@ namespace SphereStudio.Forms
 
         private void openMenuItem_Click(object sender, EventArgs e)
         {
-            var fileNames = getFilesToOpen(false);
+            var fileNames = GetFilesToOpen(false);
             if (fileNames != null && fileNames.Length > 0)
                 OpenFile(fileNames[0]);
         }
@@ -1069,6 +1077,9 @@ namespace SphereStudio.Forms
             buildMenuItem.Enabled = canBuild;
             packageGameMenuItem.Enabled = canPackageGame;
             rebuildMenuItem.Enabled = canBuild;
+
+            buildMenuItem.Text = $"&Build {Project?.Name ?? "Project"}";
+            rebuildMenuItem.Text = $"&Rebuild {Project?.Name ?? "Project"}";
         }
 
         private async void buildMenuItem_Click(object sender, EventArgs e)

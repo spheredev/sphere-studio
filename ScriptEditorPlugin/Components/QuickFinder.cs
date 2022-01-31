@@ -7,13 +7,13 @@ using ScintillaNET;
 
 using SphereStudio.Base;
 
-namespace SphereStudio.Plugins.Components
+namespace SphereStudio.Components
 {
     /// <summary>
-    /// Implements the Quick Find box (fast Search and Replace).
+    /// Implements the Quick Find popup (fast Search and Replace).
     /// </summary>
     [ToolboxItem(false)]
-    public partial class QuickFind : UserControl, IStyleAware
+    partial class QuickFinder : UserControl, IStyleAware
     {
         // some of the logic here may seem a bit hard to follow.  unfortunately most
         // of the spaghetti is necessary, to keep the UI usable.  notes:
@@ -21,14 +21,17 @@ namespace SphereStudio.Plugins.Components
         //     * ideally, checkboxes should not accept focus.  trouble is, even with .TabStop
         //       set to false, using an accelerator key will activate the control.  so the best
         //       we can do is refocus a textbox whenever a checkbox is changed.
+        //
         //     * non-Form controls cannot have an AcceptButton.  thus we need to handle
         //       the KeyPress event and activate the correct button when a Return character
         //       is received.
+        //
         //     * switching between Find and Replace textboxes should perform a Select All
         //       on the textbox being activated.  however, this should only happen when
         //       switching textboxes -- receiving focus from, e.g., a checkbox should NOT
         //       trigger a Select All.  this allows the user to manipulate search options
         //       in the middle of typing a term without affecting the cursor.
+        //
         //     * pressing a Find hotkey (Ctrl+F or Ctrl+H) while the Search box is visible
         //       should NOT change the text in the Find box nor trigger a search, but SHOULD
         //       select the text.  this matches MSVC behavior.
@@ -43,7 +46,7 @@ namespace SphereStudio.Plugins.Components
         /// </summary>
         /// <param name="parent">The parent control.  Quick Find will show in the top-right corner.</param>
         /// <param name="codeBox">The Scintilla control whose contents will be searched.</param>
-        public QuickFind(Control parent, Scintilla codeBox)
+        public QuickFinder(Control parent, Scintilla codeBox)
         {
             InitializeComponent();
             Visible = false;

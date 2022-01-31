@@ -81,10 +81,10 @@ namespace SphereStudio.Forms
         {
             if (typeDropDown.Text != project.Compiler)
             {
-                var answer = MessageBox.Show(
+                var dialogResult = MessageBox.Show(
                     "You've changed the compiler for this project.  This may prevent Sphere Studio from building the project.  Are you sure you want to continue?",
                     "Changing Compiler", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                if (answer == DialogResult.No)
+                if (dialogResult == DialogResult.No)
                 {
                     DialogResult = DialogResult.None;
                     typeDropDown.Text = project.Compiler;
@@ -119,10 +119,10 @@ namespace SphereStudio.Forms
 
         private void upgradeButton_Click(object sender, EventArgs e)
         {
-            var answer = MessageBox.Show(
+            var dialogResult = MessageBox.Show(
                 "This project was synthesized from a Sphere game manifest and has no associated project file.  To enable all Sphere Studio features, you can upgrade it to a full Sphere Studio project.  Do you want to upgrade now?",
                 "Upgrade to Full Project", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-            if (answer == DialogResult.Yes)
+            if (dialogResult == DialogResult.Yes)
             {
                 project.Upgrade();
                 pathTextBox.Text = project.FileName;

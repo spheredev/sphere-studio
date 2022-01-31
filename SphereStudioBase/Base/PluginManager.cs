@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using SphereStudio.Base;
-
 namespace SphereStudio.Base
 {
     struct PluginEntry
@@ -25,7 +23,7 @@ namespace SphereStudio.Base
     /// </summary>
     public static class PluginManager
     {
-        static List<PluginEntry> m_plugins = new List<PluginEntry>();
+        static List<PluginEntry> pluginEntries = new List<PluginEntry>();
         
         /// <summary>
         /// Registers a plugin. Plugins add new functionality to the IDE.
@@ -37,7 +35,7 @@ namespace SphereStudio.Base
         {
             if (name.Contains('|'))
                 throw new ArgumentException("Registered name of plugin cannot contain pipe characters.");
-            m_plugins.Add(new PluginEntry(main, plugin, name));
+            pluginEntries.Add(new PluginEntry(main, plugin, name));
         }
 
         /// <summary>
@@ -46,7 +44,7 @@ namespace SphereStudio.Base
         /// <param name="plugin">The plugin to unregister.</param>
         public static void Unregister(IPlugin plugin)
         {
-            m_plugins.RemoveAll(x => x.Plugin == plugin);
+            pluginEntries.RemoveAll(x => x.Plugin == plugin);
         }
         
         /// <summary>
@@ -55,7 +53,7 @@ namespace SphereStudio.Base
         /// <param name="main">The plugin module whose plugins are being unregistered.</param>
         public static void UnregisterAll(IPluginMain main)
         {
-            m_plugins.RemoveAll(x => x.PluginMain == main);
+            pluginEntries.RemoveAll(x => x.PluginMain == main);
         }
 
         /// <summary>
@@ -67,7 +65,7 @@ namespace SphereStudio.Base
         public static T Get<T>(string name)
             where T : IPlugin
         {
-            var foundPluginEntry = m_plugins
+            var foundPluginEntry = pluginEntries
                 .Where(it => it.Plugin is T)
                 .FirstOrDefault(it => it.Name == name);
             return (T)foundPluginEntry.Plugin;
@@ -81,10 +79,10 @@ namespace SphereStudio.Base
         public static string[] GetNames<T>()
             where T : IPlugin
         {
-            return m_plugins
+            return pluginEntries
                 .Where(it => it.Plugin is T)
                 .OrderBy(it => it.Name)
-                .OrderBy(it => it.PluginMain == null ? 0 : 1)
+                .ThenBy(it => it.PluginMain == null ? 0 : 1)
                 .Select(it => it.Name)
                 .Distinct().ToArray();
         }

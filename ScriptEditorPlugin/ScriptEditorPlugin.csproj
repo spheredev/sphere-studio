@@ -8,8 +8,8 @@
     <ProjectGuid>{2DA2A233-7DA5-44C6-82CE-045B310A19F8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SphereStudio.Plugins</RootNamespace>
-    <AssemblyName>DefaultTextEditorPlugin</AssemblyName>
+    <RootNamespace>SphereStudio</RootNamespace>
+    <AssemblyName>ScriptEditorPlugin</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
@@ -46,23 +46,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\QuickFind.cs">
+    <Compile Include="Components\QuickFinder.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Components\QuickFind.Designer.cs">
-      <DependentUpon>QuickFind.cs</DependentUpon>
+    <Compile Include="Components\QuickFinder.Designer.cs">
+      <DependentUpon>QuickFinder.cs</DependentUpon>
     </Compile>
+    <Compile Include="Editors\ScriptEditor.cs" />
+    <Compile Include="FileOpeners\ScriptFileOpener.cs" />
+    <Compile Include="PluginSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="ScriptEditView.cs">
+    <Compile Include="DocumentViews\ScriptTextView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ScriptEditView.Designer.cs">
-      <DependentUpon>ScriptEditView.cs</DependentUpon>
+    <Compile Include="DocumentViews\ScriptTextView.Designer.cs">
+      <DependentUpon>ScriptTextView.cs</DependentUpon>
     </Compile>
     <Compile Include="PluginMain.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
@@ -74,15 +77,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Components\QuickFind.resx">
-      <DependentUpon>QuickFind.cs</DependentUpon>
+    <EmbeddedResource Include="Components\QuickFinder.resx">
+      <DependentUpon>QuickFinder.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="ScriptEditView.resx">
-      <DependentUpon>ScriptEditView.cs</DependentUpon>
+    <EmbeddedResource Include="DocumentViews\ScriptTextView.resx">
+      <DependentUpon>ScriptTextView.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -24,7 +24,7 @@ namespace SphereStudio.StyleProviders
                 BackColor = Color.White,
                 FixedFont = new Font("Consolas", 10.0f),
                 Font = new Font("Segoe UI", 9.0f),
-                HighlightColor = Color.LightGoldenrodYellow,
+                HighlightColor = Color.LightSkyBlue,
                 LabelColor = Color.LightSteelBlue,
                 TextColor = Color.Black,
                 ToolColor = Color.FromArgb(192, 192, 208),

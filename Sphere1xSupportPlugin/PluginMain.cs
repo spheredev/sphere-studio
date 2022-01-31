@@ -6,7 +6,7 @@ namespace SphereStudio
 {
     public class PluginMain : IPluginMain
     {
-        public string Name => "Sphere 1.x Support";
+        public string Name => "Sphere 1.x Engine Support";
         public string Description => "Provides support for the legacy Sphere 1.x engine.";
         public string Version => Versioning.Version;
         public string Author => Versioning.Author;

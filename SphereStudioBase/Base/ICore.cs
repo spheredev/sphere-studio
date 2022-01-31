@@ -7,7 +7,7 @@ using SphereStudio.UI;
 namespace SphereStudio.Base
 {
     /// <summary>
-    /// Specifies an interface for communication with the Sphere Studio IDE.
+    /// Specifies an interface for communication with the IDE.
     /// </summary>
     public interface ICore : ISynchronizeInvoke
     {
@@ -17,12 +17,12 @@ namespace SphereStudio.Base
         ICoreSettings Settings { get; }
         
         /// <summary>
-        /// Provides access to the project settings.
+        /// Provides access to the currently opened project.
         /// </summary>
         IProject Project { get; }
 
         /// <summary>
-        /// Gets the DocumentView for the document currently being edited.
+        /// Gets the <c>DocumentView</c> for the document currently being edited.
         /// </summary>
         DocumentView ActiveDocument { get; }
 

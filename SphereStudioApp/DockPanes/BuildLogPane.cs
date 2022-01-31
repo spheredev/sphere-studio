@@ -21,8 +21,11 @@ namespace SphereStudio.DockPanes
         }
 
         public Control Control => this;
+
         public DockHint DockHint => DockHint.Bottom;
+
         public Bitmap DockIcon => Resources.application_view_list;
+
         public bool ShowInViewMenu => true;
 
         public void ApplyStyle(UIStyle style)

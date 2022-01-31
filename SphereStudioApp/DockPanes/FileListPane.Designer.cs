@@ -31,19 +31,22 @@
             this.components = new System.ComponentModel.Container();
             this.fileTreeView = new System.Windows.Forms.TreeView();
             this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.newFolderMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.newFolderMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.renameMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyPathMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exploreMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projectPropertiesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fileWatcher = new SphereStudio.Utility.DeferredFileSystemWatcher();
+            this.fsWatcher = new SphereStudio.Utility.DeferredFileSystemWatcher();
             this.header = new System.Windows.Forms.Label();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.contextMenu.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.fileWatcher)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fsWatcher)).BeginInit();
             this.SuspendLayout();
             // 
             // fileTreeView
@@ -73,17 +76,28 @@
             this.contextMenu.BackColor = System.Drawing.Color.Lavender;
             this.contextMenu.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.newFolderMenuItem,
+            this.toolStripSeparator3,
             this.newMenuItem,
             this.importMenuItem,
-            this.newFolderMenuItem,
             this.openMenuItem,
             this.deleteMenuItem,
             this.renameMenuItem,
-            this.copyPathMenuItem,
+            this.toolStripSeparator2,
             this.exploreMenuItem,
+            this.copyPathMenuItem,
+            this.toolStripSeparator1,
             this.projectPropertiesMenuItem});
             this.contextMenu.Name = "ProjectFileContextMenu";
-            this.contextMenu.Size = new System.Drawing.Size(199, 224);
+            this.contextMenu.Size = new System.Drawing.Size(199, 242);
+            // 
+            // newFolderMenuItem
+            // 
+            this.newFolderMenuItem.Image = global::SphereStudio.Properties.Resources.folder_closed;
+            this.newFolderMenuItem.Name = "newFolderMenuItem";
+            this.newFolderMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.newFolderMenuItem.Text = "New &Folder...";
+            this.newFolderMenuItem.Click += new System.EventHandler(this.newFolderMenuItem_Click);
             // 
             // newMenuItem
             // 
@@ -96,16 +110,8 @@
             // 
             this.importMenuItem.Name = "importMenuItem";
             this.importMenuItem.Size = new System.Drawing.Size(198, 22);
-            this.importMenuItem.Text = "&Import File(s)...";
+            this.importMenuItem.Text = "&Import Files...";
             this.importMenuItem.Click += new System.EventHandler(this.importMenuItem_Click);
-            // 
-            // newFolderMenuItem
-            // 
-            this.newFolderMenuItem.Image = global::SphereStudio.Properties.Resources.folder_closed;
-            this.newFolderMenuItem.Name = "newFolderMenuItem";
-            this.newFolderMenuItem.Size = new System.Drawing.Size(198, 22);
-            this.newFolderMenuItem.Text = "New &Folder...";
-            this.newFolderMenuItem.Click += new System.EventHandler(this.newFolderMenuItem_Click);
             // 
             // openMenuItem
             // 
@@ -158,15 +164,15 @@
             this.projectPropertiesMenuItem.Text = "Project &Properties...";
             this.projectPropertiesMenuItem.Click += new System.EventHandler(this.projectPropertiesMenuItem_Click);
             // 
-            // fileWatcher
+            // fsWatcher
             // 
-            this.fileWatcher.Delay = 1000D;
-            this.fileWatcher.EnableRaisingEvents = true;
-            this.fileWatcher.IncludeSubdirectories = true;
-            this.fileWatcher.SynchronizingObject = this;
-            this.fileWatcher.Created += new SphereStudio.Utility.BatchEventHandler<System.IO.FileSystemEventArgs>(this.fileWatcher_Created);
-            this.fileWatcher.Deleted += new SphereStudio.Utility.BatchEventHandler<System.IO.FileSystemEventArgs>(this.fileWatcher_Deleted);
-            this.fileWatcher.Renamed += new SphereStudio.Utility.BatchEventHandler<System.IO.RenamedEventArgs>(this.fileWatcher_Renamed);
+            this.fsWatcher.Delay = 1000D;
+            this.fsWatcher.EnableRaisingEvents = true;
+            this.fsWatcher.IncludeSubdirectories = true;
+            this.fsWatcher.SynchronizingObject = this;
+            this.fsWatcher.Created += new SphereStudio.Utility.BatchEventHandler<System.IO.FileSystemEventArgs>(this.fsWatcher_Created);
+            this.fsWatcher.Deleted += new SphereStudio.Utility.BatchEventHandler<System.IO.FileSystemEventArgs>(this.fsWatcher_Deleted);
+            this.fsWatcher.Renamed += new SphereStudio.Utility.BatchEventHandler<System.IO.RenamedEventArgs>(this.fsWatcher_Renamed);
             // 
             // header
             // 
@@ -178,6 +184,21 @@
             this.header.Text = "explore files in this project";
             this.header.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(195, 6);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(195, 6);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(195, 6);
+            // 
             // FileListPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -188,7 +209,7 @@
             this.Name = "FileListPane";
             this.Size = new System.Drawing.Size(191, 388);
             this.contextMenu.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.fileWatcher)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fsWatcher)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -205,8 +226,11 @@
         private System.Windows.Forms.ToolStripMenuItem projectPropertiesMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newFolderMenuItem;
         private System.Windows.Forms.ToolStripMenuItem copyPathMenuItem;
-        private SphereStudio.Utility.DeferredFileSystemWatcher fileWatcher;
+        private SphereStudio.Utility.DeferredFileSystemWatcher fsWatcher;
         private System.Windows.Forms.ToolStripMenuItem exploreMenuItem;
         private System.Windows.Forms.Label header;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }

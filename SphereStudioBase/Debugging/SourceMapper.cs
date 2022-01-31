@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using System.Text;
 using SourcemapToolkit.SourcemapParser;
 
 using SphereStudio.Utility;
@@ -79,11 +79,9 @@ namespace SphereStudio.Debugging
         {
             if (!(maps.ContainsKey(fileName)))
                 return lineNumber;
-
-            var q = from item in maps[fileName].ParsedMappings
-                    where item.GeneratedSourcePosition.ZeroBasedLineNumber == lineNumber - 1
-                    select item;
-            var mapping = q.FirstOrDefault();
+            var mapping = maps[fileName].ParsedMappings
+                .Where(it => it.GeneratedSourcePosition.ZeroBasedLineNumber == lineNumber - 1)
+                .FirstOrDefault();
             if (mapping == null)
                 return lineNumber;
             return mapping.OriginalSourcePosition.ZeroBasedLineNumber + 1;
@@ -99,11 +97,9 @@ namespace SphereStudio.Debugging
         {
             if (!(maps.ContainsKey(fileName)))
                 return lineNumber;
-
-            var q = from item in maps[fileName].ParsedMappings
-                    where item.OriginalSourcePosition.ZeroBasedLineNumber == lineNumber - 1
-                    select item;
-            var mapping = q.FirstOrDefault();
+            var mapping = maps[fileName].ParsedMappings
+                .Where(it => it.OriginalSourcePosition.ZeroBasedLineNumber == lineNumber - 1)
+                .FirstOrDefault();
             if (mapping == null)
                 return lineNumber;
             return mapping.GeneratedSourcePosition.ZeroBasedLineNumber + 1;

@@ -52,7 +52,7 @@ namespace SphereStudio.DockPanes
 
         public void Close()
         {
-            fileWatcher.EnableRaisingEvents = false;
+            fsWatcher.EnableRaisingEvents = false;
             fileTreeView.Nodes.Clear();
         }
 
@@ -60,15 +60,13 @@ namespace SphereStudio.DockPanes
         {
             if (!string.IsNullOrEmpty(Session.Project.RootPath))
             {
-                fileWatcher.Path = Session.Project.RootPath;
-                fileWatcher.EnableRaisingEvents = true;
+                fsWatcher.Path = Session.Project.RootPath;
+                fsWatcher.EnableRaisingEvents = true;
             }
         }
 
         public override void Refresh()
         {
-            base.Refresh();
-
             if (Session.Project == null || string.IsNullOrEmpty(Session.Project.RootPath))
                 return;
 
@@ -110,7 +108,7 @@ namespace SphereStudio.DockPanes
             fileTreeView.Nodes.Clear();
             var projectNode = new TreeNode(Session.Project.Name) { Tag = "projectNode" };
             fileTreeView.Nodes.Add(projectNode);
-            var baseDir = new DirectoryInfo(fileWatcher.Path);
+            var baseDir = new DirectoryInfo(fsWatcher.Path);
             populateFolderNode(fileTreeView.Nodes[0], baseDir);
 
             // re-expand folders and try to select the previously-selected item
@@ -121,16 +119,13 @@ namespace SphereStudio.DockPanes
                 while (nodesToCheck.Count > 0)
                 {
                     var node = nodesToCheck.Dequeue();
-                    isExpandedTable.TryGetValue(node.FullPath, out var isExpanded);
-                    if (isExpanded)
+                    isExpandedTable.TryGetValue(node.FullPath, out var shouldExpandNode);
+                    if (shouldExpandNode)
                         node.Expand();
                     if (node.FullPath == selectedNodePath)
                         fileTreeView.SelectedNode = node;
                     foreach (TreeNode subnode in node.Nodes)
-                    {
-                        // emulate a recursive search of the tree view:
                         nodesToCheck.Enqueue(subnode);
-                    }
                 }
             }
 
@@ -140,6 +135,8 @@ namespace SphereStudio.DockPanes
                 fileTreeView.Nodes[0].Expand();
             Cursor.Current = Cursors.Default;
             fileTreeView.EndUpdate();
+
+            base.Refresh();
         }
 
         private void deleteNode(TreeNode node)
@@ -186,9 +183,9 @@ namespace SphereStudio.DockPanes
 
         private void pauseFileWatcher(bool paused)
         {
-            if (string.IsNullOrEmpty(fileWatcher.Path))
+            if (string.IsNullOrEmpty(fsWatcher.Path))
                 return;
-            fileWatcher.EnableRaisingEvents = !paused;
+            fsWatcher.EnableRaisingEvents = !paused;
         }
 
         private void populateFolderNode(TreeNode baseNode, DirectoryInfo dir)
@@ -343,6 +340,7 @@ namespace SphereStudio.DockPanes
                         renameMenuItem.Visible = true;
                         break;
                     case "projectNode":
+                        copyPathMenuItem.Visible = true;
                         newFolderMenuItem.Visible = true;
                         projectPropertiesMenuItem.Visible = true;
                         break;
@@ -356,17 +354,17 @@ namespace SphereStudio.DockPanes
             openNode(fileTreeView.SelectedNode);
         }
 
-        private void fileWatcher_Created(object sender, IEnumerable<FileSystemEventArgs> eAll)
+        private void fsWatcher_Created(object sender, IEnumerable<FileSystemEventArgs> eAll)
         {
             Refresh();
         }
 
-        private void fileWatcher_Deleted(object sender, IEnumerable<FileSystemEventArgs> eAll)
+        private void fsWatcher_Deleted(object sender, IEnumerable<FileSystemEventArgs> eAll)
         {
             Refresh();
         }
 
-        private void fileWatcher_Renamed(object sender, IEnumerable<FileSystemEventArgs> eAll)
+        private void fsWatcher_Renamed(object sender, IEnumerable<FileSystemEventArgs> eAll)
         {
             Refresh();
         }
@@ -391,7 +389,7 @@ namespace SphereStudio.DockPanes
         private void importMenuItem_Click(object sender, EventArgs e)
         {
             var path = getFullPath(fileTreeView.SelectedNode);
-            var filesToAdd = ideWindow.getFilesToOpen(true);
+            var filesToAdd = ideWindow.GetFilesToOpen(true);
 
             if (filesToAdd == null || filesToAdd.Length == 0)
                 return;

@@ -8,7 +8,7 @@ namespace SphereStudio.Plugins
 {
     public class PluginMain : IPluginMain
     {
-        public string Name => "Task List";
+        public string Name => "Task List Sidebar";
         public string Description => "Keep track of game development tasks.";
         public string Version => Versioning.Version;
         public string Author => Versioning.Author;
