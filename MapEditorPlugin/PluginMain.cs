@@ -3,29 +3,27 @@ using System.Drawing;
 using System.Windows.Forms;
 
 using SphereStudio.Base;
-using SphereStudio.Plugins.Forms;
+using SphereStudio.DocumentViews;
+using SphereStudio.FileOpeners;
+using SphereStudio.Forms;
 
-namespace SphereStudio.Plugins
+namespace SphereStudio
 {
-    public class PluginMain : IPluginMain, INewFileOpener
+    public class PluginMain : IPluginMain
     {
         public string Name => "Sphere Map Editor";
-        public string Description => "Sphere v1 RMP format tilemap editor";
+        public string Description => "Sphere RMP format tilemap editor";
         public string Version => Versioning.Version;
         public string Author => Versioning.Author;
-
-        public string FileTypeName => "RMP Tilemap";
-        public string[] FileExtensions => new[] { "rmp" };
-        public Bitmap FileIcon => Properties.Resources.MapIcon;
 
         internal static void ShowMenus(bool visible)
         {
             _mapMenu.Visible = visible;
         }
         
-        public void Initialize(ISettings conf)
+        public void Initialize(ISettings settings)
         {
-            PluginManager.Register(this, this, Name);
+            PluginManager.Register(this, new MapFileOpener(), Name);
             PluginManager.Core.AddMenuItem(_mapMenu, "Project");
         }
 
@@ -35,19 +33,6 @@ namespace SphereStudio.Plugins
             PluginManager.Core.RemoveMenuItem(_mapMenu);
         }
 
-        public DocumentView New()
-        {
-            DocumentView view = new MapEditView();
-            return view.NewDocument() ? view : null;
-        }
-
-        public DocumentView Open(string fileName)
-        {
-            DocumentView view = new MapEditView();
-            view.Load(fileName);
-            return view;
-        }
-        
         #region initialize the Map menu
         private static ToolStripMenuItem _mapMenu;
         private static ToolStripMenuItem _exportTilesetMenuItem;
@@ -73,8 +58,8 @@ namespace SphereStudio.Plugins
 
         private static void menuRecenter_Click(object sender, EventArgs e)
         {
-            MapEditView editor = PluginManager.Core.ActiveDocument as MapEditView;
-            editor?.MapControl.CenterMap();
+            var mapView = PluginManager.Core.ActiveDocument as MapDocumentView;
+            mapView?.MapControl.CenterMap();
         }
 
         private static void menuImportTileset_Click(object sender, EventArgs e)
@@ -84,14 +69,13 @@ namespace SphereStudio.Plugins
 
         private static void menuExportTileset_Click(object sender, EventArgs e)
         {
-            using (SaveFileDialog diag = new SaveFileDialog())
+            using (var dialog = new SaveFileDialog())
             {
-                diag.InitialDirectory = PluginManager.Core.Project.RootPath;
-                diag.Filter = @"Image Files (.png)|*.png;";
-                diag.DefaultExt = "png";
-
-                if (diag.ShowDialog() == DialogResult.OK)
-                    (PluginManager.Core.ActiveDocument as MapEditView).SaveTileset(diag.FileName);
+                dialog.InitialDirectory = PluginManager.Core.Project.RootPath;
+                dialog.Filter = @"Image Files (.png)|*.png;";
+                dialog.DefaultExt = "png";
+                if (dialog.ShowDialog() == DialogResult.OK)
+                    (PluginManager.Core.ActiveDocument as MapDocumentView).SaveTileset(dialog.FileName);
             }
         }
 
@@ -103,17 +87,17 @@ namespace SphereStudio.Plugins
                 diag.Filter = @"Image Files (.png)|*.png";
 
                 if (diag.ShowDialog() == DialogResult.OK)
-                    (PluginManager.Core.ActiveDocument as MapEditView).UpdateTileset(diag.FileName);
+                    (PluginManager.Core.ActiveDocument as MapDocumentView).UpdateTileset(diag.FileName);
             }
         }
 
         private static void menuMapProps_Click(object sender, EventArgs e)
         {
-            MapEditView editor = PluginManager.Core.ActiveDocument as MapEditView;
-            using (MapPropertiesForm form = new MapPropertiesForm(editor.Map))
+            var mapView = PluginManager.Core.ActiveDocument as MapDocumentView;
+            using (var dialog = new MapPropertiesForm(mapView.Map))
             {
-                if (form.ShowDialog() == DialogResult.OK)
-                    editor.SetTileSize(editor.Map.Tileset.TileWidth, editor.Map.Tileset.TileHeight);
+                if (dialog.ShowDialog() == DialogResult.OK)
+                    mapView.SetTileSize(mapView.Map.Tileset.TileWidth, mapView.Map.Tileset.TileHeight);
             }
         }
         #endregion

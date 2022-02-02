@@ -1,4 +1,4 @@
-﻿namespace SphereStudio.Plugins.Components
+﻿namespace SphereStudio.Components
 {
     partial class MapControl
     {
@@ -77,7 +77,7 @@
             // 
             // SelectItem
             // 
-            this.SelectItem.Image = global::SphereStudio.Plugins.Properties.Resources.pencil;
+            this.SelectItem.Image = global::SphereStudio.Properties.Resources.pencil;
             this.SelectItem.Name = "SelectItem";
             this.SelectItem.Size = new System.Drawing.Size(140, 22);
             this.SelectItem.Text = "Select &Tile";
@@ -85,7 +85,7 @@
             // 
             // SetStartItem
             // 
-            this.SetStartItem.Image = global::SphereStudio.Plugins.Properties.Resources.startpos;
+            this.SetStartItem.Image = global::SphereStudio.Properties.Resources.startpos;
             this.SetStartItem.Name = "SetStartItem";
             this.SetStartItem.Size = new System.Drawing.Size(140, 22);
             this.SetStartItem.Text = "Set &Start";
@@ -121,7 +121,7 @@
             // 
             // PersonItem
             // 
-            this.PersonItem.Image = global::SphereStudio.Plugins.Properties.Resources.person;
+            this.PersonItem.Image = global::SphereStudio.Properties.Resources.person;
             this.PersonItem.Name = "PersonItem";
             this.PersonItem.Size = new System.Drawing.Size(111, 22);
             this.PersonItem.Text = "Person";
@@ -129,7 +129,7 @@
             // 
             // TriggerItem
             // 
-            this.TriggerItem.Image = global::SphereStudio.Plugins.Properties.Resources.trigger;
+            this.TriggerItem.Image = global::SphereStudio.Properties.Resources.trigger;
             this.TriggerItem.Name = "TriggerItem";
             this.TriggerItem.Size = new System.Drawing.Size(111, 22);
             this.TriggerItem.Text = "Trigger";

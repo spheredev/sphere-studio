@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 using SphereStudio.Base;
+using SphereStudio.MusicPlayers;
 using SphereStudio.Utility;
 
-namespace SphereStudio.Plugins.UI
+namespace SphereStudio.UI
 {
-    partial class AudioPlayerPane : UserControl, IDockPane, IFileOpener, IStyleAware
+    partial class AudioPlayerPane : UserControl, IStyleAware, IDockPane
     {
         private readonly string[] _fileTypes = new[]
         {
@@ -63,15 +63,6 @@ namespace SphereStudio.Plugins.UI
         public DockHint DockHint => DockHint.Left;
         public Bitmap DockIcon => Properties.Resources.Icon;
 
-        public string FileTypeName => "Audio File";
-        public Bitmap FileIcon => Properties.Resources.Icon;
-        public string[] FileExtensions => new[]
-        {
-            "mp3", "ogg", "flac",      // compressed audio formats
-            "mod", "it", "s3d", "s3m", // tracker formats
-            "wav"                      // uncompressed/PCM formats
-        };
-
         public void ApplyStyle(UIStyle style)
         {
             style.AsUIElement(toolbar);
@@ -88,9 +79,9 @@ namespace SphereStudio.Plugins.UI
             playTool.Text = "Paused";
         }
 
-        public DocumentView Open(string fileName)
+        public void Play(string fileName)
         {
-            bool isMusic = Path.GetExtension(fileName) != ".wav";
+            var isMusic = Path.GetExtension(fileName) != ".wav";
             IPlayer newPlayer;
             try
             {
@@ -100,7 +91,7 @@ namespace SphereStudio.Plugins.UI
             {
                 MessageBox.Show("Audio Player was unable to play the track you selected.",
                     "Audio Playback Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return null;
+                return;
             }
             newPlayer.Play();
             if (isMusic)
@@ -115,7 +106,6 @@ namespace SphereStudio.Plugins.UI
                 pauseTool.CheckState = CheckState.Unchecked;
                 stopTool.Enabled = true;
             }
-            return null;
         }
 
         public void WatchProject(IProject game)
@@ -141,7 +131,7 @@ namespace SphereStudio.Plugins.UI
         {
             ListViewItem chosenItem = listView.SelectedItems[0];
             string filePath = (string)chosenItem.Tag;
-            Open(filePath);
+            Play(filePath);
         }
 
         private void pauseTool_Click(object sender, EventArgs e)
@@ -161,9 +151,9 @@ namespace SphereStudio.Plugins.UI
         {
             if (player == null) return;
             player.PlayOrPause();
-            pauseTool.CheckState = player.IsPaused ? CheckState.Checked : CheckState.Unchecked;
-            playTool.Image = player.IsPaused ? playIcons.Images["pause"] : playIcons.Images["play"];
-            playTool.Text = player.IsPaused ? "Paused" : "Playing";
+            pauseTool.CheckState = player.Paused ? CheckState.Checked : CheckState.Unchecked;
+            playTool.Image = player.Paused ? playIcons.Images["pause"] : playIcons.Images["play"];
+            playTool.Text = player.Paused ? "Paused" : "Playing";
         }
 
         public override void Refresh()

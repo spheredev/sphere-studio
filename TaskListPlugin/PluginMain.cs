@@ -2,9 +2,9 @@
 using System.Windows.Forms;
 
 using SphereStudio.Base;
-using SphereStudio.Plugins.UI;
+using SphereStudio.UI;
 
-namespace SphereStudio.Plugins
+namespace SphereStudio
 {
     public class PluginMain : IPluginMain
     {
@@ -15,13 +15,13 @@ namespace SphereStudio.Plugins
 
         private TaskListPane dockPane;
 
-        public void Initialize(ISettings conf)
+        public void Initialize(ISettings settings)
         {
             dockPane = new TaskListPane();
             
             PluginManager.Register(this, dockPane, "Task List");
-            PluginManager.Core.LoadProject += on_LoadProject;
-            PluginManager.Core.UnloadProject += on_UnloadProject;
+            PluginManager.Core.LoadProject += ide_LoadProject;
+            PluginManager.Core.UnloadProject += ide_UnloadProject;
 
             // if a project is already loaded, populate its task list
             var projectRoot = PluginManager.Core.Project?.RootPath;            
@@ -31,17 +31,17 @@ namespace SphereStudio.Plugins
 
         public void ShutDown()
         {
-            PluginManager.Core.LoadProject -= on_LoadProject;
-            PluginManager.Core.UnloadProject -= on_UnloadProject;
+            PluginManager.Core.LoadProject -= ide_LoadProject;
+            PluginManager.Core.UnloadProject -= ide_UnloadProject;
             PluginManager.UnregisterAll(this);
         }
 
-        private void on_LoadProject(object sender, EventArgs e)
+        private void ide_LoadProject(object sender, EventArgs e)
         {
             dockPane.LoadTaskList(PluginManager.Core.Project.RootPath);
         }
 
-        private void on_UnloadProject(object sender, EventArgs e)
+        private void ide_UnloadProject(object sender, EventArgs e)
         {
             dockPane.SaveTaskList();
             dockPane.Clear(true);

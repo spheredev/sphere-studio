@@ -1,4 +1,4 @@
-﻿namespace SphereStudio.Plugins.Components
+﻿namespace SphereStudio.Components
 {
     partial class LayerControl
     {

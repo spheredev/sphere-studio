@@ -7,9 +7,9 @@ using System.Windows.Forms;
 
 using SphereStudio.Base;
 
-namespace SphereStudio.Plugins.UI
+namespace SphereStudio.UI
 {
-    internal partial class TaskListPane : UserControl, IDockPane, IStyleAware
+    internal partial class TaskListPane : UserControl, IStyleAware, IDockPane
     {
         private readonly ImageList _imagelist = new ImageList();
 
@@ -30,7 +30,7 @@ namespace SphereStudio.Plugins.UI
 
             olvColumn1.ImageGetter = delegate (object rowObject)
             {
-                TaskEntry t = (TaskEntry)rowObject;
+                var t = (TaskEntry)rowObject;
                 return t.IsFinished ? "done" : "not";
             };
 

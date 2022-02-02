@@ -46,13 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\QuickFinder.cs">
+    <Compile Include="Components\QuickFind.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Components\QuickFinder.Designer.cs">
-      <DependentUpon>QuickFinder.cs</DependentUpon>
+    <Compile Include="Components\QuickFind.Designer.cs">
+      <DependentUpon>QuickFind.cs</DependentUpon>
     </Compile>
-    <Compile Include="Editors\SphereTextEditor.cs" />
+    <Compile Include="Editors\TextEditor.cs" />
     <Compile Include="FileOpeners\TextFileOpener.cs" />
     <Compile Include="PluginSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -61,11 +61,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="DocumentViews\SphereTextView.cs">
+    <Compile Include="DocumentViews\TextDocumentView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="DocumentViews\SphereTextView.Designer.cs">
-      <DependentUpon>SphereTextView.cs</DependentUpon>
+    <Compile Include="DocumentViews\TextDocumentView.Designer.cs">
+      <DependentUpon>TextDocumentView.cs</DependentUpon>
     </Compile>
     <Compile Include="PluginMain.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
@@ -77,15 +77,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Components\QuickFinder.resx">
-      <DependentUpon>QuickFinder.cs</DependentUpon>
+    <EmbeddedResource Include="Components\QuickFind.resx">
+      <DependentUpon>QuickFind.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="DocumentViews\SphereTextView.resx">
-      <DependentUpon>SphereTextView.cs</DependentUpon>
+    <EmbeddedResource Include="DocumentViews\TextDocumentView.resx">
+      <DependentUpon>TextDocumentView.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

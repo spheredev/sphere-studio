@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SphereStudio.Plugins
+namespace SphereStudio.MusicPlayers
 {
     interface IPlayer : IDisposable
     {
-        bool IsPaused { get; }
+        bool Paused { get; set; }
         uint Position { get; set; }
         uint Length { get; }
         

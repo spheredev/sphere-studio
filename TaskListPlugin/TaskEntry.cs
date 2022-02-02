@@ -1,9 +1,25 @@
-﻿namespace SphereStudio.Plugins
+﻿namespace SphereStudio
 {
-    enum TaskPriority { High, Medium, Low, None };
-    enum TaskType { Addition, Art, Bug, Feature, Gameplay, Other, UI };
+    enum TaskPriority
+    {
+        High,
+        Medium,
+        Low,
+        None,
+    }
+    
+    enum TaskType
+    {
+        Addition,
+        Art,
+        Bug,
+        Feature,
+        Gameplay,
+        Other,
+        UI,
+    }
 
-    internal class TaskEntry
+    class TaskEntry
     {
         public TaskEntry(string name = "")
         {
@@ -26,13 +42,16 @@
         }
 
         public string Name { get; set; }
+
         public TaskPriority Priority { get; set; }
+
         public TaskType Type { get; set; }
+
         public bool IsFinished { get; set; }
 
         public void IncreasePriority()
         {
-            int p = (int)Priority;
+            var p = (int)Priority;
             if (p - 1 >= 0)
                 p--;
             Priority = (TaskPriority)p;
@@ -40,7 +59,7 @@
 
         public void DecreasePriority()
         {
-            int p = (int)Priority;
+            var p = (int)Priority;
             if (p + 1 <= 3)
                 p++;
             Priority = (TaskPriority)p;

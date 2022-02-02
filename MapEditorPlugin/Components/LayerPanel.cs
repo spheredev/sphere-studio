@@ -2,10 +2,10 @@
 using System.ComponentModel;
 using System.Windows.Forms;
 
-using SphereStudio.Plugins.Forms;
+using SphereStudio.Forms;
 using SphereStudio.UI;
 
-namespace SphereStudio.Plugins.Components
+namespace SphereStudio.Components
 {
     partial class LayerPanel : UserControl
     {

@@ -73,10 +73,21 @@ namespace SphereStudio.SettingsPages
             return true;
         }
 
+        private void browseDirButton_Click(object sender, EventArgs e)
+        {
+            var dialog = new FolderBrowserDialog()
+            {
+                Description = "Select a directory containing a compiled Oozaru engine instance.",
+                ShowNewFolderButton = false,
+            };
+            if (dialog.ShowDialog(this) == DialogResult.OK)
+                enginePathTextBox.Text = dialog.SelectedPath;
+        }
+
         private void enginePathTextBox_TextChanged(object sender, EventArgs e)
         {
             var enginePath = enginePathTextBox.Text.Trim();
-            var jsonPath = Path.Combine(enginePathTextBox.Text, "oozaru.json");
+            var jsonPath = Path.Combine(enginePath, "oozaru.json");
             try
             {
                 var jsonText = File.ReadAllText(jsonPath, Encoding.UTF8);
@@ -91,19 +102,6 @@ namespace SphereStudio.SettingsPages
             {
                 engineLabel.Text = "No Oozaru distribution could be found there.";
                 publisherLabel.Text = "N/A";
-            }
-        }
-
-        private void browseDirButton_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog fb = new FolderBrowserDialog()
-            {
-                Description = "Select a directory containing a compiled Oozaru engine instance.",
-                ShowNewFolderButton = false
-            };
-            if (fb.ShowDialog(this) == DialogResult.OK)
-            {
-                enginePathTextBox.Text = fb.SelectedPath;
             }
         }
     }

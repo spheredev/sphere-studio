@@ -1,9 +1,10 @@
 ﻿using System;
 
 using SphereStudio.Base;
-using SphereStudio.Plugins.UI;
+using SphereStudio.FileOpeners;
+using SphereStudio.UI;
 
-namespace SphereStudio.Plugins
+namespace SphereStudio
 {
     public class PluginMain : IPluginMain
     {
@@ -14,17 +15,18 @@ namespace SphereStudio.Plugins
 
         private AudioPlayerPane dockPane;
 
-        public void Initialize(ISettings conf)
+        public void Initialize(ISettings settings)
         {
             dockPane = new AudioPlayerPane(this);
             dockPane.WatchProject(PluginManager.Core.Project);
             dockPane.Refresh();
 
             PluginManager.Register(this, dockPane, "Audio Player");
+            PluginManager.Register(this, new AudioFileOpener(dockPane), "Audio Player Sidebar");
 
-            PluginManager.Core.LoadProject += on_LoadProject;
-            PluginManager.Core.UnloadProject += on_UnloadProject;
-            PluginManager.Core.TestGame += on_TestGame;
+            PluginManager.Core.LoadProject += ide_LoadProject;
+            PluginManager.Core.UnloadProject += ide_UnloadProject;
+            PluginManager.Core.TestGame += ide_TestGame;
         }
 
         public void ShutDown()
@@ -32,22 +34,22 @@ namespace SphereStudio.Plugins
             PluginManager.UnregisterAll(this);
             dockPane.WatchProject(null);
             dockPane.stopPlayback();
-            PluginManager.Core.LoadProject -= on_LoadProject;
-            PluginManager.Core.UnloadProject -= on_UnloadProject;
-            PluginManager.Core.TestGame -= on_TestGame;
+            PluginManager.Core.LoadProject -= ide_LoadProject;
+            PluginManager.Core.UnloadProject -= ide_UnloadProject;
+            PluginManager.Core.TestGame -= ide_TestGame;
         }
 
-        private void on_LoadProject(object sender, EventArgs e)
+        private void ide_LoadProject(object sender, EventArgs e)
         {
             dockPane.WatchProject(PluginManager.Core.Project);
         }
 
-        private void on_UnloadProject(object sender, EventArgs e)
+        private void ide_UnloadProject(object sender, EventArgs e)
         {
             dockPane.WatchProject(null);
         }
 
-        private void on_TestGame(object sender, EventArgs e)
+        private void ide_TestGame(object sender, EventArgs e)
         {
             dockPane.ForcePause();
         }

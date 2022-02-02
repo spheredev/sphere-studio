@@ -1,4 +1,4 @@
-﻿namespace SphereStudio.Plugins.UI
+﻿namespace SphereStudio.UI
 {
     partial class AudioPlayerPane
     {

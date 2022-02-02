@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 using SphereStudio.Formats;
 
-namespace SphereStudio.Plugins
+namespace SphereStudio
 {
     internal static class PluginData
     {
@@ -18,13 +18,14 @@ namespace SphereStudio.Plugins
         
         public static void LoadFunctions()
         {
-            FileInfo file = new FileInfo(Application.StartupPath + "/docs/functions.txt");
-            if (!file.Exists) return;
-
-            using (StreamReader reader = file.OpenText())
+            var fileInfo = new FileInfo(Application.StartupPath + "/docs/functions.txt");
+            if (fileInfo.Exists)
             {
-                while (!reader.EndOfStream)
-                    Functions.Add(reader.ReadLine());
+                using (var reader = fileInfo.OpenText())
+                {
+                    while (!reader.EndOfStream)
+                        Functions.Add(reader.ReadLine());
+                }
             }
         }
     }

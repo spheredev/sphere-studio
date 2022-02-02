@@ -7,7 +7,7 @@
     <ProjectGuid>{E17C35BE-A26F-411D-B814-979017F290DF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SphereStudio.Plugins</RootNamespace>
+    <RootNamespace>SphereStudio</RootNamespace>
     <AssemblyName>MapEditorPlugin</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -86,6 +86,7 @@
     <Compile Include="Components\TilesetControl2.Designer.cs">
       <DependentUpon>TilesetControl2.cs</DependentUpon>
     </Compile>
+    <Compile Include="FileOpeners\MapFileOpener.cs" />
     <Compile Include="Forms\LayerForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -123,11 +124,11 @@
       <DependentUpon>ZoneForm.cs</DependentUpon>
     </Compile>
     <Compile Include="PluginMain.cs" />
-    <Compile Include="MapEditView.cs">
+    <Compile Include="DocumentViews\MapDocumentView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="MapEditView.Designer.cs">
-      <DependentUpon>MapEditView.cs</DependentUpon>
+    <Compile Include="DocumentViews\MapDocumentView.Designer.cs">
+      <DependentUpon>MapDocumentView.cs</DependentUpon>
     </Compile>
     <Compile Include="PluginData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -136,7 +137,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="UndoRedo.cs" />
+    <Compile Include="UndoRedo\UndoRedo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SphereStudioBase\SphereStudioBase.csproj">
@@ -182,8 +183,8 @@
     <EmbeddedResource Include="Forms\ZoneForm.resx">
       <DependentUpon>ZoneForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MapEditView.resx">
-      <DependentUpon>MapEditView.cs</DependentUpon>
+    <EmbeddedResource Include="DocumentViews\MapDocumentView.resx">
+      <DependentUpon>MapDocumentView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

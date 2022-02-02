@@ -7,11 +7,11 @@ using System.Windows.Forms;
 
 using SphereStudio.Base;
 using SphereStudio.Formats;
-using SphereStudio.Plugins.Forms;
-using SphereStudio.Plugins.UndoRedo;
+using SphereStudio.Forms;
+using SphereStudio.UndoRedo;
 using SphereStudio.Utility;
 
-namespace SphereStudio.Plugins.Components
+namespace SphereStudio.Components
 {
     partial class MapControl : UserControl
     {

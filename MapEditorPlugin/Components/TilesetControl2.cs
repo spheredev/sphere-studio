@@ -9,7 +9,7 @@ using SphereStudio.UI;
 using SphereStudio.Utility;
 using SphereStudio.Formats;
 
-namespace SphereStudio.Plugins.Components
+namespace SphereStudio.Components
 {
     partial class TilesetControl2 : UserControl
     {

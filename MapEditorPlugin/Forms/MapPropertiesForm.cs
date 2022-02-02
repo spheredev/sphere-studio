@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using SphereStudio.UI;
 using SphereStudio.Formats;
 
-namespace SphereStudio.Plugins.Forms
+namespace SphereStudio.Forms
 {
     partial class MapPropertiesForm : Form
     {

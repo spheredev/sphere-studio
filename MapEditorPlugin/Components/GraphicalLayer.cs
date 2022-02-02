@@ -5,7 +5,7 @@ using System.Drawing.Imaging;
 
 using SphereStudio.Formats;
 
-namespace SphereStudio.Plugins.Components
+namespace SphereStudio.Components
 {
     public class GraphicalLayer : IDisposable
     {

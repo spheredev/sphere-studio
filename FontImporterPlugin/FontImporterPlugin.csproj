@@ -8,7 +8,7 @@
     <ProjectGuid>{DD4965DE-8289-4E3F-839E-B008A06B3A97}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SphereStudio.Plugins</RootNamespace>
+    <RootNamespace>SphereStudio</RootNamespace>
     <AssemblyName>FontImporterPlugin</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -42,17 +42,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FontSet.cs">
+    <Compile Include="FileOpeners\SphereFontOpener.cs" />
+    <Compile Include="Components\FontSet.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="FontSet.Designer.cs">
+    <Compile Include="Components\FontSet.Designer.cs">
       <DependentUpon>FontSet.cs</DependentUpon>
     </Compile>
-    <Compile Include="FontEditView.cs">
+    <Compile Include="DocumentViews\FontImporterView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="FontEditView.Designer.cs">
-      <DependentUpon>FontEditView.cs</DependentUpon>
+    <Compile Include="DocumentViews\FontImporterView.Designer.cs">
+      <DependentUpon>FontImporterView.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -64,11 +65,11 @@
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="FontSet.resx">
+    <EmbeddedResource Include="Components\FontSet.resx">
       <DependentUpon>FontSet.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FontEditView.resx">
-      <DependentUpon>FontEditView.cs</DependentUpon>
+    <EmbeddedResource Include="DocumentViews\FontImporterView.resx">
+      <DependentUpon>FontImporterView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -94,6 +95,7 @@
   <ItemGroup>
     <None Include="Resources\style.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

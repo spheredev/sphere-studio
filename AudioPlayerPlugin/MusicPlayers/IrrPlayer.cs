@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using IrrKlang;
 
-using IrrKlang;
-
-namespace SphereStudio.Plugins
+namespace SphereStudio.MusicPlayers
 {
     class IrrPlayer : IPlayer
     {
@@ -24,9 +18,10 @@ namespace SphereStudio.Plugins
             engine.Dispose();
         }
 
-        public bool IsPaused
+        public bool Paused
         {
-            get { return stream.Paused; }
+            get => stream.Paused;
+            set => stream.Paused = value;
         }
 
         public uint Length

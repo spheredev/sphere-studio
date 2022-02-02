@@ -12,7 +12,7 @@ namespace SphereStudio
 {
     public class PluginMain : IPluginMain
     {
-        public string Name => "Sphere Text Editor";
+        public string Name => "Sphere Code & Text Editor";
         public string Description => "Code and text editor optimized for Sphere";
         public string Version => Versioning.Version;
         public string Author => Versioning.Author;
@@ -37,7 +37,7 @@ namespace SphereStudio
             initializeMenuItems();
             Settings = new PluginSettings(settings);
 
-            PluginManager.Register(this, new SphereTextEditor(this), Name);
+            PluginManager.Register(this, new TextEditor(this), Name);
             PluginManager.Register(this, new TextFileOpener(this), Name);
             PluginManager.Core.AddMenuItem(scriptMenu, "Project");
 

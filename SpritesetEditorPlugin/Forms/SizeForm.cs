@@ -3,9 +3,9 @@ using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.Windows.Forms;
 
-namespace SphereStudio.Plugins.Forms
+namespace SphereStudio.Forms
 {
-    internal partial class SizeForm : Form
+    partial class SizeForm : Form
     {
         private int _width;
         private int _height;

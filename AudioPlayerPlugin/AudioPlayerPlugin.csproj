@@ -8,7 +8,7 @@
     <ProjectGuid>{F1B89568-607D-4CEC-9C11-6C516D98E2EC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SphereStudio.Plugins</RootNamespace>
+    <RootNamespace>SphereStudio</RootNamespace>
     <AssemblyName>AudioPlayerPlugin</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileOpeners\AudioFileOpener.cs" />
     <Compile Include="MusicPlayers\IPlayer.cs" />
     <Compile Include="MusicPlayers\IrrPlayer.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

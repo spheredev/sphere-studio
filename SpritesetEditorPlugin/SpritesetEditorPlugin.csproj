@@ -7,7 +7,7 @@
     <ProjectGuid>{9FEA4A11-754F-4F4B-8A85-B0E780F15159}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SphereStudio.Plugins</RootNamespace>
+    <RootNamespace>SphereStudio</RootNamespace>
     <AssemblyName>SpritesetEditorPlugin</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -76,6 +76,7 @@
     <Compile Include="Components\TilesetControl2.Designer.cs">
       <DependentUpon>TilesetControl2.cs</DependentUpon>
     </Compile>
+    <Compile Include="FileOpeners\SpritesetOpener.cs" />
     <Compile Include="Forms\SizeForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -87,11 +88,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SpritesetEditView.cs">
+    <Compile Include="DocumentViews\SpritesetView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SpritesetEditView.Designer.cs">
-      <DependentUpon>SpritesetEditView.cs</DependentUpon>
+    <Compile Include="DocumentViews\SpritesetView.Designer.cs">
+      <DependentUpon>SpritesetView.cs</DependentUpon>
     </Compile>
     <Compile Include="PluginMain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -122,8 +123,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="SpritesetEditView.resx">
-      <DependentUpon>SpritesetEditView.cs</DependentUpon>
+    <EmbeddedResource Include="DocumentViews\SpritesetView.resx">
+      <DependentUpon>SpritesetView.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

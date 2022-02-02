@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 using SphereStudio.Formats;
 
-namespace SphereStudio.Plugins.Forms
+namespace SphereStudio.Forms
 {
     partial class LayerForm : Form
     {

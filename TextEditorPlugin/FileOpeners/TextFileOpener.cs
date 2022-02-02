@@ -23,13 +23,13 @@ namespace SphereStudio.FileOpeners
 
         public DocumentView New()
         {
-            var scriptView = new SphereTextView(plugin);
+            var scriptView = new TextDocumentView(plugin);
             return scriptView.NewDocument() ? scriptView : null;
         }
 
         public DocumentView Open(string fileName)
         {
-            var scriptView = new SphereTextView(plugin);
+            var scriptView = new TextDocumentView(plugin);
             scriptView.Load(fileName);
             return scriptView;
         }

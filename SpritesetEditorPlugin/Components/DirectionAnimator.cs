@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 using SphereStudio.Formats;
 
-namespace SphereStudio.Plugins.Components
+namespace SphereStudio.Components
 {
     internal partial class DirectionAnimator : UserControl
     {

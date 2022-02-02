@@ -71,9 +71,11 @@ namespace SphereStudio.SettingsPages
 
         private void browseDirButton_Click(object sender, EventArgs e)
         {
-            var dialog = new FolderBrowserDialog();
-            dialog.Description = "Select the directory where neoSphere is installed.";
-            dialog.ShowNewFolderButton = false;
+            var dialog = new FolderBrowserDialog()
+            {
+                Description = "Select the directory where neoSphere is installed.",
+                ShowNewFolderButton = false,
+            };
             if (dialog.ShowDialog(this) == DialogResult.OK)
                 enginePathTextBox.Text = dialog.SelectedPath;
         }

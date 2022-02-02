@@ -297,9 +297,9 @@
       <Project>{dd4965de-8289-4e3f-839e-b008a06b3a97}</Project>
       <Name>FontImporterPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BitmapImageEditorPlugin\BitmapImageEditorPlugin.csproj">
+    <ProjectReference Include="..\ImageEditorPlugin\ImageEditorPlugin.csproj">
       <Project>{83d6d166-7f7d-46ca-81bf-9baf8e35f6bc}</Project>
-      <Name>BitmapImageEditorPlugin</Name>
+      <Name>ImageEditorPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\OozaruSupportPlugin\OozaruSupportPlugin.csproj">
       <Project>{b0c58dbb-a783-42a5-9b0d-55bcee78b5b9}</Project>
@@ -337,9 +337,9 @@
       <Project>{f7434dec-a94a-409c-a320-7585b4083a6a}</Project>
       <Name>TaskListPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WindowstyleEditorPlugin\WindowstyleEditorPlugin.csproj">
+    <ProjectReference Include="..\WindowstyleEditorPlugin\WindowStyleEditorPlugin.csproj">
       <Project>{65bcdeef-c718-492a-8c82-7886a3af8b7b}</Project>
-      <Name>WindowstyleEditorPlugin</Name>
+      <Name>WindowStyleEditorPlugin</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

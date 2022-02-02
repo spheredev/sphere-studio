@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using SphereStudio.Base;
 using SphereStudio.Formats;
 
-namespace SphereStudio.Plugins.Components
+namespace SphereStudio.Components
 {
     internal class FramePanel : Panel
     {

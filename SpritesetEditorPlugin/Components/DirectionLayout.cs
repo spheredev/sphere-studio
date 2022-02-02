@@ -2,10 +2,11 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-using SphereStudio.UI;
+using SphereStudio.DocumentViews;
 using SphereStudio.Formats;
+using SphereStudio.UI;
 
-namespace SphereStudio.Plugins.Components
+namespace SphereStudio.Components
 {
     internal partial class DirectionLayout : UserControl
     {
@@ -14,7 +15,7 @@ namespace SphereStudio.Plugins.Components
         private Direction _direction;
         private bool _drag;
         private Point _drag_start;
-        private SpritesetEditView _parent_editor;
+        private SpritesetView _parent_editor;
         private bool _showDelay;
 
         public event EventHandler OnFrameClick;
@@ -24,7 +25,7 @@ namespace SphereStudio.Plugins.Components
         private FramePanel _panel_to_add = null;
         public FramePanel SelectedFrame { get; set; }
 
-        public DirectionLayout(Spriteset sprite, Direction direction, SpritesetEditView parent)
+        public DirectionLayout(Spriteset sprite, Direction direction, SpritesetView parent)
         {
             InitializeComponent();
             NameTextBox.Text = direction.Name;

@@ -52,12 +52,15 @@ namespace SphereStudio.Core
         {
             if (!enabled)
             {
-                ISettings conf = new IniSettings(Session.MainIniFile, Handle);
+                var settings = new IniSettings(Session.MainIniFile, Handle);
                 try {
-                    Main.Initialize(conf);
+                    Main.Initialize(settings);
                     enabled = true;
                 }
-                catch { }
+                catch
+                {
+                    // *MUNCH*
+                }
             }
         }
 

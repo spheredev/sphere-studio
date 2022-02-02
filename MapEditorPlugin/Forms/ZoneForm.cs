@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using SphereStudio.Formats;
 using SphereStudio.UI;
 
-namespace SphereStudio.Plugins.Forms
+namespace SphereStudio.Forms
 {
     partial class ZoneForm : Form
     {

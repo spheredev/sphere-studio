@@ -6,7 +6,7 @@ using SphereStudio.Base;
 using SphereStudio.UI;
 using SphereStudio.Formats;
 
-namespace SphereStudio.Plugins.Forms
+namespace SphereStudio.Forms
 {
     partial class PersonForm : Form
     {

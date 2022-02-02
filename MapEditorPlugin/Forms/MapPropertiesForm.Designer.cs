@@ -1,4 +1,4 @@
-﻿namespace SphereStudio.Plugins.Forms
+﻿namespace SphereStudio.Forms
 {
     partial class MapPropertiesForm
     {

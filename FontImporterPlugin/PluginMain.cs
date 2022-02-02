@@ -1,42 +1,26 @@
 ﻿using System.Drawing;
 
 using SphereStudio.Base;
+using SphereStudio.FileOpeners;
 using SphereStudio.UI;
 
-namespace SphereStudio.Plugins
+namespace SphereStudio
 {
-    public class PluginMain : IPluginMain, INewFileOpener
+    public class PluginMain : IPluginMain
     {
         public string Name => "Sphere Font Importer";
-        public string Description => "TrueType to Sphere v1 RFN font converter";
+        public string Description => "Convert TrueType fonts to the Sphere RFN format";
         public string Version => Versioning.Version;
         public string Author => Versioning.Author;
 
-        public string FileTypeName => "RFN Font";
-        public string[] FileExtensions => new[] { "rfn" };
-        public Bitmap FileIcon => Properties.Resources.style;
-
         public void Initialize(ISettings conf)
         {
-            PluginManager.Register(this, this, Name);
+            PluginManager.Register(this, new SphereFontOpener(), Name);
         }
 
         public void ShutDown()
         {
             PluginManager.UnregisterAll(this);
-        }
-
-        public DocumentView New()
-        {
-            DocumentView view = new FontEditView();
-            return view.NewDocument() ? view : null;
-        }
-
-        public DocumentView Open(string fileName)
-        {
-            DocumentView view = new FontEditView();
-            view.Load(fileName);
-            return view;
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 using SphereStudio.Base;
 
-namespace SphereStudio.Plugins.Forms
+namespace SphereStudio.Forms
 {
     partial class NewMapDialogue : Form
     {

@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using SphereStudio.Utility;
 using SphereStudio.Formats;
 
-namespace SphereStudio.Plugins.Components
+namespace SphereStudio.Components
 {
     partial class TileEditor : UserControl
     {
