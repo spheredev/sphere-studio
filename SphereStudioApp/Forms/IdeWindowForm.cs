@@ -278,18 +278,18 @@ namespace SphereStudio.Forms
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            Rectangle savedBounds = WindowState != FormWindowState.Normal ? RestoreBounds : Bounds;
-            Properties.Settings.Default.WindowX = savedBounds.X;
-            Properties.Settings.Default.WindowY = savedBounds.Y;
-            Properties.Settings.Default.WindowWidth = savedBounds.Width;
-            Properties.Settings.Default.WindowHeight = savedBounds.Height;
+            var windowBounds = WindowState != FormWindowState.Normal ? RestoreBounds : Bounds;
+            Properties.Settings.Default.WindowX = windowBounds.X;
+            Properties.Settings.Default.WindowY = windowBounds.Y;
+            Properties.Settings.Default.WindowWidth = windowBounds.Width;
+            Properties.Settings.Default.WindowHeight = windowBounds.Height;
             Properties.Settings.Default.WindowMaxed = WindowState == FormWindowState.Maximized;
             Properties.Settings.Default.Save();
 
             Size = new Size(Properties.Settings.Default.WindowWidth, Properties.Settings.Default.WindowHeight);
             WindowState = Properties.Settings.Default.WindowMaxed ? FormWindowState.Maximized : FormWindowState.Normal;
 
-            if (!closeCurrentProject(true))
+            if (!closeCurrentProject())
                 e.Cancel = true;
             else
                 dockManager.Persist();
@@ -365,8 +365,9 @@ namespace SphereStudio.Forms
             var tabsToClose = tabs.ToArray();
             if (!forceClose && !tabsToClose.All(tab => tab.PromptSave()))
                 return false;
+            bool closedAll = true;
             foreach (var tab in tabsToClose)
-                tab.Close(true);
+                closedAll &= tab.Close(true);
             StartPageVisible = false;
             return true;
         }

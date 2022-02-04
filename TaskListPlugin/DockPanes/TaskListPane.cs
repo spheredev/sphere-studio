@@ -30,7 +30,7 @@ namespace SphereStudio.UI
 
             olvColumn1.ImageGetter = delegate (object rowObject)
             {
-                var t = (TaskEntry)rowObject;
+                var t = (TaskListItem)rowObject;
                 return t.IsFinished ? "done" : "not";
             };
 
@@ -68,7 +68,7 @@ namespace SphereStudio.UI
 
         private void AddTaskItem_Click(object sender, EventArgs e)
         {
-            listView.AddObject(new TaskEntry("New Task"));
+            listView.AddObject(new TaskListItem("New Task"));
         }
 
         private void RemoveTaskItem_Click(object sender, EventArgs e)
@@ -79,7 +79,7 @@ namespace SphereStudio.UI
 
         private void RemoveCompletedItem_Click(object sender, EventArgs e)
         {
-            List<TaskEntry> removed = listView.Objects.Cast<TaskEntry>().Where(task => task.IsFinished).ToList();
+            List<TaskListItem> removed = listView.Objects.Cast<TaskListItem>().Where(task => task.IsFinished).ToList();
             listView.RemoveObjects(removed);
         }
 
@@ -128,7 +128,7 @@ namespace SphereStudio.UI
             using (BinaryWriter writer = new BinaryWriter(File.OpenWrite(tasksFilePath)))
             {
                 writer.Write(listView.GetItemCount());
-                foreach (TaskEntry task in listView.Objects)
+                foreach (TaskListItem task in listView.Objects)
                 {
                     writer.Write(task.IsFinished);
                     writer.Write(task.Name);
@@ -147,11 +147,11 @@ namespace SphereStudio.UI
                 return;
             using (BinaryReader reader = new BinaryReader(File.OpenRead(tasksFilePath)))
             {
-                List<TaskEntry> tasks = new List<TaskEntry>();
+                List<TaskListItem> tasks = new List<TaskListItem>();
                 int amt = reader.ReadInt32();
                 while (amt-- > 0)
                 {
-                    TaskEntry t = new TaskEntry()
+                    TaskListItem t = new TaskListItem()
                     {
                         IsFinished = reader.ReadBoolean(),
                         Name = reader.ReadString(),
@@ -171,7 +171,7 @@ namespace SphereStudio.UI
 
         private void priorityUpButton_Click(object sender, EventArgs e)
         {
-            foreach (TaskEntry task in listView.SelectedObjects)
+            foreach (TaskListItem task in listView.SelectedObjects)
                 task.IncreasePriority();
 
             listView.RefreshSelectedObjects();
@@ -179,7 +179,7 @@ namespace SphereStudio.UI
 
         private void priorityDownButton_Click(object sender, EventArgs e)
         {
-            foreach (TaskEntry task in listView.SelectedObjects)
+            foreach (TaskListItem task in listView.SelectedObjects)
                 task.DecreasePriority();
 
             listView.RefreshSelectedObjects();
@@ -187,13 +187,13 @@ namespace SphereStudio.UI
 
         private void DeleteItem_Click(object sender, EventArgs e)
         {
-            foreach (TaskEntry task in listView.SelectedObjects)
+            foreach (TaskListItem task in listView.SelectedObjects)
                 listView.RemoveObject(task);
         }
 
         private void SetType_Click(object sender, EventArgs e)
         {
-            foreach (TaskEntry task in listView.SelectedObjects)
+            foreach (TaskListItem task in listView.SelectedObjects)
             {
                 int index = SetTypeItem.DropDownItems.IndexOf((ToolStripItem)sender);
                 task.Type = (TaskType)index;
@@ -203,7 +203,7 @@ namespace SphereStudio.UI
 
         private void SetPriorityItem_Click(object sender, EventArgs e)
         {
-            foreach (TaskEntry task in listView.SelectedObjects)
+            foreach (TaskListItem task in listView.SelectedObjects)
             {
                 int index = SetPriorityItem.DropDownItems.IndexOf((ToolStripItem)sender);
                 task.Priority = (TaskPriority)index;
@@ -213,7 +213,7 @@ namespace SphereStudio.UI
 
         private void ObjectTaskList_FormatRow(object sender, BrightIdeasSoftware.FormatRowEventArgs e)
         {
-            TaskEntry task = (TaskEntry)e.Model;
+            TaskListItem task = (TaskListItem)e.Model;
             switch (task.Priority)
             {
                 case TaskPriority.High: e.Item.BackColor = _hiColor; break;
@@ -225,7 +225,7 @@ namespace SphereStudio.UI
 
         private void ObjectTaskList_FormatCell(object sender, BrightIdeasSoftware.FormatCellEventArgs e)
         {
-            TaskEntry task = e.Model as TaskEntry;
+            TaskListItem task = e.Model as TaskListItem;
             if (e.ColumnIndex != olvColumn1.Index || task == null) return;
 
             FontStyle style = task.IsFinished ? FontStyle.Strikeout : FontStyle.Regular;

@@ -63,19 +63,19 @@ namespace SphereStudio.DocumentViews
             return true;
         }
 
-        public override void Load(string path)
+        public override void Load(string fileName)
         {
-            using (Bitmap img = (Bitmap)Image.FromFile(path))
+            using (var bitmap = (Bitmap)Image.FromFile(fileName))
             {
-                ImageEditor.SetImage(img);
+                ImageEditor.SetImage(bitmap);
             }
         }
 
-        public override void Save(string path)
+        public override void Save(string fileName)
         {
             using (var image = ImageEditor.GetImage())
             {
-                image.Save(path);
+                image.Save(fileName);
             }
             Dirty = false;
         }
@@ -92,7 +92,8 @@ namespace SphereStudio.DocumentViews
 
         public override void Undo()
         {
-            if (ImageEditor.CanUndo) ImageEditor.Undo();
+            if (ImageEditor.CanUndo)
+                ImageEditor.Undo();
             UndoButton.Enabled = ImageEditor.CanUndo;
             RedoButton.Enabled = ImageEditor.CanRedo;
             Dirty = true;
@@ -100,7 +101,8 @@ namespace SphereStudio.DocumentViews
 
         public override void Redo()
         {
-            if (ImageEditor.CanRedo) ImageEditor.Redo();
+            if (ImageEditor.CanRedo)
+                ImageEditor.Redo();
             UndoButton.Enabled = ImageEditor.CanUndo;
             RedoButton.Enabled = ImageEditor.CanRedo;
             Dirty = true;
@@ -139,7 +141,7 @@ namespace SphereStudio.DocumentViews
 
             _paletteContent.Controls.Add(EditorPanel);
             _paletteContent.DockAreas = DockAreas.DockLeft | DockAreas.DockRight;
-            _paletteContent.Text = @"Palette";
+            _paletteContent.Text = "Palette";
             _paletteContent.DockHandler.CloseButtonVisible = false;
 
             _drawContent.Show(_editorDock, DockState.Document);

@@ -95,22 +95,25 @@ namespace SphereStudio.Core
         public DocumentView View { get; private set; }
 
         /// <summary>
-        /// Prompts the user to save a modified document. The document will
-        /// remain open afterwards.
+        /// Prompts the user to save a modified document. The document remains open afterwards.
         /// </summary>
-        /// <returns>'true' if the user saved, answered No, or if the file is clean; 'false' on cancel.</returns>
+        /// <returns><c>true</c> if the user saved, answered No, or if the file is clean; <c>false</c> on cancel.</returns>
         public bool PromptSave()
         {
             if (View.Dirty)
             {
                 Activate();
-                DialogResult result = MessageBox.Show(
+                var dialogResult = MessageBox.Show(
                     $"{tabText}\n\nThis document has been modified. Any unsaved changes will be lost if you continue. Do you want to save it now?",
                     "Unsaved Changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-                if (result == DialogResult.Cancel) return false;
-                if (result == DialogResult.Yes)
+                if (dialogResult == DialogResult.Yes)
                 {
-                    if (!Save()) return false;
+                    if (!Save())
+                        return false;
+                }
+                else if (dialogResult == DialogResult.Cancel)
+                {
+                    return false;
                 }
             }
             return true;
@@ -337,7 +340,8 @@ namespace SphereStudio.Core
 
         private void dockContent_FormClosing(object sender, FormClosingEventArgs e)
         {
-            e.Cancel = !PromptSave();
+            if (e.CloseReason == CloseReason.UserClosing && !PromptSave())
+                e.Cancel = true;
             if (!e.Cancel)
                 saveViewState();
         }

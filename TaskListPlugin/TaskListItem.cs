@@ -19,23 +19,23 @@
         UI,
     }
 
-    class TaskEntry
+    class TaskListItem
     {
-        public TaskEntry(string name = "")
+        public TaskListItem(string name = "")
         {
             Name = name;
             Priority = TaskPriority.None;
             Type = TaskType.Other;
         }
 
-        public TaskEntry(string name, TaskPriority priority)
+        public TaskListItem(string name, TaskPriority priority)
             : this(name)
         {
             Priority = priority;
             Type = TaskType.Other;
         }
 
-        public TaskEntry(string name, TaskPriority priority, TaskType type)
+        public TaskListItem(string name, TaskPriority priority, TaskType type)
             : this(name, priority)
         {
             Type = type;
