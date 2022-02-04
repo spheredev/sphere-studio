@@ -30,14 +30,16 @@
         {
             this.components = new System.ComponentModel.Container();
             this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.addTaskMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.removeTaskMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.Seperator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.removeCompletedTasksMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.removeAllTasksMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.increasePriorityMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.decreasePriorityMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteTaskMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Seperator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.setTypeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setCategoryMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setPriorityMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Seperator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.addTaskMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pruneTasksMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteAllTasksMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.priorityToolLabel = new System.Windows.Forms.ToolStripLabel();
             this.increasePriorityToolButton = new System.Windows.Forms.ToolStripButton();
@@ -49,6 +51,7 @@
             this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn3 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.contextMenu.SuspendLayout();
             this.toolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.taskListView)).BeginInit();
@@ -57,71 +60,91 @@
             // contextMenu
             // 
             this.contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addTaskMenuItem,
-            this.removeTaskMenuItem,
-            this.Seperator1,
-            this.removeCompletedTasksMenuItem,
-            this.removeAllTasksMenuItem,
+            this.increasePriorityMenuItem,
+            this.decreasePriorityMenuItem,
+            this.deleteTaskMenuItem,
             this.Seperator2,
-            this.setTypeMenuItem,
-            this.setPriorityMenuItem});
+            this.setCategoryMenuItem,
+            this.setPriorityMenuItem,
+            this.Seperator1,
+            this.addTaskMenuItem,
+            this.toolStripSeparator1,
+            this.pruneTasksMenuItem,
+            this.deleteAllTasksMenuItem});
             this.contextMenu.Name = "TaskListMenuStrip";
-            this.contextMenu.Size = new System.Drawing.Size(210, 148);
+            this.contextMenu.Size = new System.Drawing.Size(198, 220);
             // 
-            // addTaskMenuItem
+            // increasePriorityMenuItem
             // 
-            this.addTaskMenuItem.Image = global::SphereStudio.Properties.Resources.lightbulb_add;
-            this.addTaskMenuItem.Name = "addTaskMenuItem";
-            this.addTaskMenuItem.Size = new System.Drawing.Size(209, 22);
-            this.addTaskMenuItem.Text = "&Add Task";
-            this.addTaskMenuItem.Click += new System.EventHandler(this.addTaskMenuItem_Click);
+            this.increasePriorityMenuItem.Image = global::SphereStudio.Properties.Resources.resultset_up;
+            this.increasePriorityMenuItem.Name = "increasePriorityMenuItem";
+            this.increasePriorityMenuItem.Size = new System.Drawing.Size(197, 22);
+            this.increasePriorityMenuItem.Text = "&Increase Priority";
+            this.increasePriorityMenuItem.Click += new System.EventHandler(this.increasePriorityMenuItem_Click);
             // 
-            // removeTaskMenuItem
+            // decreasePriorityMenuItem
             // 
-            this.removeTaskMenuItem.Image = global::SphereStudio.Properties.Resources.lightbulb_delete;
-            this.removeTaskMenuItem.Name = "removeTaskMenuItem";
-            this.removeTaskMenuItem.Size = new System.Drawing.Size(209, 22);
-            this.removeTaskMenuItem.Text = "&Remove Task";
-            this.removeTaskMenuItem.Click += new System.EventHandler(this.removeTaskMenuItem_Click);
+            this.decreasePriorityMenuItem.Image = global::SphereStudio.Properties.Resources.resultset_down;
+            this.decreasePriorityMenuItem.Name = "decreasePriorityMenuItem";
+            this.decreasePriorityMenuItem.Size = new System.Drawing.Size(197, 22);
+            this.decreasePriorityMenuItem.Text = "&Decrease Priority";
+            this.decreasePriorityMenuItem.Click += new System.EventHandler(this.decreasePriorityMenuItem_Click);
             // 
-            // Seperator1
+            // deleteTaskMenuItem
             // 
-            this.Seperator1.Name = "Seperator1";
-            this.Seperator1.Size = new System.Drawing.Size(206, 6);
-            // 
-            // removeCompletedTasksMenuItem
-            // 
-            this.removeCompletedTasksMenuItem.Image = global::SphereStudio.Properties.Resources.cross;
-            this.removeCompletedTasksMenuItem.Name = "removeCompletedTasksMenuItem";
-            this.removeCompletedTasksMenuItem.Size = new System.Drawing.Size(209, 22);
-            this.removeCompletedTasksMenuItem.Text = "Remove &Completed Tasks";
-            this.removeCompletedTasksMenuItem.Click += new System.EventHandler(this.removeCompletedTasksMenuItem_Click);
-            // 
-            // removeAllTasksMenuItem
-            // 
-            this.removeAllTasksMenuItem.Name = "removeAllTasksMenuItem";
-            this.removeAllTasksMenuItem.Size = new System.Drawing.Size(209, 22);
-            this.removeAllTasksMenuItem.Text = "Re&move All Tasks";
-            this.removeAllTasksMenuItem.Click += new System.EventHandler(this.removeAllTasksMenuItem_Click);
+            this.deleteTaskMenuItem.Image = global::SphereStudio.Properties.Resources.lightbulb_delete;
+            this.deleteTaskMenuItem.Name = "deleteTaskMenuItem";
+            this.deleteTaskMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
+            this.deleteTaskMenuItem.Size = new System.Drawing.Size(197, 22);
+            this.deleteTaskMenuItem.Text = "De&lete Task";
+            this.deleteTaskMenuItem.Click += new System.EventHandler(this.deleteTaskMenuItem_Click);
             // 
             // Seperator2
             // 
             this.Seperator2.Name = "Seperator2";
-            this.Seperator2.Size = new System.Drawing.Size(206, 6);
+            this.Seperator2.Size = new System.Drawing.Size(194, 6);
             // 
-            // setTypeMenuItem
+            // setCategoryMenuItem
             // 
-            this.setTypeMenuItem.Image = global::SphereStudio.Properties.Resources.information;
-            this.setTypeMenuItem.Name = "setTypeMenuItem";
-            this.setTypeMenuItem.Size = new System.Drawing.Size(209, 22);
-            this.setTypeMenuItem.Text = "Set &Type";
+            this.setCategoryMenuItem.Image = global::SphereStudio.Properties.Resources.information;
+            this.setCategoryMenuItem.Name = "setCategoryMenuItem";
+            this.setCategoryMenuItem.Size = new System.Drawing.Size(197, 22);
+            this.setCategoryMenuItem.Text = "Set &Category";
             // 
             // setPriorityMenuItem
             // 
             this.setPriorityMenuItem.Image = global::SphereStudio.Properties.Resources.resultset_none;
             this.setPriorityMenuItem.Name = "setPriorityMenuItem";
-            this.setPriorityMenuItem.Size = new System.Drawing.Size(209, 22);
-            this.setPriorityMenuItem.Text = "Set &Priority";
+            this.setPriorityMenuItem.Size = new System.Drawing.Size(197, 22);
+            this.setPriorityMenuItem.Text = "Set P&riority";
+            // 
+            // Seperator1
+            // 
+            this.Seperator1.Name = "Seperator1";
+            this.Seperator1.Size = new System.Drawing.Size(194, 6);
+            // 
+            // addTaskMenuItem
+            // 
+            this.addTaskMenuItem.Image = global::SphereStudio.Properties.Resources.lightbulb_add;
+            this.addTaskMenuItem.Name = "addTaskMenuItem";
+            this.addTaskMenuItem.Size = new System.Drawing.Size(197, 22);
+            this.addTaskMenuItem.Text = "&Add New Task";
+            this.addTaskMenuItem.Click += new System.EventHandler(this.addTaskMenuItem_Click);
+            // 
+            // pruneTasksMenuItem
+            // 
+            this.pruneTasksMenuItem.Name = "pruneTasksMenuItem";
+            this.pruneTasksMenuItem.Size = new System.Drawing.Size(197, 22);
+            this.pruneTasksMenuItem.Text = "&Prune Completed Tasks";
+            this.pruneTasksMenuItem.Click += new System.EventHandler(this.pruneTasksMenuItem_Click);
+            // 
+            // deleteAllTasksMenuItem
+            // 
+            this.deleteAllTasksMenuItem.Image = global::SphereStudio.Properties.Resources.cross;
+            this.deleteAllTasksMenuItem.Name = "deleteAllTasksMenuItem";
+            this.deleteAllTasksMenuItem.Size = new System.Drawing.Size(197, 22);
+            this.deleteAllTasksMenuItem.Text = "Delete All Task&s";
+            this.deleteAllTasksMenuItem.Click += new System.EventHandler(this.deleteAllTasksMenuItem_Click);
             // 
             // toolStrip
             // 
@@ -153,7 +176,7 @@
             this.increasePriorityToolButton.Name = "increasePriorityToolButton";
             this.increasePriorityToolButton.Size = new System.Drawing.Size(23, 20);
             this.increasePriorityToolButton.Text = "Priority Up";
-            this.increasePriorityToolButton.Click += new System.EventHandler(this.increasePriorityToolButton_Click);
+            this.increasePriorityToolButton.Click += new System.EventHandler(this.increasePriorityMenuItem_Click);
             // 
             // decreasePriorityToolButton
             // 
@@ -163,7 +186,7 @@
             this.decreasePriorityToolButton.Name = "decreasePriorityToolButton";
             this.decreasePriorityToolButton.Size = new System.Drawing.Size(23, 20);
             this.decreasePriorityToolButton.Text = "Priority Down";
-            this.decreasePriorityToolButton.Click += new System.EventHandler(this.decreasePriorityToolButton_Click);
+            this.decreasePriorityToolButton.Click += new System.EventHandler(this.decreasePriorityMenuItem_Click);
             // 
             // Seperator0
             // 
@@ -188,7 +211,7 @@
             this.removeTaskToolButton.Name = "removeTaskToolButton";
             this.removeTaskToolButton.Size = new System.Drawing.Size(23, 20);
             this.removeTaskToolButton.Text = "Remove Task(s)";
-            this.removeTaskToolButton.Click += new System.EventHandler(this.removeTaskMenuItem_Click);
+            this.removeTaskToolButton.Click += new System.EventHandler(this.deleteTaskMenuItem_Click);
             // 
             // taskListView
             // 
@@ -207,9 +230,10 @@
             this.taskListView.ContextMenuStrip = this.contextMenu;
             this.taskListView.Cursor = System.Windows.Forms.Cursors.Default;
             this.taskListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.taskListView.EmptyListMsg = "no tasks";
+            this.taskListView.EmptyListMsg = "No Tasks";
             this.taskListView.FullRowSelect = true;
             this.taskListView.GroupWithItemCountFormat = "";
+            this.taskListView.HasCollapsibleGroups = false;
             this.taskListView.HideSelection = false;
             this.taskListView.Location = new System.Drawing.Point(0, 23);
             this.taskListView.Name = "taskListView";
@@ -238,9 +262,14 @@
             // 
             // olvColumn3
             // 
-            this.olvColumn3.AspectName = "Type";
-            this.olvColumn3.Text = "Type";
+            this.olvColumn3.AspectName = "Category";
+            this.olvColumn3.Text = "Category";
             this.olvColumn3.Width = 100;
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(194, 6);
             // 
             // TaskListPane
             // 
@@ -263,9 +292,9 @@
 
         private System.Windows.Forms.ContextMenuStrip contextMenu;
         private System.Windows.Forms.ToolStripMenuItem addTaskMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem removeTaskMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem removeCompletedTasksMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem removeAllTasksMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteTaskMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pruneTasksMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteAllTasksMenuItem;
         private System.Windows.Forms.ToolStrip toolStrip;
         private System.Windows.Forms.ToolStripButton increasePriorityToolButton;
         private System.Windows.Forms.ToolStripButton decreasePriorityToolButton;
@@ -275,11 +304,14 @@
         private System.Windows.Forms.ToolStripButton addTaskToolButton;
         private System.Windows.Forms.ToolStripSeparator Seperator1;
         private System.Windows.Forms.ToolStripSeparator Seperator2;
-        private System.Windows.Forms.ToolStripMenuItem setTypeMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setCategoryMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setPriorityMenuItem;
         private BrightIdeasSoftware.ObjectListView taskListView;
         private BrightIdeasSoftware.OLVColumn olvColumn1;
         private BrightIdeasSoftware.OLVColumn olvColumn2;
         private BrightIdeasSoftware.OLVColumn olvColumn3;
+        private System.Windows.Forms.ToolStripMenuItem increasePriorityMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem decreasePriorityMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }

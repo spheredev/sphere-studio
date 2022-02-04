@@ -8,7 +8,7 @@
         None,
     }
     
-    enum TaskType
+    enum TaskCategory
     {
         Addition,
         Art,
@@ -24,30 +24,30 @@
         public TaskListItem(string name = "")
         {
             Name = name;
+            Category = TaskCategory.Other;
             Priority = TaskPriority.None;
-            Type = TaskType.Other;
         }
 
         public TaskListItem(string name, TaskPriority priority)
             : this(name)
         {
+            Category = TaskCategory.Other;
             Priority = priority;
-            Type = TaskType.Other;
         }
 
-        public TaskListItem(string name, TaskPriority priority, TaskType type)
+        public TaskListItem(string name, TaskPriority priority, TaskCategory type)
             : this(name, priority)
         {
-            Type = type;
+            Category = type;
         }
+
+        public TaskCategory Category { get; set; }
+
+        public bool Finished { get; set; }
 
         public string Name { get; set; }
 
         public TaskPriority Priority { get; set; }
-
-        public TaskType Type { get; set; }
-
-        public bool IsFinished { get; set; }
 
         public void IncreasePriority()
         {
