@@ -1,10 +1,10 @@
 Sphere Studio Changelog
 =======================
 
-v2.3.2 - TBD
-------------
+v2.3.2 - February 4, 2022
+-------------------------
 
-* Improves readability of Task List entries.
+* Improves the readability of Task List entries.
 * Fixes a bug where items in the Task List pane couldn't be marked completed.
 * Fixes a bug where clicking Cancel in the "unsaved changes" prompt didn't
   stop the IDE from closing, causing the changes to be lost.
