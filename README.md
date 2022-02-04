@@ -21,12 +21,12 @@ Download
 ========
 
 **Sphere Studio 2.3.1** was released on January 23, 2022 and can be downloaded
-from the releases page on GitHub here:
+from this repository's Releases page:
 
 - https://github.com/spheredev/sphere-studio/releases
 
-Note that .NET Framework 4.8 or later is required to run Sphere Studio.  The
-latest .NET Framework can be downloaded from Microsoft
+.NET Framework 4.8 or later is required to run Sphere Studio.  The latest
+.NET Framework can be downloaded from Microsoft
 [here](https://www.microsoft.com/en-us/download/details.aspx?id=49981).
 
 

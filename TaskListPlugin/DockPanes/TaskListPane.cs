@@ -6,230 +6,240 @@ using System.Linq;
 using System.Windows.Forms;
 
 using SphereStudio.Base;
+using SphereStudio.Properties;
+
+using BrightIdeasSoftware;
 
 namespace SphereStudio.UI
 {
-    internal partial class TaskListPane : UserControl, IStyleAware, IDockPane
+    partial class TaskListPane : UserControl, IStyleAware, IDockPane
     {
-        private readonly ImageList _imagelist = new ImageList();
-
-        private readonly Color _loColor = Color.FromArgb(150, 250, 150);
-        private readonly Color _medColor = Color.FromArgb(250, 250, 150);
-        private readonly Color _hiColor = Color.FromArgb(250, 150, 150);
-        private readonly Color _noColor = Color.FromArgb(255, 255, 255);
-
+        private ImageList iconImageList = new ImageList();
         private string tasksFilePath;
 
         public TaskListPane()
         {
             InitializeComponent();
-            _imagelist.ColorDepth = ColorDepth.Depth32Bit;
-            _imagelist.Images.Add("not", Properties.Resources.lightbulb);
-            _imagelist.Images.Add("done", Properties.Resources.lightbulb_off);
-            listView.SmallImageList = _imagelist;
+            StyleManager.AutoStyle(this);
+
+            iconImageList.ColorDepth = ColorDepth.Depth32Bit;
+            iconImageList.Images.Add("not", Resources.lightbulb);
+            iconImageList.Images.Add("done", Resources.lightbulb_off);
+            taskListView.SmallImageList = iconImageList;
 
             olvColumn1.ImageGetter = delegate (object rowObject)
             {
-                var t = (TaskListItem)rowObject;
-                return t.IsFinished ? "done" : "not";
+                var entry = (TaskListItem)rowObject;
+                return entry.IsFinished ? "done" : "not";
             };
 
-            string[] names = Enum.GetNames(typeof(TaskType));
-            foreach (string s in names)
-            {
-                EventHandler eh = SetType_Click;
-                SetTypeItem.DropDownItems.Add(s, Properties.Resources.lightbulb, eh);
-            }
-
-            names = Enum.GetNames(typeof(TaskPriority));
-            foreach (string s in names)
-            {
-                EventHandler eh = SetPriorityItem_Click;
-                SetPriorityItem.DropDownItems.Add(s, Properties.Resources.resultset_none, eh);
-            }
-
-            StyleManager.AutoStyle(this);
+            var taskTypeNames = Enum.GetNames(typeof(TaskType));
+            var priorityNames = Enum.GetNames(typeof(TaskPriority));
+            foreach (var name in taskTypeNames)
+                setTypeMenuItem.DropDownItems.Add(name, Resources.lightbulb, taskTypeMenuItem_Click);
+            foreach (var name in priorityNames)
+                setPriorityMenuItem.DropDownItems.Add(name, Resources.resultset_none, taskPriorityMenuItem_Click);
         }
 
-        public bool ShowInViewMenu => true;
         public Control Control => this;
+
         public DockHint DockHint => DockHint.Left;
-        public Bitmap DockIcon => Properties.Resources.lightbulb;
+
+        public Bitmap DockIcon => Resources.lightbulb;
+
+        public bool ShowInViewMenu => true;
 
         public void ApplyStyle(UIStyle style)
         {
-            listView.AlternateRowBackColor = style.LabelColor;
-            listView.SelectedBackColor = style.LabelColor;
-            listView.SelectedForeColor = style.TextColor;
-            listView.UseAlternatingBackColors = true;
-            style.AsUIElement(toolbar);
-            style.AsTextView(listView);
+            taskListView.AlternateRowBackColor = style.LabelColor;
+            taskListView.SelectedBackColor = style.HighlightColor;
+            taskListView.SelectedForeColor = style.TextColor;
+            taskListView.UseAlternatingBackColors = true;
+            style.AsUIElement(toolStrip);
+            style.AsTextView(taskListView);
         }
 
-        private void AddTaskItem_Click(object sender, EventArgs e)
+        public void Clear(bool unloading = false)
         {
-            listView.AddObject(new TaskListItem("New Task"));
-        }
-
-        private void RemoveTaskItem_Click(object sender, EventArgs e)
-        {
-            if (listView.SelectedObject != null)
-                listView.RemoveObject(listView.SelectedObject);
-        }
-
-        private void RemoveCompletedItem_Click(object sender, EventArgs e)
-        {
-            List<TaskListItem> removed = listView.Objects.Cast<TaskListItem>().Where(task => task.IsFinished).ToList();
-            listView.RemoveObjects(removed);
-        }
-
-        /// <summary>
-        /// Attempts to delete the task list file if there are no tasks left.
-        /// </summary>
-        /// <returns>True if the file was clean, false if there is stuff to save.</returns>
-        private bool DeleteIfEmpty()
-        {
-            if (string.IsNullOrEmpty(tasksFilePath))
-                return true;
-            if (listView.GetItemCount() > 0)
-                return false;
-            if (File.Exists(tasksFilePath))
-                File.Delete(tasksFilePath);
-            return true;
-        }
-
-        /// <summary>
-        /// Clears all tasks from the task list UI and optionally unloads the
-        /// current task file.
-        /// </summary>
-        /// <param name="unload">Whether to unload the current task file.</param>
-        public void Clear(bool unload = false)
-        {
-            listView.ClearObjects();
-            if (unload)
+            taskListView.ClearObjects();
+            if (unloading)
                 tasksFilePath = null;
-        }
-
-        /// <summary>
-        /// Tasks are saved as follows:
-        /// int32: # of tasks
-        /// for each task:
-        ///   bool: checked switch;
-        ///   string: name of task;
-        ///   int32: ID;
-        ///   int32: type;
-        /// </summary>
-        public void SaveTaskList()
-        {
-            // clean the file
-            if (DeleteIfEmpty())
-                return;
-
-            using (BinaryWriter writer = new BinaryWriter(File.OpenWrite(tasksFilePath)))
-            {
-                writer.Write(listView.GetItemCount());
-                foreach (TaskListItem task in listView.Objects)
-                {
-                    writer.Write(task.IsFinished);
-                    writer.Write(task.Name);
-                    writer.Write((int)task.Priority);
-                    writer.Write((int)task.Type);
-                }
-                writer.Flush();
-            }
         }
 
         public void LoadTaskList(string projectRoot)
         {
             tasksFilePath = Path.Combine(projectRoot, "sphereStudio.tasks");
-            listView.ClearObjects();
+            taskListView.ClearObjects();
             if (!File.Exists(tasksFilePath))
                 return;
-            using (BinaryReader reader = new BinaryReader(File.OpenRead(tasksFilePath)))
+            using (var reader = new BinaryReader(File.OpenRead(tasksFilePath)))
             {
-                List<TaskListItem> tasks = new List<TaskListItem>();
-                int amt = reader.ReadInt32();
-                while (amt-- > 0)
+                var taskList = new List<TaskListItem>();
+                var taskCount = reader.ReadInt32();
+                while (taskCount-- > 0)
                 {
-                    TaskListItem t = new TaskListItem()
+                    var taskListItem = new TaskListItem()
                     {
                         IsFinished = reader.ReadBoolean(),
                         Name = reader.ReadString(),
                         Priority = (TaskPriority)reader.ReadInt32(),
                         Type = (TaskType)reader.ReadInt32()
                     };
-                    tasks.Add(t);
+                    taskList.Add(taskListItem);
                 }
-                listView.SetObjects(tasks);
+                taskListView.SetObjects(taskList);
             }
         }
 
-        private void ClearAllItem_Click(object sender, EventArgs e)
+        public void SaveTaskList()
+        {
+            if (deleteFileIfEmpty())
+                return;
+            using (var fileWriter = new BinaryWriter(File.OpenWrite(tasksFilePath)))
+            {
+                fileWriter.Write(taskListView.GetItemCount());
+                foreach (TaskListItem task in taskListView.Objects)
+                {
+                    fileWriter.Write(task.IsFinished);
+                    fileWriter.Write(task.Name);
+                    fileWriter.Write((int)task.Priority);
+                    fileWriter.Write((int)task.Type);
+                }
+                fileWriter.Flush();
+            }
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            refreshMenuCommands();
+            base.OnLoad(e);
+        }
+
+        private bool deleteFileIfEmpty()
+        {
+            if (string.IsNullOrEmpty(tasksFilePath))
+                return true;
+            if (taskListView.GetItemCount() == 0)
+            {
+                if (File.Exists(tasksFilePath))
+                    File.Delete(tasksFilePath);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private void refreshMenuCommands()
+        {
+            var haveSelection = taskListView.SelectedObjects.Count > 0;
+            
+            decreasePriorityToolButton.Enabled = haveSelection;
+            increasePriorityToolButton.Enabled = haveSelection;
+            removeTaskToolButton.Enabled = haveSelection;
+
+            removeTaskMenuItem.Enabled = haveSelection;
+            setPriorityMenuItem.Enabled = haveSelection;
+            setTypeMenuItem.Enabled = haveSelection;
+        }
+
+        private void taskListView_FormatCell(object sender, FormatCellEventArgs e)
+        {
+            var taskListItem = e.Model as TaskListItem;
+            if (e.ColumnIndex == olvColumn1.Index && taskListItem != null)
+            {
+                var fontStyle = taskListItem.IsFinished ? FontStyle.Strikeout : FontStyle.Regular;
+                e.SubItem.Font = new Font(e.SubItem.Font, fontStyle);
+            }
+        }
+
+        private void taskListView_FormatRow(object sender, FormatRowEventArgs e)
+        {
+            var taskListItem = (TaskListItem)e.Model;
+            switch (taskListItem.Priority)
+            {
+                case TaskPriority.High:
+                    e.Item.BackColor = Color.FromArgb(250, 150, 150);
+                    e.Item.ForeColor = Color.Black;
+                    break;
+                case TaskPriority.Low:
+                    e.Item.BackColor = Color.FromArgb(150, 250, 150);
+                    e.Item.ForeColor = Color.Black;
+                    break;
+                case TaskPriority.Medium:
+                    e.Item.BackColor = Color.FromArgb(250, 250, 150);
+                    e.Item.ForeColor = Color.Black;
+                    break;
+                case TaskPriority.None:
+                    e.Item.BackColor = StyleManager.Style.BackColor;
+                    e.Item.ForeColor = StyleManager.Style.TextColor;
+                    break;
+            }
+        }
+
+        private void taskListView_SelectionChanged(object sender, EventArgs e)
+        {
+            refreshMenuCommands();
+        }
+
+        private void decreasePriorityToolButton_Click(object sender, EventArgs e)
+        {
+            foreach (TaskListItem task in taskListView.SelectedObjects)
+                task.DecreasePriority();
+            taskListView.RefreshSelectedObjects();
+        }
+
+        private void increasePriorityToolButton_Click(object sender, EventArgs e)
+        {
+            foreach (TaskListItem task in taskListView.SelectedObjects)
+                task.IncreasePriority();
+            taskListView.RefreshSelectedObjects();
+        }
+
+        private void addTaskMenuItem_Click(object sender, EventArgs e)
+        {
+            taskListView.AddObject(new TaskListItem("New Task"));
+        }
+
+        private void removeAllTasksMenuItem_Click(object sender, EventArgs e)
         {
             Clear();
         }
 
-        private void priorityUpButton_Click(object sender, EventArgs e)
+        private void removeCompletedTasksMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (TaskListItem task in listView.SelectedObjects)
-                task.IncreasePriority();
-
-            listView.RefreshSelectedObjects();
+            var removedItems = taskListView.Objects
+                .Cast<TaskListItem>()
+                .Where(entry => entry.IsFinished)
+                .ToArray();
+            taskListView.RemoveObjects(removedItems);
         }
 
-        private void priorityDownButton_Click(object sender, EventArgs e)
+        private void removeTaskMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (TaskListItem task in listView.SelectedObjects)
-                task.DecreasePriority();
-
-            listView.RefreshSelectedObjects();
+            foreach (TaskListItem task in taskListView.SelectedObjects)
+                taskListView.RemoveObject(task);
         }
 
-        private void DeleteItem_Click(object sender, EventArgs e)
+        private void taskPriorityMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (TaskListItem task in listView.SelectedObjects)
-                listView.RemoveObject(task);
-        }
-
-        private void SetType_Click(object sender, EventArgs e)
-        {
-            foreach (TaskListItem task in listView.SelectedObjects)
+            foreach (TaskListItem taskListItem in taskListView.SelectedObjects)
             {
-                int index = SetTypeItem.DropDownItems.IndexOf((ToolStripItem)sender);
-                task.Type = (TaskType)index;
-                listView.RefreshObject(task);
+                var index = setPriorityMenuItem.DropDownItems.IndexOf((ToolStripItem)sender);
+                taskListItem.Priority = (TaskPriority)index;
+                taskListView.RefreshObject(taskListItem);
             }
         }
 
-        private void SetPriorityItem_Click(object sender, EventArgs e)
+        private void taskTypeMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (TaskListItem task in listView.SelectedObjects)
+            foreach (TaskListItem taskListItem in taskListView.SelectedObjects)
             {
-                int index = SetPriorityItem.DropDownItems.IndexOf((ToolStripItem)sender);
-                task.Priority = (TaskPriority)index;
-                listView.RefreshObject(task);
+                var index = setTypeMenuItem.DropDownItems.IndexOf((ToolStripItem)sender);
+                taskListItem.Type = (TaskType)index;
+                taskListView.RefreshObject(taskListItem);
             }
-        }
-
-        private void ObjectTaskList_FormatRow(object sender, BrightIdeasSoftware.FormatRowEventArgs e)
-        {
-            TaskListItem task = (TaskListItem)e.Model;
-            switch (task.Priority)
-            {
-                case TaskPriority.High: e.Item.BackColor = _hiColor; break;
-                case TaskPriority.Low: e.Item.BackColor = _loColor; break;
-                case TaskPriority.Medium: e.Item.BackColor = _medColor; break;
-                case TaskPriority.None: e.Item.BackColor = _noColor; break;
-            }
-        }
-
-        private void ObjectTaskList_FormatCell(object sender, BrightIdeasSoftware.FormatCellEventArgs e)
-        {
-            TaskListItem task = e.Model as TaskListItem;
-            if (e.ColumnIndex != olvColumn1.Index || task == null) return;
-
-            FontStyle style = task.IsFinished ? FontStyle.Strikeout : FontStyle.Regular;
-            e.SubItem.Font = new Font(e.SubItem.Font, style);
         }
     }
 }
