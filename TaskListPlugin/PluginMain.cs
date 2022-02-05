@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Forms;
 
 using SphereStudio.Base;
 using SphereStudio.UI;
@@ -13,20 +12,20 @@ namespace SphereStudio
         public string Version => Versioning.Version;
         public string Author => Versioning.Author;
 
-        private TaskListPane dockPane;
+        private TaskListPane taskListPane;
 
         public void Initialize(ISettings settings)
         {
-            dockPane = new TaskListPane();
+            taskListPane = new TaskListPane();
             
-            PluginManager.Register(this, dockPane, "Task List");
+            PluginManager.Register(this, taskListPane, "Task List");
             PluginManager.Core.LoadProject += ide_LoadProject;
             PluginManager.Core.UnloadProject += ide_UnloadProject;
 
             // if a project is already loaded, populate its task list
             var projectRoot = PluginManager.Core.Project?.RootPath;            
             if (projectRoot != null)
-                dockPane.LoadTaskList(projectRoot);
+                taskListPane.LoadTaskList(projectRoot);
         }
 
         public void ShutDown()
@@ -38,13 +37,13 @@ namespace SphereStudio
 
         private void ide_LoadProject(object sender, EventArgs e)
         {
-            dockPane.LoadTaskList(PluginManager.Core.Project.RootPath);
+            taskListPane.LoadTaskList(PluginManager.Core.Project.RootPath);
         }
 
         private void ide_UnloadProject(object sender, EventArgs e)
         {
-            dockPane.SaveTaskList();
-            dockPane.Clear(true);
+            taskListPane.SaveTaskList();
+            taskListPane.Clear(true);
         }
     }
 }

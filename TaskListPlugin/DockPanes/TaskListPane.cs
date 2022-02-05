@@ -188,7 +188,9 @@ namespace SphereStudio.UI
 
         private void addTaskMenuItem_Click(object sender, EventArgs e)
         {
-            taskListView.AddObject(new TaskListItem("New Task"));
+            var taskListItem = new TaskListItem("New Task");
+            taskListView.AddObject(taskListItem);
+            taskListView.EditModel(taskListItem);
         }
 
         private void deleteAllTasksMenuItem_Click(object sender, EventArgs e)

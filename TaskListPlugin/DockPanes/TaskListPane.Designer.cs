@@ -38,20 +38,20 @@
             this.setPriorityMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Seperator1 = new System.Windows.Forms.ToolStripSeparator();
             this.addTaskMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.pruneTasksMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteAllTasksMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
-            this.priorityToolLabel = new System.Windows.Forms.ToolStripLabel();
+            this.addTaskToolButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.increasePriorityToolButton = new System.Windows.Forms.ToolStripButton();
             this.decreasePriorityToolButton = new System.Windows.Forms.ToolStripButton();
             this.Seperator0 = new System.Windows.Forms.ToolStripSeparator();
-            this.addTaskToolButton = new System.Windows.Forms.ToolStripButton();
             this.removeTaskToolButton = new System.Windows.Forms.ToolStripButton();
             this.taskListView = new BrightIdeasSoftware.ObjectListView();
             this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn3 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.contextMenu.SuspendLayout();
             this.toolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.taskListView)).BeginInit();
@@ -72,7 +72,7 @@
             this.pruneTasksMenuItem,
             this.deleteAllTasksMenuItem});
             this.contextMenu.Name = "TaskListMenuStrip";
-            this.contextMenu.Size = new System.Drawing.Size(198, 220);
+            this.contextMenu.Size = new System.Drawing.Size(198, 198);
             // 
             // increasePriorityMenuItem
             // 
@@ -131,6 +131,11 @@
             this.addTaskMenuItem.Text = "&Add New Task";
             this.addTaskMenuItem.Click += new System.EventHandler(this.addTaskMenuItem_Click);
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(194, 6);
+            // 
             // pruneTasksMenuItem
             // 
             this.pruneTasksMenuItem.Name = "pruneTasksMenuItem";
@@ -149,11 +154,11 @@
             // toolStrip
             // 
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.priorityToolLabel,
+            this.addTaskToolButton,
+            this.toolStripSeparator2,
             this.increasePriorityToolButton,
             this.decreasePriorityToolButton,
             this.Seperator0,
-            this.addTaskToolButton,
             this.removeTaskToolButton});
             this.toolStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
@@ -162,11 +167,19 @@
             this.toolStrip.TabIndex = 3;
             this.toolStrip.Text = "toolStrip1";
             // 
-            // priorityToolLabel
+            // addTaskToolButton
             // 
-            this.priorityToolLabel.Name = "priorityToolLabel";
-            this.priorityToolLabel.Size = new System.Drawing.Size(48, 15);
-            this.priorityToolLabel.Text = "Priority:";
+            this.addTaskToolButton.Image = global::SphereStudio.Properties.Resources.lightbulb_add;
+            this.addTaskToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.addTaskToolButton.Name = "addTaskToolButton";
+            this.addTaskToolButton.Size = new System.Drawing.Size(76, 20);
+            this.addTaskToolButton.Text = "New Task";
+            this.addTaskToolButton.Click += new System.EventHandler(this.addTaskMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 23);
             // 
             // increasePriorityToolButton
             // 
@@ -175,7 +188,7 @@
             this.increasePriorityToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.increasePriorityToolButton.Name = "increasePriorityToolButton";
             this.increasePriorityToolButton.Size = new System.Drawing.Size(23, 20);
-            this.increasePriorityToolButton.Text = "Priority Up";
+            this.increasePriorityToolButton.Text = "Increase Priority";
             this.increasePriorityToolButton.Click += new System.EventHandler(this.increasePriorityMenuItem_Click);
             // 
             // decreasePriorityToolButton
@@ -185,23 +198,13 @@
             this.decreasePriorityToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.decreasePriorityToolButton.Name = "decreasePriorityToolButton";
             this.decreasePriorityToolButton.Size = new System.Drawing.Size(23, 20);
-            this.decreasePriorityToolButton.Text = "Priority Down";
+            this.decreasePriorityToolButton.Text = "Decrease Priority";
             this.decreasePriorityToolButton.Click += new System.EventHandler(this.decreasePriorityMenuItem_Click);
             // 
             // Seperator0
             // 
             this.Seperator0.Name = "Seperator0";
             this.Seperator0.Size = new System.Drawing.Size(6, 23);
-            // 
-            // addTaskToolButton
-            // 
-            this.addTaskToolButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.addTaskToolButton.Image = global::SphereStudio.Properties.Resources.lightbulb_add;
-            this.addTaskToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.addTaskToolButton.Name = "addTaskToolButton";
-            this.addTaskToolButton.Size = new System.Drawing.Size(23, 20);
-            this.addTaskToolButton.Text = "Add Task";
-            this.addTaskToolButton.Click += new System.EventHandler(this.addTaskMenuItem_Click);
             // 
             // removeTaskToolButton
             // 
@@ -210,7 +213,7 @@
             this.removeTaskToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.removeTaskToolButton.Name = "removeTaskToolButton";
             this.removeTaskToolButton.Size = new System.Drawing.Size(23, 20);
-            this.removeTaskToolButton.Text = "Remove Task(s)";
+            this.removeTaskToolButton.Text = "Delete";
             this.removeTaskToolButton.Click += new System.EventHandler(this.deleteTaskMenuItem_Click);
             // 
             // taskListView
@@ -258,18 +261,12 @@
             // 
             this.olvColumn2.AspectName = "Priority";
             this.olvColumn2.Text = "Priority";
-            this.olvColumn2.Width = 50;
             // 
             // olvColumn3
             // 
             this.olvColumn3.AspectName = "Category";
             this.olvColumn3.Text = "Category";
-            this.olvColumn3.Width = 100;
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(194, 6);
+            this.olvColumn3.Width = 90;
             // 
             // TaskListPane
             // 
@@ -298,7 +295,6 @@
         private System.Windows.Forms.ToolStrip toolStrip;
         private System.Windows.Forms.ToolStripButton increasePriorityToolButton;
         private System.Windows.Forms.ToolStripButton decreasePriorityToolButton;
-        private System.Windows.Forms.ToolStripLabel priorityToolLabel;
         private System.Windows.Forms.ToolStripSeparator Seperator0;
         private System.Windows.Forms.ToolStripButton removeTaskToolButton;
         private System.Windows.Forms.ToolStripButton addTaskToolButton;
@@ -313,5 +309,6 @@
         private System.Windows.Forms.ToolStripMenuItem increasePriorityMenuItem;
         private System.Windows.Forms.ToolStripMenuItem decreasePriorityMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     }
 }

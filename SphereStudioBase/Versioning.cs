@@ -24,12 +24,12 @@ namespace SphereStudio
         /// <summary>
         /// The version number of the software.
         /// </summary>
-        public const string Version = "2.3.2";
+        public const string Version = "2.3.2+";
 
         /// <summary>
         /// Whether the Sphere Studio version being built against is a WiP version.
         /// </summary>
-        public const bool IsWiP = false;
+        public const bool IsWiP = true;
 
         /// <summary>
         /// A string indicating the copyright holder and year(s) of copyright.
