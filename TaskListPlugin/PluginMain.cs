@@ -30,6 +30,7 @@ namespace SphereStudio
 
         public void ShutDown()
         {
+            taskListPane.SaveTaskList();
             PluginManager.Core.LoadProject -= ide_LoadProject;
             PluginManager.Core.UnloadProject -= ide_UnloadProject;
             PluginManager.UnregisterAll(this);

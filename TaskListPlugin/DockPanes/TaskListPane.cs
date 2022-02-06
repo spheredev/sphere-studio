@@ -65,48 +65,59 @@ namespace SphereStudio.UI
             taskListView.ClearObjects();
             if (unloading)
                 tasksFilePath = null;
+            refreshMenuCommands();
         }
 
         public void LoadTaskList(string projectRoot)
         {
             tasksFilePath = Path.Combine(projectRoot, "sphereStudio.tasks");
             taskListView.ClearObjects();
-            if (!File.Exists(tasksFilePath))
-                return;
-            using (var reader = new BinaryReader(File.OpenRead(tasksFilePath)))
+            if (File.Exists(tasksFilePath))
             {
-                var taskList = new List<TaskListItem>();
-                var taskCount = reader.ReadInt32();
-                while (taskCount-- > 0)
+                using (var reader = new BinaryReader(File.OpenRead(tasksFilePath)))
                 {
-                    var taskListItem = new TaskListItem()
+                    var taskList = new List<TaskListItem>();
+                    var taskCount = reader.ReadInt32();
+                    while (taskCount-- > 0)
                     {
-                        Finished = reader.ReadBoolean(),
-                        Name = reader.ReadString(),
-                        Priority = (TaskPriority)reader.ReadInt32(),
-                        Category = (TaskCategory)reader.ReadInt32()
-                    };
-                    taskList.Add(taskListItem);
+                        var taskListItem = new TaskListItem()
+                        {
+                            Finished = reader.ReadBoolean(),
+                            Name = reader.ReadString(),
+                            Priority = (TaskPriority)reader.ReadInt32(),
+                            Category = (TaskCategory)reader.ReadInt32()
+                        };
+                        taskList.Add(taskListItem);
+                    }
+                    taskListView.SetObjects(taskList);
                 }
-                taskListView.SetObjects(taskList);
             }
+            refreshMenuCommands();
         }
 
         public void SaveTaskList()
         {
-            if (deleteFileIfEmpty())
+            if (tasksFilePath == null)
                 return;
-            using (var fileWriter = new BinaryWriter(File.OpenWrite(tasksFilePath)))
+            if (taskListView.GetItemCount() > 0)
             {
-                fileWriter.Write(taskListView.GetItemCount());
-                foreach (TaskListItem task in taskListView.Objects)
+                using (var fileWriter = new BinaryWriter(File.OpenWrite(tasksFilePath)))
                 {
-                    fileWriter.Write(task.Finished);
-                    fileWriter.Write(task.Name);
-                    fileWriter.Write((int)task.Priority);
-                    fileWriter.Write((int)task.Category);
+                    fileWriter.Write(taskListView.GetItemCount());
+                    foreach (TaskListItem task in taskListView.Objects)
+                    {
+                        fileWriter.Write(task.Finished);
+                        fileWriter.Write(task.Name);
+                        fileWriter.Write((int)task.Priority);
+                        fileWriter.Write((int)task.Category);
+                    }
+                    fileWriter.Flush();
                 }
-                fileWriter.Flush();
+            }
+            else
+            {
+                if (File.Exists(tasksFilePath))
+                    File.Delete(tasksFilePath);
             }
         }
 
@@ -116,33 +127,22 @@ namespace SphereStudio.UI
             base.OnLoad(e);
         }
 
-        private bool deleteFileIfEmpty()
-        {
-            if (string.IsNullOrEmpty(tasksFilePath))
-                return true;
-            if (taskListView.GetItemCount() == 0)
-            {
-                if (File.Exists(tasksFilePath))
-                    File.Delete(tasksFilePath);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         private void refreshMenuCommands()
         {
             var haveSelection = taskListView.SelectedObjects.Count > 0;
-            
+            var haveTasksFile = tasksFilePath != null;
+
+            addTaskToolButton.Enabled = haveTasksFile;
             decreasePriorityToolButton.Enabled = haveSelection;
             increasePriorityToolButton.Enabled = haveSelection;
             removeTaskToolButton.Enabled = haveSelection;
 
+            addTaskMenuItem.Enabled = haveTasksFile;
             decreasePriorityMenuItem.Enabled = haveSelection;
+            deleteAllTasksMenuItem.Enabled = haveTasksFile;
             deleteTaskMenuItem.Enabled = haveSelection;
             increasePriorityMenuItem.Enabled = haveSelection;
+            pruneTasksMenuItem.Enabled = haveTasksFile;
             setPriorityMenuItem.Enabled = haveSelection;
             setCategoryMenuItem.Enabled = haveSelection;
         }
@@ -150,7 +150,7 @@ namespace SphereStudio.UI
         private void taskListView_FormatCell(object sender, FormatCellEventArgs e)
         {
             var taskListItem = e.Model as TaskListItem;
-            if (e.ColumnIndex == olvColumn1.Index && taskListItem != null)
+            if (e.Column == olvColumn1 && taskListItem != null)
             {
                 var fontStyle = taskListItem.Finished ? FontStyle.Strikeout : FontStyle.Regular;
                 e.SubItem.Font = new Font(e.SubItem.Font, fontStyle);
@@ -188,9 +188,16 @@ namespace SphereStudio.UI
 
         private void addTaskMenuItem_Click(object sender, EventArgs e)
         {
-            var taskListItem = new TaskListItem("New Task");
+            var taskListItem = new TaskListItem("New task");
             taskListView.AddObject(taskListItem);
             taskListView.EditModel(taskListItem);
+        }
+
+        private void decreasePriorityMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (TaskListItem task in taskListView.SelectedObjects)
+                task.DecreasePriority();
+            taskListView.RefreshSelectedObjects();
         }
 
         private void deleteAllTasksMenuItem_Click(object sender, EventArgs e)
@@ -201,13 +208,6 @@ namespace SphereStudio.UI
                 "Delete All Tasks", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (dialogResult == DialogResult.Yes)
                 Clear();
-        }
-
-        private void decreasePriorityMenuItem_Click(object sender, EventArgs e)
-        {
-            foreach (TaskListItem task in taskListView.SelectedObjects)
-                task.DecreasePriority();
-            taskListView.RefreshSelectedObjects();
         }
 
         private void deleteTaskMenuItem_Click(object sender, EventArgs e)
