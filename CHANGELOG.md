@@ -1,6 +1,12 @@
 Sphere Studio Changelog
 =======================
 
+v2.3.3 - March 23, 2022
+-----------------------
+
+* Fixes a bug where tasks could be added to the Task List without a project
+  open, which would then be lost when the IDE was closed.
+
 v2.3.2 - February 4, 2022
 -------------------------
 
