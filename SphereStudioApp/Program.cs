@@ -14,7 +14,7 @@ namespace SphereStudio
     static class Defaults
     {
         public static string Compiler => "Sphere Classic";
-        public static string Style => "Default: Blue";
+        public static string Style => "Default: Dark Mode";
     }
 
     static class Program

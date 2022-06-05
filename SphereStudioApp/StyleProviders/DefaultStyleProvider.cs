@@ -10,8 +10,8 @@ namespace SphereStudio.StyleProviders
         {
             var darkTheme = new UIStyle("Dark Mode") {
                 AccentColor = Color.FromArgb(32, 32, 48),
-                BackColor = Color.FromArgb(24, 24, 32),
-                FixedFont = new Font("Consolas", 10.0f),
+                BackColor = Color.FromArgb(24, 24, 24),
+                FixedFont = new Font("Consolas", 11.0f),
                 Font = new Font("Segoe UI", 9.0f),
                 HighlightColor = Color.DarkSlateBlue,
                 LabelColor = Color.FromArgb(32, 32, 32),
@@ -19,10 +19,10 @@ namespace SphereStudio.StyleProviders
                 ToolColor = Color.FromArgb(48, 48, 48),
             };
 
-            var blueTheme = new UIStyle("Blue") {
+            var blueTheme = new UIStyle("Light Mode") {
                 AccentColor = Color.FromArgb(208, 208, 224),
                 BackColor = Color.White,
-                FixedFont = new Font("Consolas", 10.0f),
+                FixedFont = new Font("Consolas", 11.0f),
                 Font = new Font("Segoe UI", 9.0f),
                 HighlightColor = Color.LightSkyBlue,
                 LabelColor = Color.LightSteelBlue,
