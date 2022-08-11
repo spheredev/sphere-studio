@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Spherical")]
 [assembly: AssemblyProduct("Sphere Studio")]
-[assembly: AssemblyCopyright("© 2012-2022 Sphere Engine Group")]
+[assembly: AssemblyCopyright("© 2022 Sphere Engine Group")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("0.0.0.0")]
-[assembly: AssemblyFileVersion("0.0.0.0")]
+[assembly: AssemblyVersion("2.3.4.668")]
+[assembly: AssemblyFileVersion("2.3.4.668")]

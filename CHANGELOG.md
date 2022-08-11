@@ -1,6 +1,12 @@
 Sphere Studio Changelog
 =======================
 
+v2.3.4 - August 11, 2022
+------------------------
+
+* Changes the code font size from 10pt to 11pt.
+* Changes the background color in dark mode to a darker shade.
+
 v2.3.3 - March 23, 2022
 -----------------------
 

@@ -117,7 +117,7 @@ namespace SphereStudio.Debuggers
 
                 Panes.Console.Print($"Sphere Studio {Versioning.Version} JavaScript debugger");
                 Panes.Console.Print("the graphical symbolic JS debugger for neoSphere");
-                Panes.Console.Print("(c) 2012-2022 Sphere Engine Group");
+                Panes.Console.Print("(c) 2022 Sphere Engine Group");
                 Panes.Console.Print("");
             }), null);
         }

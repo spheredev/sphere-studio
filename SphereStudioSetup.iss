@@ -1,16 +1,16 @@
 ; Sphere Studio Setup script for Inno Setup
-; (c) 2012-2022 Sphere Engine Group
+; (c) 2022 Sphere Engine Group
 
 #define AppName "Sphere Studio"
 #define AppPublisher "Spherical"
-#define AppVersion3 "2.3.3"
-#define AppVersion4 "2.3.3.665"
+#define AppVersion3 "2.3.4"
+#define AppVersion4 "2.3.4.668"
 
 [Setup]
 OutputBaseFilename=SphereStudioSetup-{#AppVersion3}-msw
 OutputDir=.
 AppId={{F40892B0-C96E-48B7-B1E9-8C2BFB6C167D}
-AppCopyright=(c) 2012-2022 Sphere Engine Group
+AppCopyright=(c) 2022 Sphere Engine Group
 AppName={#AppName}
 AppPublisher={#AppPublisher}
 AppPublisherURL=http://www.spheredev.org/

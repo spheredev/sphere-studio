@@ -1,6 +1,8 @@
 Sphere Studio
 =============
 
+[![Release](https://img.shields.io/github/release/spheredev/sphere-studio.svg)](https://github.com/spheredev/sphere-studio/releases/latest)
+
 Sphere Studio is a powerful integrated development environment for the
 [Sphere game platform](https://github.com/fatcerberus/neosphere) with a user
 interface inspired by Visual Studio.  Originally developed by Andrew Helenius
@@ -20,8 +22,8 @@ which allows new features to be added by writing a plugin in C# or VB.NET.
 Download
 ========
 
-**Sphere Studio 2.3.2** was released on February 4, 2022 and can be downloaded
-from this repository's Releases page:
+The latest release of Sphere Studio can be downloaded from the Releases page,
+here:
 
 - https://github.com/spheredev/sphere-studio/releases
 
