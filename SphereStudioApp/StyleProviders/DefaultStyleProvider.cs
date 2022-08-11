@@ -10,7 +10,7 @@ namespace SphereStudio.StyleProviders
         {
             var darkTheme = new UIStyle("Dark Mode") {
                 AccentColor = Color.FromArgb(32, 32, 48),
-                BackColor = Color.FromArgb(24, 24, 24),
+                BackColor = Color.FromArgb(16, 16, 16),
                 FixedFont = new Font("Consolas", 11.0f),
                 Font = new Font("Segoe UI", 9.0f),
                 HighlightColor = Color.DarkSlateBlue,
