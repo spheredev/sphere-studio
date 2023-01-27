@@ -1,6 +1,11 @@
 Sphere Studio Changelog
 =======================
 
+v2.3.5 - January 27, 2023
+-------------------------
+
+* Adds detection for the 2022 Update of Windows 10 and 11.
+
 v2.3.4 - August 11, 2022
 ------------------------
 
