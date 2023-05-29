@@ -420,7 +420,7 @@ namespace SphereStudio.Forms
 
         private DocumentTab findDocumentTab(string fileName)
         {
-            return tabs.Find(it => it.FileName.Equals(fileName, StringComparison.OrdinalIgnoreCase));
+            return tabs.Find(it => string.Equals(fileName, it.FileName, StringComparison.OrdinalIgnoreCase));
         }
 
         private ToolStripMenuItem getMenuItem(ToolStripItemCollection collection, string name)
