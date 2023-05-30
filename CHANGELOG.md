@@ -1,6 +1,13 @@
 Sphere Studio Changelog
 =======================
 
+v2.3.6 - May 30, 2023
+---------------------
+
+* Fixes a bug where opening a file from the File List while untitled files are
+  also open could cause an unhandled exception, preventing the file from being
+  opened.
+
 v2.3.5 - January 27, 2023
 -------------------------
 

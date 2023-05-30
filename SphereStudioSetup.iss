@@ -1,10 +1,10 @@
 ; Sphere Studio Setup script for Inno Setup
-; (c) 2022 Sphere Engine Group
+; (c) 2023 Sphere Engine Group
 
 #define AppName "Sphere Studio"
 #define AppPublisher "Spherical"
-#define AppVersion3 "2.3.5"
-#define AppVersion4 "2.3.5.670"
+#define AppVersion3 "2.3.6"
+#define AppVersion4 "2.3.5.672"
 
 [Setup]
 OutputBaseFilename=SphereStudioSetup-{#AppVersion3}-msw
