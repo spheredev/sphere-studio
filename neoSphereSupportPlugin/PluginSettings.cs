@@ -51,8 +51,8 @@ namespace SphereStudio
 
         public bool TestInRetroMode
         {
-            get => settings.GetBoolean("debugInRetroMode", false);
-            set => settings.SetValue("debugInRetroMode", value);
+            get => settings.GetBoolean("testInRetroMode", false);
+            set => settings.SetValue("testInRetroMode", value);
         }
 
         public bool TestInWindow

@@ -196,9 +196,9 @@
             this.retroModeCheckBox.AutoSize = true;
             this.retroModeCheckBox.Location = new System.Drawing.Point(13, 103);
             this.retroModeCheckBox.Name = "retroModeCheckBox";
-            this.retroModeCheckBox.Size = new System.Drawing.Size(295, 17);
+            this.retroModeCheckBox.Size = new System.Drawing.Size(368, 17);
             this.retroModeCheckBox.TabIndex = 5;
-            this.retroModeCheckBox.Text = "Always use Retrograde mode when testing for distribution";
+            this.retroModeCheckBox.Text = "Emulate targeted API level when testing for distribution (retrograde mode)";
             this.retroModeCheckBox.UseVisualStyleBackColor = true;
             // 
             // debugHeading
