@@ -1,6 +1,12 @@
 Sphere Studio Changelog
 =======================
 
+v2.3.7 - November 1, 2023
+-------------------------
+
+* Adds detection for the 2023 Update for Windows 11.
+* Removes neoSphere Retrograde mode from the list of engines.
+
 v2.3.6 - May 30, 2023
 ---------------------
 
