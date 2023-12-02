@@ -118,6 +118,8 @@
             this.settingsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.configureEngineMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.colorSchemeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
             this.preferencesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainToolStrip.SuspendLayout();
             this.mainStatusStrip.SuspendLayout();
@@ -938,6 +940,7 @@
             this.settingsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.configureEngineMenuItem,
             this.toolStripSeparator5,
+            this.colorSchemeMenuItem,
             this.preferencesMenuItem});
             this.settingsMenu.Name = "settingsMenu";
             this.settingsMenu.Size = new System.Drawing.Size(61, 20);
@@ -957,6 +960,21 @@
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
             this.toolStripSeparator5.Size = new System.Drawing.Size(177, 6);
+            // 
+            // colorSchemeMenuItem
+            // 
+            this.colorSchemeMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripSeparator14});
+            this.colorSchemeMenuItem.Name = "colorSchemeMenuItem";
+            this.colorSchemeMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.colorSchemeMenuItem.Text = "Co&lor Scheme";
+            this.colorSchemeMenuItem.DropDownClosed += new System.EventHandler(this.colorSchemeMenuItem_DropDownClosed);
+            this.colorSchemeMenuItem.DropDownOpening += new System.EventHandler(this.colorSchemeMenuItem_DropDownOpening);
+            // 
+            // toolStripSeparator14
+            // 
+            this.toolStripSeparator14.Name = "toolStripSeparator14";
+            this.toolStripSeparator14.Size = new System.Drawing.Size(177, 6);
             // 
             // preferencesMenuItem
             // 
@@ -1088,6 +1106,8 @@
         private System.Windows.Forms.ToolStripMenuItem preferredEngineMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
+        private System.Windows.Forms.ToolStripMenuItem colorSchemeMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
     }
 }
 

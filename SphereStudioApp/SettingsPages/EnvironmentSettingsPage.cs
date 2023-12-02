@@ -50,7 +50,7 @@ namespace SphereStudio.SettingsPages
                              let plugin = PluginManager.Get<IStyleProvider>(pluginName)
                              from style in plugin.Styles
                              orderby pluginName
-                             select pluginName + ": " + style.Name;
+                             select $"{pluginName}: {style.Name}";
             foreach (var styleName in styleNames)
                 styleDropDown.Items.Add(styleName);
             styleDropDown.SelectedIndex = 0;

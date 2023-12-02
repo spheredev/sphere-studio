@@ -1186,6 +1186,34 @@ namespace SphereStudio.Forms
                 : "&Configure Engine";
         }
 
+        private void colorSchemeMenuItem_DropDownOpening(object sender, EventArgs e)
+        {
+            toolStripSeparator14.Visible = false;
+            var dropDownMenu = ((ToolStripDropDownItem)sender).DropDown;
+            foreach (var styleName in from pluginName in PluginManager.GetNames<IStyleProvider>()
+                                      let plugin = PluginManager.Get<IStyleProvider>(pluginName)
+                                      from style in plugin.Styles
+                                      orderby pluginName
+                                      select $"{pluginName}: {style.Name}")
+            {
+                var menuItem = new ToolStripMenuItem(styleName) { Name = "8:12" };
+                menuItem.Click += (s, ea) =>
+                {
+                    Session.Settings.StyleName = styleName;
+                    Session.Settings.Apply();
+                };
+                dropDownMenu.Items.Add(menuItem);
+            }
+        }
+
+        private void colorSchemeMenuItem_DropDownClosed(object sender, EventArgs e)
+        {
+            toolStripSeparator14.Visible = true;
+            var dropDownMenu = ((ToolStripDropDownItem)sender).DropDown;
+            while (dropDownMenu.Items.ContainsKey("8:12"))
+                dropDownMenu.Items.RemoveByKey("8:12");
+        }
+
         private void configureEngineMenuItem_Click(object sender, EventArgs e)
         {
             PluginManager.Get<IStarter>(Session.Project.UserSettings.Engine)
