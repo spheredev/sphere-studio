@@ -1197,6 +1197,7 @@ namespace SphereStudio.Forms
                                       select $"{pluginName}: {style.Name}")
             {
                 var menuItem = new ToolStripMenuItem(styleName) { Name = "8:12" };
+                menuItem.Checked = styleName == Session.Settings.StyleName;
                 menuItem.Click += (s, ea) =>
                 {
                     Session.Settings.StyleName = styleName;
