@@ -1,6 +1,12 @@
 Sphere Studio Changelog
 =======================
 
+v2.3.8 - December 3, 2023
+-------------------------
+
+* Adds support for changing the IDE color scheme directly from the Settings
+  menu.
+
 v2.3.7 - November 1, 2023
 -------------------------
 

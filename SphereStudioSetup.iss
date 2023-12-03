@@ -3,8 +3,8 @@
 
 #define AppName "Sphere Studio"
 #define AppPublisher "Spherical"
-#define AppVersion3 "2.3.7"
-#define AppVersion4 "2.3.7.675"
+#define AppVersion3 "2.3.8"
+#define AppVersion4 "2.3.8.678"
 
 [Setup]
 OutputBaseFilename=SphereStudioSetup-{#AppVersion3}-msw
