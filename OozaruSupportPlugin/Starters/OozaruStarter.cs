@@ -52,9 +52,9 @@ namespace SphereStudio.Starters
                 gameServer.Dispose();
             var enginePort = settings.GetInteger("serverPort", 8080);
             gameServer = new WebServer($"http://localhost:{enginePort}")
-                .WithStaticFolder("/dist", gamePath, true, m => m
+                .WithStaticFolder("/dist", gamePath, false, m => m
                     .WithoutContentCaching())
-                .WithStaticFolder("/", enginePath, false);
+                .WithStaticFolder("/", enginePath, true);
             gameServer.RunAsync();
             Process.Start($"http://localhost:{enginePort}/");
         }
