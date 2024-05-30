@@ -1,6 +1,12 @@
 Sphere Studio Changelog
 =======================
 
+v2.3.9 - May 30, 2024
+---------------------
+
+* Fixes a bug in the Oozaru server that could cause game files to be served to
+  the browser incorrectly.
+
 v2.3.8 - December 3, 2023
 -------------------------
 
