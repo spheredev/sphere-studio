@@ -15,7 +15,7 @@ namespace SphereStudio.Forms
             StyleManager.AutoStyle(this);
 
             labelProductName.Text = $"{Versioning.Name} {Versioning.Version}";
-            labelCopyright.Text = $"\xA9 {Versioning.Copyright}";
+            labelCopyright.Text = Versioning.Copyright;
             labelCompanyName.Text = Versioning.Author;
             creditsTextBox.Text = Versioning.Credits;
 
@@ -54,6 +54,7 @@ namespace SphereStudio.Forms
                     : os.Version.Build == 22000 ? "21H2 - RTM"
                     : os.Version.Build == 22621 ? "22H2 Update"
                     : os.Version.Build == 22631 ? "23H2 Update"
+                    : os.Version.Build == 26100 ? "24H2 Update"
                     : $"build {os.Version.Build}";
             }
             var architecture = RuntimeInformation.OSArchitecture == Architecture.X64 ? "x64"

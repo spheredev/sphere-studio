@@ -1,16 +1,17 @@
 ; Sphere Studio Setup script for Inno Setup
-; (c) 2023 Sphere Engine Group
+; (c) 2012-2024 Where'd She Go? LLC
+; All rights reserved.
 
 #define AppName "Sphere Studio"
-#define AppPublisher "Spherical"
-#define AppVersion3 "2.3.9"
-#define AppVersion4 "2.3.9.680"
+#define AppPublisher "Where'd She Go? LLC"
+#define AppVersion3 "2.3.10"
+#define AppVersion4 "2.3.10.681"
 
 [Setup]
 OutputBaseFilename=SphereStudioSetup-{#AppVersion3}-msw
 OutputDir=.
 AppId={{F40892B0-C96E-48B7-B1E9-8C2BFB6C167D}
-AppCopyright=(c) 2022 Sphere Engine Group
+AppCopyright=(c) 2012-2024 Where'd She Go? LLC
 AppName={#AppName}
 AppPublisher={#AppPublisher}
 AppPublisherURL=http://www.spheredev.org/
@@ -18,7 +19,7 @@ AppSupportURL=http://forums.spheredev.org/
 AppUpdatesURL=http://forums.spheredev.org/index.php/topic,24.0.html
 AppVerName={#AppName} {#AppVersion3}
 AppVersion={#AppVersion3}
-ArchitecturesInstallIn64BitMode=x64 ia64
+ArchitecturesInstallIn64BitMode=x64compatible
 ChangesAssociations=yes
 Compression=lzma2
 DefaultDirName={autopf}\{#AppName}

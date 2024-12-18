@@ -9,9 +9,9 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Spherical")]
+[assembly: AssemblyCompany("Where'd She Go? Productions")]
 [assembly: AssemblyProduct("Sphere Studio")]
-[assembly: AssemblyCopyright("© 2024 Sphere Engine Group")]
+[assembly: AssemblyCopyright("© 2012-2024 Where'd She Go? LLC")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -33,5 +33,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.3.9.680")]
-[assembly: AssemblyFileVersion("2.3.9.680")]
+[assembly: AssemblyVersion("2.3.10.681")]
+[assembly: AssemblyFileVersion("2.3.10.681")]

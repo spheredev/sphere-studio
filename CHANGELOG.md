@@ -1,6 +1,11 @@
 Sphere Studio Changelog
 =======================
 
+v2.3.10 - December 18, 2024
+---------------------------
+
+* Rebranding! Sphere Studio is now produced by Where'd She Go? LLC.
+
 v2.3.9 - May 30, 2024
 ---------------------
 

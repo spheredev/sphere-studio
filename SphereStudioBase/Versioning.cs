@@ -19,12 +19,12 @@ namespace SphereStudio
         /// <summary>
         /// The name of the author used for branding.
         /// </summary>
-        public const string Author = "Spherical";
+        public const string Author = "Where'd She Go? Productions";
 
         /// <summary>
         /// The version number of the software.
         /// </summary>
-        public const string Version = "2.3.9";
+        public const string Version = "2.3.10";
 
         /// <summary>
         /// Whether the Sphere Studio version being built against is a WiP version.
@@ -34,7 +34,7 @@ namespace SphereStudio
         /// <summary>
         /// A string indicating the copyright holder and year(s) of copyright.
         /// </summary>
-        public const string Copyright = "2024 Sphere Engine Group";
+        public const string Copyright = "© 2024 Where'd She Go? LLC";
 
         /// <summary>
         /// A short description of the software along with a list of contributors.
