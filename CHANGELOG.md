@@ -1,6 +1,11 @@
 Sphere Studio Changelog
 =======================
 
+v2.3.11 - November 29, 2025
+---------------------------
+
+* Fixes branding - **Where'd She Go?** - no "LLC".
+
 v2.3.10 - December 18, 2024
 ---------------------------
 

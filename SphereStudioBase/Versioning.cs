@@ -24,7 +24,7 @@ namespace SphereStudio
         /// <summary>
         /// The version number of the software.
         /// </summary>
-        public const string Version = "2.3.10";
+        public const string Version = "2.3.11";
 
         /// <summary>
         /// Whether the Sphere Studio version being built against is a WiP version.
@@ -34,7 +34,7 @@ namespace SphereStudio
         /// <summary>
         /// A string indicating the copyright holder and year(s) of copyright.
         /// </summary>
-        public const string Copyright = "© 2024 Where'd She Go? LLC";
+        public const string Copyright = "© 2025 Where'd She Go?";
 
         /// <summary>
         /// A short description of the software along with a list of contributors.

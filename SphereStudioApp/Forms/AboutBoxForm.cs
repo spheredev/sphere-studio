@@ -55,6 +55,7 @@ namespace SphereStudio.Forms
                     : os.Version.Build == 22621 ? "22H2 Update"
                     : os.Version.Build == 22631 ? "23H2 Update"
                     : os.Version.Build == 26100 ? "24H2 Update"
+                    : os.Version.Build == 26200 ? "25H2 Update"
                     : $"build {os.Version.Build}";
             }
             var architecture = RuntimeInformation.OSArchitecture == Architecture.X64 ? "x64"

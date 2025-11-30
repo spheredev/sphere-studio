@@ -1,17 +1,17 @@
-; Sphere Studio Setup script for Inno Setup
-; (c) 2012-2024 Where'd She Go? LLC
+; Sphere Studio Setup
+; (c) 2012-2025 Where'd She Go?
 ; All rights reserved.
 
 #define AppName "Sphere Studio"
-#define AppPublisher "Where'd She Go? LLC"
-#define AppVersion3 "2.3.10"
-#define AppVersion4 "2.3.10.681"
+#define AppPublisher "Where'd She Go?"
+#define AppVersion3 "2.3.11"
+#define AppVersion4 "2.3.11.682"
 
 [Setup]
 OutputBaseFilename=SphereStudioSetup-{#AppVersion3}-msw
 OutputDir=.
 AppId={{F40892B0-C96E-48B7-B1E9-8C2BFB6C167D}
-AppCopyright=(c) 2012-2024 Where'd She Go? LLC
+AppCopyright=(c) 2012-2025 Where'd She Go?
 AppName={#AppName}
 AppPublisher={#AppPublisher}
 AppPublisherURL=http://www.spheredev.org/
